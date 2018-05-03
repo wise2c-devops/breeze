@@ -1,0 +1,33 @@
+version: '2'
+services:
+  deploy:
+    image: wise2c/pagoda:v0.4.1
+    restart: always
+    entrypoint: sh
+    command:
+    - -c
+    - "/root/pagoda -logtostderr -v 4 -w /workspace"
+    ports:
+    - 88:80
+    - 8088:8080
+    volumes:
+    - /root/.ssh:/root/.ssh
+    - $PWD/deploy:/deploy
+    volumes_from:
+    - playbook
+  ui:
+    image: wise2c/deploy-ui:v0.4
+    restart: always
+    network_mode: "service:deploy"
+  playbook:
+    image: wise2c/playbook:v0.4
+    volumes:
+    - playbook:/workspace
+  yum-repo:
+    image: wise2c/yum-repo:7.4
+    ports:
+    - 2009:2009 
+    restart: always
+volumes:
+  playbook:
+    external: false

@@ -1,0 +1,4 @@
+[hosts]
+{{ range $v := .AllHosts -}}
+{{ $v.IP }} hostname={{ $v.HostName }}
+{{ end }}
