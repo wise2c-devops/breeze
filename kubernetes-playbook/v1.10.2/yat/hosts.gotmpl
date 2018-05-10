@@ -1,0 +1,14 @@
+[etcd]
+{{ range $v := .etcd.Hosts.self -}}
+{{ $v.IP }}
+{{ end }}
+
+[master]
+{{ range $v := .kubernetes.Hosts.master -}}
+{{ $v.IP }} role=master
+{{ end }}
+
+[node]
+{{ range $v := .kubernetes.Hosts.node -}}
+{{ $v.IP }} role=node
+{{ end }}

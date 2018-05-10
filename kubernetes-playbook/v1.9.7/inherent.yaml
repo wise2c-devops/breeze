@@ -1,0 +1,5 @@
+endpoint: {{ if eq (print .Property.endpoint) "" -}}
+          {{ (index .Hosts.master 0).IP }}:6443
+          {{- else -}}
+          {{ .Property.endpoint }}
+          {{- end }}

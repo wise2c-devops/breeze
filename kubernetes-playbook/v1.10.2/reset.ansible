@@ -1,0 +1,25 @@
+- name: clean k8s master
+  hosts: all
+  user: root
+  tasks:
+  - name: kubeadm reset
+    shell: |
+      kubeadm reset
+
+  - name: install kubernetes components
+    yum:
+      state: absent
+      disablerepo: '*'
+      enablerepo: wise2c
+      name: '{{ item }}'
+    with_items:
+    - kubernetes-cni-0.5.1
+    - kubectl-{{ kubernetes_version[1:] }}
+    - kubelet-{{ kubernetes_version[1:] }}
+    - kubeadm-{{ kubernetes_version[1:] }}
+    
+  - name: clean link
+    shell: |
+      ip link delete cni0
+      ip link delete flannel.1
+    ignore_errors: true

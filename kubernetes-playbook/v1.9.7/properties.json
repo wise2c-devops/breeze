@@ -1,0 +1,24 @@
+[
+    {
+        "variable": "master",
+        "label": "kubernetes master hosts",
+        "description": "hosts to setup kubernetes master",
+        "type": "host",
+        "required": false
+    },
+    {
+        "variable": "node",
+        "label": "kubenetes node hosts",
+        "description": "hosts to setup kubernetes node",
+        "type": "host",
+        "required": false
+    },
+    {
+        "variable": "endpoint",
+        "label": "kubernetes entry point",
+        "description": "other can access kubernetes by this",
+        "type": "string",
+        "default": "",
+        "required": false
+    }
+]
