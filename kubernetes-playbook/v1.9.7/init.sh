@@ -8,11 +8,11 @@ kubernetes_repo="gcr.io/google_containers"
 kubernetes_version=`docker run -it --rm \
                     -e KUBERNETES_VERSION=${1} \
                     -e KUBERNETES_COMPONENT=kube-apiserver \
-                    ymian/kube-version:1.8`
+                    ymian/kube-version:1.9`
 dns_version=`docker run -it --rm \
                     -e KUBERNETES_VERSION=${1} \
                     -e KUBERNETES_COMPONENT=kube-dns \
-                    ymian/kube-version:1.8`
+                    ymian/kube-version:1.9`
 pause_version="3.0"
 echo "" >> ${path}/yat/all.yml.gotmpl
 echo "kubernetes_repo: ${kubernetes_repo}" >> ${path}/yat/all.yml.gotmpl
