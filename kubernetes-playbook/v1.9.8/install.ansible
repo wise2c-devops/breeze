@@ -36,7 +36,7 @@
         state: present
         name: '{{ item }}'
       with_items:
-      - kubernetes-cni-0.5.1
+      - kubernetes-cni-0.6.0
       - kubectl-{{ kubernetes_version[1:] }}
       - kubelet-{{ kubernetes_version[1:] }}
       - kubeadm-{{ kubernetes_version[1:] }}
