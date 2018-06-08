@@ -1,0 +1,4 @@
+[etcd]
+{{ range $v := .etcd.Hosts.self -}}
+{{ $v.IP }}
+{{ end }}

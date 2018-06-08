@@ -1,0 +1,23 @@
+apiVersion: kubeadm.k8s.io/v1alpha1
+kind: MasterConfiguration
+etcd:
+  endpoints:
+{% for host in groups['etcd'] %}
+  - http://{{ host }}:2379
+{% endfor %}
+networking:
+  podSubnet: 10.244.0.0/16
+kubernetesVersion: {{ kubernetes_version }}
+token: 904250.ab14566918c0703b
+tokenTTL: 0s
+apiServerExtraArgs:
+  apiserver-count: '3'
+  runtime-config: batch/v2alpha1=true
+  feature-gates: LocalStorageCapacityIsolation=true
+controllerManagerExtraArgs:
+  feature-gates: LocalStorageCapacityIsolation=true
+schedulerExtraArgs:
+  feature-gates: LocalStorageCapacityIsolation=true
+apiServerCertSANs:
+  - {{ endpoint.split(':')[0] }}
+imageRepository: {{ registry_endpoint }}/{{ registry_project }}

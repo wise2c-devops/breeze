@@ -1,0 +1,16 @@
+*.retry
+*.tar
+*.tar.bz2
+*.tgz
+*.pyc
+
+# ===== mian =====
+hosts
+hosts.yml
+all.yml
+admin.conf
+controller.yml
+registry.yml
+registry-playbook/file/source/
+cluster-*
+!cluster-template

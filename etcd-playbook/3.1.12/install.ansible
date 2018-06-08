@@ -1,0 +1,36 @@
+- name: install etcd
+  hosts: etcd
+  user: root
+  vars:
+    path: /var/tmp/wise2c/etcd
+  tasks:
+  - name: make etcd dir
+    file:
+      path: '{{ item }}'
+      state: directory
+      mode: 0755
+    with_items:
+      - '{{ path }}'
+
+  - name: copy etcd image
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+      - { src: 'file/etcd.tar.bz2', dest: '{{ path }}' }
+
+  - name: load etcd image
+    docker_image:
+      load_path: '{{ path }}/etcd.tar.bz2'
+      name: '{{ image }}'
+      timeout: 600
+
+  - name: run etcd
+    docker_container:
+      name: etcd
+      network_mode: host
+      restart_policy: unless-stopped
+      image: '{{ image }}'
+      command: '{{ command }}'
+      volumes:
+      - /data/wisecloud/etcd:/var/lib/etcd
