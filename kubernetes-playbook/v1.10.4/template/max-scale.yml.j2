@@ -1,0 +1,55 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: max-scale
+  name: max-scale
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: max-scale
+  template:
+    metadata:
+      labels:
+        app: max-scale
+      name: max-scale
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: password
+        - name: REPLICATION_USER
+          value: root
+        - name: REPLICATION_PASSWORD
+          value: password
+        - name: MasterIP
+          value: {{ master }}
+        - name: Slave1IP
+          value: {{ slave1 }}
+        - name: Slave2IP
+          value: {{ slave2 }}
+        - name: MySQLPort
+          value: "3307"
+        - name: NeverMasterIP
+          value: {{ neverMaster }}
+        image: {{ registry }}/{{ project }}/maxscale1.4.5-1-docker:latest
+        imagePullPolicy: IfNotPresent
+        name: max-scale
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: max-scale
+  name: max-scale
+spec:
+  type: NodePort
+  ports:
+  - name: 3306-3306
+    port: 3306
+    nodePort: 30308
+    targetPort: 3306
+    protocol: TCP
+  selector:
+    app: max-scale

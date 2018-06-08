@@ -1,0 +1,15 @@
+- name: clean etcd
+  hosts: etcd
+  user: root
+  tasks:
+  - name: stop & rm old etcd container
+    docker_container:
+      name: etcd
+      state: absent
+        
+  - name: clean etcd directory
+    file:
+      path: '{{ item }}'
+      state: absent
+    with_items:
+    - /data/wisecloud/etcd

@@ -1,0 +1,10 @@
+[
+    {
+        "variable": "self",
+        "label": "etcd hosts",
+        "description": "hosts for setup etcd",
+        "type": "host",
+        "default": "",
+        "required": true
+    }
+]
