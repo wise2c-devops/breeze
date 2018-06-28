@@ -8,7 +8,7 @@ kubernetes_repo="gcr.io/google_containers"
 kubernetes_version=`docker run -it --rm \
                     -e KUBERNETES_VERSION=${1} \
                     -e KUBERNETES_COMPONENT=kube-apiserver \
-                    ymian/kube-version:1.10`
+                    ymian/kube-version:1.11`
 dns_version=`docker run -it --rm \
                     -e KUBERNETES_VERSION=${1} \
                     -e KUBERNETES_COMPONENT=kube-dns \

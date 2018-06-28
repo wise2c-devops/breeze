@@ -6,7 +6,7 @@ services:
 before_install:
 - sudo apt-get -qq update
 - sudo apt-get install -y bzip2
-- docker pull ymian/kube-version:1.10
+- docker pull ymian/kube-version:1.11
 
 script:
 - bash init.sh
