@@ -12,7 +12,7 @@ kubernetes_version=`docker run -it --rm \
 dns_version=`docker run -it --rm \
                     -e KUBERNETES_VERSION=${1} \
                     -e KUBERNETES_COMPONENT=kube-dns \
-                    ymian/kube-version:1.10`
+                    ymian/kube-version:1.11`
 pause_version="3.1"
 echo "" >> ${path}/yat/all.yml.gotmpl
 echo "kubernetes_repo: ${kubernetes_repo}" >> ${path}/yat/all.yml.gotmpl

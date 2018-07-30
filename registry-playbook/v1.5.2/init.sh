@@ -7,7 +7,7 @@ version=$1
 echo "" >> ${path}/yat/registry.yml.gotmpl
 echo "version: ${version}" >> ${path}/yat/registry.yml.gotmpl
 
-curl https://storage.googleapis.com/harbor-releases/harbor-offline-installer-${version}.tgz \
+curl https://storage.googleapis.com/harbor-releases/release-1.5.0/harbor-offline-installer-${version}.tgz \
     -o ${path}/file/harbor-offline-installer-${version}.tgz
     
 curl -sS https://raw.githubusercontent.com/vmware/harbor/${version}/make/harbor.cfg \
