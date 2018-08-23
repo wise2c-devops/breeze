@@ -47,11 +47,11 @@ docker pull ${kubernetes_repo}/kube-controller-manager-amd64:${kubernetes_versio
 docker pull ${kubernetes_repo}/kube-scheduler-amd64:${kubernetes_version}
 docker pull ${kubernetes_repo}/kube-proxy-amd64:${kubernetes_version}
 docker pull ${kubernetes_repo}/pause-amd64:${pause_version}
-docker pull coredns/coredns:${dns_version}
+docker pull ${kubernetes_repo}/coredns:${dns_version}
 echo "=== pull kubernetes images success ==="
 echo "=== saving kubernetes images ==="
 mkdir -p ${path}/file
-docker save coredns/coredns:${dns_version} \
+docker save ${kubernetes_repo}/coredns:${dns_version} \
     ${kubernetes_repo}/kube-apiserver-amd64:${kubernetes_version} \
     ${kubernetes_repo}/kube-controller-manager-amd64:${kubernetes_version} \
     ${kubernetes_repo}/kube-scheduler-amd64:${kubernetes_version} \
