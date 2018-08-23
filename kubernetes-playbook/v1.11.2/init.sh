@@ -4,14 +4,14 @@ set -e
 
 path=`dirname $0`
 
-kubernetes_repo="gcr.io/google_containers"
+kubernetes_repo="k8s.gcr.io"
 kubernetes_version=`docker run -it --rm \
                     -e KUBERNETES_VERSION=${1} \
                     -e KUBERNETES_COMPONENT=kube-apiserver \
                     ymian/kube-version:1.11`
 dns_version=`docker run -it --rm \
                     -e KUBERNETES_VERSION=${1} \
-                    -e KUBERNETES_COMPONENT=kube-dns \
+                    -e KUBERNETES_COMPONENT=coredns \
                     ymian/kube-version:1.11`
 pause_version="3.1"
 echo "" >> ${path}/yat/all.yml.gotmpl
@@ -36,7 +36,7 @@ echo "dashboard_version: ${dashboard_version}" >> ${path}/yat/all.yml.gotmpl
 #curl -sS https://raw.githubusercontent.com/kubernetes/dashboard/${dashboard_version}/src/deploy/recommended/kubernetes-dashboard.yaml \
 #    | sed -e "s,k8s.gcr.io,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kubernetes-dashboard.yml.j2
 
-curl -sS https://raw.githubusercontent.com/wise2c-devops/playbook/master/kubernetes-playbook/v1.11.0/template/kubernetes-dashboard-wise2c.yaml.j2 \
+curl -sS https://raw.githubusercontent.com/wise2c-devops/breeze/master/kubernetes-playbook/kubernetes-dashboard-wise2c.yaml.j2 \
     | sed -e "s,k8s.gcr.io,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kubernetes-dashboard.yml.j2
     
 #curl -L -o ${path}/file/cni-plugins-amd64-v0.6.0.tgz https://github.com/containernetworking/plugins/releases/download/v0.6.0/cni-plugins-amd64-v0.6.0.tgz
@@ -47,22 +47,16 @@ docker pull ${kubernetes_repo}/kube-controller-manager-amd64:${kubernetes_versio
 docker pull ${kubernetes_repo}/kube-scheduler-amd64:${kubernetes_version}
 docker pull ${kubernetes_repo}/kube-proxy-amd64:${kubernetes_version}
 docker pull ${kubernetes_repo}/pause-amd64:${pause_version}
-docker pull ${kubernetes_repo}/k8s-dns-sidecar-amd64:${dns_version}
-docker pull ${kubernetes_repo}/k8s-dns-kube-dns-amd64:${dns_version}
-docker pull ${kubernetes_repo}/k8s-dns-dnsmasq-nanny-amd64:${dns_version}
-docker pull coredns/coredns:1.1.3
+docker pull coredns/coredns:${dns_version}
 echo "=== pull kubernetes images success ==="
 echo "=== saving kubernetes images ==="
 mkdir -p ${path}/file
-docker save coredns/coredns:1.1.3 \
+docker save coredns/coredns:${dns_version} \
     ${kubernetes_repo}/kube-apiserver-amd64:${kubernetes_version} \
     ${kubernetes_repo}/kube-controller-manager-amd64:${kubernetes_version} \
     ${kubernetes_repo}/kube-scheduler-amd64:${kubernetes_version} \
     ${kubernetes_repo}/kube-proxy-amd64:${kubernetes_version} \
     ${kubernetes_repo}/pause-amd64:${pause_version} \
-    ${kubernetes_repo}/k8s-dns-sidecar-amd64:${dns_version} \
-    ${kubernetes_repo}/k8s-dns-kube-dns-amd64:${dns_version} \
-    ${kubernetes_repo}/k8s-dns-dnsmasq-nanny-amd64:${dns_version} \
     > ${path}/file/k8s.tar
 rm ${path}/file/k8s.tar.bz2 -f
 bzip2 -z --best ${path}/file/k8s.tar

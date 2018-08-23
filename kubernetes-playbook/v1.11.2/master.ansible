@@ -38,9 +38,7 @@
   - { repo: '{{ kubernetes_repo }}', name: 'kube-apiserver-amd64', tag: '{{ kubernetes_version }}' }
   - { repo: '{{ kubernetes_repo }}', name: 'kube-scheduler-amd64', tag: '{{ kubernetes_version }}' }
   - { repo: '{{ kubernetes_repo }}', name: 'kube-proxy-amd64', tag: '{{ kubernetes_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'k8s-dns-sidecar-amd64', tag: '{{ dns_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'k8s-dns-kube-dns-amd64', tag: '{{ dns_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'k8s-dns-dnsmasq-nanny-amd64', tag: '{{ dns_version }}' }
+  - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ kubernetes_repo }}', name: 'pause-amd64', tag: '{{ pause_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
@@ -57,9 +55,7 @@
   - { repo: '{{ kubernetes_repo }}', name: 'kube-apiserver-amd64', tag: '{{ kubernetes_version }}' }
   - { repo: '{{ kubernetes_repo }}', name: 'kube-scheduler-amd64', tag: '{{ kubernetes_version }}' }
   - { repo: '{{ kubernetes_repo }}', name: 'kube-proxy-amd64', tag: '{{ kubernetes_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'k8s-dns-sidecar-amd64', tag: '{{ dns_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'k8s-dns-kube-dns-amd64', tag: '{{ dns_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'k8s-dns-dnsmasq-nanny-amd64', tag: '{{ dns_version }}' }
+  - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ kubernetes_repo }}', name: 'pause-amd64', tag: '{{ pause_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
