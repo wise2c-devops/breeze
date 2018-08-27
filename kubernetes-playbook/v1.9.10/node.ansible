@@ -7,7 +7,7 @@
 
 - name: setup node
   shell: |
-    kubeadm join --token {{ token }} {{ endpoint }} --discovery-token-unsafe-skip-ca-verification {{ endpoint }}
+    kubeadm join --token {{ token }} {{ endpoint }} --discovery-token-unsafe-skip-ca-verification {{ endpoint }} --ignore-preflight-errors=cri
     sed -i "s/.*server:.*/    server: https:\/\/{{ endpoint }}/g" /etc/kubernetes/kubelet.conf
     cp {{ path }}/admin.conf $HOME/.kube/config
     chown $(id -u):$(id -g) $HOME/.kube/config
