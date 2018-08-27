@@ -80,13 +80,13 @@ docker-compose up -d
 
 3. 打开浏览器，访问部署程序的图形界面，添加主机列表、添加服务角色并将加入的主机进行角色分配，然后开始部署：
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-001.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-001.png)
 
 点击 + 号添加一个集群：
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-002.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-002.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-003.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-003.png)
 
 点击“添加主机”，输入主机名、主机IP、描述信息（主机用途），点击确定。
 
@@ -94,59 +94,59 @@ docker-compose up -d
 
 （k8s master服务器、k8s minion node服务器、registry服务器等等）：
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-004.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-004.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-005.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-005.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-006.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-006.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-007.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-007.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-008.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-008.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-009.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-009.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-010.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-010.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-011.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-011.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-012.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-012.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-013.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-013.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-014.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-014.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-015.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-015.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-016.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-016.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-017.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-017.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-018.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-018.png)
 
 点击“添加组件”按钮，对每个组件进行设置和分配服务器：
 
 （Docker角色、etcd角色、registry角色、kubernetes角色）
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-019.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-019.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-020.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-020.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-021.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-021.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-022.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-022.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-023.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-023.png)
 
 镜像仓库设置这里的registy entry point是指用户端访问镜像仓库的URL，一般可以直接写IP地址或写对应的域名：
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-024.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-024.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-025.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-025.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-026.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-026.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-027.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-027.png)
 
 kubernetes entry point是指高可用的一个设定值，如果生产环境有硬件或软件负载均衡指向这里的k8s master所有节点，那么就可以在这里填写负载均衡的统一入口地址。
 
@@ -158,17 +158,17 @@ https://github.com/wise2c-devops/keepalived-k8s
 
 例如下图的 192.168.9.101:6444 就是k8s集群高可用的统一入口，k8s的minion node会使用这个地址访问API Server。
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-028.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-028.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-029.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-029.png)
 
 点击“下一步”开始安装部署：
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-030.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-030.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-031.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-031.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-032.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-032.png)
 
 如果界面上所有角色图标全部变为绿色，则表示部署任务结束。可以登录任一k8s节点运行命令 kubectl get nodes 查看结果。
 
@@ -184,11 +184,11 @@ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | gre
 
 将返回的token字串粘贴至登录窗口即可实现登录。
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-034.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-034.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-035.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-035.png)
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-036.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-036.png)
 
 
 ###########################################################################################
@@ -197,4 +197,4 @@ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | gre
 
 对于Kubernetes集群的HA架构解决方案，我们暂时不放出图形化解决方案，待我们将其从内部版本剥离出来后再贡献给社区：
 
-![Alt text](https://github.com/wise2c-devops/playbook/raw/master/manual/KubernetesDeployUI-033.png)
+![Alt text](https://raw.githubusercontent.com/wise2c-devops/breeze/master/manual/KubernetesDeployUI-033.png)
