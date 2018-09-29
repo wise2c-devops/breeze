@@ -42,21 +42,21 @@ curl -sS https://raw.githubusercontent.com/wise2c-devops/breeze/master/kubernete
 #curl -L -o ${path}/file/cni-plugins-amd64-v0.6.0.tgz https://github.com/containernetworking/plugins/releases/download/v0.6.0/cni-plugins-amd64-v0.6.0.tgz
 
 echo "=== pulling kubernetes images ==="
-docker pull ${kubernetes_repo}/kube-apiserver-amd64:${kubernetes_version}
-docker pull ${kubernetes_repo}/kube-controller-manager-amd64:${kubernetes_version}
-docker pull ${kubernetes_repo}/kube-scheduler-amd64:${kubernetes_version}
-docker pull ${kubernetes_repo}/kube-proxy-amd64:${kubernetes_version}
-docker pull ${kubernetes_repo}/pause-amd64:${pause_version}
+docker pull ${kubernetes_repo}/kube-apiserver:${kubernetes_version}
+docker pull ${kubernetes_repo}/kube-controller-manager:${kubernetes_version}
+docker pull ${kubernetes_repo}/kube-scheduler:${kubernetes_version}
+docker pull ${kubernetes_repo}/kube-proxy:${kubernetes_version}
+docker pull ${kubernetes_repo}/pause:${pause_version}
 docker pull ${kubernetes_repo}/coredns:${dns_version}
 echo "=== pull kubernetes images success ==="
 echo "=== saving kubernetes images ==="
 mkdir -p ${path}/file
 docker save ${kubernetes_repo}/coredns:${dns_version} \
-    ${kubernetes_repo}/kube-apiserver-amd64:${kubernetes_version} \
-    ${kubernetes_repo}/kube-controller-manager-amd64:${kubernetes_version} \
-    ${kubernetes_repo}/kube-scheduler-amd64:${kubernetes_version} \
-    ${kubernetes_repo}/kube-proxy-amd64:${kubernetes_version} \
-    ${kubernetes_repo}/pause-amd64:${pause_version} \
+    ${kubernetes_repo}/kube-apiserver:${kubernetes_version} \
+    ${kubernetes_repo}/kube-controller-manager:${kubernetes_version} \
+    ${kubernetes_repo}/kube-scheduler:${kubernetes_version} \
+    ${kubernetes_repo}/kube-proxy:${kubernetes_version} \
+    ${kubernetes_repo}/pause:${pause_version} \
     > ${path}/file/k8s.tar
 rm ${path}/file/k8s.tar.bz2 -f
 bzip2 -z --best ${path}/file/k8s.tar
