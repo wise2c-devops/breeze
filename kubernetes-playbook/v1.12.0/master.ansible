@@ -56,7 +56,7 @@
   - { repo: '{{ kubernetes_repo }}', name: 'kube-scheduler', tag: '{{ kubernetes_version }}' }
   - { repo: '{{ kubernetes_repo }}', name: 'kube-proxy', tag: '{{ kubernetes_version }}' }
   - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'pause-', tag: '{{ pause_version }}' }
+  - { repo: '{{ kubernetes_repo }}', name: 'pause', tag: '{{ pause_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
   run_once: true
