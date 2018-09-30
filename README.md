@@ -13,9 +13,12 @@ Note:
 1. **请不要把Breeze所在的主机加入部署集群**
 2. **为了避免包冲突，请使用纯净的centos minimal安装出来的OS来部署集群**
 
-**完整安装视频请在此处下载：**
+**PDF手册请在此处下载（针对Kubernetes v1.12.0编写）：**
 
-https://pan.baidu.com/s/1X0ZYt48wfYNrSrH7vvEKiw
+https://github.com/wise2c-devops/breeze/raw/master/manual/BreezeManual.pdf
+
+**软件架构示意图**
+![Alt text](https://github.com/wise2c-devops/breeze/raw/master/manual/Wise2C-Breeze-Architecture.png)
 
 操作步骤如下：
 
