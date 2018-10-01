@@ -28,6 +28,10 @@ echo "flannel_version: ${flannel_version}-amd64" >> ${path}/yat/all.yml.gotmpl
 curl -sS https://raw.githubusercontent.com/coreos/flannel/${flannel_version}/Documentation/kube-flannel.yml \
     | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
 
+# Fix the bug coreos/flannel#1044
+curl -sSL https://github.com/wise2ck8s/breeze/raw/v1.12/kubernetes-playbook/kube-flannel.yml \
+    | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
+    
 dashboard_repo="k8s.gcr.io"
 dashboard_version="v1.8.3"
 echo "dashboard_repo: ${dashboard_repo}" >> ${path}/yat/all.yml.gotmpl
