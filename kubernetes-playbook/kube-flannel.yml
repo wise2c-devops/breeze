@@ -1,4 +1,42 @@
 ---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: flannel
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - get
+  - apiGroups:
+      - ""
+    resources:
+      - nodes
+    verbs:
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - nodes/status
+    verbs:
+      - patch
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: flannel
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: flannel
+subjects:
+- kind: ServiceAccount
+  name: flannel
+  namespace: kube-system
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -16,19 +54,20 @@ metadata:
 data:
   cni-conf.json: |
     {
-      "name": "-cbr0-",
-      "cniVersion": "0.3.0",
+      "name": "cbr0",
       "plugins": [
         {
           "type": "flannel",
           "delegate": {
+            "hairpinMode": true,
             "isDefaultGateway": true
           }
         },
         {
           "type": "portmap",
-          "capabilities": {"portMappings": true},
-          "noSnat": false
+          "capabilities": {
+            "portMappings": true
+          }
         }
       ]
     }
@@ -62,10 +101,35 @@ spec:
       - operator: Exists
         effect: NoSchedule
       serviceAccountName: flannel
+      initContainers:
+      - name: install-cni
+        image: quay.io/coreos/flannel:v0.10.0-amd64
+        command:
+        - cp
+        args:
+        - -f
+        - /etc/kube-flannel/cni-conf.json
+        - /etc/cni/net.d/10-flannel.conflist
+        volumeMounts:
+        - name: cni
+          mountPath: /etc/cni/net.d
+        - name: flannel-cfg
+          mountPath: /etc/kube-flannel/
       containers:
       - name: kube-flannel
-        image: {{ registry_endpoint }}/{{ registry_project }}/flannel:v0.8.0-amd64
-        command: [ "/opt/bin/flanneld", "--ip-masq", "--kube-subnet-mgr" ]
+        image: quay.io/coreos/flannel:v0.10.0-amd64
+        command:
+        - /opt/bin/flanneld
+        args:
+        - --ip-masq
+        - --kube-subnet-mgr
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "50Mi"
+          limits:
+            cpu: "100m"
+            memory: "50Mi"
         securityContext:
           privileged: true
         env:
@@ -80,14 +144,6 @@ spec:
         volumeMounts:
         - name: run
           mountPath: /run
-        - name: flannel-cfg
-          mountPath: /etc/kube-flannel/
-      - name: install-cni
-        image: {{ registry_endpoint }}/{{ registry_project }}/flannel:v0.8.0-amd64
-        command: [ "/bin/sh", "-c", "set -e -x; cp -f /etc/kube-flannel/cni-conf.json /etc/cni/net.d/10-flannel.conflist; while true; do sleep 3600; done" ]
-        volumeMounts:
-        - name: cni
-          mountPath: /etc/cni/net.d
         - name: flannel-cfg
           mountPath: /etc/kube-flannel/
       volumes:

@@ -6,7 +6,6 @@ services:
 before_install:
 - sudo apt-get -qq update
 - sudo apt-get install -y bzip2
-- docker pull wise2ck8s/kube-version:v1.12
 
 script:
 - bash init.sh
