@@ -1,0 +1,123 @@
+- name: copy k8s images
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+  - { src: 'file/k8s.tar.bz2', dest: '{{ path }}' }
+  - { src: 'file/flannel.tar.bz2', dest: '{{ path }}' }
+  - { src: 'file/dashboard.tar.bz2', dest: '{{ path }}' }
+  run_once: true
+
+- name: load k8s images
+  docker_image:
+    load_path: '{{ path }}/{{ item }}'
+    name: k8s
+    timeout: 600
+  with_items:
+  - k8s.tar.bz2
+  - flannel.tar.bz2
+  - dashboard.tar.bz2
+  run_once: true
+
+- name: docker login
+  docker_login:
+    registry: '{{ registry_endpoint }}'
+    username: '{{ registry_user }}'
+    password: '{{ registry_password }}'
+    reauthorize: true
+  run_once: true
+
+- name: tag images
+  docker_image:
+    name: '{{ item.repo }}/{{ item.name }}'
+    repository: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
+    tag: '{{ item.tag }}'
+  with_items:
+  - { repo: '{{ kubernetes_repo }}', name: 'kube-controller-manager', tag: '{{ kubernetes_version }}' }
+  - { repo: '{{ kubernetes_repo }}', name: 'kube-apiserver', tag: '{{ kubernetes_version }}' }
+  - { repo: '{{ kubernetes_repo }}', name: 'kube-scheduler', tag: '{{ kubernetes_version }}' }
+  - { repo: '{{ kubernetes_repo }}', name: 'kube-proxy', tag: '{{ kubernetes_version }}' }
+  - { repo: '{{ kubernetes_repo }}', name: 'pause', tag: '{{ pause_version }}' }
+  - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
+  - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
+  - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
+  run_once: true
+
+- name: push images
+  docker_image:
+    name: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
+    tag: '{{ item.tag }}'
+    push: true
+    state: present
+  with_items:
+  - { repo: '{{ kubernetes_repo }}', name: 'kube-controller-manager', tag: '{{ kubernetes_version }}' }
+  - { repo: '{{ kubernetes_repo }}', name: 'kube-apiserver', tag: '{{ kubernetes_version }}' }
+  - { repo: '{{ kubernetes_repo }}', name: 'kube-scheduler', tag: '{{ kubernetes_version }}' }
+  - { repo: '{{ kubernetes_repo }}', name: 'kube-proxy', tag: '{{ kubernetes_version }}' }
+  - { repo: '{{ kubernetes_repo }}', name: 'pause', tag: '{{ pause_version }}' }
+  - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
+  - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
+  - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
+  run_once: true
+
+- name: pull k8s pause images
+  docker_image:
+    name: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
+    tag: '{{ item.tag }}'
+    pull: true
+    state: present
+  with_items:
+  - { repo: '{{ kubernetes_repo }}', name: 'pause', tag: '{{ pause_version }}' }
+
+- name: tag k8s pause images
+  docker_image:
+    name: '{{ item.repo }}/{{ item.name }}'
+    repository: '{{ kubernetes_repo }}/pause:{{ pause_version }}'
+    tag: '{{ item.tag }}'
+  with_items:
+  - { repo: '{{ registry_endpoint }}/{{ registry_project }}', name: 'pause', tag: '{{ pause_version }}' }
+
+- name: generate kubeadm config
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+  - { src: 'template/kubeadm.conf.j2', dest: '{{ path }}/kubeadm.conf' }
+  - { src: 'template/kube-flannel.yml.j2', dest: '{{ path }}/kube-flannel.yml' }
+  - { src: 'template/kubernetes-dashboard.yml.j2', dest: '{{ path }}/kubernetes-dashboard.yml' }
+
+- name: copy crt & key
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+  - { src: 'file/ca.key', dest: '/etc/kubernetes/pki' }
+  - { src: 'file/ca.crt', dest: '/etc/kubernetes/pki' }
+  - { src: 'file/sa.key', dest: '/etc/kubernetes/pki' }
+  - { src: 'file/sa.pub', dest: '/etc/kubernetes/pki' }
+  - { src: 'file/apiserver-kubelet-client.key', dest: '/etc/kubernetes/pki' }
+  - { src: 'file/apiserver-kubelet-client.crt', dest: '/etc/kubernetes/pki' }
+
+- name: setup
+  shell: |
+    kubeadm init --config {{ path }}/kubeadm.conf
+
+- name: fetch admin.conf
+  fetch:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    flat: true
+  with_items:
+  - { src: '/etc/kubernetes/admin.conf', dest: 'file/admin.conf' }
+  run_once: true
+
+- name: config kubectl
+  shell: |
+    cp /etc/kubernetes/admin.conf $HOME/.kube/config
+    chown $(id -u):$(id -g) $HOME/.kube/config
+
+- name: apply addons
+  shell: |
+    kubectl apply -f {{ path }}/kube-flannel.yml
+    kubectl apply -f {{ path }}/kubernetes-dashboard.yml
+  run_once: true

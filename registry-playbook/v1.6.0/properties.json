@@ -1,0 +1,26 @@
+[
+    {
+        "variable": "self",
+        "label": "registry hosts",
+        "description": "hosts for setup registry",
+        "type": "host",
+        "default": "",
+        "required": true
+    },
+    {
+        "variable": "endpoint",
+        "label": "registry entry point",
+        "description": "ip/FQDN of harbor cluster entrypoint",
+        "type": "string",
+        "default": "",
+        "required": false
+    },
+    {
+        "variable": "password",
+        "label": "registry password",
+        "description": "everyone can 'docker login' use this",
+        "type": "string",
+        "default": "Harbor12345",
+        "required": true
+    }
+]
