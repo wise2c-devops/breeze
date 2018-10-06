@@ -60,7 +60,7 @@ systemctl enable docker
 例如：
 
 ```
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.12.1/docker-compose.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.12.0/docker-compose.yml -o docker-compose.yml
 ```
 
 ```
