@@ -13,7 +13,7 @@ Note:
 1. **请不要把Breeze所在的部署主机加入部署集群主机列表**
 2. **为了避免包冲突，请使用纯净的CentOS Minimal安装出来的OS来部署集群**
 
-**PDF手册请在此处下载（针对Kubernetes v1.12.0编写）：**
+**PDF手册请在此处下载：**
 
 https://github.com/wise2c-devops/breeze/raw/master/manual/BreezeManual.pdf
 
