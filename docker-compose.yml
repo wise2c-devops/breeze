@@ -2,7 +2,7 @@ version: '2'
 services:
   deploy:
     container_name: deploy-main
-    image: wise2c/pagoda:v0.4.1
+    image: wise2ck8s/pagoda:v1.0
     restart: always
     entrypoint: sh
     command:
@@ -18,17 +18,17 @@ services:
     - playbook
   ui:
     container_name: deploy-ui
-    image: wise2c/deploy-ui
+    image: wise2ck8s/deploy-ui:v1.1
     restart: always
     network_mode: "service:deploy"
   playbook:
     container_name: deploy-playbook
-    image: wise2c/playbook:v1.11.2
+    image: wise2ck8s/playbook:v1.11.3
     volumes:
     - playbook:/workspace
   yum-repo:
     container_name: deploy-yumrepo
-    image: wise2c/yum-repo:v1.11.2
+    image: wise2ck8s/yum-repo:v1.11.3
     ports:
     - 2009:2009 
     restart: always
