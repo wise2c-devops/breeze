@@ -25,7 +25,7 @@ https://github.com/wise2c-devops/breeze/blob/master/TroubleShooting.md
 
 https://github.com/wise2c-devops/breeze/raw/master/manual/BreezeManual.pdf
 
-***大家搜索关注微信公众号【Wise2C】后回复【进群】，睿云小助手会第一时间把拉你进入【 Docker企业落地实践群】，关于Breeze部署工具的问题以及建议我们在群里讨论！***
+**大家搜索关注微信公众号【Wise2C】后回复【进群】，睿云小助手会第一时间把拉你进入【 Docker企业落地实践群】，关于Breeze部署工具的问题以及建议我们在群里讨论！**
 
 **软件架构示意图**
 ![Alt](./manual/Wise2C-Breeze-Architecture.png)
