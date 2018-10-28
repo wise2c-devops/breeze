@@ -86,19 +86,58 @@
   - { src: 'template/kube-flannel.yml.j2', dest: '{{ path }}/kube-flannel.yml' }
   - { src: 'template/kubernetes-dashboard.yml.j2', dest: '{{ path }}/kubernetes-dashboard.yml' }
 
-- name: copy crt & key
+- name: copy certificates generation scripts
   copy:
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
   with_items:
-  - { src: 'file/ca.key', dest: '/etc/kubernetes/pki' }
-  - { src: 'file/ca.crt', dest: '/etc/kubernetes/pki' }
-  - { src: 'file/sa.key', dest: '/etc/kubernetes/pki' }
-  - { src: 'file/sa.pub', dest: '/etc/kubernetes/pki' }
-  - { src: 'file/apiserver-kubelet-client.key', dest: '/etc/kubernetes/pki' }
-  - { src: 'file/apiserver-kubelet-client.crt', dest: '/etc/kubernetes/pki' }
+  - { src: 'file/generate-other-certificates.sh', dest: '{{ path }}/' }
+  - { src: 'file/generate-apiserver-certificate.sh', dest: '{{ path }}/' }
 
-- name: setup
+- name: generate other certificates
+  shell: |
+    {{ path }}/generate-other-certificates.sh
+  run_once: true
+
+- name: fetch certificates
+  fetch:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    flat: true
+  with_items:
+  - { src: '/etc/kubernetes/pki/ca.crt', dest: 'file/ca.crt' }
+  - { src: '/etc/kubernetes/pki/ca.key', dest: 'file/ca.key' }
+  - { src: '/etc/kubernetes/pki/apiserver-kubelet-client.crt', dest: 'file/apiserver-kubelet-client.crt' }
+  - { src: '/etc/kubernetes/pki/apiserver-kubelet-client.key', dest: 'file/apiserver-kubelet-client.key' }
+  - { src: '/etc/kubernetes/pki/front-proxy-ca.crt', dest: 'file/front-proxy-ca.crt' }
+  - { src: '/etc/kubernetes/pki/front-proxy-ca.key', dest: 'file/front-proxy-ca.key' }
+  - { src: '/etc/kubernetes/pki/front-proxy-client.crt', dest: 'file/front-proxy-client.crt' }
+  - { src: '/etc/kubernetes/pki/front-proxy-client.key', dest: 'file/front-proxy-client.key' }
+  - { src: '/etc/kubernetes/pki/sa.pub', dest: 'file/sa.pub' }
+  - { src: '/etc/kubernetes/pki/sa.key', dest: 'file/sa.key' }
+  run_once: true
+
+- name: copy certificates
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+  - { src: 'file/ca.crt', dest: '/etc/kubernetes/pki/ca.crt' }
+  - { src: 'file/ca.key', dest: '/etc/kubernetes/pki/ca.key' }
+  - { src: 'file/apiserver-kubelet-client.crt', dest: '/etc/kubernetes/pki/apiserver-kubelet-client.crt' }
+  - { src: 'file/apiserver-kubelet-client.key', dest: '/etc/kubernetes/pki/apiserver-kubelet-client.key' }
+  - { src: 'file/front-proxy-ca.crt', dest: '/etc/kubernetes/pki/front-proxy-ca.crt' }
+  - { src: 'file/front-proxy-ca.key', dest: '/etc/kubernetes/pki/front-proxy-ca.key' }
+  - { src: 'file/front-proxy-client.crt', dest: '/etc/kubernetes/pki/front-proxy-client.crt' }
+  - { src: 'file/front-proxy-client.key', dest: '/etc/kubernetes/pki/front-proxy-client.key' }
+  - { src: 'file/sa.pub', dest: '/etc/kubernetes/pki/sa.pub' }
+  - { src: 'file/sa.key', dest: '/etc/kubernetes/pki/sa.key' }
+
+- name: generate kube-apiserver certificate
+  shell: |
+    {{ path }}/generate-apiserver-certificates.sh
+
+- name: kubeadm init
   shell: |
     kubeadm init --config {{ path }}/kubeadm.conf
 

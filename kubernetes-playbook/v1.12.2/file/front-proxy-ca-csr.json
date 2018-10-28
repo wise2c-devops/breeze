@@ -1,0 +1,10 @@
+{
+  "CN": "front-proxy-ca",
+  "ca": {
+    "expiry": "876000h"
+  },
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  }
+}

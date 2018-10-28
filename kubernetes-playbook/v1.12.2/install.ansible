@@ -41,10 +41,10 @@
       - kubelet-{{ kubernetes_version[1:] }}
       - kubeadm-{{ kubernetes_version[1:] }}
 
-#    - name: unarchive cni
-#      unarchive:
-#        src: file/cni-plugins-amd64-v0.6.0.tgz
-#        dest: /opt/cni/bin
+    - name: unarchive cfssl tool
+      unarchive:
+        src: file/cfssl-tools.tar.gz
+        dest: /usr/local/bin
 
     - name: distribute kubelet config
       template:
