@@ -12,8 +12,13 @@ Breeze - Deploy Kubernetes Cluster with Web UI
 Note:
 1. **请不要把Breeze所在的部署主机加入部署集群主机列表**
 2. **为了避免包冲突，请使用纯净的CentOS Minimal安装出来的OS来部署集群**
-3. **当前版本的CA证书是动态生成的，有效期为100年，其它服务证书有效期为50年。**
-4. **本安装方式通过了Kubernetes Conformance一致性认证，因此可用于生产环境。**
+3. **如果不是全新安装部署而是升级，请在部署机上先删除旧版本的卷数据**
+     ```
+     docker volume ls
+     docker volume rm 卷名
+     ```
+4. **当前版本的CA证书是动态生成的，有效期为100年，其它服务证书有效期为50年。**
+5. **本安装方式通过了Kubernetes Conformance一致性认证，因此可用于生产环境。**
 
 常见排错说明在此：
 https://github.com/wise2c-devops/breeze/blob/master/TroubleShooting.md
