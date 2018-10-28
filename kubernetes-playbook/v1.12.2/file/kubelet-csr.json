@@ -1,0 +1,16 @@
+{
+  "CN": "system:node:$NODE",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "CN",
+      "L": "Guangdong",
+      "ST": "Shenzhen",
+      "O": "system:nodes",
+      "OU": "Wise2C"
+    }
+  ]
+}
