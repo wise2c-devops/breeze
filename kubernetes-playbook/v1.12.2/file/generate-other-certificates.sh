@@ -1,6 +1,9 @@
 #!/bin/bash
 # K8S CA
-cfssl gencert -initca ca-csr.json | cfssljson -bare ca
+
+cd /var/tmp/wise2c/kubernetes/
+
+cfssl gencert -initca ca-csr.json | cfssljson -bare /var/tmp/wise2c/kubernetes/ca
 
 # K8S apiserver-kubelet-client certificate
 cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=kubernetes kubelet-csr.json | cfssljson -bare apiserver-kubelet-client
@@ -13,6 +16,7 @@ cfssl gencert -ca=front-proxy-ca.pem -ca-key=front-proxy-ca-key.pem -config=ca-c
 openssl genrsa -out sa.key 2048
 openssl rsa -in sa.key -pubout -out sa.pub
 
+cd /var/tmp/wise2c/kubernetes/
 mv ca.pem /etc/kubernetes/pki/ca.crt
 mv ca-key.pem /etc/kubernetes/pki/ca.key
 mv apiserver-kubelet-client.pem /etc/kubernetes/pki/apiserver-kubelet-client.crt

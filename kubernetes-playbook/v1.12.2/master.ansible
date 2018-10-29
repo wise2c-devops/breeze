@@ -59,7 +59,6 @@
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
   run_once: true
-
 - name: pull k8s pause images
   docker_image:
     name: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
@@ -86,17 +85,30 @@
   - { src: 'template/kube-flannel.yml.j2', dest: '{{ path }}/kube-flannel.yml' }
   - { src: 'template/kubernetes-dashboard.yml.j2', dest: '{{ path }}/kubernetes-dashboard.yml' }
 
+- name: copy certificates JSON files
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+  - { src: 'file/ca-csr.json', dest: '{{ path }}/' }
+  - { src: 'file/ca-config.json', dest: '{{ path }}/' }
+  - { src: 'file/apiserver-csr.json', dest: '{{ path }}/' }
+  - { src: 'file/kubelet-csr.json', dest: '{{ path }}/' }
+  - { src: 'file/front-proxy-ca-csr.json', dest: '{{ path }}/' }
+  - { src: 'file/front-proxy-client-csr.json', dest: '{{ path }}/' }
+
 - name: copy certificates generation scripts
   copy:
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
+    mode: preserve
   with_items:
   - { src: 'file/generate-other-certificates.sh', dest: '{{ path }}/' }
   - { src: 'file/generate-apiserver-certificate.sh', dest: '{{ path }}/' }
 
 - name: generate other certificates
-  shell: |
-    {{ path }}/generate-other-certificates.sh
+  raw: |
+    /var/tmp/wise2c/kubernetes/generate-other-certificates.sh
   run_once: true
 
 - name: fetch certificates
@@ -134,8 +146,8 @@
   - { src: 'file/sa.key', dest: '/etc/kubernetes/pki/sa.key' }
 
 - name: generate kube-apiserver certificate
-  shell: |
-    {{ path }}/generate-apiserver-certificates.sh
+  raw: |
+    /var/tmp/wise2c/kubernetes/generate-apiserver-certificate.sh
 
 - name: kubeadm init
   shell: |
