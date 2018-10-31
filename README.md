@@ -1,5 +1,5 @@
 # Breeze - Deploy Kubernetes Cluster with Web UI
-[![Build Status](https://travis-ci.org/wise2c-devops/breeze.svg?branch=master)](https://travis-ci.org/wise2c-devops/breeze)
+[![Build Status](https://travis-ci.org/wise2c-devops/breeze.svg?branch=v1.11)](https://travis-ci.org/wise2c-devops/breeze)
 
 Breeze - Deploy Kubernetes Cluster with Web UI
 
@@ -10,17 +10,32 @@ Breeze - Deploy Kubernetes Cluster with Web UI
 适用操作系统为RHEL 7.4/7.5 或 CentOS 7.4/7.5
 
 Note:
-1. **请不要把Breeze所在的主机加入部署集群**
-2. **为了避免包冲突，请使用纯净的centos minimal安装出来的OS来部署集群**
+1. **请不要把Breeze所在的部署主机加入部署集群主机列表**
+2. **为了避免包冲突，请使用纯净的CentOS Minimal安装出来的OS来部署集群**
+3. **如果不是全新安装部署而是升级，请在部署机上先删除旧版本的卷数据**
+     ```
+     docker volume ls
+     docker volume rm 卷名
+     ```
+4. **当前版本的CA证书是动态生成的，有效期为100年，其它服务证书有效期为50年。**
+5. **本安装方式通过了Kubernetes Conformance一致性认证，因此可用于生产环境。**
 
-**完整安装视频请在此处下载：**
+常见排错说明在此：
+https://github.com/wise2c-devops/breeze/blob/master/TroubleShooting.md
 
-https://pan.baidu.com/s/1X0ZYt48wfYNrSrH7vvEKiw
+**PDF手册请在此处下载：**
+
+https://github.com/wise2c-devops/breeze/raw/master/manual/BreezeManual.pdf
+
+**大家搜索关注微信公众号【Wise2C】后回复【进群】，睿云小助手会第一时间把拉你进入【 Docker企业落地实践群】，关于Breeze部署工具的问题以及建议我们在群里讨论！**
+
+**软件架构示意图**
+![Alt](./manual/Wise2C-Breeze-Architecture.png)
 
 操作步骤如下：
 
 1. 软件的使用非常简单，只需要在希望部署的Kubernetes版本分支中下载Breeze的docker-compose.yml文件（Master分支对应Latest Kubernetes版本）
-![Alt](./manual/KubernetesDeployUI-037.png)
+![Alt](./manual/BreezeVersionSelect.png)
 确保您的Linux主机已经安装好了docker以及docker-compose，具体步骤参考以下内容。
 
 （1）对部署机取消SELINUX设定及放开防火墙
@@ -46,6 +61,8 @@ chmod +x /usr/local/bin/docker-compose
 
 ```
 yum install docker
+systemctl start docker
+systemctl enable docker
 ```
 
 (4) 下载用于部署某个Kubernetes版本的docker-compose文件并使部署程序运行起来：
@@ -80,13 +97,13 @@ docker-compose up -d
 
 3. 打开浏览器，访问部署程序的图形界面，添加主机列表、添加服务角色并将加入的主机进行角色分配，然后开始部署：
 
-![Alt text](./manual/KubernetesDeployUI-001.png)
+![Alt](./manual/BreezeScreenShots001.png)
 
 点击 + 号添加一个集群：
 
-![Alt text](./manual/KubernetesDeployUI-002.png)
+![Alt](https://github.com/wise2c-devops/breeze/raw/master/manual/BreezeScreenShots002.png)
 
-![Alt text](./manual/KubernetesDeployUI-003.png)
+![Alt](./manual/BreezeScreenShots003.png)
 
 点击“添加主机”，输入主机名、主机IP、描述信息（主机用途），点击确定。
 
@@ -94,59 +111,52 @@ docker-compose up -d
 
 （k8s master服务器、k8s minion node服务器、registry服务器等等）：
 
-![Alt text](./manual/KubernetesDeployUI-004.png)
+![Alt](./manual/BreezeScreenShots004.png)
 
-![Alt text](./manual/KubernetesDeployUI-005.png)
+![Alt](./manual/BreezeScreenShots005.png)
 
-![Alt text](./manual/KubernetesDeployUI-006.png)
+![Alt](./manual/BreezeScreenShots006.png)
 
-![Alt text](./manual/KubernetesDeployUI-007.png)
+![Alt](./manual/BreezeScreenShots007.png)
 
-![Alt text](./manual/KubernetesDeployUI-008.png)
+![Alt](./manual/BreezeScreenShots008.png)
 
-![Alt text](./manual/KubernetesDeployUI-009.png)
+![Alt](./manual/BreezeScreenShots009.png)
 
-![Alt text](./manual/KubernetesDeployUI-010.png)
+![Alt](./manual/BreezeScreenShots010.png)
 
-![Alt text](./manual/KubernetesDeployUI-011.png)
+![Alt](./manual/BreezeScreenShots011.png)
 
-![Alt text](./manual/KubernetesDeployUI-012.png)
+![Alt](./manual/BreezeScreenShots012.png)
 
-![Alt text](./manual/KubernetesDeployUI-013.png)
+![Alt](./manual/BreezeScreenShots013.png)
 
-![Alt text](./manual/KubernetesDeployUI-014.png)
-
-![Alt text](./manual/KubernetesDeployUI-015.png)
-
-![Alt text](./manual/KubernetesDeployUI-016.png)
-
-![Alt text](./manual/KubernetesDeployUI-017.png)
-
-![Alt text](./manual/KubernetesDeployUI-018.png)
+![Alt](./manual/BreezeScreenShots014.png)
 
 点击“添加组件”按钮，对每个组件进行设置和分配服务器：
 
 （Docker角色、etcd角色、registry角色、kubernetes角色）
 
-![Alt text](./manual/KubernetesDeployUI-019.png)
+![Alt](./manual/BreezeScreenShots015.png)
 
-![Alt text](./manual/KubernetesDeployUI-020.png)
+![Alt](./manual/BreezeScreenShots016.png)
 
-![Alt text](./manual/KubernetesDeployUI-021.png)
+![Alt](./manual/BreezeScreenShots017.png)
 
-![Alt text](./manual/KubernetesDeployUI-022.png)
+镜像仓库设置这里的registy entry point是指用户端访问镜像仓库的URL，可以直接写IP地址或写对应的域名：
 
-![Alt text](./manual/KubernetesDeployUI-023.png)
+![Alt](./manual/BreezeScreenShots018.png)
 
-镜像仓库设置这里的registy entry point是指用户端访问镜像仓库的URL，一般可以直接写IP地址或写对应的域名：
+![Alt](./manual/BreezeScreenShots019.png)
 
-![Alt text](./manual/KubernetesDeployUI-024.png)
+Etcd可以选择部署于K8S Master节点也可以选择独立的三台主机：
 
-![Alt text](./manual/KubernetesDeployUI-025.png)
+![Alt](./manual/BreezeScreenShots020.png)
 
-![Alt text](./manual/KubernetesDeployUI-026.png)
+![Alt](./manual/BreezeScreenShots021.png)
 
-![Alt text](./manual/KubernetesDeployUI-027.png)
+![Alt](./manual/BreezeScreenShots022.png)
+
 
 kubernetes entry point是指高可用的一个设定值，如果生产环境有硬件或软件负载均衡指向这里的k8s master所有节点，那么就可以在这里填写负载均衡的统一入口地址。
 
@@ -156,21 +166,31 @@ https://github.com/wise2c-devops/haproxy-k8s
 
 https://github.com/wise2c-devops/keepalived-k8s
 
-例如下图的 192.168.9.101:6444 就是k8s集群高可用的统一入口，k8s的minion node会使用这个地址访问API Server。
+例如下图的 192.168.9.30:6444 就是k8s集群高可用的统一入口，k8s的minion node会使用这个地址访问API Server。
 
-![Alt text](./manual/KubernetesDeployUI-028.png)
+![Alt](./manual/BreezeScreenShots023.png)
 
-![Alt text](./manual/KubernetesDeployUI-029.png)
+![Alt](./manual/BreezeScreenShots024.png)
 
 点击“下一步”开始安装部署：
 
-![Alt text](./manual/KubernetesDeployUI-030.png)
-
-![Alt text](./manual/KubernetesDeployUI-031.png)
-
-![Alt text](./manual/KubernetesDeployUI-032.png)
+![Alt](./manual/BreezeScreenShots025.png)
 
 如果界面上所有角色图标全部变为绿色，则表示部署任务结束。可以登录任一k8s节点运行命令 kubectl get nodes 查看结果。
+
+![Alt](./manual/BreezeScreenShots026.png)
+
+![Alt](./manual/BreezeScreenShots027.png)
+
+![Alt](./manual/BreezeScreenShots028.png)
+
+![Alt](./manual/BreezeScreenShots029.png)
+
+![Alt](./manual/BreezeScreenShots030.png)
+
+![Alt](./manual/BreezeScreenShots031.png)
+
+![Alt](./manual/BreezeScreenShots032.png)
 
 以上例子是3台etcd、3台k8s master、3台k8s minion node、1台镜像仓库的环境。实际可以增减规模。
 
@@ -184,11 +204,11 @@ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | gre
 
 将返回的token字串粘贴至登录窗口即可实现登录。
 
-![Alt text](./manual/KubernetesDeployUI-034.png)
+![Alt](./manual/KubernetesDashboard-001.png)
 
-![Alt text](./manual/KubernetesDeployUI-035.png)
+![Alt](./manual/KubernetesDashboard-002.png)
 
-![Alt text](./manual/KubernetesDeployUI-036.png)
+![Alt](./manual/KubernetesDashboard-003.png)
 
 
 ###########################################################################################
@@ -197,4 +217,4 @@ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | gre
 
 对于Kubernetes集群的HA架构解决方案，我们暂时不放出图形化解决方案，待我们将其从内部版本剥离出来后再贡献给社区：
 
-![Alt text](./manual/KubernetesDeployUI-033.png)
+![Alt](./manual/KubernetesHA.png)
