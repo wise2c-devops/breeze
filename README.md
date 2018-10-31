@@ -55,7 +55,7 @@ yum install docker
 例如：
 
 ```
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.11.3/docker-compose.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.11.4/docker-compose.yml -o docker-compose.yml
 ```
 
 ```

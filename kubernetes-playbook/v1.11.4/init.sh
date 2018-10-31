@@ -39,7 +39,7 @@ curl -sSL https://raw.githubusercontent.com/coreos/flannel/${flannel_version}/Do
     | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
 
 dashboard_repo=${kubernetes_repo}
-dashboard_version="v1.8.3"
+dashboard_version="v1.10.0"
 echo "dashboard_repo: ${dashboard_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "dashboard_version: ${dashboard_version}" >> ${path}/yat/all.yml.gotmpl
 
