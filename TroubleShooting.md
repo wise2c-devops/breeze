@@ -6,3 +6,4 @@
 5. Breeze暂不支持非root账号的环境部署，因此请确保您部署机到各个服务器节点是直接root ssh免密的。
 6. 部署好之后，dashboard的端口是30300，但是谷歌浏览器是不可以访问的，火狐可以，这个是浏览器安全设置问题，和部署没有关系。
 7. 由于CentOS的特性，部署之后内核并未启动ipvs，因此kube-proxy服务中会看见警告日志，退回iptables方式，这个只需要将所有节点重启一次即可解决。
+8. 在部署机上，一定不要忘记执行“（1）对部署机取消SELINUX设定及放开防火墙”，否则会导致selinux的限制而无法创建数据库文件cluster.db，页面提示“unable to open database file”。
