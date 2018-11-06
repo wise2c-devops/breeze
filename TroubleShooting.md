@@ -7,3 +7,4 @@
 6. 部署好之后，dashboard的端口是30300，但是谷歌浏览器是不可以访问的，火狐可以，这个是浏览器安全设置问题，和部署没有关系。
 7. 由于CentOS的特性，部署之后内核并未启动ipvs，因此kube-proxy服务中会看见警告日志，退回iptables方式，这个只需要将所有节点重启一次即可解决。
 8. 在部署机上，一定不要忘记执行“（1）对部署机取消SELINUX设定及放开防火墙”，否则会导致selinux的限制而无法创建数据库文件cluster.db，页面提示“unable to open database file”。
+9. 不要这样去关闭防火墙 systemctl stop firewalld 或 systemctl disable firewalld，我们的部署过程中已经做了正确的防火墙规则设定，服务是必须开启的，只是设定为可信任模式，也就是放开所有访问策略，如果你需要设定严格的防火墙规则，请执行学习研究清楚firewall-cmd的用法。（关于这方面细节，请在微信群查找这段话：You need to distinguish between the iptables service and the iptables command. Although firewalld is a replacement for the firewall management provided by iptables service, it still uses the iptables command for dynamic communication with the kernel packet filter (netfilter). So it is only the iptables service that is replaced, not the iptables command. That can be a confusing distinction at first.）
