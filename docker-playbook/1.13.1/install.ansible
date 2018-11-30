@@ -70,6 +70,7 @@
     - docker
     - python-docker-py
     - docker-compose
+    - chrony
 
   - name: distribute chrony server config
     template:
