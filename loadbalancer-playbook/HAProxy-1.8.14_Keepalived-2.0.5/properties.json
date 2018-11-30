@@ -1,0 +1,50 @@
+[
+    {
+        "variable": "self",
+        "label": "haproxy hosts",
+        "description": "hosts for setup haproxy",
+        "type": "host",
+        "default": "",
+        "required": true
+    },
+    {
+        "variable": "k8sVip",
+        "label": "vip for k8s master",
+        "description": "type a vip for k8s master",
+        "type": "string",
+        "default": "",
+        "required": true
+    },
+    {
+        "variable": "nic",
+        "label": "网卡",
+        "description": "在此网卡上创建VIP",
+        "type": "string",
+        "default": "",
+        "required": true
+    },
+    {
+        "variable": "netMask",
+        "label": "网卡掩码",
+        "description": "",
+        "type": "int",
+        "default": "",
+        "required": true
+    },
+    {
+        "variable": "routerID",
+        "label": "router id",
+        "description": "router id",
+        "type": "string",
+        "default": "10",
+        "required": false
+    },
+    {
+        "variable": "vRouterID",
+        "label": "virtual route id",
+        "description": "virtual router id",
+        "type": "string",
+        "default": "160",
+        "required": false
+    }
+]
