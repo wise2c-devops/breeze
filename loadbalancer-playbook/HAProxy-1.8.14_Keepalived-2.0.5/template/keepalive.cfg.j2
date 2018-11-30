@@ -2,7 +2,7 @@
         router_id {{ routerID }}
         vrrp_version 2
         vrrp_garp_master_delay 1
-        vrrp_garp_master_refresh
+        vrrp_garp_master_refresh 1
     }   
 
     {% for v in vips -%}
