@@ -64,16 +64,21 @@ rm ${path}/file/flannel.tar.bz2 -f
 bzip2 -z --best ${path}/file/flannel.tar
 echo "=== flannel image is saved successfully ==="
 
-echo "=== pulling kubernetes dashboard image ==="
+echo "=== pulling kubernetes dashboard and heapster images ==="
 docker pull ${dashboard_repo}/kubernetes-dashboard-amd64:${dashboard_version}
-echo "=== kubernetes dashboard image is pulled successfully ==="
+docker pull k8s.gcr.io/heapster-amd64:v1.5.4
+docker pull k8s.gcr.io/heapster-influxdb-amd64:v1.5.2
+docker pull k8s.gcr.io/heapster-grafana-amd64:v5.0.4
+echo "=== kubernetes dashboard and heapster images are pulled successfully ==="
 
 echo "=== saving kubernetes dashboard image ==="
 docker save ${dashboard_repo}/kubernetes-dashboard-amd64:${dashboard_version} \
     > ${path}/file/dashboard.tar
-rm ${path}/file/dashboard.tar.bz2 -f
+docker save k8s.gcr.io/heapster-amd64:v1.5.4 k8s.gcr.io/heapster-influxdb-amd64:v1.5.2 k8s.gcr.io/heapster-grafana-amd64:v5.0.4 -o ${path}/file/heapster.tar
+rm ${path}/file/dashboard.tar.bz2 ${path}/file/heapster.tar.bz2 -f
 bzip2 -z --best ${path}/file/dashboard.tar
-echo "=== kubernetes dashboard image is saved successfully ==="
+bzip2 -z --best ${path}/file/heapster.tar
+echo "=== kubernetes dashboard and heapster images are saved successfully ==="
 
 echo "=== download cfssl tools ==="
 export CFSSL_URL=https://pkg.cfssl.org/R1.2
