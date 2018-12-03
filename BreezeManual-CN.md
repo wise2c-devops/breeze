@@ -146,6 +146,13 @@ Etcd可以选择部署于K8S Master节点也可以选择独立的三台主机：
 
 ![Alt](./manual/BreezeScreenShots022.png)
 
+接下来是设置高可用组件（haproxy+keepalived）：
+
+vip for k8s master是指三个k8s master服务器的高可用虚拟浮动IP地址；网卡请填写实际操作系统下的网卡名，注意请保证3个节点网卡名一致；router id和virtual router id请确保不同k8s集群使用不同的值。
+
+![Alt](./manual/haproxy-keepalived-001.png)
+
+![Alt](./manual/haproxy-keepalived-002.png)
 
 kubernetes entry point是指高可用的一个设定值，如果生产环境有硬件或软件负载均衡指向这里的k8s master所有节点，那么就可以在这里填写负载均衡的统一入口地址。
 
