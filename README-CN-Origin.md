@@ -124,7 +124,7 @@ docker-compose up -d
 
 点击“添加组件”按钮，对每个组件进行设置和分配服务器：
 
-（Docker角色、etcd角色、registry角色、kubernetes角色）
+（docker角色、registry角色、etcd角色、loadbalance角色、kubernetes角色）
 
 ![Alt](./manual/BreezeScreenShots015.png)
 
