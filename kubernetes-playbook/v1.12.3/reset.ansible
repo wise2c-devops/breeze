@@ -4,7 +4,7 @@
   tasks:
   - name: kubeadm reset
     shell: |
-      kubeadm reset
+      kubeadm reset -f
 
   - name: install kubernetes components
     yum:

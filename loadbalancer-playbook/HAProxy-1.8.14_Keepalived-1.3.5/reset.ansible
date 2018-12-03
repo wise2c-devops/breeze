@@ -1,0 +1,11 @@
+- name: clean lb
+  hosts: hosts
+  user: root
+  tasks:
+  - name: stop & rm old lb
+    shell: |
+      docker stop haproxy
+      docker rm haproxy
+      docker stop keepalived
+      docker rm keepalived
+    ignore_errors: true

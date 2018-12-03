@@ -1,0 +1,72 @@
+- name: setup loadbalancer
+  hosts: hosts
+  user: root
+  vars:
+    path: /var/tmp/wise2c/loadbalancer
+    cpath: /var/lib/wise2c/loadbalancer
+  tasks:
+  - name: make lb dir
+    file:
+      path: '{{ item }}'
+      state: directory
+      mode: 0755
+    with_items:
+      - '{{ path }}'
+      - '{{ cpath }}'
+
+  - name: generate lb config
+    template:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+      - { src: 'template/haproxy.cfg.j2', dest: '{{ cpath }}/haproxy.cfg' }
+      - { src: 'template/keepalive.cfg.j2', dest: '{{ cpath }}/keepalive.cfg' }
+
+  - name: copy lb images
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+      - { src: 'file/haproxy-1.8.14.tar.bz2', dest: '{{ path }}' }
+      - { src: 'file/keepalived-1.3.5.tar.bz2', dest: '{{ path }}' }
+      - { src: 'file/keepalived.sh', dest: '{{ cpath }}' }
+  
+  - name: load lb image
+    docker_image:
+      load_path: '{{ path }}/{{ item }}'
+      name: lb
+      timeout: 600
+    with_items:
+    - haproxy-1.8.14.tar.bz2
+    - keepalived-1.3.5.tar.bz2
+  
+  - name: get port
+    set_fact:
+      ports: |
+        {% set ports = ports | d([]) + ['{0}:{1}'.format(item.target, item.port + 1)] %}
+        {{ ports | list }}
+    with_items:
+    - "{{ servers | d([], true) | list }}"
+    run_once: true
+
+  - name: run haproxy
+    docker_container:
+      name: haproxy
+      restart_policy: unless-stopped
+      image: wise2c/k8s-haproxy:1.8.14
+      ports: '{{ ports | d([], true) | list }}'
+      volumes:
+      - '{{ cpath }}/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro'
+
+  - name: run keepalived
+    docker_container:
+      name: keepalived
+      network_mode: host
+      restart_policy: unless-stopped
+      capabilities: NET_ADMIN
+      image: wise2c/k8s-keepalived:1.3.5
+      entrypoint: /bin/bash
+      command: /usr/bin/keepalived.sh
+      volumes:
+      - '{{ cpath }}/keepalive.cfg:/etc/keepalived/keepalived.conf'
+      - '{{ cpath }}/keepalived.sh:/usr/bin/keepalived.sh'
