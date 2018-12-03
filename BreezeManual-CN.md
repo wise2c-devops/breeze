@@ -158,7 +158,7 @@ kubernetes entry point是指高可用的一个设定值，如果生产环境有�
 
 相对于昂贵的F5专业硬件设备，我们也可以使用HAProxy和Keepalived的组合轻松完成这个设置，Breeze自带这个组合模块的部署。
 
-例如下图的 192.168.9.30:6444 就是k8s集群高可用的统一入口，k8s的minion node会使用这个地址访问API Server。
+例如下图的 192.168.9.30:6444 就是k8s集群高可用的统一入口，k8s的minion node会使用这个地址访问API Server。请注意如果使用的是Breeze自带的高可用组件haproxy+keepalived，则请填写实际的虚IP与默认端口6444。
 
 ![Alt](./manual/BreezeScreenShots023.png)
 
