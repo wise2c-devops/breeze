@@ -13,11 +13,11 @@ Note:
 2. **本安装方式通过了Kubernetes Conformance一致性认证，因此可用于生产环境。**
 
 常见排错说明在此：
-https://github.com/wise2c-devops/breeze/blob/master/TroubleShooting.md
+https://github.com/wise2c-devops/breeze/blob/master/TroubleShooting-CN.md
 
 **PDF手册请在此处下载：**
 
-https://github.com/wise2c-devops/breeze/raw/master/manual/BreezeManual.pdf
+https://github.com/wise2c-devops/breeze/raw/master/manual/BreezeManual-CN.pdf
 
 **大家搜索关注微信公众号【Wise2C】后回复【进群】，睿云小助手会第一时间把拉你进入【 Docker企业落地实践群】，关于Breeze部署工具的问题以及建议我们在群里讨论！**
 
