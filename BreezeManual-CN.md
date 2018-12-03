@@ -163,14 +163,6 @@ kubernetes entry point是指高可用的一个设定值，如果生产环境有�
 
 如果界面上所有角色图标全部变为绿色，则表示部署任务结束。可以登录任一k8s节点运行命令 kubectl get nodes 查看结果。
 
-![Alt](./manual/BreezeScreenShots026.png)
-
-![Alt](./manual/BreezeScreenShots027.png)
-
-![Alt](./manual/BreezeScreenShots028.png)
-
-![Alt](./manual/BreezeScreenShots029.png)
-
 ![Alt](./manual/BreezeScreenShots030.png)
 
 ![Alt](./manual/BreezeScreenShots031.png)
