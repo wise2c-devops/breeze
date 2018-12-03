@@ -47,7 +47,7 @@ Breeze项目旨在提供一个可信的、安全的、稳定的Kubernetes集群�
 
 **Kubernetes集群节点:** 兼容CentOS 7.4/7.5版本，Minimal安装模式是推荐的方式，为了确保部署的顺利进行，应尽可能保证系统的干净。
 
-请阅读 **[用户手册](manual/BreezeManual.pdf)** 获得更详细的Breeze使用操作指引.
+请阅读 **[用户手册](manual/BreezeManual-CN.pdf)** 获得更详细的Breeze使用操作指引.
 
 ## 问题反馈沟通
 
