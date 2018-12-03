@@ -71,7 +71,7 @@ docker pull k8s.gcr.io/heapster-influxdb-amd64:v1.5.2
 docker pull k8s.gcr.io/heapster-grafana-amd64:v5.0.4
 echo "=== kubernetes dashboard and heapster images are pulled successfully ==="
 
-echo "=== saving kubernetes dashboard image ==="
+echo "=== saving kubernetes dashboard and heapster images ==="
 docker save ${dashboard_repo}/kubernetes-dashboard-amd64:${dashboard_version} \
     > ${path}/file/dashboard.tar
 docker save k8s.gcr.io/heapster-amd64:v1.5.4 k8s.gcr.io/heapster-influxdb-amd64:v1.5.2 k8s.gcr.io/heapster-grafana-amd64:v5.0.4 -o ${path}/file/heapster.tar
