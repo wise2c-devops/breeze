@@ -1,8 +1,3 @@
-# Breeze - Deploy Kubernetes Cluster with Web UI
-[![Build Status](https://travis-ci.org/wise2c-devops/breeze.svg?branch=v1.12)](https://travis-ci.org/wise2c-devops/breeze)
-
-Breeze - Deploy Kubernetes Cluster with Web UI
-
 欢迎使用睿云智合提供的图形化Kubernetes部署工具Breeze
 
 使用该工具，将抹平普通用户学习复杂的kubeadm部署技能学习曲线，体会到一键式部署Kubernetes集群的乐趣！
@@ -25,9 +20,6 @@ https://github.com/wise2c-devops/breeze/blob/master/TroubleShooting.md
 https://github.com/wise2c-devops/breeze/raw/master/manual/BreezeManual.pdf
 
 **大家搜索关注微信公众号【Wise2C】后回复【进群】，睿云小助手会第一时间把拉你进入【 Docker企业落地实践群】，关于Breeze部署工具的问题以及建议我们在群里讨论！**
-
-**软件架构示意图**
-![Alt](./manual/Wise2C-Breeze-Architecture.png)
 
 操作步骤如下：
 
@@ -157,11 +149,7 @@ Etcd可以选择部署于K8S Master节点也可以选择独立的三台主机：
 
 kubernetes entry point是指高可用的一个设定值，如果生产环境有硬件或软件负载均衡指向这里的k8s master所有节点，那么就可以在这里填写负载均衡的统一入口地址。
 
-相对于昂贵的F5专业硬件设备，我们也可以使用HAProxy和Keepalived的组合轻松完成这个设置，详情请参考此处：
-
-https://github.com/wise2c-devops/haproxy-k8s
-
-https://github.com/wise2c-devops/keepalived-k8s
+相对于昂贵的F5专业硬件设备，我们也可以使用HAProxy和Keepalived的组合轻松完成这个设置，Breeze自带这个组合模块的部署。
 
 例如下图的 192.168.9.30:6444 就是k8s集群高可用的统一入口，k8s的minion node会使用这个地址访问API Server。
 
@@ -206,12 +194,3 @@ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | gre
 ![Alt](./manual/KubernetesDashboard-002.png)
 
 ![Alt](./manual/KubernetesDashboard-003.png)
-
-
-###########################################################################################
-
-补充说明：
-
-对于Kubernetes集群的HA架构解决方案，我们暂时不放出图形化解决方案，待我们将其从内部版本剥离出来后再贡献给社区：
-
-![Alt](./manual/KubernetesHA.png)
