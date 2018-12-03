@@ -8,7 +8,7 @@
 
 **敬请留意**: 分支代码可能正处于开发状态而不稳定。请选择 [releases](https://github.com/wise2c-devops/breeze/releases) 用于正式环境的部署。
 
-请阅读 **[用户手册](manual/BreezeManual.pdf)** 获得更详细的Breeze使用操作指引.
+请阅读 **[用户手册](manual/BreezeManual-CN.pdf)** 获得更详细的Breeze使用操作指引.
 
 <img alt="Breeze" src="manual/BreezeLogo.png">
 
