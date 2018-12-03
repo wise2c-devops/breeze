@@ -12,7 +12,7 @@ services:
     - 88:80
     - 8088:8080
     volumes:
-    - /root/.ssh:/root/.ssh
+    - $HOME/.ssh:/root/.ssh
     - $PWD/deploy:/deploy
     volumes_from:
     - playbook
@@ -34,4 +34,4 @@ services:
     restart: always
 volumes:
   playbook:
-    external: false
+external: false
