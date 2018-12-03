@@ -34,4 +34,4 @@ services:
     restart: always
 volumes:
   playbook:
-external: false
+    external: false
