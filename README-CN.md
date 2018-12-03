@@ -8,7 +8,7 @@
 
 **敬请留意**: 分支代码可能正处于开发状态而不稳定。请选择 [releases](https://github.com/wise2c-devops/breeze/releases) 用于正式环境的部署。
 
-请阅读 **[用户手册](manual/BreezeManual-CN.pdf)** 获得更详细的Breeze使用操作指引.
+请阅读 **[部署指南](./BreezeManual-CN.md)** 获得更详细的Breeze使用操作指引.
 
 <img alt="Breeze" src="manual/BreezeLogo.png">
 
@@ -54,7 +54,7 @@ Breeze项目旨在提供一个可信的、安全的、稳定的Kubernetes集群�
 * **微信:** 关注微信公众号【Wise2C】后回复【进群】，睿云小助手会第一时间把拉你进入【 Docker企业落地实践群】，关于Breeze部署工具的问题以及建议我们在群里讨论！
 
 常见排错说明在此：
-https://github.com/wise2c-devops/breeze/blob/master/TroubleShooting.md
+https://github.com/wise2c-devops/breeze/blob/master/TroubleShooting-CN.md
 
 ## 开源许可
 
