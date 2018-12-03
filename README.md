@@ -22,7 +22,7 @@ Project Breeze is an open source trusted solution allow you to create Kubernetes
 
 * **Support offline deployment**: After 4 images (playbook, yum-repo, pagoda, deploy-ui) have been loaded on the deploy server, kubernetes clusters can be setup without internet access. Breeze works as a yum repository server and deploys a local Harbor registry and uses kubeadm to setup kubernetes clusters. All docker images will be pulled from the local Harbor registry. 
 
-* **Support multi-cluster**: Breeze supports multipile kubernetes clusters deployment.
+* **Support multi-cluster**: Breeze supports multiple kubernetes clusters deployment.
 
 * **Support high available architecture**:  With Breeze, you can setup kubernetes clusters with 3 master servers and 3 etcd servers combined with haproxy and keepalived. All worker nodes will use the virtual floating ip address to communicate with the master servers.
 
