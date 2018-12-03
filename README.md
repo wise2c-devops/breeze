@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/wise2c-devops/breeze.svg?branch=v1.12)](https://travis-ci.org/wise2c-devops/breeze)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/wise2c-devops/breeze/blob/master/LICENSE)
 
-[English](https://github.com/wise2c-devops/breeze/blob/master/README.md) | [中文](https://github.com/wise2c-devops/breeze/blob/master/README-CN.md)
+[English](./README.md) | [中文](./README-CN.md)
 
 **Note**: Branches may be in an *unstable or even broken state* during development.
 Please use [releases](https://github.com/wise2c-devops/breeze/releases) instead of those branches in order to get stable binaries.
