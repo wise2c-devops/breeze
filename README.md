@@ -13,7 +13,7 @@ Refer to **[User Guide](manual/BreezeManual.pdf)** for more details on how to us
 
 <img alt="Breeze" src="manual/BreezeLogo.png">
 
-Project Breeze is an an open source trusted solution allow you to create Kubernetes clusters on your internal, secure, cloud network with graphical user interface.
+Project Breeze is an open source trusted solution allow you to create Kubernetes clusters on your internal, secure, cloud network with graphical user interface.
 
 ## Features
 * **Easy to run**: Breeze combines all resources you need such as kubernetes components images, ansible playbooks for the deployment of kubernetes clusters into a single docker image (wise2c/playbook). It also works as a local yum repository server. You just need a linux server with docker and docker-compose installed to run Breeze.
