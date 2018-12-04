@@ -110,10 +110,10 @@
   - { src: 'file/front-proxy-client-csr.json', dest: '{{ path }}/' }
 
 - name: copy certificates generation scripts
-  copy:
+  template:
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
-    mode: preserve
+    mode: 0777
   with_items:
   - { src: 'file/generate-other-certificates.sh', dest: '{{ path }}/' }
   - { src: 'file/generate-apiserver-certificate.sh', dest: '{{ path }}/' }
