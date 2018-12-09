@@ -1,4 +1,4 @@
-FROM centos:7.5.1804
+FROM centos:7.6.1810
 RUN yum install -y keepalived sysvinit-tools
 COPY keepalived.sh /usr/bin/keepalived.sh
 COPY keepalived.conf /etc/keepalived/keepalived.conf
