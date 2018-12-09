@@ -110,6 +110,13 @@
       - /etc/sysconfig/docker-storage-setup
       - /etc/sysconfig/docker-network
 
+    - name: init docker to create folder /etc/docker
+      systemd:
+        name: docker
+        daemon_reload: true
+        enabled: true
+        state: restarted
+
     - name: distribute docker config
       template:
         src: '{{ item.src }}'
