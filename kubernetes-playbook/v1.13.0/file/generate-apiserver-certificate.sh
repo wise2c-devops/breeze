@@ -1,17 +1,17 @@
 #!/bin/bash
 # Get host IP address and hostname
-WISE2C_IP_LABEL=$(cat /etc/hosts |grep -A 1 'BEGIN WISE2C DEPLOY MANAGED BLOCK' |grep -v '#' |grep -v '\-\-' |wc |awk '{print $1}')
+WISE2C_IP_LABEL=$(cat /etc/hosts |grep -A 1 'BEGIN WISE2C DEPLOY MANAGED BLOCK' |grep -v '#' |grep -v '^\-\-' |wc |awk '{print $1}')
 
 if [ "${WISE2C_IP_LABEL}" = "0" ]; then
   HOST_IP=$(ip route get 8.8.8.8 | awk '{print $NF; exit}')
   HOST_NAME=$(hostname)
 else
-  for IP_Addresses in $(cat /etc/hosts |grep -A 1 'BEGIN WISE2C DEPLOY MANAGED BLOCK' |grep -v '#' |grep -v '\-\-' |awk '{print $1}');
+  for IP_Addresses in $(cat /etc/hosts |grep -A 1 'BEGIN WISE2C DEPLOY MANAGED BLOCK' |grep -v '#' |grep -v '^\-\-' |awk '{print $1}');
   do
-    GrepStr=$(ip a |grep $IP_Addresses)
+    GrepStr=$(ip a |grep "inet $IP_Addresses")
     if [ -n "$GrepStr" ]; then
       HOST_IP=$IP_Addresses
-      HOST_NAME=$(cat /etc/hosts |grep -A 1 'BEGIN WISE2C DEPLOY MANAGED BLOCK' |grep -v '#' |grep -v '\-\-' |grep $HOST_IP |awk '{print $2}')
+      HOST_NAME=$(cat /etc/hosts |grep -A 1 'BEGIN WISE2C DEPLOY MANAGED BLOCK' |grep -v '#' |grep -v '^\-\-' |grep $HOST_IP |awk '{print $2}')
     fi
   done;
 fi
