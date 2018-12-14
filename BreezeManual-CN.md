@@ -7,6 +7,7 @@
 Note:
 1. **请不要把Breeze所在的部署主机加入部署集群主机列表**
 2. **为了避免包冲突，请使用纯净的CentOS Minimal安装出来的OS来部署集群**
+3. **playbook容器在docker-compose up -d命令运行之后处于Exited状态，这是正常的，因为playbook是卷容器不是后台服务容器。**
 
 在生产环境部署的朋友请注意！！！
 1. **当前版本的CA证书是动态生成的，有效期为100年，其它服务证书有效期为50年。**
@@ -61,7 +62,7 @@ systemctl enable docker
 例如：
 
 ```
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.13.0/docker-compose.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.13.1/docker-compose.yml -o docker-compose.yml
 ```
 
 ```
