@@ -67,7 +67,7 @@
     with_items:
     - rsync
     - jq
-    - docker
+    - docker-ce
     - python-docker-py
     - docker-compose
     - chrony
@@ -109,6 +109,13 @@
       - /etc/sysconfig/docker-storage
       - /etc/sysconfig/docker-storage-setup
       - /etc/sysconfig/docker-network
+
+    - name: init docker to create folder /etc/docker
+      systemd:
+        name: docker
+        daemon_reload: true
+        enabled: true
+        state: restarted
 
     - name: distribute docker config
       template:
