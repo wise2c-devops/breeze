@@ -96,7 +96,7 @@
       state: started
 
   - name: check docker
-    script: scripts/check_docker.sh {{ registry }}
+    script: scripts/check_docker.sh {{ harbor }}
     register: check_output
 
   - block:    
