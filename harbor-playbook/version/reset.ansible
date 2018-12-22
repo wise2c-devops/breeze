@@ -1,14 +1,14 @@
-- name: clean registry
-  hosts: registry
+- name: clean harbor
+  hosts: harbor
   user: root
   tasks:
-  - name: stop & rm registry
+  - name: stop & rm harbor
     docker_service:
       project_src: '{{ cpath }}/harbor'
       state: absent
       remove_volumes: true
   
-  - name: clean registry directory
+  - name: clean harbor directory
     file:
       path: '{{ item }}'
       state: absent

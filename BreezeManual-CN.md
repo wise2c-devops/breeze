@@ -7,7 +7,6 @@
 Note:
 1. **请不要把Breeze所在的部署主机加入部署集群主机列表**
 2. **为了避免包冲突，请使用纯净的CentOS Minimal安装出来的OS来部署集群**
-3. **playbook容器在docker-compose up -d命令运行之后处于Exited状态，这是正常的，因为playbook是卷容器不是后台服务容器。**
 
 在生产环境部署的朋友请注意！！！
 1. **当前版本的CA证书是动态生成的，有效期为100年，其它服务证书有效期为50年。**
@@ -23,7 +22,7 @@ https://github.com/wise2c-devops/breeze/blob/master/TroubleShooting-CN.md
 
 https://github.com/wise2c-devops/breeze/raw/master/manual/BreezeManual-CN.pdf
 
-**大家搜索关注微信公众号【Wise2C】后回复【进群】，睿云小助手会第一时间把拉你进入【 Docker企业落地实践群】，关于Breeze部署工具的问题以及建议我们在群里讨论！**
+**大家搜索关注微信公众号【Wise2C】后回复【进群】，睿云小助手会第一时间把拉你进入【 Docker/K8S企业落地实践群】，关于Breeze部署工具的问题以及建议我们在群里讨论！**
 
 操作步骤如下：
 

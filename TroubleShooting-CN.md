@@ -47,7 +47,7 @@ docker最终还是要调用iptables命令的，它不在乎你的系统底层究
 
 （3）在服务组件页面，编辑kubernetes组件，在“Kubernetes node hosts”项中，把新添加的主机选择进来，点确定。
 
-（4）在服务组件页面，选择docker，去掉**Kubernetes**、registry和etcd前面的对勾，然后点击开始安装。部署程序会在新添加的主机上安装docker。**注意：一定不要选择Kubernetes项，因为新版的breeze在Kubernetes步骤会创建新的证书，重启节点后由于证书的变动会导致集群不可用。**
+（4）在服务组件页面，选择docker和Kubernetes，去掉其它所有项目，在kubernetes组件里，清空master节点主机，只保留新增的node主机，然后点击开始安装。部署程序会在新添加的主机上安装docker。**注意：一定不要保留Kubernetes里的master主机，因为新版的breeze在Kubernetes步骤会创建新的证书，重启节点后由于证书的变动会导致集群不可用。**
 
 （5）在每个新添加节点执行如下命令：
 ```
