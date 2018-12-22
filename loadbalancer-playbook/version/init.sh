@@ -17,6 +17,9 @@ docker tag haproxy:${haproxy_version} wise2c/k8s-haproxy:${haproxy_version}
 docker save wise2c/k8s-haproxy:${haproxy_version} -o ../file/haproxy-${haproxy_version}.tar
 bzip2 -z --best ../file/haproxy-${haproxy_version}.tar
 
+echo `pwd`
+echo `ls`
+
 sed -i "s/1.8.14/${haproxy_version}/g" ${path}/template/haproxy-run.sh.j2
 sed -i "s/1.8.14/${haproxy_version}/g" ${path}/install.ansible
 sed -i "s/1.3.5/${keepalived_version}/g" ${path}/install.ansible
