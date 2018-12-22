@@ -2,8 +2,8 @@
 set -e
 path=`dirname $0`
 
-haproxy_version=`cat ${path}/components-version.txt |grep "HAProxy" |awk '{print $2}'`
-keepalived_version=`cat ${path}/components-version.txt |grep "Keepalived" |awk '{print $2}'`
+haproxy_version=`cat ${path}/components-version.txt |grep "HAProxy" |awk '{print $3}'`
+keepalived_version=`cat ${path}/components-version.txt |grep "Keepalived" |awk '{print $3}'`
 
 echo "build wise2c/k8s-keepalived:${keepalived_version} image"
 cd ${path}/keepalived
