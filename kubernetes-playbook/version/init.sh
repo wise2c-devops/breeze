@@ -4,7 +4,9 @@ set -e
 
 path=`dirname $0`
 
-docker run --rm --name=kubeadm-version wise2c/kubeadm-version:$TRAVIS_BRANCH kubeadm config images list  --kubernetes-version 1.13.1 > ${path}/k8s-images-list.txt
+k8s_version=`cat ${path}/components-version.txt |grep "Kubernetes" |awk '{print $3}'`
+
+docker run --rm --name=kubeadm-version wise2c/kubeadm-version:$TRAVIS_BRANCH kubeadm config images list --kubernetes-version ${k8s_version} > ${path}/k8s-images-list.txt
 
 echo "=== pulling kubernetes images ==="
 for IMAGES in $(cat ${path}/k8s-images-list.txt |grep -v etcd); do

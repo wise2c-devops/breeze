@@ -4,8 +4,8 @@ set -e
 
 path=`dirname $0`
 version=$1
-echo "" >> ${path}/yat/registry.yml.gotmpl
-echo "version: ${version}" >> ${path}/yat/registry.yml.gotmpl
+echo "" >> ${path}/yat/harbor.yml.gotmpl
+echo "version: ${version}" >> ${path}/yat/harbor.yml.gotmpl
 
 curl -L https://storage.googleapis.com/harbor-releases/harbor-offline-installer-${version}.tgz \
     -o ${path}/file/harbor-offline-installer-${version}.tgz
