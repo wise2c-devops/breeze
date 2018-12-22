@@ -16,7 +16,7 @@ mv ${path}/harbor-playbook/version ${path}/harbor-playbook/v${harbor_version}
 mv ${path}/docker-playbook/version ${path}/docker-playbook/${docker_version}-ce
 mv ${path}/loadbalancer-playbook/version ${path}/loadbalancer-playbook/${loadbalancer_version}
 
-docker run --rm --name=kubeadm-version wise2c/kubeadm-version:$TRAVIS_BRANCH kubeadm config images list --kubernetes-version ${kubernetes_version} > ${path}/k8s-images-list.txt
+docker run --rm --name=kubeadm-version wise2c/kubeadm-version:${kubernetes_version} kubeadm config images list --kubernetes-version ${kubernetes_version} > ${path}/k8s-images-list.txt
 
 etcd_version=`cat ${path}/k8s-images-list.txt |grep etcd |awk -F ':' '{print $2}'`
 mv etcd-playbook/version-by-kubeadm etcd-playbook/${etcd_version}
@@ -32,9 +32,9 @@ do
     if [[ ${dir} =~ -playbook$ ]]; then
         for version in `ls ${path}/${dir}`
         do
-            cp ${path}/components-version.txt ${path}/${dir}/${version}/
             echo ${version}
             if [ -f ${path}/${dir}/${version}/init.sh ]; then
+                cp ${path}/components-version.txt ${path}/${dir}/${version}/
                 bash ${path}/${dir}/${version}/init.sh ${version}
             fi
         done

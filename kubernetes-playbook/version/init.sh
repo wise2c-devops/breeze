@@ -6,7 +6,7 @@ path=`dirname $0`
 
 k8s_version=`cat ${path}/components-version.txt |grep "Kubernetes" |awk '{print $3}'`
 
-docker run --rm --name=kubeadm-version wise2c/kubeadm-version:$TRAVIS_BRANCH kubeadm config images list --kubernetes-version ${k8s_version} > ${path}/k8s-images-list.txt
+docker run --rm --name=kubeadm-version wise2c/kubeadm-version:${k8s_version} kubeadm config images list --kubernetes-version ${k8s_version} > ${path}/k8s-images-list.txt
 
 echo "=== pulling kubernetes images ==="
 for IMAGES in $(cat ${path}/k8s-images-list.txt |grep -v etcd); do
@@ -37,8 +37,8 @@ flannel_version="v0.10.0"
 echo "flannel_repo: ${flannel_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "flannel_version: ${flannel_version}-amd64" >> ${path}/yat/all.yml.gotmpl
 
-curl -sSL https://raw.githubusercontent.com/coreos/flannel/${flannel_version}/Documentation/kube-flannel.yml \
-    | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
+# curl -sSL https://raw.githubusercontent.com/coreos/flannel/${flannel_version}/Documentation/kube-flannel.yml \
+#    | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
 
 # Fix the bug coreos/flannel#1044
 curl -sSL https://github.com/wise2c-devops/breeze/raw/v1.13/kubernetes-playbook/kube-flannel.yml \
