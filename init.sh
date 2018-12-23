@@ -30,7 +30,7 @@ echo "Docker Version: ${docker_version}" >> ${path}/components-version.txt
 echo "HAProxy Version: ${haproxy_version}" >> ${path}/components-version.txt
 echo "Keepalived Version: ${keepalived_version}" >> ${path}/components-version.txt
 echo "Prometheus Version: ${prometheus_version}" >> ${path}/components-version.txt
-echo "Prometheus Operator Version: ${prometheus_operator_version}" >> ${path}/components-version.txt
+echo "PrometheusOperator Version: ${prometheus_operator_version}" >> ${path}/components-version.txt
 
 for dir in `ls ${path}`
 do

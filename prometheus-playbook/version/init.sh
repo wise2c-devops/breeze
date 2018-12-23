@@ -4,7 +4,7 @@ set -e
 
 path=`dirname $0`
 
-PrometheusOperatorVersion=`cat ${path}/components-version.txt |grep "PrometheusOperator" |awk '{print $4}'`
+PrometheusOperatorVersion=`cat ${path}/components-version.txt |grep "PrometheusOperator" |awk '{print $3}'`
 
 echo version-$PrometheusOperatorVersion
 
