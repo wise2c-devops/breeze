@@ -60,6 +60,23 @@
   - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
   run_once: true
 
+- name: pull k8s pause images
+  docker_image:
+    name: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
+    tag: '{{ item.tag }}'
+    pull: true
+    state: present
+  with_items:
+  - { repo: '{{ kubernetes_repo }}', name: 'pause', tag: '{{ pause_version }}' }
+
+- name: tag k8s pause images
+  docker_image:
+    name: '{{ item.repo }}/{{ item.name }}'
+    repository: '{{ kubernetes_repo }}/pause:{{ pause_version }}'
+    tag: '{{ item.tag }}'
+  with_items:
+  - { repo: '{{ registry_endpoint }}/{{ registry_project }}', name: 'pause', tag: '{{ pause_version }}' }
+
 - name: generate kubeadm config
   template:
     src: '{{ item.src }}'
