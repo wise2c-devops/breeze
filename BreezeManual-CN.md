@@ -2,7 +2,7 @@
 
 使用该工具，将抹平普通用户学习复杂的kubeadm部署技能学习曲线，体会到一键式部署Kubernetes集群的乐趣！
 
-适用操作系统为RHEL 7.4/7.5 或 CentOS 7.4/7.5
+适用操作系统为RHEL 7.4/7.5/7.6 或 CentOS 7.4/7.5/7.6
 
 Note:
 1. **请不要把Breeze所在的部署主机加入部署集群主机列表**
@@ -12,6 +12,9 @@ Note:
 1. **当前版本的CA证书是动态生成的，有效期为100年，其它服务证书有效期为50年。**
 2. **本安装方式通过了Kubernetes Conformance一致性认证，因此可用于生产环境。**
 
+安装过程演示视频在此：
+https://pan.baidu.com/s/1X0ZYt48wfYNrSrH7vvEKiw
+
 常见排错说明在此：
 https://github.com/wise2c-devops/breeze/blob/master/TroubleShooting-CN.md
 
@@ -19,7 +22,7 @@ https://github.com/wise2c-devops/breeze/blob/master/TroubleShooting-CN.md
 
 https://github.com/wise2c-devops/breeze/raw/master/manual/BreezeManual-CN.pdf
 
-**大家搜索关注微信公众号【Wise2C】后回复【进群】，睿云小助手会第一时间把拉你进入【 Docker企业落地实践群】，关于Breeze部署工具的问题以及建议我们在群里讨论！**
+**大家搜索关注微信公众号【Wise2C】后回复【进群】，睿云小助手会第一时间把拉你进入【 Docker/K8S企业落地实践群】，关于Breeze部署工具的问题以及建议我们在群里讨论！**
 
 操作步骤如下：
 
@@ -61,7 +64,7 @@ systemctl enable docker
 例如：
 
 ```
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.12.3/docker-compose.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.12.4/docker-compose.yml -o docker-compose.yml
 ```
 
 ```

@@ -6,7 +6,6 @@
   - { src: 'file/k8s.tar.bz2', dest: '{{ path }}' }
   - { src: 'file/flannel.tar.bz2', dest: '{{ path }}' }
   - { src: 'file/dashboard.tar.bz2', dest: '{{ path }}' }
-  - { src: 'file/heapster.tar.bz2', dest: '{{ path }}' }
   run_once: true
 
 - name: load k8s images
@@ -18,7 +17,6 @@
   - k8s.tar.bz2
   - flannel.tar.bz2
   - dashboard.tar.bz2
-  - heapster.tar.bz2
   run_once: true
 
 - name: docker login
@@ -43,9 +41,6 @@
   - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'heapster-amd64', tag: 'v1.5.4' }
-  - { repo: '{{ kubernetes_repo }}', name: 'heapster-influxdb-amd64', tag: 'v1.5.2' }
-  - { repo: '{{ kubernetes_repo }}', name: 'heapster-grafana-amd64', tag: 'v5.0.4' }
   run_once: true
 
 - name: push images
@@ -63,26 +58,7 @@
   - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'heapster-amd64', tag: 'v1.5.4' }
-  - { repo: '{{ kubernetes_repo }}', name: 'heapster-influxdb-amd64', tag: 'v1.5.2' }
-  - { repo: '{{ kubernetes_repo }}', name: 'heapster-grafana-amd64', tag: 'v5.0.4' }
   run_once: true
-- name: pull k8s pause images
-  docker_image:
-    name: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
-    tag: '{{ item.tag }}'
-    pull: true
-    state: present
-  with_items:
-  - { repo: '{{ kubernetes_repo }}', name: 'pause', tag: '{{ pause_version }}' }
-
-- name: tag k8s pause images
-  docker_image:
-    name: '{{ item.repo }}/{{ item.name }}'
-    repository: '{{ kubernetes_repo }}/pause:{{ pause_version }}'
-    tag: '{{ item.tag }}'
-  with_items:
-  - { repo: '{{ registry_endpoint }}/{{ registry_project }}', name: 'pause', tag: '{{ pause_version }}' }
 
 - name: generate kubeadm config
   template:
@@ -92,10 +68,6 @@
   - { src: 'template/kubeadm.conf.j2', dest: '{{ path }}/kubeadm.conf' }
   - { src: 'template/kube-flannel.yml.j2', dest: '{{ path }}/kube-flannel.yml' }
   - { src: 'template/kubernetes-dashboard.yml.j2', dest: '{{ path }}/kubernetes-dashboard.yml' }
-  - { src: 'template/heapster/grafana.yaml.j2', dest: '{{ path }}/grafana.yaml' }
-  - { src: 'template/heapster/influxdb.yaml.j2', dest: '{{ path }}/influxdb.yaml' }
-  - { src: 'template/heapster/heapster.yaml.j2', dest: '{{ path }}/heapster.yaml' }
-  - { src: 'template/heapster/heapster-rbac.yaml', dest: '{{ path }}/heapster-rbac.yaml' }
 
 - name: copy certificates JSON files
   copy:
@@ -183,8 +155,4 @@
   shell: |
     kubectl apply -f {{ path }}/kube-flannel.yml
     kubectl apply -f {{ path }}/kubernetes-dashboard.yml
-    kubectl apply -f {{ path }}/heapster-rbac.yaml
-    kubectl apply -f {{ path }}/influxdb.yaml
-    kubectl apply -f {{ path }}/grafana.yaml
-    kubectl apply -f {{ path }}/heapster.yaml
   run_once: true

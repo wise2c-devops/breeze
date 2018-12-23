@@ -4,7 +4,9 @@ set -e
 
 path=`dirname $0`
 
-docker run --rm --name=kubeadm-version wise2c/kubeadm-version:$TRAVIS_BRANCH kubeadm config images list  --kubernetes-version 1.12.3 > ${path}/k8s-images-list.txt
+k8s_version=`cat ${path}/components-version.txt |grep "Kubernetes" |awk '{print $3}'`
+
+docker run --rm --name=kubeadm-version wise2c/kubeadm-version:v${k8s_version} kubeadm config images list --kubernetes-version ${k8s_version} > ${path}/k8s-images-list.txt
 
 echo "=== pulling kubernetes images ==="
 for IMAGES in $(cat ${path}/k8s-images-list.txt |grep -v etcd); do
@@ -35,11 +37,11 @@ flannel_version="v0.10.0"
 echo "flannel_repo: ${flannel_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "flannel_version: ${flannel_version}-amd64" >> ${path}/yat/all.yml.gotmpl
 
-curl -sSL https://raw.githubusercontent.com/coreos/flannel/${flannel_version}/Documentation/kube-flannel.yml \
-    | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
+# curl -sSL https://raw.githubusercontent.com/coreos/flannel/${flannel_version}/Documentation/kube-flannel.yml \
+#    | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
 
 # Fix the bug coreos/flannel#1044
-curl -sSL https://github.com/wise2c-devops/breeze/raw/v1.12/kubernetes-playbook/kube-flannel.yml \
+curl -sSL https://github.com/wise2c-devops/breeze/raw/v1.13/kubernetes-playbook/kube-flannel.yml \
     | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
 
 dashboard_repo=${kubernetes_repo}
@@ -50,7 +52,7 @@ echo "dashboard_version: ${dashboard_version}" >> ${path}/yat/all.yml.gotmpl
 #curl -sS https://raw.githubusercontent.com/kubernetes/dashboard/${dashboard_version}/src/deploy/recommended/kubernetes-dashboard.yaml \
 #    | sed -e "s,k8s.gcr.io,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kubernetes-dashboard.yml.j2
 
-curl -sSL https://github.com/wise2c-devops/breeze/raw/v1.12/kubernetes-playbook/kubernetes-dashboard-wise2c.yaml.j2 \
+curl -sSL https://github.com/wise2c-devops/breeze/raw/v1.13/kubernetes-playbook/kubernetes-dashboard-wise2c.yaml.j2 \
     | sed -e "s,k8s.gcr.io,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kubernetes-dashboard.yml.j2
     
 echo "=== pulling flannel image ==="
@@ -64,21 +66,22 @@ rm ${path}/file/flannel.tar.bz2 -f
 bzip2 -z --best ${path}/file/flannel.tar
 echo "=== flannel image is saved successfully ==="
 
-echo "=== pulling kubernetes dashboard and heapster images ==="
+echo "=== pulling kubernetes dashboard images ==="
 docker pull ${dashboard_repo}/kubernetes-dashboard-amd64:${dashboard_version}
-docker pull k8s.gcr.io/heapster-amd64:v1.5.4
-docker pull k8s.gcr.io/heapster-influxdb-amd64:v1.5.2
-docker pull k8s.gcr.io/heapster-grafana-amd64:v5.0.4
-echo "=== kubernetes dashboard and heapster images are pulled successfully ==="
+#docker pull k8s.gcr.io/heapster-amd64:v1.5.4
+#docker pull k8s.gcr.io/heapster-influxdb-amd64:v1.5.2
+#docker pull k8s.gcr.io/heapster-grafana-amd64:v5.0.4
+echo "=== kubernetes dashboard images are pulled successfully ==="
 
-echo "=== saving kubernetes dashboard and heapster images ==="
+echo "=== saving kubernetes dashboard images ==="
 docker save ${dashboard_repo}/kubernetes-dashboard-amd64:${dashboard_version} \
     > ${path}/file/dashboard.tar
-docker save k8s.gcr.io/heapster-amd64:v1.5.4 k8s.gcr.io/heapster-influxdb-amd64:v1.5.2 k8s.gcr.io/heapster-grafana-amd64:v5.0.4 -o ${path}/file/heapster.tar
-rm ${path}/file/dashboard.tar.bz2 ${path}/file/heapster.tar.bz2 -f
+#docker save k8s.gcr.io/heapster-amd64:v1.5.4 k8s.gcr.io/heapster-influxdb-amd64:v1.5.2 k8s.gcr.io/heapster-grafana-amd64:v5.0.4 -o ${path}/file/heapster.tar
+rm ${path}/file/dashboard.tar.bz2 -f
+#rm ${path}/file/heapster.tar.bz2 -f
 bzip2 -z --best ${path}/file/dashboard.tar
-bzip2 -z --best ${path}/file/heapster.tar
-echo "=== kubernetes dashboard and heapster images are saved successfully ==="
+#bzip2 -z --best ${path}/file/heapster.tar
+echo "=== kubernetes dashboard images are saved successfully ==="
 
 echo "=== download cfssl tools ==="
 export CFSSL_URL=https://pkg.cfssl.org/R1.2

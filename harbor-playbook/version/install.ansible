@@ -1,10 +1,10 @@
-- name: setup registry
-  hosts: registry
+- name: setup harbor
+  hosts: harbor
   user: root
   vars:
-    path: /var/tmp/wise2c/registry
+    path: /var/tmp/wise2c/harbor
   tasks:
-  - name: make registry dir
+  - name: make harbor dir
     file:
       path: '{{ item }}'
       state: directory
@@ -18,14 +18,14 @@
       src: file/harbor-offline-installer-{{ version }}.tgz
       dest: '{{ cpath }}'
 
-  - name: generate registry config
+  - name: generate harbor config
     template:
       src: '{{ item.src }}'
       dest: '{{ item.dest }}'
     with_items:
     - { src: 'template/harbor.cfg.j2', dest: '{{ cpath }}/harbor/harbor.cfg' }
 
-  - name: launch registry
+  - name: launch harbor
     shell: ./install.sh
     args:
       chdir: '{{ cpath }}/harbor'

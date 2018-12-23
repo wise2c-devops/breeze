@@ -38,7 +38,7 @@ from ansible.plugins.callback import CallbackBase
 
 class CallbackModule(CallbackBase):
     """
-    logs playbook results, per host, in /var/log/ansible/hosts
+    logs playbook results, per host, to 127.0.0.1:8080
     """
     CALLBACK_VERSION = 2.0
     CALLBACK_TYPE = 'notification'
@@ -90,35 +90,87 @@ class CallbackModule(CallbackBase):
             )
         )
 
-    def runner_on_failed(self, host, res, ignore_errors=False):
-        self.log(host, 'failed', res)
+    # V2 METHODS, by default they call v1 counterparts if possible
+    def v2_on_any(self, *args, **kwargs):
+        self.on_any(args, kwargs)
 
-    def runner_on_ok(self, host, res):
-        self.log(host, 'ok', res)
+    def v2_runner_on_failed(self, result, ignore_errors=False):
+        host = result._host.get_name()
+        self.log(host, 'failed', result._result)
 
-    def runner_on_skipped(self, host, item=None):
-        self.log(host, 'skipped', '...')
+    def v2_runner_on_ok(self, result):
+        host = result._host.get_name()
+        self.log(host, 'ok', result._result)
 
-    def runner_on_unreachable(self, host, res):
-        self.log(host, 'unreachable', res)
+    def v2_runner_on_skipped(self, result):
+        host = result._host.get_name()
+        self.log(host, 'skipped', self._get_item_label(getattr(result._result, 'results', {})))
 
-    def runner_on_async_failed(self, host, res, jid):
-        self.log(host, 'ASYNC_FAILED', res)
+    def v2_runner_on_unreachable(self, result):
+        host = result._host.get_name()
+        self.log(host, 'unreachable', result._result)
+
+    # FIXME: not called
+    def v2_runner_on_async_poll(self, result):
+        host = result._host.get_name()
+        jid = result._result.get('ansible_job_id')
+        # FIXME, get real clock
+        clock = 0
+        self.runner_on_async_poll(host, result._result, jid, clock)
+
+    # FIXME: not called
+    def v2_runner_on_async_ok(self, result):
+        host = result._host.get_name()
+        jid = result._result.get('ansible_job_id')
+        self.runner_on_async_ok(host, result._result, jid)
+
+    # FIXME: not called
+    def v2_runner_on_async_failed(self, result):
+        host = result._host.get_name()
+        jid = result._result.get('ansible_job_id')
+        self.runner_on_async_failed(host, result._result, jid)
 
     def v2_playbook_on_start(self, playbook):
-        name, suffix = os.path.basename(os.path.dirname(playbook._basedir)).split('-')
+        name, _ = os.path.basename(os.path.dirname(playbook._basedir)).split('-')
         self.stage = name
 
-    def playbook_on_import_for_host(self, host, imported_file):
-        self.log(host, 'IMPORTED', imported_file)
+    def v2_playbook_on_notify(self, handler, host):
+        self.playbook_on_notify(host, handler)
 
-    def playbook_on_not_import_for_host(self, host, missing_file):
-        self.log(host, 'NOTIMPORTED', missing_file)
+    def v2_playbook_on_no_hosts_matched(self):
+        self.playbook_on_no_hosts_matched()
 
-    def playbook_on_task_start(self, name, is_conditional):
-        self.task['name'] = name
+    def v2_playbook_on_no_hosts_remaining(self):
+        self.playbook_on_no_hosts_remaining()
 
-    def playbook_on_stats(self, stats):
+    def v2_playbook_on_task_start(self, task, is_conditional):
+        self.task['name'] = task.name
+        self.log("all", "starting", dict())
+
+    # FIXME: not called
+    def v2_playbook_on_cleanup_task_start(self, task):
+        pass  # no v1 correspondence
+
+    def v2_playbook_on_handler_task_start(self, task):
+        pass  # no v1 correspondence
+
+    def v2_playbook_on_vars_prompt(self, varname, private=True, prompt=None, encrypt=None, confirm=False, salt_size=None, salt=None, default=None):
+        self.playbook_on_vars_prompt(varname, private, prompt, encrypt, confirm, salt_size, salt, default)
+
+    # FIXME: not called
+    def v2_playbook_on_import_for_host(self, result, imported_file):
+        host = result._host.get_name()
+        self.playbook_on_import_for_host(host, imported_file)
+
+    # FIXME: not called
+    def v2_playbook_on_not_import_for_host(self, result, missing_file):
+        host = result._host.get_name()
+        self.playbook_on_not_import_for_host(host, missing_file)
+
+    def v2_playbook_on_play_start(self, play):
+        self.playbook_on_play_start(play.name)
+
+    def v2_playbook_on_stats(self, stats):
         state = ""
         if len(stats.failures) > 0 or len(stats.dark) > 0:
             state = "failed"
@@ -126,3 +178,23 @@ class CallbackModule(CallbackBase):
             state = "ok"
         self.task['name'] = "ending"
         self.log("all", state, dict(state=state))
+
+    def v2_on_file_diff(self, result):
+        if 'diff' in result._result:
+            host = result._host.get_name()
+            self.on_file_diff(host, result._result['diff'])
+
+    def v2_playbook_on_include(self, included_file):
+        pass  # no v1 correspondence
+
+    def v2_runner_item_on_ok(self, result):
+        pass
+
+    def v2_runner_item_on_failed(self, result):
+        pass
+
+    def v2_runner_item_on_skipped(self, result):
+        pass
+
+    def v2_runner_retry(self, result):
+        pass
