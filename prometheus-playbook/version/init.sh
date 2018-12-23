@@ -4,17 +4,7 @@ set -e
 
 path=`dirname $0`
 
-PrometheusOperatorVersion=`cat ${path}/components-version.txt |grep "PrometheusOperator" |awk '{print $3}'`
-
-echo 1$PrometheusOperatorVersion
-echo 1$PrometheusOperatorVersion
-echo 1$PrometheusOperatorVersion
-echo 1$PrometheusOperatorVersion
-echo 1$PrometheusOperatorVersion
-echo 1$PrometheusOperatorVersion
-cat ${path}/components-version.txt
-echo 1
-echo 1
+PrometheusOperatorVersion=`cat ${path}/components-version.txt |grep "PrometheusOperator" |awk '{print $4}'`
 
 curl -L -o ${path}/file/prometheus-operator-v$PrometheusOperatorVersion-origin.tar.gz https://github.com/coreos/prometheus-operator/archive/v$PrometheusOperatorVersion.tar.gz
 
@@ -56,3 +46,5 @@ echo 'Images pulled.'
 
 docker save $(cat images-list.txt) -o prometheus-operator-images-v$PrometheusOperatorVersion.tar
 echo 'Images saved.'
+
+cat images-list.txt
