@@ -1,0 +1,26 @@
+[
+    {
+        "variable": "self",
+        "label": "harbor hosts",
+        "description": "hosts for setup harbor",
+        "type": "host",
+        "default": "",
+        "required": true
+    },
+    {
+        "variable": "endpoint",
+        "label": "harbor entry point",
+        "description": "ip/FQDN of harbor cluster entrypoint",
+        "type": "string",
+        "default": "",
+        "required": false
+    },
+    {
+        "variable": "password",
+        "label": "harbor admin password",
+        "description": "everyone can 'docker login' use this",
+        "type": "string",
+        "default": "Harbor12345",
+        "required": true
+    }
+]

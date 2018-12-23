@@ -1,0 +1,18 @@
+{
+  "signing": {
+    "default": {
+      "expiry": "438000h"
+    },
+    "profiles": {
+      "kubernetes": {
+        "usages": [
+            "signing",
+            "key encipherment",
+            "server auth",
+            "client auth"
+        ],
+        "expiry": "438000h"
+      }
+    }
+  }
+}

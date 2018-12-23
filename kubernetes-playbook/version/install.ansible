@@ -1,0 +1,79 @@
+- name: install kubernetes package
+  hosts: all
+  user: root
+  vars:
+    path: /var/tmp/wise2c/kubernetes
+  tasks:
+  - name: make k8s master dir
+    file:
+      path: '{{ item }}'
+      state: directory
+      mode: 0755
+    with_items:
+    - /etc/kubernetes/pki
+    - '{{ path }}'
+    - $HOME/.kube
+
+  - name: check kubernetes
+    script: scripts/check_kubelet.sh
+    register: check_output
+
+  - name: remove swapfile from /etc/fstab
+    mount:
+      name: swap
+      fstype: swap
+      state: absent
+
+  - name: disable swap
+    command: swapoff -a
+
+  - block:
+    - name: install kubernetes components
+      yum:
+        disablerepo: '*'
+        enablerepo: wise2c
+        update_cache: true
+        state: present
+        name: '{{ item }}'
+      with_items:
+      - kubernetes-cni-0.6.0
+      - kubectl-{{ kubernetes_version[1:] }}
+      - kubelet-{{ kubernetes_version[1:] }}
+      - kubeadm-{{ kubernetes_version[1:] }}
+
+    - name: unarchive cfssl tool
+      unarchive:
+        src: file/cfssl-tools.tar.gz
+        dest: /usr/local/bin
+
+    - name: distribute kubelet config
+      template:
+        src: '{{ item.src }}'
+        dest: '{{ item.dest }}'
+      with_items:
+      - { src: 'template/kubelet.conf.j2', dest: '/etc/systemd/system/kubelet.service.d/wise2c-kubelet.conf' }
+
+    - name: reload & enable kubelet
+      systemd:
+        name: kubelet
+        daemon_reload: true
+        enabled: true
+
+    - name: set sysctl
+      sysctl:
+        name: '{{ item }}'
+        value: 1
+        state: present
+        reload: true
+      with_items:
+      - net.bridge.bridge-nf-call-iptables
+      - net.bridge.bridge-nf-call-ip6tables
+
+    - name: setup master
+      include_tasks: master.ansible
+      when: role == 'master'
+
+    - name: setup node
+      include_tasks: node.ansible
+      when: role == 'node'
+    when: check_output.stdout != 'true'

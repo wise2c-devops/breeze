@@ -1,0 +1,55 @@
+global
+log 127.0.0.1 local0
+log 127.0.0.1 local1 notice
+maxconn 4096
+#chroot /usr/share/haproxy
+#user haproxy
+#group haproxy
+daemon
+
+defaults
+    log     global
+    mode    http
+    option  httplog
+    option  dontlognull
+    retries 3
+    option redispatch
+    timeout connect  5000
+    timeout client  50000
+    timeout server  50000
+
+backend stats-back
+  mode http
+  balance roundrobin
+  stats uri /haproxy/stats
+  stats auth pxcstats:secret
+
+frontend stats-front
+  bind *:8081
+  mode http
+  default_backend stats-back
+
+{% for s in servers | d([], true) | list %}
+frontend {{ s.name }}
+  bind *:{{ s.port + 1 }}
+  mode tcp
+  timeout client 1h
+  log global
+  option tcplog
+  default_backend {{ s.name }}
+  acl is_websocket hdr(Upgrade) -i WebSocket
+  acl is_websocket hdr_beg(Host) -i ws
+
+backend {{ s.name }}
+  mode tcp
+  timeout queue 1h
+  timeout server 1h
+  timeout connect 1h
+  log global
+  option tcplog
+  balance roundrobin
+  {% for ip in s.ips %}
+  server {{ s.name }}{{ loop.index }} {{ ip }}:{{ s.port }}
+  {% endfor %}
+
+{% endfor %}

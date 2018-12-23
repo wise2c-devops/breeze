@@ -1,0 +1,16 @@
+{
+  "CN": "kube-apiserver-kubelet-client",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "CN",
+      "L": "Guangdong",
+      "ST": "Shenzhen",
+      "O": "system:masters",
+      "OU": "Wise2C"
+    }
+  ]
+}

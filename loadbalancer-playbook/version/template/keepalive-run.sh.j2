@@ -1,0 +1,7 @@
+docker run -itd --restart=always \
+    --name=Keepalived --net=host \
+    --cap-add=NET_ADMIN \
+    -v /var/wise2c/lb/keepalive.cfg:/etc/keepalived/keepalived.conf \
+    -v /var/wise2c/lb/keepalived.sh:/usr/bin/keepalived.sh \
+    --entrypoint bash \
+    wise2c/k8s-keepalived:2.0.5 /usr/bin/keepalived.sh
