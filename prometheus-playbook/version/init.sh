@@ -46,3 +46,5 @@ echo 'Images pulled.'
 
 docker save $(cat images-list.txt) -o prometheus-operator-images-v$PrometheusOperatorVersion.tar
 echo 'Images saved.'
+bzip2 -z --best prometheus-operator-images-v$PrometheusOperatorVersion.tar
+echo 'Images are compress as bzip format.'
