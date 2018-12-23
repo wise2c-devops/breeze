@@ -4,7 +4,7 @@ set -e
 
 path=`dirname $0`
 
-version=`cat ${path}/components-version.txt |grep "PrometheusOperator" |awk '{print $3}'`
+PrometheusOperatorVersion=`cat ${path}/components-version.txt |grep "PrometheusOperator" |awk '{print $3}'`
 
 curl -L -o ${path}/file/prometheus-operator-v$PrometheusOperatorVersion-origin.tar.gz https://github.com/coreos/prometheus-operator/archive/v$PrometheusOperatorVersion.tar.gz
 
