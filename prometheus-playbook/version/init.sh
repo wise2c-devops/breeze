@@ -6,8 +6,6 @@ path=`dirname $0`
 
 PrometheusOperatorVersion=`cat ${path}/components-version.txt |grep "PrometheusOperator" |awk '{print $3}'`
 
-echo version-$PrometheusOperatorVersion
-
 curl -L -o ${path}/file/prometheus-operator-v$PrometheusOperatorVersion-origin.tar.gz https://github.com/coreos/prometheus-operator/archive/v$PrometheusOperatorVersion.tar.gz
 
 cd ${path}/file/
@@ -48,5 +46,3 @@ echo 'Images pulled.'
 
 docker save $(cat images-list.txt) -o prometheus-operator-images-v$PrometheusOperatorVersion.tar
 echo 'Images saved.'
-
-cat images-list.txt

@@ -1,10 +1,10 @@
-- name: setup harbor
-  hosts: harbor
+- name: setup prometheus operator
+  hosts: prometheus
   user: root
   vars:
-    path: /var/tmp/wise2c/harbor
+    path: /var/tmp/wise2c/prometheus
   tasks:
-  - name: make harbor dir
+  - name: make prometheus dir
     file:
       path: '{{ item }}'
       state: directory
@@ -13,19 +13,12 @@
     - '{{ cpath }}'
     - '{{ path }}'
 
-  - name: unarchive harbor
+  - name: unarchive prometheus
     unarchive:
-      src: file/harbor-offline-installer-{{ version }}.tgz
+      src: file/prometheus-operator-v0.26.0-origin.tar.gz
       dest: '{{ cpath }}'
 
-  - name: generate harbor config
-    template:
-      src: '{{ item.src }}'
-      dest: '{{ item.dest }}'
-    with_items:
-    - { src: 'template/harbor.cfg.j2', dest: '{{ cpath }}/harbor/harbor.cfg' }
-
-  - name: launch harbor
-    shell: ./install.sh
-    args:
-      chdir: '{{ cpath }}/harbor'
+# - name: launch harbor
+#    shell: ./install.sh
+#    args:
+#      chdir: '{{ cpath }}/harbor'
