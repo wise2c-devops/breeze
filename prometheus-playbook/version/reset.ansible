@@ -1,6 +1,8 @@
-- name: clean prometheus
-  hosts: prometheus
+- name: clean prometheus operator
+  hosts: all
   user: root
   tasks:
   - name: stop & rm prometheus service
- 
+    shell: ./remove.sh
+    args:
+      chdir: '{{ cpath }}'

@@ -33,6 +33,7 @@
       mode: 0755
     with_items:
     - { src: 'file/deploy.sh', dest: '{{ path }}' }
+    - { src: 'file/remove.sh', dest: '{{ path }}' }
     run_once: true
 
   - name: copy prometheus operator deploy script dependance file
@@ -44,14 +45,14 @@
     - { src: 'file/images-list.txt', dest: '{{ path }}' }
     run_once: true
 
-#  - name: load prometheus operator images
-#    docker_image:
-#      load_path: '{{ path }}/{{ item }}'
-#      name: prometheus
-#      timeout: 600
-#    with_items:
-#    - prometheus-operator-images-v{{ operator_version }}.tar.bz2
-#    run_once: true
+  - name: load prometheus operator images
+    docker_image:
+      load_path: '{{ path }}/{{ item }}'
+      name: prometheus
+      timeout: 600
+    with_items:
+    - prometheus-operator-images-v{{ operator_version }}.tar.bz2
+    run_once: true
 
 
   - name: docker login
