@@ -6,6 +6,9 @@ path=`dirname $0`
 
 PrometheusOperatorVersion=`cat ${path}/components-version.txt |grep "PrometheusOperator" |awk '{print $3}'`
 
+echo "" >> ${path}/group_vars/prometheus.yml.gotmpl
+echo "operator_version: ${PrometheusOperatorVersion}" >> ${path}/group_vars/prometheus.yml.gotmpl
+
 curl -L -o ${path}/file/prometheus-operator-v$PrometheusOperatorVersion-origin.tar.gz https://github.com/coreos/prometheus-operator/archive/v$PrometheusOperatorVersion.tar.gz
 
 cd ${path}/file/
@@ -47,4 +50,4 @@ echo 'Images pulled.'
 docker save $(cat images-list.txt) -o prometheus-operator-images-v$PrometheusOperatorVersion.tar
 echo 'Images saved.'
 bzip2 -z --best prometheus-operator-images-v$PrometheusOperatorVersion.tar
-echo 'Images are compress as bzip format.'
+echo 'Images are compressed as bzip format.'
