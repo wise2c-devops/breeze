@@ -42,7 +42,8 @@
       dest: '{{ item.dest }}'
     with_items:
     - { src: 'file/append-lines.txt', dest: '{{ path }}' }
-    - { src: 'file/images-list.txt', dest: '{{ path }}' }
+    - { src: 'file/append-lines.txt', dest: '{{ path }}' }
+    - { src: './components-version.txt', dest: '{{ path }}' }
     run_once: true
 
   - name: load prometheus operator images

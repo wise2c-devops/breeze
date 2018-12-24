@@ -3,7 +3,7 @@ set -e
 
 MyImageRepositoryIP=192.168.9.20
 MyImageRepositoryProject=library
-PrometheusOperatorVersion=0.26.0
+PrometheusOperatorVersion=`cat components-version.txt |grep "PrometheusOperator Version" |awk '{print $3}'`
 NAMESPACE=monitoring
 
 ######### Push images #########
