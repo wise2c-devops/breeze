@@ -7,6 +7,10 @@
 Note:
 1. **请不要把Breeze所在的部署主机加入部署集群主机列表**
 2. **为了避免包冲突，请使用纯净的CentOS Minimal安装出来的OS来部署集群**
+3. **PrometheusOperator + Kube-Prometheus项目为选装项，需要该功能的中国区用户请务必先对每台被部署机节点设置正确的时区，可参照以下命令：**
+```
+timedatectl set-timezone Asia/Shanghai
+```
 
 在生产环境部署的朋友请注意！！！
 1. **当前版本的CA证书是动态生成的，有效期为100年，其它服务证书有效期为50年。**
