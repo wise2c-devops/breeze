@@ -26,13 +26,14 @@
     - { src: 'file/prometheus-operator-images-v{{ operator_version }}.tar.bz2', dest: '{{ path }}' }
     run_once: true
 
-  - name: copy prometheus operator deploy script
+  - name: copy prometheus operator deploy and reset script
     copy:
       src: '{{ item.src }}'
       dest: '{{ item.dest }}'
       mode: 0755
     with_items:
     - { src: 'file/deploy.sh', dest: '{{ path }}' }
+    - { src: 'file/add-on.sh', dest: '{{ path }}' }
     - { src: 'file/remove.sh', dest: '{{ path }}' }
     run_once: true
 
@@ -41,10 +42,15 @@
       src: '{{ item.src }}'
       dest: '{{ item.dest }}'
     with_items:
-    - { src: 'file/append-lines.txt', dest: '{{ path }}' }
-    - { src: 'file/append-lines.txt', dest: '{{ path }}' }
     - { src: './components-version.txt', dest: '{{ path }}' }
+    - { src: 'file/append-lines.txt', dest: '{{ path }}' }
+    - { src: 'file/images-list.txt', dest: '{{ path }}' }
+    - { src: 'file/etcd-address.txt', dest: '{{ path }}' }
     - { src: 'file/harbor-address.txt', dest: '{{ path }}' }
+    - { src: 'file/kube-controller-manager.yaml', dest: '{{ path }}' }
+    - { src: 'file/kube-scheduler.yaml', dest: '{{ path }}' }
+    - { src: 'file/coredns.yaml', dest: '{{ path }}' }
+    - { src: 'file/etcd.yaml', dest: '{{ path }}' }
     run_once: true
 
   - name: load prometheus operator images
@@ -71,8 +77,21 @@
       replace: "{{ registry_endpoint }}"
     with_items:
       - "harbor-address.txt"
+
+  - name: set etcd address for deploy script
+    replace:
+      path: "/var/tmp/wise2c/prometheus/{{ item }}"
+      regexp: "etcd-address"
+      replace: "{{ etcd_endpoint }}"
+    with_items:
+      - "etcd-address.txt"
     
   - name: prometheus operator deploy
     shell: ./deploy.sh
+    args:
+      chdir: '{{ cpath }}/'
+
+  - name: prometheus add-on deploy
+    shell: ./add-on.sh
     args:
       chdir: '{{ cpath }}/'

@@ -34,3 +34,8 @@
   systemd: 
     name: kubelet
     state: restarted
+
+- name: execute prometheus-fix-worker-nodes script
+  shell: ./prometheus-fix-worker-nodes.sh
+  args:
+    chdir: '/var/tmp/wise2c/kubernetes/'
