@@ -11,6 +11,10 @@ Note:
 在生产环境部署的朋友请注意！！！
 1. **当前版本的CA证书是动态生成的，有效期为100年，其它服务证书有效期为50年。**
 2. **本安装方式通过了Kubernetes Conformance一致性认证，因此可用于生产环境。**
+3. **PrometheusOperator + Kube-Prometheus项目为选装项，需要该功能的中国区用户请务必先对每台被部署机节点设置正确的时区，可参照以下命令：**
+```
+timedatectl set-timezone Asia/Shanghai
+```
 
 安装过程演示视频在此：
 https://pan.baidu.com/s/1X0ZYt48wfYNrSrH7vvEKiw
