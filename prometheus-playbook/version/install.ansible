@@ -86,6 +86,15 @@
     with_items:
       - "etcd-address.txt"
     
+  - name: set nodeport for prometheus alertmanager and grafana service
+    template:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+      - { src: 'template/prometheus-service.yaml.j2', dest: '{{ cpath }}/prometheus-service.yaml' }
+      - { src: 'template/alertmanager-service.yaml.j2', dest: '{{ cpath }}/alertmanager-service.yaml' }
+      - { src: 'template/grafana-service.yaml.j2', dest: '{{ cpath }}/grafana-service.yaml' }
+
   - name: prometheus operator deploy
     shell: ./deploy.sh
     args:

@@ -76,3 +76,9 @@ echo 'Phase1 done!'
 kubectl apply -f manifests/phase2
 
 echo 'Phase2 done!'
+
+kubectl apply -f /var/tmp/wise2c/prometheus/prometheus-service.yaml
+kubectl apply -f /var/tmp/wise2c/prometheus/alertmanager-service.yaml
+kubectl apply -f /var/tmp/wise2c/prometheus/grafana-service.yaml
+
+echo 'NodePorts are set for services.'

@@ -1,0 +1,3 @@
+prometheus-svc-port: prometheus-port
+alertmanager-svc-port: alertmanager-port
+grafana-svc-port: grafana-port
