@@ -44,6 +44,7 @@
     - { src: 'file/append-lines.txt', dest: '{{ path }}' }
     - { src: 'file/append-lines.txt', dest: '{{ path }}' }
     - { src: './components-version.txt', dest: '{{ path }}' }
+    - { src: 'file/harbor-address.txt', dest: '{{ path }}' }
     run_once: true
 
   - name: load prometheus operator images
@@ -55,7 +56,6 @@
     - prometheus-operator-images-v{{ operator_version }}.tar.bz2
     run_once: true
 
-
   - name: docker login
     docker_login:
       registry: '{{ registry_endpoint }}'
@@ -64,7 +64,14 @@
       reauthorize: true
     run_once: true
 
-
+  - name: set harbor address for deploy script
+    replace:
+      path: "/var/tmp/wise2c/prometheus/{{ item }}"
+      regexp: "harbor-address"
+      replace: "{{ registry_endpoint }}"
+    with_items:
+      - "harbor-address.txt"
+    
   - name: prometheus operator deploy
     shell: ./deploy.sh
     args:

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-MyImageRepositoryIP=192.168.9.20
+MyImageRepositoryIP=`cat harbor-address.txt`
 MyImageRepositoryProject=library
 PrometheusOperatorVersion=`cat components-version.txt |grep "PrometheusOperator Version" |awk '{print $3}'`
 NAMESPACE=monitoring

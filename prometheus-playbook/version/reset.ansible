@@ -6,3 +6,4 @@
     shell: ./remove.sh
     args:
       chdir: '{{ cpath }}'
+    ignore_errors: true
