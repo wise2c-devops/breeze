@@ -1,0 +1,8 @@
+registry_endpoint: {{ .harbor.Inherent.endpoint }}
+registry_user: {{ .harbor.Inherent.user }}
+registry_password: {{ .harbor.Inherent.password }}
+registry_project: library
+etcd_endpoint: {{ .etcd.Inherent.endpoint }}
+prometheus_nodeport: {{ .prometheus.Property.PrometheusNodePort }}
+alertmanager_nodeport: {{ .prometheus.Property.AlertManagerNodePort }}
+grafana_nodeport: {{ .prometheus.Property.GrafanaNodePort }}

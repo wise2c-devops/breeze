@@ -1,0 +1,2 @@
+        - --alertmanager-default-base-image=ImageRepositoryIP/library/alertmanager
+        - --prometheus-default-base-image=ImageRepositoryIP/library/prometheus

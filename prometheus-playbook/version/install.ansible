@@ -1,0 +1,106 @@
+- name: setup prometheus operator
+  hosts: prometheus
+  user: root
+  vars:
+    path: /var/tmp/wise2c/prometheus
+  tasks:
+  - name: make prometheus dir
+    file:
+      path: '{{ item }}'
+      state: directory
+      mode: 0755
+    with_items:
+    - '{{ cpath }}'
+    - '{{ path }}'
+
+  - name: unarchive prometheus
+    unarchive:
+      src: file/prometheus-operator-v{{ operator_version }}-origin.tar.gz
+      dest: '{{ cpath }}'
+
+  - name: copy prometheus operator images
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+    - { src: 'file/prometheus-operator-images-v{{ operator_version }}.tar.bz2', dest: '{{ path }}' }
+    run_once: true
+
+  - name: copy prometheus operator deploy and reset script
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+      mode: 0755
+    with_items:
+    - { src: 'file/deploy.sh', dest: '{{ path }}' }
+    - { src: 'file/add-on.sh', dest: '{{ path }}' }
+    - { src: 'file/remove.sh', dest: '{{ path }}' }
+    run_once: true
+
+  - name: copy prometheus operator deploy script dependance file
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+    - { src: './components-version.txt', dest: '{{ path }}' }
+    - { src: 'file/append-lines.txt', dest: '{{ path }}' }
+    - { src: 'file/images-list.txt', dest: '{{ path }}' }
+    - { src: 'file/etcd-address.txt', dest: '{{ path }}' }
+    - { src: 'file/harbor-address.txt', dest: '{{ path }}' }
+    - { src: 'file/kube-controller-manager.yaml', dest: '{{ path }}' }
+    - { src: 'file/kube-scheduler.yaml', dest: '{{ path }}' }
+    - { src: 'file/coredns.yaml', dest: '{{ path }}' }
+    - { src: 'file/etcd.yaml', dest: '{{ path }}' }
+    run_once: true
+
+  - name: load prometheus operator images
+    docker_image:
+      load_path: '{{ path }}/{{ item }}'
+      name: prometheus
+      timeout: 600
+    with_items:
+    - prometheus-operator-images-v{{ operator_version }}.tar.bz2
+    run_once: true
+
+  - name: docker login
+    docker_login:
+      registry: '{{ registry_endpoint }}'
+      username: '{{ registry_user }}'
+      password: '{{ registry_password }}'
+      reauthorize: true
+    run_once: true
+
+  - name: set harbor address for deploy script
+    replace:
+      path: "/var/tmp/wise2c/prometheus/{{ item }}"
+      regexp: "harbor-address"
+      replace: "{{ registry_endpoint }}"
+    with_items:
+      - "harbor-address.txt"
+
+  - name: set etcd address for deploy script
+    replace:
+      path: "/var/tmp/wise2c/prometheus/{{ item }}"
+      regexp: "etcd-address"
+      replace: "{{ etcd_endpoint }}"
+    with_items:
+      - "etcd-address.txt"
+    
+  - name: set nodeport for prometheus alertmanager and grafana service
+    template:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+      - { src: 'template/prometheus-service.yaml.j2', dest: '{{ cpath }}/prometheus-service.yaml' }
+      - { src: 'template/alertmanager-service.yaml.j2', dest: '{{ cpath }}/alertmanager-service.yaml' }
+      - { src: 'template/grafana-service.yaml.j2', dest: '{{ cpath }}/grafana-service.yaml' }
+
+  - name: prometheus operator deploy
+    shell: ./deploy.sh
+    args:
+      chdir: '{{ cpath }}/'
+
+  - name: prometheus add-on deploy
+    shell: ./add-on.sh
+    args:
+      chdir: '{{ cpath }}/'
