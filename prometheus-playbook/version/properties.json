@@ -1,0 +1,34 @@
+[
+    {
+        "variable": "self",
+        "label": "PrometheusOperator node",
+        "description": "please select a kubernetes worker node for installation",
+        "type": "host",
+        "default": "",
+        "required": true
+    },
+    {
+        "variable": "PrometheusNodePort",
+        "label": "NodePort for Prometheus",
+        "description": "NodePort for Prometheus service, e.g.: 30900",
+        "type": "int",
+        "default": "30900",
+        "required": true
+    },
+    {
+        "variable": "AlertManagerNodePort",
+        "label": "NodePort for AlertManager",
+        "description": "NodePort for AlertManager service, e.g.: 30903",
+        "type": "int",
+        "default": "30903",
+        "required": true
+    },
+    {
+        "variable": "GrafanaNodePort",
+        "label": "NodePort for Grafana",
+        "description": "NodePort for Grafana service, e.g.: 30902",
+        "type": "int",
+        "default": "30902",
+        "required": true
+    }
+]

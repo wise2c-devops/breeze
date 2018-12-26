@@ -1,0 +1,9 @@
+- name: clean prometheus operator
+  hosts: all
+  user: root
+  tasks:
+  - name: stop & rm prometheus service
+    shell: ./remove.sh
+    args:
+      chdir: '{{ cpath }}'
+    ignore_errors: true
