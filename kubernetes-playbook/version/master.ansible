@@ -173,3 +173,8 @@
     kubectl apply -f {{ path }}/kube-flannel.yml
     kubectl apply -f {{ path }}/kubernetes-dashboard.yml
   run_once: true
+
+- name: execute prometheus-fix-master-nodes script
+  shell: ./prometheus-fix-master-nodes.sh
+  args:
+    chdir: '/var/tmp/wise2c/kubernetes/'
