@@ -56,3 +56,12 @@ sed -i "s/.*server:.*/ server: https:\/\/{{ endpoint }}/g" /etc/kubernetes/kubel
 ```
 其中，endpoint为breeze的web页面上Kubernetes组件所填的“Kubernetes entry point”。
 （6）安装完毕后，通过kubectl get nodes确认新节点已经添加进来。
+
+13. CoreDNS服务容器起不来，故障相关解释如下：
+https://github.com/coredns/coredns/tree/master/plugin/loop#troubleshooting-loops-in-kubernetes-clusters
+
+https://kubernetes.io/docs/setup/independent/troubleshooting-kubeadm/#coredns-pods-have-crashloopbackoff-or-error-state
+
+https://www.jianshu.com/p/08526d0ba398
+
+最常见的是/etc/resolve.conf文件里配置了错误的dns，或者压根没有做配置，系统采用了默认的127.0.0.1，这样得用命令nmtui去配置界面写入正确的dns服务器比如114.114.114.114并保存后重启网络服务。或者按简书里讲的去掉那个loop；再者或者是由于机器环境不对，得使用正确的docker版本以及关闭SElinux。
