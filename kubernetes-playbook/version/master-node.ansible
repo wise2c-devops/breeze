@@ -1,4 +1,4 @@
-- name: setup master nodes
+- name: init setup on master nodes
   include_tasks: both.ansible
 
 - name: copy k8s images
