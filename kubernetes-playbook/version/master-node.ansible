@@ -1,3 +1,6 @@
+- name: setup master nodes
+  include_tasks: both.ansible
+
 - name: copy k8s images
   copy:
     src: '{{ item.src }}'

@@ -1,88 +1,29 @@
-- name: install kubernetes package
-  hosts: all
+- name: set up kubernetes master nodes
+  hosts: master
   user: root
   vars:
     path: /var/tmp/wise2c/kubernetes
-  tasks:
-  - name: make k8s master dir
-    file:
-      path: '{{ item }}'
-      state: directory
-      mode: 0755
-    with_items:
-    - /etc/kubernetes/pki
-    - '{{ path }}'
-    - $HOME/.kube
 
-  - name: check kubernetes
+  tasks:
+  - name: check kubernetes services
     script: scripts/check_kubelet.sh
     register: check_output
 
-  - name: remove swapfile from /etc/fstab
-    mount:
-      name: swap
-      fstype: swap
-      state: absent
+  - name: setup master nodes
+    include_tasks: master-node.ansible
+    when: check_output.stdout != 'true' and add_worker_node_only != 'true'
 
-  - name: disable swap
-    command: swapoff -a
+- name: setup kubernetes worker nodes
+  hosts: node
+  user: root
+  vars:
+    path: /var/tmp/wise2c/kubernetes
 
-  - block:
-    - name: install kubernetes components
-      yum:
-        disablerepo: '*'
-        enablerepo: wise2c
-        update_cache: true
-        state: present
-        name: '{{ item }}'
-      with_items:
-      - kubernetes-cni-0.6.0
-      - kubectl-{{ kubernetes_version[1:] }}
-      - kubelet-{{ kubernetes_version[1:] }}
-      - kubeadm-{{ kubernetes_version[1:] }}
+  tasks:
+  - name: check kubernetes services
+    script: scripts/check_kubelet.sh
+    register: check_output
 
-    - name: unarchive cfssl tool
-      unarchive:
-        src: file/cfssl-tools.tar.gz
-        dest: /usr/local/bin
-
-    - name: copy prometheus k8s nodes fix scripts
-      copy:
-        src: '{{ item.src }}'
-        dest: '{{ item.dest }}'
-        mode: 0755
-      with_items:
-      - { src: 'file/prometheus-fix-master-nodes.sh', dest: '/var/tmp/wise2c/kubernetes/' }
-      - { src: 'file/prometheus-fix-worker-nodes.sh', dest: '/var/tmp/wise2c/kubernetes/' }
-
-    - name: distribute kubelet config
-      template:
-        src: '{{ item.src }}'
-        dest: '{{ item.dest }}'
-      with_items:
-      - { src: 'template/kubelet.conf.j2', dest: '/etc/systemd/system/kubelet.service.d/wise2c-kubelet.conf' }
-
-    - name: reload & enable kubelet
-      systemd:
-        name: kubelet
-        daemon_reload: true
-        enabled: true
-
-    - name: set sysctl
-      sysctl:
-        name: '{{ item }}'
-        value: 1
-        state: present
-        reload: true
-      with_items:
-      - net.bridge.bridge-nf-call-iptables
-      - net.bridge.bridge-nf-call-ip6tables
-
-    - name: setup master
-      include_tasks: master.ansible
-      when: role == 'master'
-
-    - name: setup node
-      include_tasks: node.ansible
-      when: role == 'node'
+  - name: setup worker nodes
+    include_tasks: worker-node.ansible
     when: check_output.stdout != 'true'
