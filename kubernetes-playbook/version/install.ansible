@@ -6,7 +6,7 @@
 
   tasks:
   - name: check kubernetes services
-    script: scripts/check_kubelet.sh
+    script: scripts/check_kubelet_kubeproxy.sh
     register: check_output
 
   - name: setup master nodes
@@ -21,7 +21,7 @@
 
   tasks:
   - name: check kubernetes services
-    script: scripts/check_kubelet.sh
+    script: scripts/check_kubelet_kubeproxy.sh
     register: check_output
 
   - name: setup worker nodes
