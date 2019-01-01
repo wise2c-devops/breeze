@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
-# Check if there are no cert files under /etc/kubernetes/pki
-if [ "`ls -A /etc/kubernetes/pki/`" != "" ]; then
+# Check if there are no api server cert files under /etc/kubernetes/pki
+if [ -f "/etc/kubernetes/pki/apiserver.crt" ] || [ -f "/etc/kubernetes/pki/apiserver.key" ] ; then
   exit 1
 fi
 
