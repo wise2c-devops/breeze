@@ -11,7 +11,7 @@
 
   - name: setup master nodes
     include_tasks: master-node.ansible
-    when: check_output.stdout != 'true' and add_worker_node_only != 'true'
+    when: (not (check_output.stdout == True)) and (not (add_worker_node_only == True))
 
 - name: setup kubernetes worker nodes
   hosts: node
@@ -26,4 +26,4 @@
 
   - name: setup worker nodes
     include_tasks: worker-node.ansible
-    when: check_output.stdout != 'true'
+    when: not (check_output.stdout == True)
