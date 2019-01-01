@@ -6,6 +6,24 @@
     path: /var/tmp/wise2c/docker
 
   tasks:
+  - name: get seed ip
+    shell:
+      echo $SSH_CONNECTION | cut -d " " -f 1
+    register: ip
+
+  - name: add seed to /etc/hosts
+    blockinfile:
+      path: /etc/hosts
+      block: '{{ ip.stdout }} {{ wise2c_seed_host }}'
+      marker: '# {mark} WISE2C DEPLOY MANAGED BLOCK {{ wise2c_seed_host }}'
+
+  - name: add to /etc/hosts
+    blockinfile:
+      path: /etc/hosts
+      block: '{{ item.key }} {{ item.value.hostname }}'
+      marker: "# {mark} WISE2C DEPLOY MANAGED BLOCK {{ item.key }}"
+    with_dict: "{{ hostvars }}"
+
   - name: check docker
     script: scripts/check_docker.sh {{ harbor }}
     register: check_output

@@ -88,45 +88,44 @@
       enabled: true
       state: started
 
-  - block:    
-    - name: clear docker config
-      copy:
-        content: ''
-        dest: '{{ item }}'
-      with_items:
-      - /etc/sysconfig/docker
-      - /etc/sysconfig/docker-storage
-      - /etc/sysconfig/docker-storage-setup
-      - /etc/sysconfig/docker-network
+  - name: clear docker config
+    copy:
+      content: ''
+      dest: '{{ item }}'
+    with_items:
+    - /etc/sysconfig/docker
+    - /etc/sysconfig/docker-storage
+    - /etc/sysconfig/docker-storage-setup
+    - /etc/sysconfig/docker-network
 
-    - name: init docker to create folder /etc/docker
-      systemd:
-        name: docker
-        daemon_reload: true
-        enabled: true
-        state: restarted
+  - name: init docker to create folder /etc/docker
+    systemd:
+      name: docker
+      daemon_reload: true
+      enabled: true
+      state: restarted
 
-    - name: distribute docker config
-      template:
-        src: '{{ item.src }}'
-        dest: '{{ item.dest }}'
-      with_items:
-      - { src: 'template/daemon.json.j2', dest: '/etc/docker/daemon.json' }
+  - name: distribute docker config
+    template:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+    - { src: 'template/daemon.json.j2', dest: '/etc/docker/daemon.json' }
 
-    - name: reload & restart docker
-      systemd:
-        name: docker
-        daemon_reload: true
-        enabled: true
-        state: restarted
+  - name: reload & restart docker
+    systemd:
+      name: docker
+      daemon_reload: true
+      enabled: true
+      state: restarted
 
-    - name: set sysctl
-      sysctl:
-        name: '{{ item }}'
-        value: 1
-        state: present
-        reload: true
-      with_items:
-      - net.ipv4.ip_forward
-      - net.bridge.bridge-nf-call-iptables
-      - net.bridge.bridge-nf-call-ip6tables
+  - name: set sysctl
+    sysctl:
+      name: '{{ item }}'
+      value: 1
+      state: present
+      reload: true
+    with_items:
+    - net.ipv4.ip_forward
+    - net.bridge.bridge-nf-call-iptables
+    - net.bridge.bridge-nf-call-ip6tables
