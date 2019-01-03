@@ -204,3 +204,27 @@ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | gre
 ![Alt](./manual/KubernetesDashboard-002.png)
 
 ![Alt](./manual/KubernetesDashboard-003.png)
+
+安装好Prometheus之后，可以访问以下服务页面：
+
+Grafana：
+
+http://任意服务器IP:30902
+
+![Alt](./manual/Grafana.png)
+
+Prometheus：
+
+http://任意服务器IP:30900
+
+![Alt](./manual/Prometheus.png)
+
+Alertmanager：
+
+http://任意服务器IP:30903
+
+![Alt](./manual/Alertmanager.png)
+
+查看集群相关状态：
+
+![Alt](./manual/ClusterCheck.png)
