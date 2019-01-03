@@ -30,8 +30,12 @@ https://github.com/wise2c-devops/breeze/raw/master/manual/BreezeManual-CN.pdf
 
 操作步骤如下：
 
-1. 软件的使用非常简单，只需要在希望部署的Kubernetes版本分支中下载Breeze的docker-compose.yml文件（Master分支对应Latest Kubernetes版本）
-![Alt](./manual/BreezeVersionSelect.png)
+1. 软件的使用非常简单，只需要选择相应的Release Tag并下载其中的docker-compose.yml文件：
+
+  （Tags列出的版本号a.b.c.d其中前三位a.b.c对应于Kubernetes的发行版本号，第四位只是Breeze自身部署功能所做的修订，不涉及对Kubernetes的任何修改）
+
+![Alt](./manual/SelectTag.png)
+
 确保您的Linux主机已经安装好了docker以及docker-compose，具体步骤参考以下内容。
 
 （1）对部署机取消SELINUX设定及放开防火墙
@@ -204,3 +208,41 @@ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | gre
 ![Alt](./manual/KubernetesDashboard-002.png)
 
 ![Alt](./manual/KubernetesDashboard-003.png)
+
+安装好Prometheus之后，可以访问以下服务页面：
+
+Grafana：
+
+http://任意服务器IP:30902
+
+![Alt](./manual/Grafana.png)
+
+Prometheus：
+
+http://任意服务器IP:30900
+
+![Alt](./manual/Prometheus.png)
+
+Alertmanager：
+
+http://任意服务器IP:30903
+
+![Alt](./manual/Alertmanager.png)
+
+查看集群相关状态：
+
+![Alt](./manual/ClusterCheck.png)
+
+**如何在已经部署的集群内添加新的Worker Nodes?**
+
+* (1) 在Breeze界面添加主机（设定主机名、IP地址、备注）。
+
+* (2) 在Breeze界面编辑Kubernetes角色，将新主机加入到kubernetes worker nodes列表并勾选"Just add new worker nodes, do not reinstall this cluster"。
+
+![Alt](./manual/AddWorkerNodes.png)
+
+* (3) 在Breeze界面仅仅勾选Docker和Kubernetes并开始部署。
+
+![Alt](./manual/SelectDockerWorkerNodes.png)
+
+
