@@ -1,3 +1,6 @@
+- name: init setup on worker nodes
+  include_tasks: both.ansible
+
 - name: copy k8s admin.conf
   copy:
     src: '{{ item.src }}'
