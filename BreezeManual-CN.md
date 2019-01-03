@@ -235,13 +235,13 @@ http://任意服务器IP:30903
 
 **如何在已经部署的集群内添加新的Worker Nodes?**
 
-* 1. 在Breeze界面添加主机（设定主机名、IP地址、备注）。
+* (1) 在Breeze界面添加主机（设定主机名、IP地址、备注）。
 
-* 2. 在Breeze界面编辑Kubernetes角色，将新主机加入到kubernetes worker nodes列表并勾选"Just add new worker nodes, do not reinstall this cluster"。
+* (2) 在Breeze界面编辑Kubernetes角色，将新主机加入到kubernetes worker nodes列表并勾选"Just add new worker nodes, do not reinstall this cluster"。
 
 ![Alt](./manual/AddWorkerNodes.png)
 
-* 3. 在Breeze界面仅仅勾选Docker和Kubernetes并开始部署。
+* (3) 在Breeze界面仅仅勾选Docker和Kubernetes并开始部署。
 
 ![Alt](./manual/SelectDockerWorkerNodes.png)
 
