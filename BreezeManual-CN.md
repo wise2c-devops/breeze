@@ -30,7 +30,9 @@ https://github.com/wise2c-devops/breeze/raw/master/manual/BreezeManual-CN.pdf
 
 操作步骤如下：
 
-1. 软件的使用非常简单，只需要选择相应的Release Tag（Tags列出的版本号a.b.c.d其中前三位a.b.c对应于Kubernetes的发行版本号，第四位只是Breeze自身部署功能所做的修订，不涉及对Kubernetes的任何修改）并下载其中的docker-compose.yml文件：
+1. 软件的使用非常简单，只需要选择相应的Release Tag并下载其中的docker-compose.yml文件：
+
+  （Tags列出的版本号a.b.c.d其中前三位a.b.c对应于Kubernetes的发行版本号，第四位只是Breeze自身部署功能所做的修订，不涉及对Kubernetes的任何修改）
 
 ![Alt](./manual/SelectTag.png)
 
