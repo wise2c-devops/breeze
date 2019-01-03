@@ -2,7 +2,7 @@ version: '2'
 services:
   deploy:
     container_name: deploy-main
-    image: wise2c/pagoda:v1.0
+    image: wise2c/pagoda:v1.1
     restart: always
     entrypoint: sh
     command:
