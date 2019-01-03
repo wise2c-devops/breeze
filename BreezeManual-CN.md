@@ -157,8 +157,6 @@ vip for k8s master是指三个k8s master服务器的高可用虚拟浮动IP地�
 
 ![Alt](./manual/haproxy-keepalived-001.png)
 
-![Alt](./manual/haproxy-keepalived-002.png)
-
 Etcd可以选择部署于K8S Master节点也可以选择独立的三台主机：
 
 ![Alt](./manual/BreezeScreenShots020.png)
