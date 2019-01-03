@@ -31,7 +31,7 @@ https://github.com/wise2c-devops/breeze/raw/master/manual/BreezeManual-CN.pdf
 操作步骤如下：
 
 1. 软件的使用非常简单，只需要在希望部署的Kubernetes版本分支中下载Breeze的docker-compose.yml文件（Master分支对应Latest Kubernetes版本）
-![Alt](./manual/BreezeVersionSelect.png)
+![Alt](./manual/SelectTag.png)
 确保您的Linux主机已经安装好了docker以及docker-compose，具体步骤参考以下内容。
 
 （1）对部署机取消SELINUX设定及放开防火墙
