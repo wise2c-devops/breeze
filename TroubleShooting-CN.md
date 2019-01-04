@@ -18,7 +18,9 @@ docker最终还是要调用iptables命令的，它不在乎你的系统底层究
     hostnamectl set-hostname 主机名 
     ```
     确保环境合规。
-11. 更新docker-compose.yaml文件之前：
+11. 如果部署机经常用来做不同版本的部署，则需要在部署新版本前做清理，命令如下：
+
+更新docker-compose.yaml文件之前：
 ```
 docker-compose stop
 docker-compose rm -f
@@ -28,3 +30,4 @@ docker volume rm $(docker volume ls |grep playbook |awk '{print $2}')
 ```
 docker compose up -d
 ```
+
