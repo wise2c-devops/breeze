@@ -1,4 +1,4 @@
-- name: clean k8s master
+- name: reset kubernetes cluster
   hosts: all
   user: root
   tasks:
@@ -6,7 +6,15 @@
     shell: |
       kubeadm reset -f
 
-  - name: install kubernetes components
+  - name: iptables reset
+    shell: |
+      iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
+
+  - name: ipvs reset
+    shell: |
+      ipvsadm --clear
+
+  - name: remove kubernetes components
     yum:
       state: absent
       disablerepo: '*'
@@ -18,7 +26,7 @@
     - kubelet-{{ kubernetes_version[1:] }}
     - kubeadm-{{ kubernetes_version[1:] }}
     
-  - name: clean link
+  - name: clean flannel link
     shell: |
       ip link delete cni0
       ip link delete flannel.1

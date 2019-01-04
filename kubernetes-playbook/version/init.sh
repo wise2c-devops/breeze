@@ -41,18 +41,18 @@ echo "flannel_version: ${flannel_version}-amd64" >> ${path}/yat/all.yml.gotmpl
 #    | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
 
 # Fix the bug coreos/flannel#1044
-curl -sSL https://github.com/wise2c-devops/breeze/raw/v1.13/kubernetes-playbook/kube-flannel.yml \
+curl -sSL https://github.com/wise2c-devops/breeze/raw/v1.11/kubernetes-playbook/kube-flannel.yml \
     | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
 
 dashboard_repo=${kubernetes_repo}
-dashboard_version="v1.10.0"
+dashboard_version="v1.10.1"
 echo "dashboard_repo: ${dashboard_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "dashboard_version: ${dashboard_version}" >> ${path}/yat/all.yml.gotmpl
 
 #curl -sS https://raw.githubusercontent.com/kubernetes/dashboard/${dashboard_version}/src/deploy/recommended/kubernetes-dashboard.yaml \
 #    | sed -e "s,k8s.gcr.io,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kubernetes-dashboard.yml.j2
 
-curl -sSL https://github.com/wise2c-devops/breeze/raw/v1.13/kubernetes-playbook/kubernetes-dashboard-wise2c.yaml.j2 \
+curl -sSL https://github.com/wise2c-devops/breeze/raw/v1.11/kubernetes-playbook/kubernetes-dashboard-wise2c.yaml.j2 \
     | sed -e "s,k8s.gcr.io,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kubernetes-dashboard.yml.j2
     
 echo "=== pulling flannel image ==="

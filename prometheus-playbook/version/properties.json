@@ -1,7 +1,7 @@
 [
     {
         "variable": "self",
-        "label": "PrometheusOperator node",
+        "label": "PrometheusOperator installation node",
         "description": "please select a kubernetes worker node for installation",
         "type": "host",
         "default": "",

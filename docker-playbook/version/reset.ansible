@@ -2,16 +2,12 @@
   hosts: hosts
   user: root
   tasks:
-  # - name: install docker
-  #   yum:
-  #     disablerepo: '*'
-  #     enablerepo: wise2c
-  #     state: absent
-  #     name: '{{ item }}'
-  #   with_items:
-  #   - rsync
-  #   - jq
-  #   - chrony
-  #   - docker
-  #   - python-docker-py
-  #   - docker-compose
+  - name: remove docker
+    yum:
+      disablerepo: '*'
+      enablerepo: wise2c
+      state: absent
+      name: '{{ item }}'
+    with_items:
+    - docker-ce
+    - docker-compose
