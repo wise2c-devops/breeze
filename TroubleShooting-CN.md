@@ -18,3 +18,13 @@ docker最终还是要调用iptables命令的，它不在乎你的系统底层究
     hostnamectl set-hostname 主机名 
     ```
     确保环境合规。
+11. 更新docker-compose.yaml文件之前：
+```
+docker-compose stop
+docker-compose rm -f
+docker volume rm $(docker volume ls |grep playbook |awk '{print $2}')
+```
+下载新的docker-compose.yaml文件并执行：
+```
+docker compose up -d
+```
