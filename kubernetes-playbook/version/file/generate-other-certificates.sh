@@ -1,4 +1,10 @@
 #!/bin/bash
+set -e
+# Check if there are no cert files under /etc/kubernetes/pki
+if [ "`ls -A /etc/kubernetes/pki/`" != "" ]; then
+  exit 1
+fi
+
 # K8S CA
 
 cd /var/tmp/wise2c/kubernetes/

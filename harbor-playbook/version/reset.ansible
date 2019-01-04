@@ -2,12 +2,17 @@
   hosts: harbor
   user: root
   tasks:
+#  - name: stop & rm harbor
+#    docker_service:
+#      project_src: '{{ cpath }}/harbor'
+#      state: absent
+#      remove_volumes: true
+
   - name: stop & rm harbor
-    docker_service:
-      project_src: '{{ cpath }}/harbor'
-      state: absent
-      remove_volumes: true
-  
+    shell: docker-compose stop && docker-compose rm -f
+    args:
+      chdir: '{{ cpath }}/harbor'
+ 
   - name: clean harbor directory
     file:
       path: '{{ item }}'
@@ -19,4 +24,6 @@
     - /data/config
     - /data/job_logs
     - /data/psc
+    - /data/secretkey
+    - /data/redis
     - '{{ cpath }}'

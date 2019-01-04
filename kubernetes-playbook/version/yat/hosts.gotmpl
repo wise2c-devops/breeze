@@ -9,6 +9,6 @@
 {{ end }}
 
 [node]
-{{ range $v := .kubernetes.Hosts.node -}}
-{{ $v.IP }} role=node
+{{ range $v := .kubernetes.Hosts.worker -}}
+{{ $v.IP }} role=worker
 {{ end }}
