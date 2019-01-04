@@ -25,34 +25,15 @@ docker最终还是要调用iptables命令的，它不在乎你的系统底层究
     ```
     确保环境合规。
 
-11. 如何在已经部署好的K8S集群内添加新的Node节点
+11. 如果部署机经常用来做不同版本的部署，则需要在部署新版本前做清理，命令如下：
 
-##v1.12.1及之前版本的breeze
-
-（1）做好部署机到新加节点的ssh免密登录工作。
-
-（2）在主机页面添加新的主机。
-
-（3）在服务组件页面，编辑kubernetes组件，在“Kubernetes node hosts”项中，把新添加的主机选择进来，点确定。
-
-（4）在服务组件页面，选择docker和Kubernetes服务，去掉registry和etcd前面的对勾，然后点击开始安装。
-
-（5）安装完毕后，通过kubectl get nodes确认新节点已经添加进来。
-
-##v1.12.2及之后版本的breeze
-
-（1）做好部署机到新加节点的ssh免密登录工作。
-
-（2）在主机页面添加新的主机。
-
-（3）在服务组件页面，编辑kubernetes组件，在“Kubernetes node hosts”项中，把新添加的主机选择进来，点确定。
-
-（4）在服务组件页面，选择docker和Kubernetes，去掉其它所有项目，在kubernetes组件里，清空master节点主机，只保留新增的node主机，然后点击开始安装。部署程序会在新添加的主机上安装docker。**注意：一定不要保留Kubernetes里的master主机，因为新版的breeze在Kubernetes步骤会创建新的证书，重启节点后由于证书的变动会导致集群不可用。**
-
-（5）在每个新添加节点执行如下命令：
+更新docker-compose.yaml文件之前：
 ```
-kubeadm join --token 904250.ab14566918c0703b {{ endpoint }} --discovery-token-unsafe-skip-ca-verification --ignore-preflight-errors=cri {{ endpoint }}。
-sed -i "s/.*server:.*/ server: https:\/\/{{ endpoint }}/g" /etc/kubernetes/kubelet.conf
+docker-compose stop
+docker-compose rm -f
+docker volume rm $(docker volume ls |grep playbook |awk '{print $2}')
 ```
-其中，endpoint为breeze的web页面上Kubernetes组件所填的“Kubernetes entry point”。
-（6）安装完毕后，通过kubectl get nodes确认新节点已经添加进来。
+下载新的docker-compose.yaml文件并执行：
+```
+docker compose up -d
+```
