@@ -16,6 +16,8 @@ for file in $(cat images-list.txt); do docker push $MyImageRepositoryIP/$MyImage
 echo 'Images pushed.'
 
 ######### Update deploy yaml files #########
+rm -rf prometheus-operator-$PrometheusOperatorVersion
+tar zxvf prometheus-operator-v$PrometheusOperatorVersion-origin.tar.gz
 cd prometheus-operator-$PrometheusOperatorVersion
 sed -i "s/quay.io\/coreos/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "quay.io/coreos" ./ |grep .yaml)
 sed -i "s/quay.io\/prometheus/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "quay.io/prometheus" ./ |grep .yaml)
