@@ -152,8 +152,6 @@ nodeRegistration:
   taints:
   - effect: NoSchedule
     key: node-role.kubernetes.io/master
-  kubeletExtraArgs:
-    pod-infra-container-image: {{ registry_endpoint }}/{{ registry_project }}/pause:3.1
 schedulerExtraArgs:
   feature-gates: LocalStorageCapacityIsolation=true
 unifiedControlPlaneImage: ""
