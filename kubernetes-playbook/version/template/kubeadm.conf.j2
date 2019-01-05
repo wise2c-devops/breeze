@@ -21,6 +21,3 @@ schedulerExtraArgs:
 apiServerCertSANs:
   - {{ endpoint.split(':')[0] }}
 imageRepository: {{ registry_endpoint }}/{{ registry_project }}
-nodeRegistration:
-  kubeletExtraArgs:
-    pod-infra-container-image: {{ registry_endpoint }}/{{ registry_project }}/pause:3.1
