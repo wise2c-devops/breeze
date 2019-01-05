@@ -64,6 +64,7 @@
     - python-docker-py
     - docker-compose
     - chrony
+    - ipvsadm
 
   - name: distribute chrony server config
     template:
