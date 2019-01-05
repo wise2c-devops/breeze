@@ -8,7 +8,7 @@
 
   - name: iptables reset
     shell: |
-      iptables -F && iptables -t nat -F && iptables -t mangle -F && iptables -X
+      firewall-cmd --complete-reload
 
   - name: ipvs reset
     shell: |
