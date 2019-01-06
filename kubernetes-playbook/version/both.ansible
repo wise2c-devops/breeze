@@ -50,7 +50,7 @@
         src: '{{ item.src }}'
         dest: '{{ item.dest }}'
       with_items:
-      - { src: 'template/kubelet.conf.j2', dest: '/etc/systemd/system/kubelet.service.d/20-kubelet.conf' }
+      - { src: 'template/kubelet.conf.j2', dest: '/etc/sysconfig/kubelet' }
 
     - name: reload & enable kubelet
       systemd:
