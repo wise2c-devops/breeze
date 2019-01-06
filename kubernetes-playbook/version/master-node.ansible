@@ -63,6 +63,22 @@
   - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
   run_once: true
 
+- name: Remove k8s.gcr.io images tag
+  docker_image:
+    state: absent
+    name: '{{ item.repo }}/{{ item.name }}'
+    tag: '{{ item.tag }}'
+  with_items:
+  - { repo: '{{ kubernetes_repo }}', name: 'kube-controller-manager-amd64', tag: '{{ kubernetes_version }}' }
+  - { repo: '{{ kubernetes_repo }}', name: 'kube-apiserver-amd64', tag: '{{ kubernetes_version }}' }
+  - { repo: '{{ kubernetes_repo }}', name: 'kube-scheduler-amd64', tag: '{{ kubernetes_version }}' }
+  - { repo: '{{ kubernetes_repo }}', name: 'kube-proxy-amd64', tag: '{{ kubernetes_version }}' }
+  - { repo: '{{ kubernetes_repo }}', name: 'pause', tag: '{{ pause_version }}' }
+  - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
+  - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
+  - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
+  run_once: ture
+
 - name: generate kubeadm config
   template:
     src: '{{ item.src }}'
