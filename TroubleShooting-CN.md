@@ -1,12 +1,26 @@
 # 常见故障排错方法
 1. 前端Web UI的日志如果还不能判断出具体问题所在，可以在部署机上输入命令 docker logs -f deploy-main 来获取更详细的日志
+
 2. docker、harbor、etcd、k8s这四个角色是缺一不可的，不能缺少组件，如果需要高可用，则Loadbalance角色必选。
+
 3. 节点主机内存不能太低，建议最少4G配置，否则kubeadm部署过程中master节点可能会卡死在等待kubelet服务启动的过程中而导致最终部署失败。
+
 4. Breeze部署工具底层是调用ansible执行playbook脚本，所以对宿主机环境而言，python的版本兼容性是相关联的，如果在部署中看见了Failed to import docker-py - No module named 'requests.packages.urllib3'. Try pip install docker-py这样的信息，请修正您宿主机的python依赖问题后再进行部署。
+参考方法如下：
+```
+yum remove -y python-docker-py
+pip install urllib3==1.21.1
+pip install docker-py
+```
+
 5. Breeze暂不支持非root账号的环境部署，因此请确保您部署机到各个服务器节点是直接root ssh免密的。
+
 6. 部署好之后，dashboard的端口是30300，但是谷歌浏览器是不可以访问的，火狐可以，这个是浏览器安全设置问题，和部署没有关系。
+
 7. 由于CentOS的特性，部署之后内核并未启动ipvs，因此kube-proxy服务中会看见警告日志，退回iptables方式，这个只需要将所有节点重启一次即可解决。
+
 8. 在部署机上，一定不要忘记执行“（1）对部署机取消SELINUX设定及放开防火墙”，否则会导致selinux的限制而无法创建数据库文件cluster.db，页面提示“unable to open database file”。
+
 9. 不要这样去关闭防火墙 systemctl stop firewalld 或 systemctl disable firewalld，我们的部署过程中已经做了正确的防火墙规则设定，服务是必须开启的，只是设定为可信任模式，也就是放开所有访问策略，如果你需要设定严格的防火墙规则，请自行学习研究清楚firewall-cmd的用法。
 
 详细注解：
@@ -18,6 +32,7 @@ docker最终还是要调用iptables命令的，它不在乎你的系统底层究
     hostnamectl set-hostname 主机名 
     ```
     确保环境合规。
+
 11. 如果部署机经常用来做不同版本的部署，则需要在部署新版本前做清理，命令如下：
 
 更新docker-compose.yaml文件之前：
