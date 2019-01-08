@@ -1,6 +1,6 @@
 #! /bin/bash
-kubelet_code_stats=`curl -sLk -o /dev/null -w %{response_code} https://127.0.0.1:10250/stats`
-kubelet_code_errortest=`curl -sLk -o /dev/null -w %{response_code} https://127.0.0.1:10250/errortest`
+kubelet_code_stats=`curl -sLk -o /dev/null -w %{response_code} https://127.0.0.1:10255/stats`
+kubelet_code_errortest=`curl -sLk -o /dev/null -w %{response_code} https://127.0.0.1:10255/errortest`
 kubeproxy_code_healthz=`curl -sLk -o /dev/null -w %{response_code} http://127.0.0.1:10256/healthz`
 kubeproxy_code_errortest=`curl -sLk -o /dev/null -w %{response_code} http://127.0.0.1:10256/errortest`
 
