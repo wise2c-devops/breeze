@@ -12,6 +12,11 @@ yum remove -y python-docker-py
 pip install urllib3==1.21.1
 pip install docker-py
 ```
+解决后的验证条件是能正常运行下面命令不出错：
+```
+python
+import docker
+```
 
 5. Breeze暂不支持非root账号的环境部署，因此请确保您部署机到各个服务器节点是直接root ssh免密的。
 
