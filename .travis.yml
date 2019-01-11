@@ -16,4 +16,4 @@ deploy:
   script: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD && docker push wise2c/playbook:$TRAVIS_BRANCH
   on:
     all_branches: true
-#    condition: "$TRAVIS_BRANCH =~ ^v[0-9]+\\.[0-9]+(\\.[0-9]+)?(-\\S*)?$"
+    condition: "$TRAVIS_BRANCH =~ ^v[0-9]+\\.[0-9]+(\\.[0-9]+)?(-\\S*)?$"
