@@ -4,14 +4,14 @@ set -e
 
 path=`dirname $0`
 
-kubernetes_version=1.13.1
+kubernetes_version=1.13.2
 harbor_version=1.7.1
 docker_version=18.06.1
 haproxy_version=1.8.14
 keepalived_version=1.3.5
 loadbalancer_version=HAProxy-${haproxy_version}_Keepalived-${keepalived_version}
 prometheus_version=2.5.0
-prometheus_operator_version=0.26.0
+prometheus_operator_version=0.27.0
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
 mv ${path}/harbor-playbook/version ${path}/harbor-playbook/v${harbor_version}
