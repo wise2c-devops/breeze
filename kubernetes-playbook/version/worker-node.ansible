@@ -8,10 +8,20 @@
 #  with_items:
 #  - { src: 'file/admin.conf', dest: '{{ ansible_env.HOME }}/.kube/config' }
 
+- name: copy kubeadm.conf
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+  - { src: 'template/kubeadm.conf', dest: '{{ path }}/kubeadm.conf' }
+
 - name: setup node
   shell: |
-    kubeadm join --token {{ token }} --discovery-token-unsafe-skip-ca-verification --ignore-preflight-errors=cri {{ endpoint }}
+    /var/tmp/wise2c/kubernetes/get-kubeadm-token.sh
+    kubeadm join --token `cat /var/tmp/wise2c/kubernetes/kubeadm.conf |grep token: |awk '{print $2}'` --discovery-token-unsafe-skip-ca-verification --ignore-preflight-errors=cri {{ endpoint }}
+    rm -f /var/tmp/wise2c/kubernetes/kubeadm.conf
     sed -i "s/.*server:.*/    server: https:\/\/{{ endpoint }}/g" /etc/kubernetes/kubelet.conf
+
 #    sed -i "s/.*server:.*/    server: https:\/\/{{ endpoint }}/g" $HOME/.kube/config
 #    chown $(id -u):$(id -g) $HOME/.kube/config
 

@@ -173,6 +173,7 @@
     flat: true
   with_items:
   - { src: '{{ path }}/kubeadm.conf', dest: 'template/kubeadm.conf' }
+  run_once: true
 
 - name: copy kubeadm.conf
   copy:
