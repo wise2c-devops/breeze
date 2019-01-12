@@ -104,7 +104,7 @@
   template:
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
-    mode: 0777
+    mode: 0755
   with_items:
   - { src: 'file/generate-other-certificates.sh', dest: '{{ path }}/' }
   - { src: 'file/generate-apiserver-certificate.sh', dest: '{{ path }}/' }
@@ -152,6 +152,35 @@
   raw: |
     /var/tmp/wise2c/kubernetes/generate-apiserver-certificate.sh
 
+- name: copy kubeadm-token.sh
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: 0755
+  with_items:
+  - { src: 'file/kubeadm-token.sh', dest: '{{ path }}/' }
+
+- name: kubeadm token generate
+  shell: ./kubeadm-token.sh
+  args:
+    chdir: '{{ path }}'
+  run_once: true
+
+- name: fetch kubeadm.conf
+  fetch:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    flat: true
+  with_items:
+  - { src: '{{ path }}/kubeadm.conf', dest: 'template/kubeadm.conf' }
+
+- name: copy kubeadm.conf
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+  - { src: 'template/kubeadm.conf', dest: '{{ path }}/' }
+
 - name: kubeadm init
   shell: |
     kubeadm init --config {{ path }}/kubeadm.conf
@@ -179,4 +208,4 @@
 - name: execute prometheus-fix-master-nodes script
   shell: ./prometheus-fix-master-nodes.sh
   args:
-    chdir: '/var/tmp/wise2c/kubernetes/'
+    chdir: '{{ path }}'
