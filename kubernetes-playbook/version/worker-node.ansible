@@ -13,7 +13,7 @@
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
   with_items:
-  - { src: 'file/kubeadm.conf', dest: '{{ path }}/kubeadm.conf' }
+  - { src: 'template/kubeadm.conf', dest: '{{ path }}/kubeadm.conf' }
 
 - name: setup node
   shell: |
