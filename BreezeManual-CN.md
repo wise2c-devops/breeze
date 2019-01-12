@@ -179,7 +179,7 @@ kubernetes entry point是指高可用的一个设定值，如果生产环境有�
 
 接下来是可选安装项Prometheus（基于Prometheus Operator方式部署，集成Prometheus、Alertmanager、Grafana），这里请择一台Worker节点进行部署即可，有三个服务暴露端口可自行设定，注意NodePort端口号大于30000。
 
-![Alt](./manual/Prometheus.png)
+![Alt](./manual/prometheus-role.png)
 
 所有角色定义完成如下：
 
