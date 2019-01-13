@@ -9,11 +9,11 @@
       src: '{{ item.src }}'
       dest: '{{ item.dest }}'
     with_items:
-    - { src: 'file/admin.conf', dest: '{{ ansible_env.HOME }}/.kube/config' }
+    - { src: '../../kubernetes-playbook/{{ kubernetes_version }}/file/admin.conf', dest: '{{ ansible_env.HOME }}/.kube/config' }
 
-  - name: setup kubectl cert
+  - name: setup kubectl certification
     shell: |
-      sed -i "s/.*server:.*/    server: https:\/\/{{ endpoint }}/g" $HOME/.kube/config
+      sed -i "s/.*server:.*/    server: https:\/\/{{ kubernetes_endpoint }}/g" $HOME/.kube/config
       chown $(id -u):$(id -g) $HOME/.kube/config
 
   - name: make prometheus dir
