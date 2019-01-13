@@ -1,19 +1,19 @@
-- name: copy k8s admin.conf for prometheus installation
-  copy:
-    src: '{{ item.src }}'
-    dest: '{{ item.dest }}'
-  with_items:
-  - { src: 'file/admin.conf', dest: '{{ ansible_env.HOME }}/.kube/config' }
-
-- name: setup kubectl cert
-  shell: |
-    sed -i "s/.*server:.*/    server: https:\/\/{{ endpoint }}/g" $HOME/.kube/config
-    chown $(id -u):$(id -g) $HOME/.kube/config
-
 - name: clean prometheus operator
   hosts: all
   user: root
   tasks:
+  - name: copy k8s admin.conf for prometheus installation
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+    - { src: 'file/admin.conf', dest: '{{ ansible_env.HOME }}/.kube/config' }
+
+  - name: setup kubectl cert
+    shell: |
+      sed -i "s/.*server:.*/    server: https:\/\/{{ endpoint }}/g" $HOME/.kube/config
+      chown $(id -u):$(id -g) $HOME/.kube/config
+
   - name: stop & rm prometheus service
     shell: ./remove.sh
     args:
@@ -25,4 +25,4 @@
     path: '{{ item }}'
     state: absent
   with_items:
-  - {{ ansible_env.HOME }}/.kube/config
+  - '{{ ansible_env.HOME }}/.kube/config'
