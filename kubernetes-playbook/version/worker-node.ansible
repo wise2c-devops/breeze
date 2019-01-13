@@ -1,13 +1,6 @@
 - name: init setup on worker nodes
   include_tasks: both.ansible
 
-#- name: copy k8s admin.conf
-#  copy:
-#    src: '{{ item.src }}'
-#    dest: '{{ item.dest }}'
-#  with_items:
-#  - { src: 'file/admin.conf', dest: '{{ ansible_env.HOME }}/.kube/config' }
-
 - name: copy kubeadm.conf
   copy:
     src: '{{ item.src }}'
@@ -21,9 +14,6 @@
     kubeadm join --token `cat /var/tmp/wise2c/kubernetes/kubeadm.conf |grep token: |awk '{print $2}'` --discovery-token-unsafe-skip-ca-verification --ignore-preflight-errors=cri {{ endpoint }}
     rm -f /var/tmp/wise2c/kubernetes/kubeadm.conf
     sed -i "s/.*server:.*/    server: https:\/\/{{ endpoint }}/g" /etc/kubernetes/kubelet.conf
-
-#    sed -i "s/.*server:.*/    server: https:\/\/{{ endpoint }}/g" $HOME/.kube/config
-#    chown $(id -u):$(id -g) $HOME/.kube/config
 
 - name: restart kubelet
   systemd: 
