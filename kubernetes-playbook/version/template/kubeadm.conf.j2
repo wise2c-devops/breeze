@@ -21,3 +21,6 @@ schedulerExtraArgs:
 apiServerCertSANs:
   - {{ endpoint.split(':')[0] }}
 imageRepository: {{ registry_endpoint }}/{{ registry_project }}
+kubeProxy:
+  config:
+    mode: ipvs
