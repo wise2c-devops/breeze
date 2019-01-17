@@ -152,13 +152,14 @@
   raw: |
     /var/tmp/wise2c/kubernetes/generate-apiserver-certificate.sh
 
-- name: copy kubeadm-token.sh
+- name: copy kubeadm-token.sh and update-api-advertise-address.sh
   copy:
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
     mode: 0755
   with_items:
   - { src: 'file/kubeadm-token.sh', dest: '{{ path }}/' }
+  - { src: 'file/update-api-advertise-address.sh', dest: '{{ path }}/' }
 
 - name: kubeadm token generate
   shell: ./kubeadm-token.sh
@@ -181,6 +182,11 @@
     dest: '{{ item.dest }}'
   with_items:
   - { src: 'template/kubeadm.conf', dest: '{{ path }}/' }
+
+- name: update apiserver advertise address.sh
+  shell: ./update-api-advertise-address.sh
+  args:
+    chdir: '{{ path }}'
 
 - name: kubeadm init
   shell: |
