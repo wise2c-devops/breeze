@@ -1,22 +1,25 @@
 global
-log 127.0.0.1 local0
-log 127.0.0.1 local1 notice
-maxconn 4096
-#chroot /usr/share/haproxy
-#user haproxy
-#group haproxy
-daemon
+  log         127.0.0.1 local0
+  log         127.0.0.1 local1 notice
+  maxconn     20000
+  daemon
+  spread-checks 2
 
 defaults
-    log     global
-    mode    http
-    option  httplog
-    option  dontlognull
-    retries 3
-    option redispatch
-    timeout connect  5000
-    timeout client  50000
-    timeout server  50000
+  mode                    http
+  log                     global
+  option                  httplog
+  option                  dontlognull
+  option http-server-close
+  option                  redispatch
+  timeout http-request    2s
+  timeout queue           3s
+  timeout connect         1s
+  timeout client          10s
+  timeout server          2s
+  timeout http-keep-alive 10s
+  timeout check           2s
+  maxconn                 18000 
 
 backend stats-back
   mode http
@@ -33,23 +36,19 @@ frontend stats-front
 frontend {{ s.name }}
   bind *:{{ s.port + 1 }}
   mode tcp
-  timeout client 1h
-  log global
-  option tcplog
+  tcp-request inspect-delay 5s
+  #tcp-request content reject if !HTTP
+  tcp-request content accept if { req.ssl_hello_type 1 }
   default_backend {{ s.name }}
-  acl is_websocket hdr(Upgrade) -i WebSocket
-  acl is_websocket hdr_beg(Host) -i ws
 
 backend {{ s.name }}
   mode tcp
-  timeout queue 1h
-  timeout server 1h
-  timeout connect 1h
-  log global
   option tcplog
+  option tcp-check
   balance roundrobin
+  default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 250 maxqueue 256 weight 100
   {% for ip in s.ips %}
-  server {{ s.name }}{{ loop.index }} {{ ip }}:{{ s.port }}
+  server {{ s.name }}{{ loop.index }} {{ ip }}:{{ s.port }} check
   {% endfor %}
 
 {% endfor %}
