@@ -1,7 +1,7 @@
 api:
   advertiseAddress: 127.0.0.1
   bindPort: 6443
-  controlPlaneEndpoint: ""
+  controlPlaneEndpoint: "{{ endpoint }}"
 apiServerCertSANs:
 - {{ endpoint.split(':')[0] }}
 apiServerExtraArgs:
