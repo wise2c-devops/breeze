@@ -30,7 +30,7 @@ auditPolicy:
   path: ""
 certificatesDir: /etc/kubernetes/pki
 clusterName: kubernetes
-controlPlaneEndpoint: ""
+controlPlaneEndpoint: "{{ endpoint }}"
 controllerManagerExtraArgs:
   feature-gates: LocalStorageCapacityIsolation=true
 etcd:
