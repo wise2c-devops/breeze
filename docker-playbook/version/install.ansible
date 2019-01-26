@@ -4,19 +4,19 @@
   any_errors_fatal: true
   vars:
     path: /var/tmp/wise2c/docker
-  environment:
-    BREEZE_LSB_ID: "{{ ansible_lsb.codename }}"
-    BREEZE_LSB_RELEASE: "{{ ansible_lsb.release }}"
-    BREEZE_PYTHON_VERSION: "{{ ansible_python_version }}"
   tasks:
   - name: check environment
-    scripts: scripts/check_environment.sh
+    script: scripts/check_environment.sh
     register: check_output
+    environment:
+      BREEZE_LSB_ID: "{{ ansible_facts.distribution }}"
+      BREEZE_LSB_RELEASE: "{{ ansible_facts.distribution_version }}"
+      BREEZE_PYTHON_VERSION: "{{ ansible_facts.python_version }}" 
 
   - name: exit
     fail:
-      msg: check_output.stderr
-    when: check_output.failed == "true"
+      msg: check_output.stdout
+    when: check_output.stdout == "true"
       
   - name: get seed ip
     shell:
