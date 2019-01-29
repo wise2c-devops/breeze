@@ -4,8 +4,20 @@
   any_errors_fatal: true
   vars:
     path: /var/tmp/wise2c/docker
-
   tasks:
+  - name: check environment
+    script: scripts/check_environment.sh
+    register: check_output
+    environment:
+      BREEZE_LSB_ID: "{{ ansible_facts.distribution }}"
+      BREEZE_LSB_RELEASE: "{{ ansible_facts.distribution_version }}"
+      BREEZE_PYTHON_VERSION: "{{ ansible_facts.python_version }}" 
+
+  - name: exit
+    fail:
+      msg: check_output.stdout
+    when: check_output.stdout == "true"
+      
   - name: get seed ip
     shell:
       echo $SSH_CONNECTION | cut -d " " -f 1
