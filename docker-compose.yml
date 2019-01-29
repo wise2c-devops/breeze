@@ -28,7 +28,7 @@ services:
     - playbook:/workspace
   yum-repo:
     container_name: deploy-yumrepo
-    image: wise2c/yum-repo:v1.13
+    image: wise2c/yum-repo:v1.13.2
     ports:
     - 2009:2009 
     restart: always
