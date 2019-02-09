@@ -33,8 +33,8 @@ sed -i "s/ImageRepositoryIP/$MyImageRepositoryIP/g" temp.txt
 sed -i '23 r temp.txt' prometheus-operator-$PrometheusOperatorVersion/contrib/kube-prometheus/manifests/0prometheus-operator-deployment.yaml
 rm -f temp.txt
 
-# Maybe no need for other version
-sed -i "s/0.26.0/$PrometheusOperatorVersion/g" prometheus-operator-$PrometheusOperatorVersion/contrib/kube-prometheus/manifests/0prometheus-operator-deployment.yaml
+# Fix issue 2291 of prometheus operator
+sed -i "s/0.27.0/$PrometheusOperatorVersion/g" prometheus-operator-$PrometheusOperatorVersion/contrib/kube-prometheus/manifests/0prometheus-operator-deployment.yaml
 
 # Wait for CRDs to be ready, we need to split all yaml files to two parts
 cd prometheus-operator-$PrometheusOperatorVersion/contrib/kube-prometheus/
