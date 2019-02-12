@@ -36,16 +36,12 @@ echo "dns_version: ${dns_version}" >> ${path}/yat/all.yml.gotmpl
 echo "pause_version: ${pause_version}" >> ${path}/yat/all.yml.gotmpl
 
 flannel_repo="quay.io/coreos"
-flannel_version="v0.10.0"
+flannel_version="v0.11.0"
 echo "flannel_repo: ${flannel_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "flannel_version: ${flannel_version}-amd64" >> ${path}/yat/all.yml.gotmpl
 
-# curl -sSL https://raw.githubusercontent.com/coreos/flannel/${flannel_version}/Documentation/kube-flannel.yml \
-#    | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
-
-# Fix the bug coreos/flannel#1044
-curl -sSL https://github.com/wise2c-devops/breeze/raw/v1.13/kubernetes-playbook/kube-flannel.yml \
-    | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
+curl -sSL https://raw.githubusercontent.com/coreos/flannel/${flannel_version}/Documentation/kube-flannel.yml \
+   | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
 
 dashboard_repo=${kubernetes_repo}
 dashboard_version="v1.10.1"
