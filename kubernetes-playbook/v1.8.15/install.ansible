@@ -40,7 +40,9 @@
       - kubernetes-cni-0.5.1
       - kubectl-{{ kubernetes_version[1:] }}
       - kubelet-{{ kubernetes_version[1:] }}
-      - kubeadm-{{ kubernetes_version[1:] }}
+
+    - name: install kubeadm
+      shell: rpm -ivh --nodeps http://wise2c-seed:2009/rpms/centos76/0746100f7f8f3d05fc69a9f1c1015abac1f9ddc6964ef3ec3afdac33c6fb0cda-kubeadm-1.8.15-0.x86_64.rpm
 
     - name: unarchive cni
       unarchive:
