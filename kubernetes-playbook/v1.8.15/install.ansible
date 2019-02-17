@@ -33,7 +33,6 @@
         disablerepo: '*'
         enablerepo: wise2c
         update_cache: true
-        skip_broken: true
         state: present
         name: '{{ item }}'
       with_items:
