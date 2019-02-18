@@ -44,6 +44,7 @@ etcd:
     keyFile: ""
 imageRepository: {{ registry_endpoint }}/{{ registry_project }}
 kind: ClusterConfiguration
+kubernetesVersion: {{ kubernetes_version }}
 networking:
   dnsDomain: cluster.local
   podSubnet: 10.244.0.0/16
