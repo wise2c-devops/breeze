@@ -46,7 +46,8 @@
     - python-docker-py
     - docker-compose
     - chrony
-    - ipvsadm    
+    - ipvsadm
+    - graphviz
 
   - name: distribute chrony server config
     template:
