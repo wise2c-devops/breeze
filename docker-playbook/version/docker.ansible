@@ -47,6 +47,7 @@
     - docker-compose
     - chrony
     - ipvsadm
+    - graphviz
 
   - name: distribute chrony server config
     template:
