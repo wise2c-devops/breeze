@@ -65,11 +65,7 @@ systemctl start docker
 systemctl enable docker
 ```
 
-(4) 下载用于部署某个Kubernetes版本的docker-compose文件并使部署程序运行起来：
-
-[![asciicast](https://asciinema.org/a/vFYiMG3ptzdYPkS68rcuj4AKK.png)](https://asciinema.org/a/vFYiMG3ptzdYPkS68rcuj4AKK)
-
-例如：
+(4) 下载用于部署某个Kubernetes版本的docker-compose文件并使部署程序运行起来，例如：
 
 ```
 curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.13.1/docker-compose.yml -o docker-compose.yml
