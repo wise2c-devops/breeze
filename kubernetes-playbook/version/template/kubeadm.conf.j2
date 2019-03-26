@@ -1,7 +1,4 @@
-apiEndpoint:
-  advertiseAddress: 127.0.0.1
-  bindPort: 6443
-apiVersion: kubeadm.k8s.io/v1alpha3
+apiVersion: kubeadm.k8s.io/v1beta1
 bootstrapTokens:
 - groups:
   - system:bootstrappers:kubeadm:default-node-token
@@ -11,28 +8,32 @@ bootstrapTokens:
   - signing
   - authentication
 kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: 127.0.0.1
+  bindPort: 6443
 nodeRegistration:
   criSocket: /var/run/dockershim.sock
   taints:
   - effect: NoSchedule
     key: node-role.kubernetes.io/master
 ---
-apiServerCertSANs:
-- {{ endpoint.split(':')[0] }}
-apiServerExtraArgs:
-  apiserver-count: "3"
-  feature-gates: LocalStorageCapacityIsolation=true
-  runtime-config: batch/v2alpha1=true
-apiVersion: kubeadm.k8s.io/v1alpha3
-auditPolicy:
-  logDir: /var/log/kubernetes/audit
-  logMaxAge: 2
-  path: ""
+apiServer:
+  certSANs:
+  - {{ endpoint.split(':')[0] }}
+  extraArgs:
+    apiserver-count: "3"
+    feature-gates: LocalStorageCapacityIsolation=true
+    runtime-config: batch/v2alpha1=true
+  timeoutForControlPlane: 4m0s
+apiVersion: kubeadm.k8s.io/v1beta1
 certificatesDir: /etc/kubernetes/pki
 clusterName: kubernetes
 controlPlaneEndpoint: "{{ endpoint }}"
-controllerManagerExtraArgs:
-  feature-gates: LocalStorageCapacityIsolation=true
+controllerManager:
+  extraArgs:
+    feature-gates: LocalStorageCapacityIsolation=true
+dns:
+  type: CoreDNS
 etcd:
   external:
     caFile: ""
@@ -49,9 +50,9 @@ networking:
   dnsDomain: cluster.local
   podSubnet: 10.244.0.0/16
   serviceSubnet: 10.96.0.0/12
-schedulerExtraArgs:
-  feature-gates: LocalStorageCapacityIsolation=true
-unifiedControlPlaneImage: ""
+scheduler:
+  extraArgs:
+    feature-gates: LocalStorageCapacityIsolation=true
 ---
 apiVersion: kubeproxy.config.k8s.io/v1alpha1
 bindAddress: 0.0.0.0
