@@ -7,7 +7,7 @@
 
     {% for v in vips -%}
     vrrp_script chk-{{ v.name }} {
-        script       "nc -v -w 2 -z 127.0.0.1 {{ v.chkport }} 2>&1 | grep open | grep {{ v.chkport }}"
+        script       "nc -v -w 2 -z 127.0.0.1 {{ v.chkport }} 2>&1 | grep 'Connected to' | grep {{ v.chkport }}"
         timeout 1
         interval 1   # check every 1 second
         fall 2       # require 2 failures for KO
