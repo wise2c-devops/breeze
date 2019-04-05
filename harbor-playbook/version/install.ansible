@@ -26,6 +26,6 @@
     - { src: 'template/harbor.cfg.j2', dest: '{{ cpath }}/harbor/harbor.cfg' }
 
   - name: launch harbor
-    shell: ./install.sh
+    shell: ./install.sh --with-clair --with-chartmuseum
     args:
       chdir: '{{ cpath }}/harbor'
