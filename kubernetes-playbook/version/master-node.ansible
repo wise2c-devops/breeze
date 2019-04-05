@@ -220,5 +220,5 @@
 - name: install helm binary
   shell: |
     curl -o /tmp/helm-linux-amd64.tar.gz http://wise2c-seed:2009/rpms/helm-linux-amd64.tar.gz
-    tar zxvf /tmp/helm.tar.gz --strip-components=1 -C /tmp/
+    tar zxvf /tmp/helm-linux-amd64.tar.gz --strip-components=1 -C /tmp/
     mv /tmp/helm /usr/local/bin/helm
