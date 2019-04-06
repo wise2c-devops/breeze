@@ -22,7 +22,7 @@ import docker
 
 6. 部署好之后，dashboard的端口是30300，但是谷歌浏览器是不可以访问的，火狐可以，这个是浏览器安全设置问题，和部署没有关系。
 
-7. 由于CentOS的特性，部署之后内核并未启动ipvs，因此kube-proxy服务中会看见警告日志，退回iptables方式，这个只需要将所有节点重启一次即可解决。
+7. 如果机器性能不是特别强，建议第一次部署时不勾选Prometheus角色，等k8s集群部署并运行就绪后单独勾选Prometheus角色进行部署以免失败。
 
 8. 在部署机上，一定不要忘记执行“（1）对部署机取消SELINUX设定及放开防火墙”，否则会导致selinux的限制而无法创建数据库文件cluster.db，页面提示“unable to open database file”。
 
