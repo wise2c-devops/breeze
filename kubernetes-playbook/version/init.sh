@@ -6,8 +6,6 @@ path=`dirname $0`
 
 k8s_version=`cat ${path}/components-version.txt |grep "Kubernetes" |awk '{print $3}'`
 
-helm_version=2.13.1
-
 docker run --rm --name=kubeadm-version wise2c/kubeadm-version:v${k8s_version} kubeadm config images list --kubernetes-version ${k8s_version} > ${path}/k8s-images-list.txt
 
 echo "=== pulling kubernetes images ==="
@@ -97,12 +95,17 @@ chmod +x cfssl cfssljson cfssl-certinfo
 tar zcvf ${path}/file/cfssl-tools.tar.gz cfssl cfssl-certinfo cfssljson
 echo "=== cfssl tools is download successfully ==="
 
+helm_repo="gcr.io/kubernetes-helm"
+helm_version="v2.13.1"
+echo "helm_repo: ${helm_repo}" >> ${path}/yat/all.yml.gotmpl
+echo "helm_version: ${helm_version}" >> ${path}/yat/all.yml.gotmpl
+
 echo "=== pulling helm tiller image ==="
-docker pull gcr.io/kubernetes-helm/tiller:v${helm_version}
+docker pull ${helm_repo}/tiller:${helm_version}
 echo "=== helm tiller image is pulled successfully ==="
 
 echo "=== saving helm tiller image ==="
-docker save gcr.io/kubernetes-helm/tiller:v${helm_version} > ${path}/file/tiller.tar
+docker save ${helm_repo}/tiller:${helm_version} > ${path}/file/tiller.tar
 rm ${path}/file/tiller.tar.bz2 -f
 bzip2 -z --best ${path}/file/tiller.tar
 echo "=== helm tiller image is saved successfully ==="
