@@ -16,8 +16,16 @@
 
   - name: disable swap
     command: swapoff -a
-
+    
   - block:
+
+    - name: load ipvs
+      shell: |
+        modprobe ip_vs
+        modprobe ip_vs_rr
+        modprobe ip_vs_wrr
+        modprobe ip_vs_sh
+  
     - name: install kubernetes components
       yum:
         disablerepo: '*'
