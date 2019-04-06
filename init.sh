@@ -12,6 +12,8 @@ keepalived_version=1.3.5
 loadbalancer_version=HAProxy-${haproxy_version}_Keepalived-${keepalived_version}
 prometheus_version=2.7.1
 prometheus_operator_version=0.29.0
+dashboard_version=0.10.1
+flannel_version=0.11.0
 helm_version=2.13.1
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
