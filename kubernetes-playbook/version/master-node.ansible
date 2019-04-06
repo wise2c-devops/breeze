@@ -9,6 +9,7 @@
   - { src: 'file/k8s.tar.bz2', dest: '{{ path }}' }
   - { src: 'file/flannel.tar.bz2', dest: '{{ path }}' }
   - { src: 'file/dashboard.tar.bz2', dest: '{{ path }}' }
+  - { src: 'file/tiller.tar.bz2', dest: '{{ path }}' }
   run_once: true
 
 - name: load k8s images
@@ -20,6 +21,7 @@
   - k8s.tar.bz2
   - flannel.tar.bz2
   - dashboard.tar.bz2
+  - tiller.tar.bz2
   run_once: true
 
 - name: docker login
@@ -44,6 +46,7 @@
   - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
+  - { repo: 'gcr.io/kubernetes-helm', name: 'tiller', tag: '{{ helm_version }}' }
   run_once: true
 
 - name: push images
@@ -61,6 +64,7 @@
   - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
+  - { repo: 'gcr.io/kubernetes-helm', name: 'tiller', tag: '{{ helm_version }}' }
   run_once: true
 
 - name: Remove k8s.gcr.io images tag
@@ -77,6 +81,7 @@
   - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
+  - { repo: 'gcr.io/kubernetes-helm', name: 'tiller', tag: '{{ helm_version }}' }
   run_once: ture
 
 - name: generate kubeadm config
