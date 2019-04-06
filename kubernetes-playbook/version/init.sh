@@ -94,3 +94,13 @@ curl -L -o cfssl-certinfo ${CFSSL_URL}/cfssl-certinfo_linux-amd64
 chmod +x cfssl cfssljson cfssl-certinfo
 tar zcvf ${path}/file/cfssl-tools.tar.gz cfssl cfssl-certinfo cfssljson
 echo "=== cfssl tools is download successfully ==="
+
+echo "=== pulling helm tiller image ==="
+docker pull gcr.io/kubernetes-helm/tiller:v${helm_version}
+echo "=== helm tiller image is pulled successfully ==="
+
+echo "=== saving helm tiller image ==="
+docker save gcr.io/kubernetes-helm/tiller:${helm_version} > ${path}/file/tiller.tar
+rm ${path}/file/tiller.tar.bz2 -f
+bzip2 -z --best ${path}/file/tiller.tar
+echo "=== helm tiller image is saved successfully ==="
