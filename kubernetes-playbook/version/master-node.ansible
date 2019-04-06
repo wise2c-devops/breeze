@@ -237,3 +237,17 @@
     name: '{{ item }}'
   with_items:
   - git
+
+- name: copy tiller-rbac
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+  - { src: 'template/tiller-rbac.yaml', dest: '{{ path }}/tiller-rbac.yaml' }
+
+- name: setup helm with tiller
+  shell: |
+    helm init --client-only --skip-refresh
+    helm init --tiller-image {{ registry_endpoint }}/{{ registry_project }}/tiller:v${helm_version}
+    kubectl apply -f {{ path }}/tiller-rbac.yaml 
+    helm init --tiller-image {{ registry_endpoint }}/{{ registry_project }}/tiller:v${helm_version} --service-account tiller --upgrade
