@@ -248,6 +248,13 @@
 - name: setup helm with tiller
   shell: |
     helm init --client-only --skip-refresh
-    helm init --tiller-image {{ registry_endpoint }}/{{ registry_project }}/tiller:v${helm_version}
-    kubectl apply -f {{ path }}/tiller-rbac.yaml 
-    helm init --tiller-image {{ registry_endpoint }}/{{ registry_project }}/tiller:v${helm_version} --service-account tiller --upgrade
+    helm init --tiller-image {{ registry_endpoint }}/{{ registry_project }}/tiller:{{ helm_version }}
+
+- name: setup rbac for tiller
+  shell: |
+    kubectl apply -f {{ path }}/tiller-rbac.yaml
+  run_once: true
+  
+- name: upgrade tiller
+  shell: |
+    helm init --tiller-image {{ registry_endpoint }}/{{ registry_project }}/tiller:{{ helm_version }} --service-account tiller --upgrade
