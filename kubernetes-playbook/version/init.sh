@@ -46,7 +46,7 @@ echo "flannel_version: ${flannel_version}-amd64" >> ${path}/yat/all.yml.gotmpl
 
 curl -sSL https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml \
    | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
-   
+
 dashboard_repo=${kubernetes_repo}
 dashboard_version="v1.10.1"
 echo "dashboard_repo: ${dashboard_repo}" >> ${path}/yat/all.yml.gotmpl
@@ -94,3 +94,18 @@ curl -L -o cfssl-certinfo ${CFSSL_URL}/cfssl-certinfo_linux-amd64
 chmod +x cfssl cfssljson cfssl-certinfo
 tar zcvf ${path}/file/cfssl-tools.tar.gz cfssl cfssl-certinfo cfssljson
 echo "=== cfssl tools is download successfully ==="
+
+helm_repo="gcr.io/kubernetes-helm"
+helm_version="v2.13.1"
+echo "helm_repo: ${helm_repo}" >> ${path}/yat/all.yml.gotmpl
+echo "helm_version: ${helm_version}" >> ${path}/yat/all.yml.gotmpl
+
+echo "=== pulling helm tiller image ==="
+docker pull ${helm_repo}/tiller:${helm_version}
+echo "=== helm tiller image is pulled successfully ==="
+
+echo "=== saving helm tiller image ==="
+docker save ${helm_repo}/tiller:${helm_version} > ${path}/file/tiller.tar
+rm ${path}/file/tiller.tar.bz2 -f
+bzip2 -z --best ${path}/file/tiller.tar
+echo "=== helm tiller image is saved successfully ==="

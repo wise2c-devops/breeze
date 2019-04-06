@@ -9,6 +9,7 @@
   - { src: 'file/k8s.tar.bz2', dest: '{{ path }}' }
   - { src: 'file/flannel.tar.bz2', dest: '{{ path }}' }
   - { src: 'file/dashboard.tar.bz2', dest: '{{ path }}' }
+  - { src: 'file/tiller.tar.bz2', dest: '{{ path }}' }
   run_once: true
 
 - name: load k8s images
@@ -20,6 +21,7 @@
   - k8s.tar.bz2
   - flannel.tar.bz2
   - dashboard.tar.bz2
+  - tiller.tar.bz2
   run_once: true
 
 - name: docker login
@@ -44,6 +46,7 @@
   - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
+  - { repo: '{{ helm_repo }}', name: 'tiller', tag: '{{ helm_version }}' }
   run_once: true
 
 - name: push images
@@ -61,6 +64,7 @@
   - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
+  - { repo: '{{ helm_repo }}', name: 'tiller', tag: '{{ helm_version }}' }
   run_once: true
 
 - name: Remove k8s.gcr.io images tag
@@ -77,6 +81,7 @@
   - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
+  - { repo: '{{ helm_repo }}', name: 'tiller', tag: '{{ helm_version }}' }
   run_once: ture
 
 - name: generate kubeadm config
@@ -222,3 +227,35 @@
     curl -o /tmp/helm-linux-amd64.tar.gz http://wise2c-seed:2009/rpms/helm-linux-amd64.tar.gz
     tar zxvf /tmp/helm-linux-amd64.tar.gz --strip-components=1 -C /tmp/
     mv /tmp/helm /usr/local/bin/helm
+
+- name: install git command for helm-push
+  yum:
+    disablerepo: '*'
+    enablerepo: wise2c
+    update_cache: true
+    state: present
+    name: '{{ item }}'
+  with_items:
+  - git
+
+- name: copy tiller-rbac
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+  - { src: 'template/tiller-rbac.yaml', dest: '{{ path }}/tiller-rbac.yaml' }
+
+- name: setup helm with tiller
+  shell: |
+    helm init --client-only --skip-refresh
+    helm init --tiller-image {{ registry_endpoint }}/{{ registry_project }}/tiller:{{ helm_version }}
+
+- name: setup rbac for tiller
+  shell: |
+    kubectl apply -f {{ path }}/tiller-rbac.yaml
+  run_once: true
+  
+- name: upgrade tiller
+  shell: |
+    helm init --tiller-image {{ registry_endpoint }}/{{ registry_project }}/tiller:{{ helm_version }} --service-account tiller --upgrade
+    helm repo add --username={{ registry_user }} --password={{ registry_password }} {{ registry_project }} http://{{ registry_endpoint }}/chartrepo/{{ registry_project }}
