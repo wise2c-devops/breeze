@@ -18,7 +18,6 @@
     command: swapoff -a
     
   - block:
-
     - name: load ipvs
       shell: |
         modprobe ip_vs
