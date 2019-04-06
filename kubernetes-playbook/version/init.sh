@@ -102,7 +102,7 @@ docker pull gcr.io/kubernetes-helm/tiller:v${helm_version}
 echo "=== helm tiller image is pulled successfully ==="
 
 echo "=== saving helm tiller image ==="
-docker save gcr.io/kubernetes-helm/tiller:${helm_version} > ${path}/file/tiller.tar
+docker save gcr.io/kubernetes-helm/tiller:v${helm_version} > ${path}/file/tiller.tar
 rm ${path}/file/tiller.tar.bz2 -f
 bzip2 -z --best ${path}/file/tiller.tar
 echo "=== helm tiller image is saved successfully ==="
