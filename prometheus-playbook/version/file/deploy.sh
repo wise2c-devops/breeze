@@ -71,9 +71,9 @@ printf "Waiting for Operator to register custom resource definitions..."
 until [ `kctl get customresourcedefinitions servicemonitors.monitoring.coreos.com -o jsonpath='{.status.conditions[1].status}'` = "True" ]; do sleep 1; printf "."; done
 until [ `kctl get customresourcedefinitions prometheuses.monitoring.coreos.com -o jsonpath='{.status.conditions[1].status}'` = "True" ]; do sleep 1; printf "."; done
 until [ `kctl get customresourcedefinitions alertmanagers.monitoring.coreos.com -o jsonpath='{.status.conditions[1].status}'` = "True" ]; do sleep 1; printf "."; done
-until [ `kctl get servicemonitors.monitoring.coreos.com -o jsonpath='{.status.conditions[1].status}'` = "True" ]; do sleep 1; printf "."; done
-until [ `kctl get prometheuses.monitoring.coreos.com -o jsonpath='{.status.conditions[1].status}'` = "True" ]; do sleep 1; printf "."; done
-until [ `kctl get alertmanagers.monitoring.coreos.com -o jsonpath='{.status.conditions[1].status}'` = "True" ]; do sleep 1; printf "."; done
+until kctl get servicemonitors.monitoring.coreos.com > /dev/null 2>&1; do sleep 1; printf "."; done
+until kctl get prometheuses.monitoring.coreos.com > /dev/null 2>&1; do sleep 1; printf "."; done
+until kctl get alertmanagers.monitoring.coreos.com > /dev/null 2>&1; do sleep 1; printf "."; done
 echo 'Phase1 done!'
 
 kubectl apply -f manifests/phase2
