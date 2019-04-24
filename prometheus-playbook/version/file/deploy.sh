@@ -53,6 +53,7 @@ mv manifests/prometheus-serviceMonitorCoreDNS.yaml phase2/
 mv manifests/prometheus-serviceMonitorKubeControllerManager.yaml phase2/
 mv manifests/prometheus-serviceMonitorKubeScheduler.yaml phase2/
 mv manifests/prometheus-serviceMonitorKubelet.yaml phase2/
+mv manifests/grafana-serviceMonitor.yaml phase2/
 mv manifests phase1
 mkdir manifests
 mv phase1 manifests
