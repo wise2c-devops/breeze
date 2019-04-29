@@ -10,11 +10,13 @@
       dest: '{{ item.dest }}'
     with_items:
     - { src: '../../kubernetes-playbook/{{ kubernetes_version }}/file/admin.conf', dest: '{{ ansible_env.HOME }}/.kube/config' }
+    run_once: true
 
   - name: setup kubectl certification
     shell: |
       sed -i "s/.*server:.*/    server: https:\/\/{{ kubernetes_endpoint }}/g" $HOME/.kube/config
       chown $(id -u):$(id -g) $HOME/.kube/config
+    run_once: ture
 
   - name: make prometheus dir
     file:
@@ -22,8 +24,9 @@
       state: directory
       mode: 0755
     with_items:
-    - '{{ cpath }}'
-    - '{{ path }}'
+      - '{{ cpath }}'
+      - '{{ path }}'
+    run_once: ture
 
   - name: copy prometheus operator tarball and images
     copy:
@@ -85,6 +88,7 @@
       replace: "{{ registry_endpoint }}"
     with_items:
       - "harbor-address.txt"
+    run_once: ture
 
   - name: set etcd address for deploy script
     replace:
@@ -93,6 +97,7 @@
       replace: "{{ etcd_endpoint }}"
     with_items:
       - "etcd-address.txt"
+    run_once: ture
     
   - name: set nodeport for prometheus alertmanager and grafana service
     template:
@@ -102,20 +107,24 @@
       - { src: 'template/prometheus-service.yaml.j2', dest: '{{ cpath }}/prometheus-service.yaml' }
       - { src: 'template/alertmanager-service.yaml.j2', dest: '{{ cpath }}/alertmanager-service.yaml' }
       - { src: 'template/grafana-service.yaml.j2', dest: '{{ cpath }}/grafana-service.yaml' }
+    run_once: ture
 
   - name: prometheus operator deploy
     shell: ./deploy.sh
     args:
       chdir: '{{ cpath }}/'
+    run_once: ture
 
   - name: prometheus add-on deploy
     shell: ./add-on.sh
     args:
       chdir: '{{ cpath }}/'
+    run_once: ture
 
   - name: remove kubectl cert
     file:
       path: '{{ item }}'
       state: absent
     with_items:
-    - '{{ ansible_env.HOME }}/.kube/config'
+      - '{{ ansible_env.HOME }}/.kube/config'
+    run_once: ture
