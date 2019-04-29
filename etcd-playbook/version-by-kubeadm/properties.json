@@ -2,7 +2,7 @@
     {
         "variable": "self",
         "label": "etcd hosts",
-        "description": "hosts for setup etcd",
+        "description": "hosts to be set up as etcd servers",
         "type": "host",
         "default": "",
         "required": true
