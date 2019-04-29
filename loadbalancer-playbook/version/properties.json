@@ -2,7 +2,7 @@
     {
         "variable": "self",
         "label": "haproxy hosts",
-        "description": "hosts for setup haproxy",
+        "description": "hosts to be set up as haproxy/keepalived nodes",
         "type": "host",
         "default": "",
         "required": true
@@ -10,14 +10,14 @@
     {
         "variable": "k8sVip",
         "label": "vip for k8s master",
-        "description": "type a vip for k8s master",
+        "description": "input a vip for k8s master",
         "type": "string",
         "default": "",
         "required": true
     },
     {
         "variable": "nic",
-        "label": "网卡",
+        "label": "NIC",
         "description": "在此网卡上创建VIP",
         "type": "string",
         "default": "",
@@ -25,24 +25,24 @@
     },
     {
         "variable": "netMask",
-        "label": "网卡掩码",
-        "description": "",
+        "label": "Subnet Host Bits",
+        "description": "Please input subnet host bits like 16 for 255.255.0.0 or 24 for 255.255.255.0",
         "type": "int",
         "default": "",
         "required": true
     },
     {
         "variable": "routerID",
-        "label": "router id",
-        "description": "router id",
+        "label": "Keepalived router id",
+        "description": "Keepalived router id",
         "type": "string",
         "default": "10",
         "required": false
     },
     {
         "variable": "vRouterID",
-        "label": "virtual route id",
-        "description": "virtual router id",
+        "label": "Keepalived virtual route id",
+        "description": "Keepalived virtual route id",
         "type": "string",
         "default": "160",
         "required": false
