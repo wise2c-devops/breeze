@@ -1,8 +1,8 @@
 [
     {
         "variable": "format_hostname",
-        "label": "format host name",
-        "description": "format host name if you check this",
+        "label": "change host name",
+        "description": "Change all server host name to the name defined in UI",
         "type": "bool",
         "default": "false",
         "required": true

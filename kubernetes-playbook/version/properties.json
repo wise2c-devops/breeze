@@ -10,14 +10,14 @@
     {
         "variable": "master",
         "label": "kubernetes master nodes",
-        "description": "hosts to setup kubernetes master nodes",
+        "description": "hosts to be set up as kubernetes master nodes",
         "type": "host",
         "required": false
     },
     {
         "variable": "worker",
         "label": "kubenetes worker nodes",
-        "description": "hosts to setup kubernetes worker nodes",
+        "description": "hosts to be set up as kubernetes worker nodes",
         "type": "host",
         "required": false
     },
