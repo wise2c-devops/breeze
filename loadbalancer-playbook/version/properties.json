@@ -18,7 +18,7 @@
     {
         "variable": "nic",
         "label": "NIC",
-        "description": "在此网卡上创建VIP",
+        "description": "Create virtual IP on this network interface card",
         "type": "string",
         "default": "",
         "required": true
