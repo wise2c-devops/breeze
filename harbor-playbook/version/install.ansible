@@ -24,6 +24,8 @@
       dest: '{{ item.dest }}'
     with_items:
     - { src: 'template/harbor.cfg.j2', dest: '{{ cpath }}/harbor/harbor.cfg' }
+    - { src: 'file/start-harbor.sh', dest: '{{ cpath }}/harbor/start-harbor.sh' }
+    - { src: 'file/stop-harbor.sh', dest: '{{ cpath }}/harbor/stop-harbor.sh' }
 
   - name: launch harbor
     shell: ./install.sh --with-clair --with-chartmuseum
