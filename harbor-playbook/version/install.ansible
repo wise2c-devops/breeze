@@ -24,6 +24,13 @@
       dest: '{{ item.dest }}'
     with_items:
     - { src: 'template/harbor.cfg.j2', dest: '{{ cpath }}/harbor/harbor.cfg' }
+
+  - name: copy harbor start and stop scripts
+    template:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+      mode: 0755
+    with_items:
     - { src: 'file/start-harbor.sh', dest: '{{ cpath }}/harbor/start-harbor.sh' }
     - { src: 'file/stop-harbor.sh', dest: '{{ cpath }}/harbor/stop-harbor.sh' }
 
