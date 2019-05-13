@@ -41,7 +41,7 @@ helm install install/kubernetes/helm/istio --name istio --namespace istio-system
 
 echo 'Phase2 done!'
 
-kubectl apply -f /var/tmp/wise2c/prometheus/prometheus-service.yaml
-kubectl apply -f /var/tmp/wise2c/prometheus/grafana-service.yaml
+#kubectl apply -f /var/tmp/wise2c/istio/prometheus-service.yaml
+#kubectl apply -f /var/tmp/wise2c/istio/grafana-service.yaml
 
 echo 'NodePorts are set for services.'
