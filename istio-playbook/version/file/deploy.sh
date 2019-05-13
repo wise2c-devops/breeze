@@ -28,11 +28,8 @@ cd ../../
 # Istio init deploy
 helm install install/kubernetes/helm/istio-init --name istio-init --namespace istio-system
 
-# Wait for CRDs to be ready, we need to verify that all 58 Istio CRDs were committed to the Kubernetes api-server using the following command:
-# kubectl get crds | grep 'istio.io\|certmanager.k8s.io' | wc -l
-
 ######### Deploy Istio #########
-# Wait for CRDs to be ready.
+# We need to verify that all 58 Istio CRDs were committed to the Kubernetes api-server
 printf "Waiting for Istio to commit custom resource definitions..."
 sleep 10
 until [ `kubectl get crds |grep 'istio.io\|certmanager.k8s.io' |wc -l` = "53" ]; do sleep 1; printf "."; done
