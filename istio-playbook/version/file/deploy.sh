@@ -22,6 +22,7 @@ sed -i "s/docker.io\/istio/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(
 sed -i "s/docker.io\/kiali/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "docker.io/kiali" ./ |grep .yaml)
 sed -i "s/docker.io\/prom/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "docker.io/prom" ./ |grep .yaml)
 sed -i "s/docker.io\/jaegertracing/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "docker.io/jaegertracing" ./ |grep .yaml)
+cd ../../
 
 # For offline deploy
 helm install install/kubernetes/helm/istio-init --name istio-init --namespace istio-system
@@ -33,7 +34,7 @@ helm install install/kubernetes/helm/istio-init --name istio-init --namespace is
 # Wait for CRDs to be ready.
 printf "Waiting for Istio to commit custom resource definitions..."
 
-until [ `kubectl get crds |grep 'istio.io\|certmanager.k8s.io'` = "58" ]; do sleep 1; printf "."; done
+until [ `kubectl get crds |grep 'istio.io\|certmanager.k8s.io' |wc -l` = "53" ]; do sleep 1; printf "."; done
 echo 'Phase1 done!'
 
 helm install install/kubernetes/helm/istio --name istio --namespace istio-system --set gateways.istio-ingressgateway.type=NodePort --values install/kubernetes/helm/istio/values-istio-demo-auth.yaml
