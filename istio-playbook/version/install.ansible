@@ -19,8 +19,8 @@
       src: '{{ item.src }}'
       dest: '{{ item.dest }}'
     with_items:
-    - { src: 'file/istio-{{ operator_version }}-origin.tar.gz', dest: '{{ path }}' }
-    - { src: 'file/istio-images-{{ operator_version }}.tar.bz2', dest: '{{ path }}' }
+    - { src: 'file/istio-{{ istio_version }}-origin.tar.gz', dest: '{{ path }}' }
+    - { src: 'file/istio-images-{{ istio_version }}.tar.bz2', dest: '{{ path }}' }
     run_once: true
 
   - name: copy istio deploy and reset script
