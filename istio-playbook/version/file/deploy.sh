@@ -25,7 +25,7 @@ sed -i "s/docker.io\/jaegertracing/$MyImageRepositoryIP\/$MyImageRepositoryProje
 sed -i "s/grafana\/grafana/$MyImageRepositoryIP\/$MyImageRepositoryProject\/grafana/g" $(grep -lr "grafana/grafana" ./ |grep .yaml)
 cd ../../
 
-# For offline deploy
+# Istio init deploy
 helm install install/kubernetes/helm/istio-init --name istio-init --namespace istio-system
 
 # Wait for CRDs to be ready, we need to verify that all 58 Istio CRDs were committed to the Kubernetes api-server using the following command:
@@ -42,7 +42,9 @@ helm install install/kubernetes/helm/istio --name istio --namespace istio-system
 
 echo 'Phase2 done!'
 
-#kubectl apply -f /var/tmp/wise2c/istio/prometheus-service.yaml
-#kubectl apply -f /var/tmp/wise2c/istio/grafana-service.yaml
+kubectl apply -f /var/tmp/wise2c/istio/kiali-service.yaml
+kubectl apply -f /var/tmp/wise2c/istio/jaeger-service.yaml
+kubectl apply -f /var/tmp/wise2c/istio/prometheus-service.yaml
+kubectl apply -f /var/tmp/wise2c/istio/grafana-service.yaml
 
 echo 'NodePorts are set for services.'
