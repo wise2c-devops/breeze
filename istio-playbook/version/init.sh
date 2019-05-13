@@ -23,3 +23,7 @@ docker save $(cat images-list.txt) -o istio-images-$IstioVersion.tar
 echo 'Images saved.'
 bzip2 -z --best istio-images-$IstioVersion.tar
 echo 'Images are compressed as bzip format.'
+
+mv istio-images-$IstioVersion.tar.bz2 ..
+cd ..
+rm -rf istio-$IstioVersion
