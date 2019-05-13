@@ -1,16 +1,24 @@
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    prometheus.io/scrape: "true"
   labels:
-    prometheus: k8s
-  name: prometheus-k8s
+    app: prometheus
+    chart: prometheus
+    heritage: Tiller
+    release: istio
+  name: prometheus
+  namespace: istio-system
 spec:
-  type: NodePort
+  externalTrafficPolicy: Cluster
   ports:
-  - name: web
+  - name: http-prometheus
     nodePort: {{ prometheus_nodeport }}
     port: 9090
-    targetPort: web
+    protocol: TCP
+    targetPort: 9090
   selector:
     app: prometheus
-    prometheus: k8s
+  sessionAffinity: None
+  type: NodePort
