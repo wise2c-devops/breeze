@@ -34,7 +34,7 @@ helm install install/kubernetes/helm/istio-init --name istio-init --namespace is
 ######### Deploy Istio #########
 # Wait for CRDs to be ready.
 printf "Waiting for Istio to commit custom resource definitions..."
-
+sleep 10
 until [ `kubectl get crds |grep 'istio.io\|certmanager.k8s.io' |wc -l` = "53" ]; do sleep 1; printf "."; done
 echo 'Phase1 done!'
 
