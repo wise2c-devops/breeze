@@ -1,0 +1,85 @@
+- name: setup istio
+  hosts: istio
+  user: root
+  vars:
+    path: /var/tmp/wise2c/istio
+  tasks:
+  - name: make istio dir
+    file:
+      path: '{{ item }}'
+      state: directory
+      mode: 0755
+    with_items:
+      - '{{ cpath }}'
+      - '{{ path }}'
+    run_once: ture
+
+  - name: copy istio tarball and images
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+    - { src: 'file/istio-{{ operator_version }}-origin.tar.gz', dest: '{{ path }}' }
+    - { src: 'file/istio-images-{{ operator_version }}.tar.bz2', dest: '{{ path }}' }
+    run_once: true
+
+  - name: copy istio deploy and reset script
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+      mode: 0755
+    with_items:
+    - { src: 'file/deploy.sh', dest: '{{ path }}' }
+    - { src: 'file/remove.sh', dest: '{{ path }}' }
+    run_once: true
+
+  - name: copy istio deploy script dependance file
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+    - { src: './components-version.txt', dest: '{{ path }}' }
+    - { src: 'file/images-list.txt', dest: '{{ path }}' }
+    - { src: 'file/harbor-address.txt', dest: '{{ path }}' }
+    run_once: true
+
+  - name: load istio images
+    docker_image:
+      load_path: '{{ path }}/{{ item }}'
+      name: prometheus
+      timeout: 600
+    with_items:
+    - istio-images-{{ operator_version }}.tar.bz2
+    run_once: true
+
+  - name: docker login
+    docker_login:
+      registry: '{{ registry_endpoint }}'
+      username: '{{ registry_user }}'
+      password: '{{ registry_password }}'
+      reauthorize: true
+    run_once: true
+
+  - name: set harbor address for deploy script
+    replace:
+      path: "/var/tmp/wise2c/istio/{{ item }}"
+      regexp: "harbor-address"
+      replace: "{{ registry_endpoint }}"
+    with_items:
+      - "harbor-address.txt"
+    run_once: ture
+
+  - name: set nodeport for prometheus and grafana service
+    template:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+      - { src: 'template/prometheus-service.yaml.j2', dest: '{{ cpath }}/prometheus-service.yaml' }
+      - { src: 'template/grafana-service.yaml.j2', dest: '{{ cpath }}/grafana-service.yaml' }
+    run_once: ture
+
+  - name: istio deploy
+    shell: ./deploy.sh
+    args:
+      chdir: '{{ cpath }}/'
+    run_once: ture

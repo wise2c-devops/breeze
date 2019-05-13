@@ -1,0 +1,42 @@
+[
+    {
+        "variable": "self",
+        "label": "Istio installation node",
+        "description": "please select a kubernetes master node for installation",
+        "type": "host",
+        "default": "",
+        "required": true
+    },
+    {
+        "variable": "KialiNodePort",
+        "label": "NodePort for Kiali in istio-system",
+        "description": "NodePort for Kiali service, e.g.: 30201",
+        "type": "int",
+        "default": "30021",
+        "required": true
+    },
+    {
+        "variable": "JaegerNodePort",
+        "label": "NodePort for Jaeger in istio-system",
+        "description": "NodePort for Jaeger service, e.g.: 30280",
+        "type": "int",
+        "default": "30280",
+        "required": true
+    },
+    {
+        "variable": "PrometheusNodePort",
+        "label": "NodePort for Prometheus in istio-system",
+        "description": "NodePort for Prometheus service, e.g.: 30290",
+        "type": "int",
+        "default": "30290",
+        "required": true
+    },
+    {
+        "variable": "GrafanaNodePort",
+        "label": "NodePort for Grafana in istio-system",
+        "description": "NodePort for Grafana service, e.g.: 30292",
+        "type": "int",
+        "default": "30292",
+        "required": true
+    }
+]
