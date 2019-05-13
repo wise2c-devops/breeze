@@ -4,7 +4,7 @@ registry_password: {{ .harbor.Inherent.password }}
 registry_project: library
 etcd_endpoint: {{ .etcd.Inherent.endpoint }}
 kiali_nodeport: {{ .istio.Property.KialiNodePort }}
-jaeger_nodePort: {{ .istio.Property.JaegerNodePort }}
+jaeger_nodeport: {{ .istio.Property.JaegerNodePort }}
 prometheus_nodeport: {{ .istio.Property.PrometheusNodePort }}
 grafana_nodeport: {{ .istio.Property.GrafanaNodePort }}
 kubernetes_endpoint: {{ .kubernetes.Inherent.endpoint }}
