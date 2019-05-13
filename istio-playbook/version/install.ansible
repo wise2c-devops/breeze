@@ -49,7 +49,7 @@
       name: prometheus
       timeout: 600
     with_items:
-    - istio-images-{{ operator_version }}.tar.bz2
+    - istio-images-{{ istio_version }}.tar.bz2
     run_once: true
 
   - name: docker login
