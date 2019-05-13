@@ -13,8 +13,7 @@ curl -L -o ${path}/file/istio-$IstioVersion-origin.tar.gz https://github.com/ist
 
 cd ${path}/file/
 tar zxf istio-$IstioVersion-origin.tar.gz
-cd istio-$IstioVersion
-cat install/kubernetes/istio-demo.yaml |grep "image:" |grep -v '\[\[' |awk -F':' '{print $2":"$3}' |awk -F "[\"\"]" '{print $2}' |awk '!a[$0]++{print}' > images-list.txt
+cat istio-$IstioVersion/install/kubernetes/istio-demo.yaml |grep "image:" |grep -v '\[\[' |awk -F':' '{print $2":"$3}' |awk -F "[\"\"]" '{print $2}' |awk '!a[$0]++{print}' > images-list.txt
 
 for file in $(cat images-list.txt); do docker pull $file; done
 echo 'Images pulled.'
@@ -24,6 +23,4 @@ echo 'Images saved.'
 bzip2 -z --best istio-images-$IstioVersion.tar
 echo 'Images are compressed as bzip format.'
 
-mv istio-images-$IstioVersion.tar.bz2 ..
-cd ..
 rm -rf istio-$IstioVersion
