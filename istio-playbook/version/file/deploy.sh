@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 MyImageRepositoryIP=`cat harbor-address.txt`
 MyImageRepositoryProject=library
 IstioVersion=`cat components-version.txt |grep "Istio Version" |awk '{print $3}'`
@@ -31,7 +33,10 @@ helm install install/kubernetes/helm/istio-init --name istio-init --namespace is
 # We need to verify that all 53 Istio CRDs were committed to the Kubernetes api-server
 printf "Waiting for Istio to commit custom resource definitions..."
 
-until [ `for istiocrds in $(kubectl get crds |grep -v NAME |awk '{print $1}'); do kubectl get crd ${istiocrds} -o jsonpath='{.status.conditions[1].status}'; done` = "TrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrue" ]; do sleep 1; printf "."; done
+crdresult=""
+for ((i=1; i<=53; i++)); do crdresult=${crdresult}"True"; done
+
+until [ `for istiocrds in $(kubectl get crds |grep -v NAME |awk '{print $1}'); do kubectl get crd ${istiocrds} -o jsonpath='{.status.conditions[1].status}'; done` = $mystring ]; do sleep 1; printf "."; done
 
 echo 'Phase1 done!'
 
