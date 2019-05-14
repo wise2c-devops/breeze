@@ -28,15 +28,12 @@ cd ../../
 helm install install/kubernetes/helm/istio-init --name istio-init --namespace istio-system
 
 ######### Deploy Istio #########
-# We need to verify that all 58 Istio CRDs were committed to the Kubernetes api-server
+# We need to verify that all 53 Istio CRDs were committed to the Kubernetes api-server
 printf "Waiting for Istio to commit custom resource definitions..."
 
-until [ `kubectl get crds |grep 'istio.io\|certmanager.k8s.io' |wc -l` = "53" ]; do sleep 1; printf "."; done
+until [ `for istiocrds in $(kubectl get crds |grep -v NAME |awk '{print $1}'); do kubectl get crd ${istiocrds} -o jsonpath='{.status.conditions[1].status}'; done` = "TrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrueTrue" ]; do sleep 1; printf "."; done
 
 echo 'Phase1 done!'
-
-# Sometimes phase 2 would fail, not sure if sleep can fix the problem.
-Sleep 30
 
 helm install install/kubernetes/helm/istio --name istio --namespace istio-system --set gateways.istio-ingressgateway.type=NodePort --values install/kubernetes/helm/istio/values-istio-demo-auth.yaml
 
