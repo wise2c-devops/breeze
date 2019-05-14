@@ -36,7 +36,7 @@ printf "Waiting for Istio to commit custom resource definitions..."
 crdresult=""
 for ((i=1; i<=53; i++)); do crdresult=${crdresult}"True"; done
 
-until [ `for istiocrds in $(kubectl get crds |grep -v NAME |awk '{print $1}'); do kubectl get crd ${istiocrds} -o jsonpath='{.status.conditions[1].status}'; done` = $mystring ]; do sleep 1; printf "."; done
+until [ `for istiocrds in $(kubectl get crds |grep -v NAME |awk '{print $1}'); do kubectl get crd ${istiocrds} -o jsonpath='{.status.conditions[1].status}'; done` = ${crdresult} ]; do sleep 1; printf "."; done
 
 echo 'Phase1 done!'
 
