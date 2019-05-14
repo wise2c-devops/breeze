@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: kiali
+    chart: kiali
+    heritage: Tiller
+    release: istio
+  name: kiali
+  namespace: istio-system
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - name: http-kiali
+    nodePort: {{ kiali_nodeport }}
+    port: 20001
+    protocol: TCP
+    targetPort: 20001
+  selector:
+    app: kiali
+  sessionAffinity: None
+  type: NodePort

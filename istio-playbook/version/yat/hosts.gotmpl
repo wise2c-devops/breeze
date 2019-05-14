@@ -1,0 +1,4 @@
+[istio]
+{{ range $v := .istio.Hosts.self -}}
+{{ $v.IP }}
+{{ end }}
