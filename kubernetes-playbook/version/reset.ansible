@@ -21,7 +21,7 @@
       enablerepo: wise2c
       name: '{{ item }}'
     with_items:
-    - kubernetes-cni-0.6.0
+    - kubernetes-cni
     - kubectl-{{ kubernetes_version[1:] }}
     - kubelet-{{ kubernetes_version[1:] }}
     - kubeadm-{{ kubernetes_version[1:] }}
