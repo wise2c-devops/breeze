@@ -1,5 +1,4 @@
 #!/bin/bash
-set -o pipefail
 
 MyImageRepositoryIP=`cat harbor-address.txt`
 MyImageRepositoryProject=library
@@ -35,6 +34,9 @@ printf "Waiting for Istio to commit custom resource definitions..."
 until [ `kubectl get crds |grep 'istio.io\|certmanager.k8s.io' |wc -l` = "53" ]; do sleep 1; printf "."; done
 
 echo 'Phase1 done!'
+
+# Sometimes phase 2 would fail, not sure if sleep can fix the problem.
+Sleep 30
 
 helm install install/kubernetes/helm/istio --name istio --namespace istio-system --set gateways.istio-ingressgateway.type=NodePort --values install/kubernetes/helm/istio/values-istio-demo-auth.yaml
 
