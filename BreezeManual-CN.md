@@ -198,7 +198,7 @@ kubernetes entry point是指高可用的一个设定值，如果生产环境有�
 
 ![Alt](./manual/BreezeScreenShots030.png)
 
-![Alt](./manual/Install-Istio.png)
+![Alt](./manual/With-Istio.png)
 
 ![Alt](./manual/BreezeScreenShots031.png)
 
