@@ -13,6 +13,15 @@
     include_tasks: master-node.ansible
     when: (not (check_output.stdout == True)) and (not (add_worker_node_only == True))
 
+  - name: fetch admin.conf
+    fetch:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+      flat: true
+    with_items:
+    - { src: '/etc/kubernetes/admin.conf', dest: 'file/admin.conf' }
+    run_once: true
+
 - name: setup kubernetes worker nodes
   hosts: node
   user: root
