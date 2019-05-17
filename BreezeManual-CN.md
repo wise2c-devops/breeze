@@ -181,6 +181,15 @@ kubernetes entry point是指高可用的一个设定值，如果生产环境有�
 
 ![Alt](./manual/BreezeScreenShots024.png)
 
+
+可选安装项Istio（内置了Kiali图形化管理工具、Jaeger分布式追踪、Prometheus+Grafana对Istio的监控）也是一样的方法，但是请注意Breeze采用了基于Helm的安装方法，因此请选择一台Master节点进行Istio的部署（只有Master节点上安装了helm命令）。有四个服务暴露端口可自行设定，注意NodePort的要求端口号大于30000。
+
+![Alt](./manual/Add-Istio-001.png)
+
+所有角色定义完成如下：
+
+![Alt](./manual/Add-Istio-002.png)
+
 点击“下一步”开始安装部署：
 
 ![Alt](./manual/BreezeScreenShots025.png)
@@ -188,6 +197,8 @@ kubernetes entry point是指高可用的一个设定值，如果生产环境有�
 如果界面上所有角色图标全部变为绿色，则表示部署任务结束。可以登录任一k8s节点运行命令 kubectl get nodes 查看结果。
 
 ![Alt](./manual/BreezeScreenShots030.png)
+
+![Alt](./manual/With-Istio.png)
 
 ![Alt](./manual/BreezeScreenShots031.png)
 
@@ -230,6 +241,34 @@ Alertmanager：
 http://任意服务器IP:30903
 
 ![Alt](./manual/Alertmanager.png)
+
+安装好Istio之后，可以访问以下服务页面：
+
+Kiali：
+
+http://任意服务器IP:30201/kiali
+
+![Alt](./manual/Istio-Kiali-001.png)
+
+![Alt](./manual/Istio-Kiali-002.png)
+
+Jaeger：
+
+http://任意服务器IP:30280
+
+![Alt](./manual/Istio-Jaeger.png)
+
+Prometheus for Istio:
+
+http://任意服务器IP:30290
+
+![Alt](./manual/Istio-Prometheus.png)
+
+Grafana for Istio:
+
+http://任意服务器IP:30292
+
+![Alt](./manual/Istio-Grafana.png)
 
 查看集群相关状态：
 
