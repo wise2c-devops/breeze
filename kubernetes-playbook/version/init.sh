@@ -96,7 +96,7 @@ tar zcvf ${path}/file/cfssl-tools.tar.gz cfssl cfssl-certinfo cfssljson
 echo "=== cfssl tools is download successfully ==="
 
 helm_repo="gcr.io/kubernetes-helm"
-helm_version="v2.13.1"
+helm_version="v2.14.0"
 echo "helm_repo: ${helm_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "helm_version: ${helm_version}" >> ${path}/yat/all.yml.gotmpl
 
