@@ -3,7 +3,7 @@ set -e
 
 MyImageRepositoryIP=`cat harbor-address.txt`
 MyImageRepositoryProject=library
-KubePrometheusVersion=`cat ${path}/components-version.txt |grep "KubePrometheus" |awk '{print $3}'`
+KubePrometheusVersion=`cat components-version.txt |grep "KubePrometheus" |awk '{print $3}'`
 PrometheusOperatorVersion=`cat components-version.txt |grep "PrometheusOperator Version" |awk '{print $3}'`
 NAMESPACE=monitoring
 
@@ -24,8 +24,6 @@ sed -i "s/quay.io\/coreos/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(g
 sed -i "s/quay.io\/prometheus/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "quay.io/prometheus" ./ |grep .yaml)
 sed -i "s/grafana\/grafana/$MyImageRepositoryIP\/$MyImageRepositoryProject\/grafana/g" $(grep -lr "grafana/grafana" ./ |grep .yaml)
 sed -i "s/gcr.io\/google_containers/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "gcr.io/google_containers" ./ |grep .yaml)
-sed -i "s/gcr.io\/google-containers/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "gcr.io/google-containers" ./ |grep .yaml)
-sed -i "s/gcr.io\/symbolic-datum-552/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "gcr.io/symbolic-datum-552" ./ |grep .yaml)
 
 # For offline deploy
 cd ..
