@@ -1,11 +1,10 @@
 #!/bin/bash
 
 cd /var/tmp/wise2c/prometheus
-version_path=`find ./ -name bundle.yaml |awk -F"/" '{print $2}'`
+version_path=`more components-version.txt |grep "KubePrometheus Version" |awk '{print $3}'`
 
-kubectl delete -f /var/tmp/wise2c/prometheus/${version_path}/contrib/kube-prometheus/manifests/phase2
-kubectl delete -f /var/tmp/wise2c/prometheus/${version_path}/contrib/kube-prometheus/manifests/phase1
-
+kubectl delete -f /var/tmp/wise2c/prometheus/kube-prometheus-${version_path}/manifests/phase2
+kubectl delete -f /var/tmp/wise2c/prometheus/kube-prometheus-${version_path}/manifests/phase1
 
 ### To remove the operator and Prometheus, first delete any custom resources you created in each namespace. The operator will automatically shut down and remove Prometheus and Alertmanager pods, and associated ConfigMaps.
 
