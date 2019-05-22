@@ -33,8 +33,8 @@
       src: '{{ item.src }}'
       dest: '{{ item.dest }}'
     with_items:
-    - { src: 'file/prometheus-operator-v{{ operator_version }}-origin.tar.gz', dest: '{{ path }}' }
-    - { src: 'file/prometheus-operator-images-v{{ operator_version }}.tar.bz2', dest: '{{ path }}' }
+    - { src: 'file/kube-prometheus-v{{ kube_prometheus_version }}-origin.tar.gz', dest: '{{ path }}' }
+    - { src: 'file/kube-prometheus-images-v{{ kube_prometheus_version }}.tar.bz2', dest: '{{ path }}' }
     run_once: true
 
   - name: copy prometheus operator deploy and reset script
@@ -70,7 +70,7 @@
       name: prometheus
       timeout: 600
     with_items:
-    - prometheus-operator-images-v{{ operator_version }}.tar.bz2
+    - kube-prometheus-images-v{{ kube_prometheus_version }}.tar.bz2
     run_once: true
 
   - name: docker login
