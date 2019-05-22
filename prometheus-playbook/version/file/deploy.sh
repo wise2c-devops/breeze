@@ -3,6 +3,7 @@ set -e
 
 MyImageRepositoryIP=`cat harbor-address.txt`
 MyImageRepositoryProject=library
+KubePrometheusVersion=`cat ${path}/components-version.txt |grep "KubePrometheus" |awk '{print $3}'`
 PrometheusOperatorVersion=`cat components-version.txt |grep "PrometheusOperator Version" |awk '{print $3}'`
 NAMESPACE=monitoring
 
@@ -16,9 +17,9 @@ for file in $(cat images-list.txt); do docker push $MyImageRepositoryIP/$MyImage
 echo 'Images pushed.'
 
 ######### Update deploy yaml files #########
-rm -rf prometheus-operator-$PrometheusOperatorVersion
-tar zxvf prometheus-operator-v$PrometheusOperatorVersion-origin.tar.gz
-cd prometheus-operator-$PrometheusOperatorVersion
+rm -rf kube-prometheus-$KubePrometheusVersion
+tar zxvf kube-prometheus-v$KubePrometheusVersion-origin.tar.gz
+cd kube-prometheus-$KubePrometheusVersion
 sed -i "s/quay.io\/coreos/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "quay.io/coreos" ./ |grep .yaml)
 sed -i "s/quay.io\/prometheus/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "quay.io/prometheus" ./ |grep .yaml)
 sed -i "s/grafana\/grafana/$MyImageRepositoryIP\/$MyImageRepositoryProject\/grafana/g" $(grep -lr "grafana/grafana" ./ |grep .yaml)
@@ -31,14 +32,14 @@ cd ..
 rm -f temp.txt
 cp -p append-lines.txt temp.txt
 sed -i "s/ImageRepositoryIP/$MyImageRepositoryIP/g" temp.txt
-sed -i '23 r temp.txt' prometheus-operator-$PrometheusOperatorVersion/contrib/kube-prometheus/manifests/0prometheus-operator-deployment.yaml
+sed -i '23 r temp.txt' kube-prometheus-$KubePrometheusVersion/manifests/0prometheus-operator-deployment.yaml
 rm -f temp.txt
 
 # Fix issue 2291 of prometheus operator
-sed -i "s/0.28.0/$PrometheusOperatorVersion/g" prometheus-operator-$PrometheusOperatorVersion/contrib/kube-prometheus/manifests/0prometheus-operator-deployment.yaml
+sed -i "s/0.29.0/$PrometheusOperatorVersion/g" kube-prometheus-$KubePrometheusVersion/manifests/0prometheus-operator-deployment.yaml
 
 # Wait for CRDs to be ready, we need to split all yaml files to two parts
-cd prometheus-operator-$PrometheusOperatorVersion/contrib/kube-prometheus/
+cd kube-prometheus-$KubePrometheusVersion/
 mkdir phase2
 mv manifests/0prometheus-operator-serviceMonitor.yaml phase2/
 mv manifests/alertmanager-alertmanager.yaml phase2/
