@@ -26,8 +26,8 @@ kubernetes_version=`cat ${path}/k8s-images-list.txt |grep kube-apiserver |awk -F
 dns_version=`cat ${path}/k8s-images-list.txt |grep coredns |awk -F ':' '{print $2}'`
 pause_version=`cat ${path}/k8s-images-list.txt |grep pause |awk -F ':' '{print $2}'`
 
-#echo "" >> ${path}/inherent.yaml
-#echo "version: ${kubernetes_version}" >> ${path}/inherent.yaml
+echo "" >> ${path}/inherent.yaml
+echo "version: ${kubernetes_version}" >> ${path}/inherent.yaml
 
 echo "" >> ${path}/yat/all.yml.gotmpl
 echo "kubernetes_repo: ${kubernetes_repo}" >> ${path}/yat/all.yml.gotmpl
