@@ -13,6 +13,7 @@ loadbalancer_version=HAProxy-${haproxy_version}_Keepalived-${keepalived_version}
 prometheus_version=2.7.1
 prometheus_operator_version=0.30.0
 kube_prometheus_version=0.1.0
+metrics_server_version=0.3.3
 dashboard_version=0.10.1
 flannel_version=0.11.0
 helm_version=2.14.0
@@ -38,6 +39,10 @@ echo "Keepalived Version: ${keepalived_version}" >> ${path}/components-version.t
 echo "Prometheus Version: ${prometheus_version}" >> ${path}/components-version.txt
 echo "PrometheusOperator Version: ${prometheus_operator_version}" >> ${path}/components-version.txt
 echo "KubePrometheus Version: ${kube_prometheus_version}" >> ${path}/components-version.txt
+echo "MetricsServer Version: ${metrics_server_version}" >> ${path}/components-version.txt
+echo "Dashboard Version: ${dashboard_version}" >> ${path}/components-version.txt
+echo "Flannel Version: ${flannel_version}" >> ${path}/components-version.txt
+echo "Helm Version: ${helm_version}" >> ${path}/components-version.txt
 echo "Istio Version: ${istio_version}" >> ${path}/components-version.txt
 
 for dir in `ls ${path}`
