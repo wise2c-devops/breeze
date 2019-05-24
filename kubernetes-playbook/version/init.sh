@@ -36,7 +36,8 @@ echo "dns_version: ${dns_version}" >> ${path}/yat/all.yml.gotmpl
 echo "pause_version: ${pause_version}" >> ${path}/yat/all.yml.gotmpl
 
 flannel_repo="quay.io/coreos"
-flannel_version="v0.11.0"
+flannel_version=v`cat ${path}/components-version.txt |grep "Flannel" |awk '{print $3}'`
+
 echo "flannel_repo: ${flannel_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "flannel_version: ${flannel_version}-amd64" >> ${path}/yat/all.yml.gotmpl
 
@@ -48,9 +49,16 @@ curl -sSL https://raw.githubusercontent.com/coreos/flannel/master/Documentation/
    | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
 
 dashboard_repo=${kubernetes_repo}
-dashboard_version="v1.10.1"
+dashboard_version=v`cat ${path}/components-version.txt |grep "Dashboard" |awk '{print $3}'`
+
 echo "dashboard_repo: ${dashboard_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "dashboard_version: ${dashboard_version}" >> ${path}/yat/all.yml.gotmpl
+
+metrics_server_repo=${kubernetes_repo}
+metrics_server_version=v`cat ${path}/components-version.txt |grep "MetricsServer" |awk '{print $3}'`
+
+echo "metrics_server_repo: ${metrics_server_repo}" >> ${path}/yat/all.yml.gotmpl
+echo "metrics_server_version: ${metrics_server_version}" >> ${path}/yat/all.yml.gotmpl
 
 #curl -sS https://raw.githubusercontent.com/kubernetes/dashboard/${dashboard_version}/src/deploy/recommended/kubernetes-dashboard.yaml \
 #    | sed -e "s,k8s.gcr.io,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kubernetes-dashboard.yml.j2
@@ -69,22 +77,20 @@ rm ${path}/file/flannel.tar.bz2 -f
 bzip2 -z --best ${path}/file/flannel.tar
 echo "=== flannel image is saved successfully ==="
 
-echo "=== pulling kubernetes dashboard images ==="
+echo "=== pulling kubernetes dashboard and metrics-server images ==="
 docker pull ${dashboard_repo}/kubernetes-dashboard-amd64:${dashboard_version}
-#docker pull k8s.gcr.io/heapster-amd64:v1.5.4
-#docker pull k8s.gcr.io/heapster-influxdb-amd64:v1.5.2
-#docker pull k8s.gcr.io/heapster-grafana-amd64:v5.0.4
-echo "=== kubernetes dashboard images are pulled successfully ==="
+docker pull ${metrics_server_repo}/metrics-server-amd64:${metrics_server_version}
+echo "=== kubernetes dashboard and metrics-server images are pulled successfully ==="
 
 echo "=== saving kubernetes dashboard images ==="
 docker save ${dashboard_repo}/kubernetes-dashboard-amd64:${dashboard_version} \
     > ${path}/file/dashboard.tar
-#docker save k8s.gcr.io/heapster-amd64:v1.5.4 k8s.gcr.io/heapster-influxdb-amd64:v1.5.2 k8s.gcr.io/heapster-grafana-amd64:v5.0.4 -o ${path}/file/heapster.tar
+docker save ${metrics_server_repo}/metrics-server-amd64:${metrics_server_version} -o ${path}/file/metrics-server.tar
 rm ${path}/file/dashboard.tar.bz2 -f
-#rm ${path}/file/heapster.tar.bz2 -f
+rm ${path}/file/metrics-server.tar.bz2 -f
 bzip2 -z --best ${path}/file/dashboard.tar
-#bzip2 -z --best ${path}/file/heapster.tar
-echo "=== kubernetes dashboard images are saved successfully ==="
+bzip2 -z --best ${path}/file/metrics-server.tar
+echo "=== kubernetes dashboard and metrics-server images are saved successfully ==="
 
 echo "=== download cfssl tools ==="
 export CFSSL_URL=https://pkg.cfssl.org/R1.2
@@ -96,7 +102,8 @@ tar zcvf ${path}/file/cfssl-tools.tar.gz cfssl cfssl-certinfo cfssljson
 echo "=== cfssl tools is download successfully ==="
 
 helm_repo="gcr.io/kubernetes-helm"
-helm_version="v2.14.0"
+helm_version=v`cat ${path}/components-version.txt |grep "Helm" |awk '{print $3}'`
+
 echo "helm_repo: ${helm_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "helm_version: ${helm_version}" >> ${path}/yat/all.yml.gotmpl
 
