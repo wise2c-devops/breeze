@@ -89,6 +89,13 @@
   - { repo: '{{ helm_repo }}', name: 'tiller', tag: '{{ helm_version }}' }
   run_once: ture
 
+- name: copy metrics-server folder
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+  - { src: 'file/metrics-server', dest: '{{ path }}/' }
+
 - name: generate kubeadm config and other yaml files
   template:
     src: '{{ item.src }}'
@@ -97,15 +104,7 @@
   - { src: 'template/kubeadm.conf.j2', dest: '{{ path }}/kubeadm.conf' }
   - { src: 'template/kube-flannel.yml.j2', dest: '{{ path }}/kube-flannel.yml' }
   - { src: 'template/kubernetes-dashboard.yml.j2', dest: '{{ path }}/kubernetes-dashboard.yml' }
-  - { src: 'template/metrics-server', dest: '{{ path }}/' }
-
-#  - { src: 'template/aggregated-metrics-reader.yaml.j2', dest: '{{ path }}/aggregated-metrics-reader.yaml' }
-#  - { src: 'template/auth-delegator.yaml.j2', dest: '{{ path }}/auth-delegator.yaml' }
-#  - { src: 'template/auth-reader.yaml.j2', dest: '{{ path }}/auth-reader.yaml' }
-#  - { src: 'template/metrics-apiservice.yaml.j2', dest: '{{ path }}/metrics-apiservice.yaml' }
-#  - { src: 'template/metrics-server-deployment.yaml.j2', dest: '{{ path }}/metrics-server-deployment.yaml' }
-#  - { src: 'template/metrics-server-service.yaml.j2', dest: '{{ path }}/metrics-server-service.yaml' }
-#  - { src: 'template/resource-reader.yaml.j2', dest: '{{ path }}/resource-reader.yaml' }
+  - { src: 'template/metrics-server-deployment.yaml.j2', dest: '{{ path }}/metrics-server/metrics-server-deployment.yaml' }
 
 - name: copy certificates JSON files
   copy:
@@ -230,16 +229,7 @@
     kubectl apply -f {{ path }}/kube-flannel.yml
     kubectl apply -f {{ path }}/kubernetes-dashboard.yml
     kubectl apply -f {{ path }}/metrics-server/
-  run_once; true
-
-#    kubectl apply -f {{ path }}/aggregated-metrics-reader.yaml
-#    kubectl apply -f {{ path }}/auth-delegator.yaml
-#    kubectl apply -f {{ path }}/auth-reader.yaml
-#    kubectl apply -f {{ path }}/metrics-apiservice.yaml
-#    kubectl apply -f {{ path }}/metrics-server-deployment.yaml
-#    kubectl apply -f {{ path }}/metrics-server-service.yaml
-#    kubectl apply -f {{ path }}/resource-reader.yaml
-#  run_once: true
+  run_once: true
 
 - name: execute prometheus-fix-master-nodes script
   shell: ./prometheus-fix-master-nodes.sh
