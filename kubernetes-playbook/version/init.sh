@@ -55,7 +55,7 @@ echo "dashboard_repo: ${dashboard_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "dashboard_version: ${dashboard_version}" >> ${path}/yat/all.yml.gotmpl
 
 metrics_server_repo=${kubernetes_repo}
-metrics_server_version=`cat ${path}/components-version.txt |grep "MetricsServer" |awk '{print $3}'`
+metrics_server_version=v`cat ${path}/components-version.txt |grep "MetricsServer" |awk '{print $3}'`
 
 echo "metrics_server_repo: ${metrics_server_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "metrics_server_version: ${metrics_server_version}" >> ${path}/yat/all.yml.gotmpl
