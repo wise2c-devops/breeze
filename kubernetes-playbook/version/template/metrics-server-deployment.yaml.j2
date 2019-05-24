@@ -29,7 +29,7 @@ spec:
         emptyDir: {}
       containers:
       - name: metrics-server
-        image: {{ registry_endpoint }}/{{ registry_project }}/metrics-server-amd64:v{{ metrics_server_version }}
+        image: {{ registry_endpoint }}/{{ registry_project }}/metrics-server-amd64:{{ metrics_server_version }}
         imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: tmp-dir
