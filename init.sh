@@ -5,7 +5,7 @@ set -e
 path=`dirname $0`
 
 kubernetes_version=1.14.2
-harbor_version=1.7.5
+harbor_version=1.8.0
 docker_version=18.09.6
 haproxy_version=1.8.14
 keepalived_version=1.3.5
