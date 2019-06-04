@@ -8,6 +8,14 @@
         "required": true
     },
     {
+        "variable": "UpgradeCluster",
+        "label": "Upgrade existing cluster",
+        "description": "Existing master/worker nodes will be upgraded. Please backup etcd at first.",
+        "type": "bool",
+        "default": "false",
+        "required": true
+    },
+    {
         "variable": "master",
         "label": "kubernetes master nodes",
         "description": "hosts to be set up as kubernetes master nodes",

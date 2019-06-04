@@ -11,7 +11,7 @@
 
   - name: setup master nodes
     include_tasks: master-node.ansible
-    when: (not (check_output.stdout == True)) and (not (add_worker_node_only == True))
+    when: (not (check_output.stdout == True)) and (not (add_worker_node_only == True)) and (not (upgrade_cluster == true))
 
   - name: fetch admin.conf
     fetch:
@@ -35,4 +35,72 @@
 
   - name: setup worker nodes
     include_tasks: worker-node.ansible
-    when: not (check_output.stdout == True)
+    when: not (check_output.stdout == True) and (not (upgrade_cluster == true))
+
+- name: upgrade kubernetes master nodes
+  hosts: master
+  user: root
+  vars:
+    path: /var/tmp/wise2c/kubernetes
+
+  tasks:
+  - name: push images
+    include_tasks: push-images.ansible
+    run_once: true
+    when: (upgrade_cluster == true)
+
+  - name: copy upgrade scripts
+    include_tasks: copy-upgrade-scripts.ansible
+    when: (upgrade_cluster == true)
+
+  - name: upgrade the first master node
+    shell: ./upgrade_first_master_node.sh
+    args:
+      chdir: '{{ path }}'
+    run_once: true
+    when: (upgrade_cluster == true)
+
+  - name: upgrade other master nodes
+    shell: ./upgrade_other_master_nodes.sh
+    args:
+      chdir: '{{ path }}'
+    when: (upgrade_cluster == true)
+
+- name: upgrade kubernetes worker nodes
+  hosts: node
+  user: root
+  vars:
+    path: /var/tmp/wise2c/kubernetes
+
+  tasks:
+  - name: copy upgrade scripts
+    include_tasks: copy-upgrade-scripts.ansible
+    when: (upgrade_cluster == true)
+
+  - name: copy k8s admin.conf for upgrading
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+    - { src: 'file/admin.conf', dest: '{{ ansible_env.HOME }}/.kube/config' }
+    when: (upgrade_cluster == true)
+
+  - name: setup kubectl certification
+    shell: |
+      sed -i "s/.*server:.*/    server: https:\/\/{{ endpoint }}/g" $HOME/.kube/config
+      chown $(id -u):$(id -g) $HOME/.kube/config
+    when: (upgrade_cluster == true)
+
+  - name: upgrade worker nodes
+    shell: ./upgrade_worker_nodes.sh
+    args:
+      chdir: '{{ path }}'
+    when: (upgrade_cluster == true)
+
+  - name: remove kubectl cert
+    file:
+      path: '{{ item }}'
+      state: absent
+    with_items:
+      - '{{ ansible_env.HOME }}/.kube/config'
+    when: (upgrade_cluster == true)
