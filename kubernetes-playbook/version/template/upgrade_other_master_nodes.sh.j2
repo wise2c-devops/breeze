@@ -1,0 +1,20 @@
+#!/bin/bash
+if [ ! -f "./first_master_node.log" ];then
+  long_k8s_version={{ kubernetes_version }}
+  short_k8s_version=${long_k8s_version#*v}
+
+  yum clean all
+
+  yum install -y --disablerepo=* --enablerepo=wise2c kubeadm-${short_k8s_version}-0 --disableexcludes=kubernetes
+
+  kubeadm upgrade node experimental-control-plane
+
+  yum install -y --disablerepo=* --enablerepo=wise2c kubelet-${short_k8s_version}-0 kubectl-${short_k8s_version}-0 --disableexcludes=kubernetes
+
+  systemctl daemon-reload
+  systemctl restart kubelet
+else
+  echo 'This is the first master node.'
+fi
+
+rm -f ./first_master_node.log
