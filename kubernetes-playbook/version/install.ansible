@@ -58,13 +58,13 @@
     args:
       chdir: '{{ path }}'
     run_once: true
-    when: (upgrade_cluster == true)
+    when: (upgrade_cluster == true) and (auto_upgrade_nodes == true)
 
   - name: upgrade other master nodes
     shell: ./upgrade_other_master_nodes.sh
     args:
       chdir: '{{ path }}'
-    when: (upgrade_cluster == true)
+    when: (upgrade_cluster == true) and (auto_upgrade_nodes == true)
 
 - name: upgrade kubernetes worker nodes
   hosts: node
@@ -95,7 +95,7 @@
     shell: ./upgrade_worker_nodes.sh
     args:
       chdir: '{{ path }}'
-    when: (upgrade_cluster == true)
+    when: (upgrade_cluster == true) and (auto_upgrade_nodes == true)
 
   - name: remove kubectl cert
     file:
@@ -103,4 +103,4 @@
       state: absent
     with_items:
       - '{{ ansible_env.HOME }}/.kube/config'
-    when: (upgrade_cluster == true)
+    when: (upgrade_cluster == true) and (auto_upgrade_nodes == true)

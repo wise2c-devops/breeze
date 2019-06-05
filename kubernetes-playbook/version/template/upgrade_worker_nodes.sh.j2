@@ -16,3 +16,5 @@ systemctl daemon-reload
 systemctl restart kubelet
 
 kubectl uncordon `hostname`
+
+rm -f $HOME/.kube/config
