@@ -16,6 +16,14 @@
         "required": true
     },
     {
+        "variable": "AutoUpgradeK8sNodes",
+        "label": "Upgrade K8s nodes automatically",
+        "description": "All master and worker nodes will be upgraded automatically. During the upgrade process, worker nodes are cordoned and drained.",
+        "type": "bool",
+        "default": "true",
+        "required": true
+    },
+    {
         "variable": "master",
         "label": "kubernetes master nodes",
         "description": "hosts to be set up as kubernetes master nodes",
