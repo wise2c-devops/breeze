@@ -6,5 +6,21 @@
         "type": "host",
         "default": "",
         "required": true
+    },
+    {
+        "variable": "BackupEtcdFolder",
+        "label": "Stop etcd and backup etcd database folder before upgrading",
+        "description": "Backup etcd database folder before upgrading. It will stop etcd cluster for a while.",
+        "type": "bool",
+        "default": "false",
+        "required": true
+    },
+    {
+        "variable": "SnapshotEtcd",
+        "label": "Make a snapshot backup for etcd before upgrading",
+        "description": "Make a snapshot backup for etcd before upgrading.",
+        "type": "bool",
+        "default": "false",
+        "required": true
     }
 ]

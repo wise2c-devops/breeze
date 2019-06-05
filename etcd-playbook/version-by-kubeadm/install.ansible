@@ -4,6 +4,37 @@
   vars:
     path: /var/tmp/wise2c/etcd
   tasks:
+  - name: copy backup scripts
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+      mode: 0755
+    with_items:
+    - { src: 'file/backup-etcd-database-folder.sh', dest: '{{ path }}/' }
+    - { src: 'file/make-etcd-snapshot.sh', dest: '{{ path }}/' }
+
+  - name: stop etcd container
+    shell: |
+      docker stop etcd
+    when: (backup_etcd_folder == true)
+
+  - name: backup etcd database folder
+    shell: ./backup-etcd-database-folder.sh
+    args:
+      chdir: '{{ path }}'
+    when: (backup_etcd_folder == true)
+
+  - name: start etcd container
+    shell: |
+      docker start etcd
+    when: (backup_etcd_folder == true)
+
+  - name: make a snapshot for etcd cluster
+    shell: ./make-etcd-snapshot.sh
+    args:
+      chdir: '{{ path }}'
+    when: (snapshot_etcd == true)
+
   - name: make etcd dir
     file:
       path: '{{ item }}'
