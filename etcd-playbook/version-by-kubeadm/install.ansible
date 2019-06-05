@@ -13,6 +13,12 @@
     - { src: 'file/backup-etcd-database-folder.sh', dest: '{{ path }}/' }
     - { src: 'file/make-etcd-snapshot.sh', dest: '{{ path }}/' }
 
+  - name: make a snapshot for etcd cluster
+    shell: ./make-etcd-snapshot.sh
+    args:
+      chdir: '{{ path }}'
+    when: (snapshot_etcd == true)
+
   - name: stop etcd container
     shell: |
       docker stop etcd
@@ -28,12 +34,6 @@
     shell: |
       docker start etcd
     when: (backup_etcd_folder == true)
-
-  - name: make a snapshot for etcd cluster
-    shell: ./make-etcd-snapshot.sh
-    args:
-      chdir: '{{ path }}'
-    when: (snapshot_etcd == true)
 
   - name: make etcd dir
     file:
