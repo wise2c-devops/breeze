@@ -1,0 +1,21 @@
+#!/bin/bash
+if [ ! -f "./first_master_node.log" ];then
+  long_k8s_version={{ kubernetes_version }}
+  short_k8s_version=${long_k8s_version#*v}
+  current_k8s_version=`kubectl version |awk '{print $5}' |awk -F':' '{print $2}' |awk -F'"' '{print $2}'`
+  function version_gt() { test "$(echo "$@" | tr " " "\n" | sort -V | head -n 1)" != "$1"; }
+  function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -V -r | head -n 1)" != "$1"; }
+  if version_lt ${current_k8s_version} ${long_k8s_version}; then
+    yum clean all
+    yum install -y --disablerepo=* --enablerepo=wise2c kubeadm-${short_k8s_version}-0 --disableexcludes=kubernetes
+    kubeadm upgrade node experimental-control-plane
+    yum install -y --disablerepo=* --enablerepo=wise2c kubelet-${short_k8s_version}-0 kubectl-${short_k8s_version}-0 --disableexcludes=kubernetes
+    systemctl daemon-reload
+    systemctl restart kubelet
+  else
+    echo "current version is not lower than ${long_k8s_version}"
+  fi
+else
+  echo 'This is the first master node.'
+fi
+rm -f ./first_master_node.log
