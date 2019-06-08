@@ -1,0 +1,34 @@
+[
+    {
+        "variable": "endpoint",
+        "label": "harbor entry point",
+        "description": "ip/FQDN of harbor cluster entrypoint",
+        "type": "string",
+        "default": "",
+        "required": true
+    },
+    {
+        "variable": "https",
+        "label": "Https is enabled on external Harbar server",
+        "description": "Https is enabled on external Harbar server",
+        "type": "bool",
+        "default": false,
+        "required": true
+    },
+    {
+        "variable": "username",
+        "label": "Username on the external Harbor server",
+        "description": "Username on the external Harbor server",
+        "type": "string",
+        "default": "admin",
+        "required": true
+    },
+    {
+        "variable": "password",
+        "label": "Password of the account on the external Harbor server",
+        "description": "Password of the account on the external Harbor server",
+        "type": "password",
+        "default": "Harbor12345",
+        "required": true
+    }
+]
