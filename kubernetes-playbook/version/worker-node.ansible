@@ -14,6 +14,7 @@
     kubeadm join --token `cat /var/tmp/wise2c/kubernetes/kubeadm.conf |grep token: |awk '{print $2}'` --discovery-token-unsafe-skip-ca-verification --ignore-preflight-errors=cri {{ endpoint }}
     rm -f /var/tmp/wise2c/kubernetes/kubeadm.conf
     sed -i "s/.*server:.*/    server: https:\/\/{{ endpoint }}/g" /etc/kubernetes/kubelet.conf
+  async: 600
 
 - name: restart kubelet
   systemd: 
