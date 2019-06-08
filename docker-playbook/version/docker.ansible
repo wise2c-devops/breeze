@@ -95,6 +95,15 @@
       dest: '{{ item.dest }}'
     with_items:
     - { src: 'template/daemon.json.j2', dest: '/etc/docker/daemon.json' }
+    when: not harbor_https
+
+  - name: distribute external docker config
+    template:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+    - { src: 'template/daemon.json.https.j2', dest: '/etc/docker/daemon.json' }
+    when: harbor_https
 
   - name: reload & restart docker
     systemd:
