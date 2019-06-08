@@ -3,6 +3,7 @@ endpoint: {{ if eq (print .Property.endpoint) "" -}}
           {{- else -}}
           {{ .Property.endpoint }}
           {{- end }}
+https: false
 user: admin
 password: {{ if eq (print .Property.password) "" -}}
           Harbor12345
