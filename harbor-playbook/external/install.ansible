@@ -1,0 +1,9 @@
+- name: setup external harbor
+  hosts: harbor
+  user: root
+  vars:
+    path: /var/tmp/wise2c/harbor
+  tasks:
+  - name: setup external harbor
+    shell: |
+      echo 'setup external harbor'

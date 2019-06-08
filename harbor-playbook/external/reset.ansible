@@ -1,0 +1,7 @@
+- name: setup external harbor
+  hosts: harbor
+  user: root
+  tasks:
+  - name: reset external harbor
+    shell: |
+      echo 'no need to reset external harbor'
