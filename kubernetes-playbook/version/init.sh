@@ -116,3 +116,8 @@ docker save ${helm_repo}/tiller:${helm_version} > ${path}/file/tiller.tar
 rm ${path}/file/tiller.tar.bz2 -f
 bzip2 -z --best ${path}/file/tiller.tar
 echo "=== helm tiller image is saved successfully ==="
+
+echo "=== download helm binary package ==="
+rm ${path}/file/helm-linux-amd64.tar.gz -f
+curl -o ${path}/file/helm-linux-amd64.tar.gz https://storage.googleapis.com/kubernetes-helm/helm-${helm_version}-linux-amd64.tar.gz
+echo "=== helm binary package is saved successfully ==="
