@@ -23,7 +23,7 @@
       src: '{{ item.src }}'
       dest: '{{ item.dest }}'
     with_items:
-    - { src: 'template/harbor.yml.j2', dest: '{{ cpath }}/harbor/harbor.yml' }
+    - { src: 'template/harbor.cfg.j2', dest: '{{ cpath }}/harbor/harbor.cfg' }
 
   - name: copy harbor start and stop scripts
     template:
