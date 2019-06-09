@@ -12,7 +12,7 @@
         "label": "NodePort for Kiali in istio-system",
         "description": "NodePort for Kiali service, e.g.: 30201",
         "type": "int",
-        "default": "30021",
+        "default": "30201",
         "required": true
     },
     {
