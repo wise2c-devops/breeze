@@ -42,7 +42,7 @@
     with_items:
     - rsync
     - jq
-    - docker-ce
+    - docker
     - python-docker-py
     - docker-compose
     - chrony
