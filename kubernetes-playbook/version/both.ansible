@@ -16,7 +16,7 @@
 
   - name: disable swap
     command: swapoff -a
-    
+
   - block:
     - name: load ipvs
       shell: |
