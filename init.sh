@@ -5,7 +5,7 @@ set -e
 path=`dirname $0`
 
 kubernetes_version=1.11.10
-harbor_version=1.7.5
+harbor_version=1.8.0
 docker_version=1.3.1-94
 haproxy_version=1.8.14
 keepalived_version=1.3.5
@@ -13,6 +13,10 @@ loadbalancer_version=HAProxy-${haproxy_version}_Keepalived-${keepalived_version}
 prometheus_version=2.7.2
 prometheus_operator_version=0.30.0
 kube_prometheus_version=0.1.0
+metrics_server_version=0.3.3
+dashboard_version=1.10.1
+flannel_version=0.11.0
+helm_version=2.14.0
 istio_version=1.1.7
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
@@ -35,6 +39,10 @@ echo "Keepalived Version: ${keepalived_version}" >> ${path}/components-version.t
 echo "Prometheus Version: ${prometheus_version}" >> ${path}/components-version.txt
 echo "PrometheusOperator Version: ${prometheus_operator_version}" >> ${path}/components-version.txt
 echo "KubePrometheus Version: ${kube_prometheus_version}" >> ${path}/components-version.txt
+echo "MetricsServer Version: ${metrics_server_version}" >> ${path}/components-version.txt
+echo "Dashboard Version: ${dashboard_version}" >> ${path}/components-version.txt
+echo "Flannel Version: ${flannel_version}" >> ${path}/components-version.txt
+echo "Helm Version: ${helm_version}" >> ${path}/components-version.txt
 echo "Istio Version: ${istio_version}" >> ${path}/components-version.txt
 
 for dir in `ls ${path}`

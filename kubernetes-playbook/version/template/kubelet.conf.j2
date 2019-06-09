@@ -1,4 +1,4 @@
-KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.1
+KUBELET_EXTRA_ARGS=--runtime-cgroups=/systemd/system.slice --kubelet-cgroups=/systemd/system.slice --pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.1
 
 #KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.1 --feature-gates=LocalStorageCapacityIsolation=true \
 #                   --kube-reserved-cgroup=/kubepods.slice --kube-reserved=cpu=500m,memory=500Mi,ephemeral-storage=1Gi \
