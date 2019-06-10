@@ -14,8 +14,6 @@ echo 'Images taged.'
 
 for file in $(cat images-list.txt); do docker push $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
 
-for file in $(cat images-list.txt); do docker rmi $file ; done
-
 echo 'Images pushed.'
 ######### Update deploy yaml files #########
 rm -rf kube-prometheus-$KubePrometheusVersion
@@ -58,6 +56,8 @@ mv manifests phase1
 mkdir manifests
 mv phase1 manifests
 mv phase2 manifests
+
+for file in $(cat images-list.txt); do docker rmi $file ; done
 
 ######### Deploy prometheus operator and kube-prometheus #########
 
