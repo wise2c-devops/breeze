@@ -275,7 +275,7 @@
     kubectl apply -f {{ path }}/tiller-rbac.yaml
   run_once: true
 
-- name: check kubernetes services
+- name: check tiller deployment
   script: scripts/check_tiller.sh
 
 - name: upgrade tiller
