@@ -13,8 +13,6 @@ echo 'Images taged.'
 
 for file in $(cat images-list.txt); do docker push $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
 
-for file in $(cat images-list.txt); do docker rmi $file ; done
-
 echo 'Images pushed.'
 
 ######### Update deploy yaml files #########
@@ -27,6 +25,8 @@ sed -i "s/docker.io\/prom/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(g
 sed -i "s/docker.io\/jaegertracing/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "docker.io/jaegertracing" ./ |grep .yaml)
 sed -i "s/grafana\/grafana/$MyImageRepositoryIP\/$MyImageRepositoryProject\/grafana/g" $(grep -lr "grafana/grafana" ./ |grep .yaml)
 cd ../../
+
+for file in $(cat images-list.txt); do docker rmi $file ; done
 
 # Istio init deploy
 helm install install/kubernetes/helm/istio-init --name istio-init --namespace istio-system
