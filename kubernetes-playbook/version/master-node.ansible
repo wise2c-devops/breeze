@@ -275,6 +275,9 @@
     kubectl apply -f {{ path }}/tiller-rbac.yaml
   run_once: true
 
+- name: check kubernetes services
+  script: scripts/check_tiller.sh
+
 - name: upgrade tiller
   shell: |
     helm init --tiller-image {{ registry_endpoint }}/{{ registry_project }}/tiller:{{ helm_version }} --service-account tiller --upgrade
