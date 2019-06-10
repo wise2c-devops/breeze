@@ -57,6 +57,8 @@ mkdir manifests
 mv phase1 manifests
 mv phase2 manifests
 
+for file in $(cat images-list.txt); do docker rmi $file ; done
+
 ######### Deploy prometheus operator and kube-prometheus #########
 
 kctl() {
@@ -67,12 +69,20 @@ kubectl apply -f manifests/phase1
 
 # Wait for CRDs to be ready.
 printf "Waiting for Operator to register custom resource definitions..."
-until [ `kctl get customresourcedefinitions servicemonitors.monitoring.coreos.com -o jsonpath='{.status.conditions[1].status}'` = "True" ]; do sleep 1; printf "."; done
-until [ `kctl get customresourcedefinitions prometheuses.monitoring.coreos.com -o jsonpath='{.status.conditions[1].status}'` = "True" ]; do sleep 1; printf "."; done
-until [ `kctl get customresourcedefinitions alertmanagers.monitoring.coreos.com -o jsonpath='{.status.conditions[1].status}'` = "True" ]; do sleep 1; printf "."; done
+
+crd_servicemonitors_status="false"
+until [ "$crd_servicemonitors_status" = "True" ]; do sleep 1; printf "."; crd_servicemonitors_status=`kctl get customresourcedefinitions servicemonitors.monitoring.coreos.com -o jsonpath='{.status.conditions[1].status}' 2>&1`; done
+
+crd_prometheuses_status="false"
+until [ "$crd_prometheuses_status" = "True" ]; do sleep 1; printf "."; crd_prometheuses_status=`kctl get customresourcedefinitions prometheuses.monitoring.coreos.com -o jsonpath='{.status.conditions[1].status}' 2>&1`; done
+
+crd_alertmanagers_status="false"
+until [ "$crd_alertmanagers_status" = "True" ]; do sleep 1; printf "."; crd_alertmanagers_status=`kctl get customresourcedefinitions alertmanagers.monitoring.coreos.com -o jsonpath='{.status.conditions[1].status}' 2>&1`; done
+
 until kctl get servicemonitors.monitoring.coreos.com > /dev/null 2>&1; do sleep 1; printf "."; done
 until kctl get prometheuses.monitoring.coreos.com > /dev/null 2>&1; do sleep 1; printf "."; done
 until kctl get alertmanagers.monitoring.coreos.com > /dev/null 2>&1; do sleep 1; printf "."; done
+
 echo 'Phase1 done!'
 
 kubectl apply -f manifests/phase2
