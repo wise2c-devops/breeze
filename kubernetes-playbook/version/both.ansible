@@ -24,7 +24,11 @@
         modprobe ip_vs_rr
         modprobe ip_vs_wrr
         modprobe ip_vs_sh
-  
+        
+    - name: clean yum cache
+      shell: |
+        yum clean all
+        
     - name: install kubernetes components
       yum:
         disablerepo: '*'
