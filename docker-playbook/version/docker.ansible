@@ -32,6 +32,10 @@
     with_items:
     - { src: 'template/ipvs.conf.j2', dest: '/etc/modules-load.d/ipvs.conf' }
 
+  - name: clean yum cache
+    shell: |
+      yum clean all
+      
   - name: install docker
     yum:
       disablerepo: '*'
