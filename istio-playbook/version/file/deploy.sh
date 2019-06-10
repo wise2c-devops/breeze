@@ -26,8 +26,6 @@ sed -i "s/docker.io\/jaegertracing/$MyImageRepositoryIP\/$MyImageRepositoryProje
 sed -i "s/grafana\/grafana/$MyImageRepositoryIP\/$MyImageRepositoryProject\/grafana/g" $(grep -lr "grafana/grafana" ./ |grep .yaml)
 cd ../../
 
-for file in $(cat images-list.txt); do docker rmi $file ; done
-
 # Istio init deploy
 helm install install/kubernetes/helm/istio-init --name istio-init --namespace istio-system
 
