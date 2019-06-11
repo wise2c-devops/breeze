@@ -1,3 +1,4 @@
 #!/bin/bash
 tiller_status="false"
-until [ "$tiller_status" = "Running" ]; do sleep 1; printf "."; tiller_status=`kubectl -n kube-system get pods $(kubectl -n kube-system get pods |grep tiller-deploy |awk '{print $1}') -o jsonpath='{.status.phase}' 2>&1`; done
+until [ "$tiller_status" = "Available" ]; do sleep 1; printf "."; tiller_status=`kubectl -n kube-system get deploy tiller-deploy -o jsonpath='{.status.conditions[0].type}' 2>&1`; done
+sleep 10
