@@ -275,12 +275,19 @@
     kubectl apply -f {{ path }}/tiller-rbac.yaml
   run_once: true
 
-- name: check tiller deployment
-  script: scripts/check_tiller.sh
+- name: copy helm init script
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: 0755
+  with_items:
+  - { src: 'template/helm_init.sh.j2', dest: '{{ path }}/helm_init.sh' }
 
-- name: upgrade tiller
-  shell: |
-    helm init --tiller-image {{ registry_endpoint }}/{{ registry_project }}/tiller:{{ helm_version }} --service-account tiller --upgrade
+- name: execute helm init script
+  shell: ./helm_init.sh
+  args:
+    chdir: '{{ path }}'
+  async: 600
 
 - name: upgrade tiller repo
   shell: |
