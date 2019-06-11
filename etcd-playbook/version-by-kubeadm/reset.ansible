@@ -12,4 +12,4 @@
       path: '{{ item }}'
       state: absent
     with_items:
-    - /data/wisecloud/etcd
+    - /data/etcd
