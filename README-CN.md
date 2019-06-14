@@ -53,7 +53,7 @@ Breeze项目旨在提供一个可信的、安全的、稳定的Kubernetes集群�
 
 ## 问题反馈沟通
 
-* **微信:** 关注微信公众号【Wise2C】后回复【进群】，睿云小助手会第一时间把拉你进入【 Docker企业落地实践群】，关于Breeze部署工具的问题以及建议我们在群里讨论！
+* **微信:** 关注微信公众号【Wise2C】后回复【进群】，睿云小助手会第一时间把拉你进入【 K8s企业落地实践群】，关于Breeze部署工具的问题以及建议我们在群里讨论！
 
 常见排错说明在此：
 https://github.com/wise2c-devops/breeze/blob/master/TroubleShooting-CN.md
