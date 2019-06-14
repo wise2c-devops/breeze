@@ -1,7 +1,7 @@
 # Breeze
 - 可用于生产环境的图形化Kubernetes集群部署工具
 
-[![Build Status](https://travis-ci.org/wise2c-devops/breeze.svg?branch=v1.13)](https://travis-ci.org/wise2c-devops/breeze)
+[![Build Status](https://travis-ci.org/wise2c-devops/breeze.svg?branch=v1.14)](https://travis-ci.org/wise2c-devops/breeze)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/wise2c-devops/breeze/blob/master/LICENSE)
 
 [English](./README.md) | [中文](./README-CN.md)
@@ -12,7 +12,9 @@
 
 <img alt="Breeze" src="manual/BreezeLogo.png">
 
-Breeze项目旨在提供一个可信的、安全的、稳定的Kubernetes集群部署工具，它可以帮助您通过图形化操作界面快捷地在生产环境部署一个或多个Kubernetes集群，而不需要连入互联网环境。
+Breeze项目旨在提供一个可信的、安全的、稳定的Kubernetes集群部署工具，它可以帮助您通过图形化操作界面快捷地在生产环境部署一个或多个Kubernetes集群，而不需要连入互联网环境。作为云原生产品安装工具，Breeze被列入[CNCF Cloud Native Interactive Landscape](https://landscape.cncf.io/category=certified-kubernetes-installer&format=card-mode&selected=wise2-c-technology-breeze)，其品质值得信赖。
+
+<img alt="Breeze" src="manual/BreezeCNCF.png">
 
 ## 功能
 * **运行简单**: Breeze将部署Kubernetes集群所需的全部资源文件打包在一个docker镜像内，这包括Kubernetes的组件镜像、docker、etcd、harbor、kubernetes集群部署的ansible playbook脚本文件等。同时，Breeze部署主机自身也作为一个yum仓库服务器角色存在，因此，您只需准备一台安装了docker和docker-compose命令的主机即可轻松的使Breeze运行起来并进行Kubernetes集群的部署。
