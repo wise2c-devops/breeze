@@ -65,4 +65,4 @@
       image: '{{ image }}'
       command: '{{ command }}'
       volumes:
-      - "{{ etcd_data_path }}":/var/lib/etcd
+        - "{{ etcd_data_path }}":/var/lib/etcd
