@@ -5,7 +5,7 @@
     path: /var/tmp/wise2c/etcd
   tasks:
   - name: copy backup scripts
-    copy:
+    template:
       src: '{{ item.src }}'
       dest: '{{ item.dest }}'
       mode: 0755
