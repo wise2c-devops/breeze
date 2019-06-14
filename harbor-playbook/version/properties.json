@@ -19,7 +19,7 @@
         "variable": "password",
         "label": "harbor admin password",
         "description": "Password for the Harbor admin account",
-        "type": "string",
+        "type": "password",
         "default": "Harbor12345",
         "required": true
     }
