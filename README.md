@@ -1,7 +1,7 @@
 # Breeze
 - Deploy a Production Ready Kubernetes Cluster with graphical interface
 
-[![Build Status](https://travis-ci.org/wise2c-devops/breeze.svg?branch=v1.12)](https://travis-ci.org/wise2c-devops/breeze)
+[![Build Status](https://travis-ci.org/wise2c-devops/breeze.svg?branch=v1.14)](https://travis-ci.org/wise2c-devops/breeze)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/wise2c-devops/breeze/blob/master/LICENSE)
 
 [English](./README.md) | [中文](./README-CN.md)
@@ -13,7 +13,9 @@ Refer to **[User Guide](manual/BreezeManual.pdf)** for more details on how to us
 
 <img alt="Breeze" src="manual/BreezeLogo.png">
 
-Project Breeze is an open source trusted solution allow you to create Kubernetes clusters on your internal, secure, cloud network with graphical user interface.
+Project Breeze is an open source trusted solution allow you to create Kubernetes clusters on your internal, secure, cloud network with graphical user interface. As a cloud native installer project, Breeze is listed in [CNCF Cloud Native Interactive Landscape](https://landscape.cncf.io/category=certified-kubernetes-installer&format=card-mode&selected=wise2-c-technology-breeze).
+
+<img alt="Breeze" src="manual/BreezeCNCF.png">
 
 ## Features
 * **Easy to run**: Breeze combines all resources you need such as kubernetes components images, ansible playbooks for the deployment of kubernetes clusters into a single docker image (wise2c/playbook). It also works as a local yum repository server. You just need a linux server with docker and docker-compose installed to run Breeze.
