@@ -4,4 +4,4 @@ docker run -d --restart=always \
     -p {{ s.target }}:{{ s.port }} \
     {% endfor %}
     -v /var/wise2c/lb/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro \
-    wise2c/k8s-haproxy:1.8.14
+    wise2c/k8s-haproxy:HAPROXY_VERSION
