@@ -28,7 +28,7 @@
       dest: '{{ item.dest }}'
     with_items:
       - { src: 'file/haproxy-{{ haproxy_version }}.tar.bz2', dest: '{{ path }}' }
-      - { src: 'file/keepalived-{{ keepalived_version }} .tar.bz2', dest: '{{ path }}' }
+      - { src: 'file/keepalived-{{ keepalived_version }}.tar.bz2', dest: '{{ path }}' }
       - { src: 'file/keepalived.sh', dest: '{{ cpath }}' }
   
   - name: load lb image
