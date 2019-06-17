@@ -29,6 +29,13 @@
     with_items:
       - { src: 'file/haproxy-{{ haproxy_version }}.tar.bz2', dest: '{{ path }}' }
       - { src: 'file/keepalived-{{ keepalived_version }}.tar.bz2', dest: '{{ path }}' }
+    run_once: true
+
+  - name: copy keepalived script
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
       - { src: 'file/keepalived.sh', dest: '{{ cpath }}' }
   
   - name: load lb image
@@ -37,9 +44,49 @@
       name: lb
       timeout: 600
     with_items:
-    - haproxy-{{ haproxy_version }}.tar.bz2
-    - keepalived-{{ keepalived_version }}.tar.bz2
-  
+      - haproxy-{{ haproxy_version }}.tar.bz2
+      - keepalived-{{ keepalived_version }}.tar.bz2
+    run_once: true
+
+  - name: docker login
+    docker_login:
+      registry: '{{ registry_endpoint }}'
+      username: '{{ registry_user }}'
+      password: '{{ registry_password }}'
+      reauthorize: true
+    run_once: true
+
+  - name: tag images
+    docker_image:
+      name: '{{ item.repo }}/{{ item.name }}'
+      repository: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
+      tag: '{{ item.tag }}'
+    with_items:
+      - { repo: 'wise2c', name: 'k8s-haproxy', tag: '{{ haproxy_version }}' }
+      - { repo: 'wise2c', name: 'k8s-keepalived', tag: '{{ keepalived_version }}' }
+    run_once: true
+
+  - name: push images
+    docker_image:
+      name: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
+      tag: '{{ item.tag }}'
+      push: true
+      state: present
+    with_items:
+      - { repo: 'wise2c', name: 'k8s-haproxy', tag: '{{ haproxy_version }}' }
+      - { repo: 'wise2c', name: 'k8s-keepalived', tag: '{{ keepalived_version }}' }
+    run_once: true
+
+  - name: remove original images tag
+    docker_image:
+      state: absent
+      name: '{{ item.repo }}/{{ item.name }}'
+      tag: '{{ item.tag }}'
+    with_items:
+      - { repo: 'wise2c', name: 'k8s-haproxy', tag: '{{ haproxy_version }}' }
+      - { repo: 'wise2c', name: 'k8s-keepalived', tag: '{{ keepalived_version }}' }
+    run_once: ture
+
   - name: get port
     set_fact:
       ports: |
@@ -53,7 +100,7 @@
     docker_container:
       name: haproxy
       restart_policy: unless-stopped
-      image: wise2c/k8s-haproxy:{{ haproxy_version  }}
+      image: "{{ registry_endpoint }}/{{ registry_project }}/k8s-haproxy:{{ haproxy_version  }}"
       ports: '{{ ports | d([], true) | list }}'
       volumes:
       - '{{ cpath }}/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro'
@@ -64,7 +111,7 @@
       network_mode: host
       restart_policy: unless-stopped
       capabilities: NET_ADMIN
-      image: wise2c/k8s-keepalived:{{ keepalived_version }}
+      image: "{{ registry_endpoint }}/{{ registry_project }}/k8s-keepalived:{{ keepalived_version }}"
       entrypoint: /bin/bash
       command: /usr/bin/keepalived.sh
       volumes:
