@@ -28,7 +28,7 @@
     - name: clean yum cache
       shell: |
         yum clean all
-      
+        
     - name: install kubernetes components
       yum:
         disablerepo: '*'
