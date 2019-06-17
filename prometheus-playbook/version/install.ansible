@@ -128,3 +128,18 @@
     with_items:
       - '{{ ansible_env.HOME }}/.kube/config'
     run_once: ture
+
+  - name: copy clean-images-tags.sh
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+      mode: 0755
+    with_items:
+    - { src: 'file/clean-images-tags.sh', dest: '{{ path }}' }
+    run_once: true
+
+  - name: clean image tag
+    shell: ./clean-images-tags.sh
+    args:
+      chdir: '{{ cpath }}/'
+    run_once: ture
