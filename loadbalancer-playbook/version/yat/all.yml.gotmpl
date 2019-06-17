@@ -1,2 +1,7 @@
 haproxy_version: {{ .loadbalancer.Inherent.haproxy_version }}
 keepalived_version: {{ .loadbalancer.Inherent.keepalived_version }}
+registry_endpoint: {{ .harbor.Inherent.endpoint }}
+registry_https: {{ .harbor.Inherent.https }}
+registry_user: {{ .harbor.Inherent.user }}
+registry_password: {{ .harbor.Inherent.password }}
+registry_project: library
