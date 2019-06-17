@@ -57,8 +57,6 @@ mkdir manifests
 mv phase1 manifests
 mv phase2 manifests
 
-for file in $(cat images-list.txt); do docker rmi $file ; done
-
 ######### Deploy prometheus operator and kube-prometheus #########
 
 kctl() {
