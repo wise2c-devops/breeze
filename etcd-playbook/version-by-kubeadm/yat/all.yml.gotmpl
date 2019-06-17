@@ -1,3 +1,8 @@
 backup_etcd_folder: {{ .etcd.Property.BackupEtcdFolder }}
 snapshot_etcd: {{ .etcd.Property.SnapshotEtcd }}
 etcd_data_path: {{ .etcd.Property.EtcdDataPath }}
+registry_endpoint: {{ .harbor.Inherent.endpoint }}
+registry_https: {{ .harbor.Inherent.https }}
+registry_user: {{ .harbor.Inherent.user }}
+registry_password: {{ .harbor.Inherent.password }}
+registry_project: library
