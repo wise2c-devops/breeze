@@ -54,8 +54,8 @@
       repository: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
       tag: '{{ item.tag }}'
     with_items:
-      - { repo: 'wise2c', name: 'haproxy', tag: '{{ haproxy_version }}' }
-      - { repo: 'wise2c', name: 'keepalived', tag: '{{ keepalived_version }}' }
+      - { repo: 'wise2c', name: 'k8s-haproxy', tag: '{{ haproxy_version }}' }
+      - { repo: 'wise2c', name: 'k8s-keepalived', tag: '{{ keepalived_version }}' }
     run_once: true
 
   - name: push images
@@ -65,8 +65,8 @@
       push: true
       state: present
     with_items:
-      - { repo: 'wise2c', name: 'haproxy', tag: '{{ haproxy_version }}' }
-      - { repo: 'wise2c', name: 'keepalived', tag: '{{ keepalived_version }}' }
+      - { repo: 'wise2c', name: 'k8s-haproxy', tag: '{{ haproxy_version }}' }
+      - { repo: 'wise2c', name: 'k8s-keepalived', tag: '{{ keepalived_version }}' }
     run_once: true
 
   - name: remove original images tag
@@ -75,8 +75,8 @@
       name: '{{ item.repo }}/{{ item.name }}'
       tag: '{{ item.tag }}'
     with_items:
-      - { repo: 'wise2c', name: 'haproxy', tag: '{{ haproxy_version }}' }
-      - { repo: 'wise2c', name: 'keepalived', tag: '{{ keepalived_version }}' }
+      - { repo: 'wise2c', name: 'k8s-haproxy', tag: '{{ haproxy_version }}' }
+      - { repo: 'wise2c', name: 'k8s-keepalived', tag: '{{ keepalived_version }}' }
     run_once: ture
 
   - name: get port
