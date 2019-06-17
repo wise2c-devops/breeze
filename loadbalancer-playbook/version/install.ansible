@@ -48,6 +48,14 @@
       - keepalived-{{ keepalived_version }}.tar.bz2
     run_once: true
 
+  - name: docker login
+    docker_login:
+      registry: '{{ registry_endpoint }}'
+      username: '{{ registry_user }}'
+      password: '{{ registry_password }}'
+      reauthorize: true
+    run_once: true
+
   - name: tag images
     docker_image:
       name: '{{ item.repo }}/{{ item.name }}'
