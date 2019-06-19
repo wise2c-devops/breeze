@@ -15,7 +15,7 @@ cd ${path}/file/
 tar zxf istio-$IstioVersion-origin.tar.gz
 cat istio-$IstioVersion/install/kubernetes/istio-demo.yaml |grep "image:" |grep -v '\[\[' |awk -F':' '{print $2":"$3}' |awk -F "[\"\"]" '{print $2}' |awk '!a[$0]++{print}' > images-list.txt
 
-for file in $(cat images-list.txt); do docker pull $file; done
+for file in $(cat images-list.txt); do cat $file; docker pull $file; done
 echo 'Images pulled.'
 
 docker save $(cat images-list.txt) -o istio-images-$IstioVersion.tar
