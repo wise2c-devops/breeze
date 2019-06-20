@@ -5,7 +5,7 @@ set -e
 path=`dirname $0`
 
 kubernetes_version=1.12.9
-harbor_version=1.8.0
+harbor_version=1.8.1
 docker_version=18.06.3
 haproxy_version=1.9.8
 keepalived_version=1.3.5
@@ -17,7 +17,7 @@ metrics_server_version=0.3.3
 dashboard_version=1.10.1
 flannel_version=0.11.0
 helm_version=2.14.1
-istio_version=1.1.8
+istio_version=2.0.0
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
 mv ${path}/harbor-playbook/version ${path}/harbor-playbook/v${harbor_version}
