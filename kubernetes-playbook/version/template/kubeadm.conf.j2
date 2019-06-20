@@ -28,7 +28,7 @@ apiServer:
 apiVersion: kubeadm.k8s.io/v1beta1
 certificatesDir: /etc/kubernetes/pki
 clusterName: kubernetes
-controlPlaneEndpoint: "{{ endpoint }}"
+controlPlaneEndpoint: {{ endpoint }}
 controllerManager:
   extraArgs:
     feature-gates: LocalStorageCapacityIsolation=true
@@ -82,6 +82,7 @@ ipvs:
   excludeCIDRs: null
   minSyncPeriod: 0s
   scheduler: ""
+  strictARP: false
   syncPeriod: 30s
 kind: KubeProxyConfiguration
 metricsBindAddress: 127.0.0.1:10249
@@ -91,3 +92,7 @@ oomScoreAdj: -999
 portRange: ""
 resourceContainer: /kube-proxy
 udpIdleTimeout: 250ms
+winkernel:
+  enableDSR: false
+  networkName: ""
+  sourceVip: ""
