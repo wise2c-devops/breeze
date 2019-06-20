@@ -12,12 +12,10 @@ echo "istio_version: ${IstioVersion}" >> ${path}/group_vars/istio.yml
 curl -L -o ${path}/file/istio-$IstioVersion-origin.tar.gz https://github.com/istio/istio/releases/download/$IstioVersion/istio-$IstioVersion-linux.tar.gz
 
 cd ${path}/file/
-tar zxvf istio-$IstioVersion-origin.tar.gz
-ls istio-$IstioVersion
-cat istio-$IstioVersion/install/kubernetes/istio-demo.yaml
-cat istio-$IstioVersion/install/kubernetes/istio-demo.yaml |grep "image:" |grep -v '\[\[' |awk -F':' '{print $2":"$3}' |awk -F "[\"\"]" '{print $2}' |awk '!a[$0]++{print}' > images-list.txt
+tar zxf istio-$IstioVersion-origin.tar.gz
+cat istio-$IstioVersion/install/kubernetes/istio-demo.yaml |grep "image:" |grep -v '\[\[' |grep -v '{' |awk -F':' '{print $2":"$3}' |awk -F "[\"\"]" '{print $2}' |awk '!a[$0]++{print}' > images-list.txt
 
-for file in $(cat images-list.txt); do echo $file; docker pull $file; done
+for file in $(cat images-list.txt); do docker pull $file; done
 echo 'Images pulled.'
 
 docker save $(cat images-list.txt) -o istio-images-$IstioVersion.tar
