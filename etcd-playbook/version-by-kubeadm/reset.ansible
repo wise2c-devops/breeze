@@ -12,4 +12,4 @@
       path: '{{ item }}'
       state: absent
     with_items:
-      - "{{ etcd_data_path }}
+      - "{{ etcd_data_path }}"
