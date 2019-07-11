@@ -1,0 +1,4 @@
+[hosts]
+{{ range $v := .loadbalancer.Hosts.self -}}
+{{ $v.IP }}
+{{ end }}

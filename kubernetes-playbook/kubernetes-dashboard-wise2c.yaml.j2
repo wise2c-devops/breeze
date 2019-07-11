@@ -12,11 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Configuration to deploy release version of the Dashboard UI compatible with
-# Kubernetes 1.8.
-#
-# Example usage: kubectl create -f <this_file>
-
 # ------------------- Dashboard Secret ------------------- #
 
 apiVersion: v1
@@ -66,6 +61,15 @@ rules:
   resources: ["configmaps"]
   resourceNames: ["kubernetes-dashboard-settings"]
   verbs: ["get", "update"]
+  # Allow Dashboard to get metrics from heapster.
+- apiGroups: [""]
+  resources: ["services"]
+  resourceNames: ["heapster"]
+  verbs: ["proxy"]
+- apiGroups: [""]
+  resources: ["services/proxy"]
+  resourceNames: ["heapster", "http:heapster:", "https:heapster:"]
+  verbs: ["get"]
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -86,7 +90,7 @@ subjects:
 # ------------------- Dashboard Deployment ------------------- #
 
 kind: Deployment
-apiVersion: apps/v1beta2
+apiVersion: apps/v1
 metadata:
   labels:
     k8s-app: kubernetes-dashboard
@@ -105,7 +109,7 @@ spec:
     spec:
       containers:
       - name: kubernetes-dashboard
-        image: {{ registry_endpoint }}/{{ registry_project }}/kubernetes-dashboard-amd64:v1.10.0
+        image: {{ registry_endpoint }}/{{ registry_project }}/kubernetes-dashboard-amd64:v1.10.1
         ports:
         - containerPort: 8443
           protocol: TCP

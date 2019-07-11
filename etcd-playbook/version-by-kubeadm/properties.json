@@ -2,9 +2,33 @@
     {
         "variable": "self",
         "label": "etcd hosts",
-        "description": "hosts for setup etcd",
+        "description": "hosts to be set up as etcd servers",
         "type": "host",
         "default": "",
+        "required": true
+    },
+    {
+        "variable": "BackupEtcdFolder",
+        "label": "Back up etcd database folder and upgrade etcd cluster",
+        "description": "Back up etcd database folder before upgrading. It will stop etcd cluster for a while.",
+        "type": "bool",
+        "default": "false",
+        "required": true
+    },
+    {
+        "variable": "SnapshotEtcd",
+        "label": "Make a snapshot backup for etcd and upgrade etcd cluster",
+        "description": "Make a snapshot backup for etcd before upgrading.",
+        "type": "bool",
+        "default": "false",
+        "required": true
+    },
+    {
+        "variable": "EtcdDataPath",
+        "label": "Etcd database path on the host",
+        "description": "Etcd database path on the host. Etcd database will be stored in this foler.",
+        "type": "string",
+        "default": "/data/etcd",
         "required": true
     }
 ]

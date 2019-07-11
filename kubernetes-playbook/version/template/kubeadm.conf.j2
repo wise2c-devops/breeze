@@ -1,0 +1,98 @@
+apiVersion: kubeadm.k8s.io/v1beta1
+bootstrapTokens:
+- groups:
+  - system:bootstrappers:kubeadm:default-node-token
+  token: wise2c-breeze-token
+  ttl: 0s
+  usages:
+  - signing
+  - authentication
+kind: InitConfiguration
+localAPIEndpoint:
+  advertiseAddress: 127.0.0.1
+  bindPort: 6443
+nodeRegistration:
+  criSocket: /var/run/dockershim.sock
+  taints:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+---
+apiServer:
+  certSANs:
+  - {{ endpoint.split(':')[0] }}
+  extraArgs:
+    apiserver-count: "3"
+    feature-gates: LocalStorageCapacityIsolation=true
+    runtime-config: batch/v2alpha1=true
+  timeoutForControlPlane: 4m0s
+apiVersion: kubeadm.k8s.io/v1beta1
+certificatesDir: /etc/kubernetes/pki
+clusterName: kubernetes
+controlPlaneEndpoint: {{ endpoint }}
+controllerManager:
+  extraArgs:
+    feature-gates: LocalStorageCapacityIsolation=true
+dns:
+  type: CoreDNS
+etcd:
+  external:
+    caFile: ""
+    certFile: ""
+    endpoints:
+{% for host in groups['etcd'] %}
+    - http://{{ host }}:2379
+{% endfor %}
+    keyFile: ""
+imageRepository: {{ registry_endpoint }}/{{ registry_project }}
+kind: ClusterConfiguration
+kubernetesVersion: {{ kubernetes_version }}
+networking:
+  dnsDomain: cluster.local
+  podSubnet: 10.244.0.0/16
+  serviceSubnet: 10.96.0.0/12
+scheduler:
+  extraArgs:
+    feature-gates: LocalStorageCapacityIsolation=true
+---
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+bindAddress: 0.0.0.0
+clientConnection:
+  acceptContentTypes: ""
+  burst: 10
+  contentType: application/vnd.kubernetes.protobuf
+  kubeconfig: /var/lib/kube-proxy/kubeconfig.conf
+  qps: 5
+clusterCIDR: 10.244.0.0/16
+configSyncPeriod: 15m0s
+conntrack:
+  max: null
+  maxPerCore: 32768
+  min: 131072
+  tcpCloseWaitTimeout: 1h0m0s
+  tcpEstablishedTimeout: 24h0m0s
+enableProfiling: false
+healthzBindAddress: 0.0.0.0:10256
+hostnameOverride: ""
+iptables:
+  masqueradeAll: false
+  masqueradeBit: 14
+  minSyncPeriod: 0s
+  syncPeriod: 30s
+ipvs:
+  excludeCIDRs: null
+  minSyncPeriod: 0s
+  scheduler: ""
+  strictARP: false
+  syncPeriod: 30s
+kind: KubeProxyConfiguration
+metricsBindAddress: 127.0.0.1:10249
+mode: ipvs
+nodePortAddresses: null
+oomScoreAdj: -999
+portRange: ""
+resourceContainer: /kube-proxy
+udpIdleTimeout: 250ms
+winkernel:
+  enableDSR: false
+  networkName: ""
+  sourceVip: ""

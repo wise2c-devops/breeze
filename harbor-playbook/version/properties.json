@@ -1,0 +1,26 @@
+[
+    {
+        "variable": "self",
+        "label": "harbor hosts",
+        "description": "hosts to be set up as harbor server",
+        "type": "host",
+        "default": "",
+        "required": true
+    },
+    {
+        "variable": "endpoint",
+        "label": "harbor entry point",
+        "description": "ip/FQDN of harbor cluster entrypoint",
+        "type": "string",
+        "default": "",
+        "required": false
+    },
+    {
+        "variable": "password",
+        "label": "harbor admin password",
+        "description": "Password for the Harbor admin account",
+        "type": "password",
+        "default": "Harbor12345",
+        "required": true
+    }
+]

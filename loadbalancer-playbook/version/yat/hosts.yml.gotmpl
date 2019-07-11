@@ -1,0 +1,18 @@
+servers:
+{{ if .kubernetes.Hosts -}}
+- name: k8s
+  port: 6443
+  target: 6444
+  ips:
+{{ range $v := .kubernetes.Hosts.master }}  - {{ $v.IP }}
+{{ end }}
+{{- end }}
+
+interface: {{ .loadbalancer.Property.nic }}
+netmask: {{ .loadbalancer.Property.netMask }}
+routerID: {{ .loadbalancer.Property.routerID }}
+vRouterID: {{ .loadbalancer.Property.vRouterID }}
+vips:
+- name: k8s
+  vip: {{ .loadbalancer.Property.k8sVip }}
+  chkport: 6444

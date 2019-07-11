@@ -1,0 +1,33 @@
+- name: reset kubernetes cluster
+  hosts: all
+  user: root
+  tasks:
+  - name: kubeadm reset
+    shell: |
+      kubeadm reset -f
+
+  - name: iptables reset
+    shell: |
+      firewall-cmd --complete-reload
+
+  - name: ipvs reset
+    shell: |
+      ipvsadm --clear
+
+  - name: remove kubernetes components
+    yum:
+      state: absent
+      disablerepo: '*'
+      enablerepo: wise2c
+      name: '{{ item }}'
+    with_items:
+    - kubernetes-cni
+    - kubectl-{{ kubernetes_version[1:] }}
+    - kubelet-{{ kubernetes_version[1:] }}
+    - kubeadm-{{ kubernetes_version[1:] }}
+    
+  - name: clean flannel link
+    shell: |
+      ip link delete cni0
+      ip link delete flannel.1
+    ignore_errors: true

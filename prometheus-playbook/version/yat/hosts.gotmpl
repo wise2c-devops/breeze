@@ -1,0 +1,4 @@
+[prometheus]
+{{ range $v := .prometheus.Hosts.self -}}
+{{ $v.IP }}
+{{ end }}

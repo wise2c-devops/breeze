@@ -1,0 +1,40 @@
+- name: setup harbor
+  hosts: harbor
+  user: root
+  vars:
+    path: /var/tmp/wise2c/harbor
+  tasks:
+  - name: make harbor dir
+    file:
+      path: '{{ item }}'
+      state: directory
+      mode: 0755
+    with_items:
+    - '{{ cpath }}'
+    - '{{ path }}'
+
+  - name: unarchive harbor
+    unarchive:
+      src: file/harbor-offline-installer-{{ version }}.tgz
+      dest: '{{ cpath }}'
+
+  - name: generate harbor config
+    template:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+    - { src: 'template/harbor.yml.j2', dest: '{{ cpath }}/harbor/harbor.yml' }
+
+  - name: copy harbor start and stop scripts
+    template:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+      mode: 0755
+    with_items:
+    - { src: 'file/start-harbor.sh', dest: '{{ cpath }}/harbor/start-harbor.sh' }
+    - { src: 'file/stop-harbor.sh', dest: '{{ cpath }}/harbor/stop-harbor.sh' }
+
+  - name: launch harbor
+    shell: ./install.sh --with-clair --with-chartmuseum
+    args:
+      chdir: '{{ cpath }}/harbor'

@@ -1,0 +1,9 @@
+- name: copy upgrade scripts
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: 0755
+  with_items:
+  - { src: 'template/upgrade_first_master_node.sh.j2', dest: '{{ path }}/upgrade_first_master_node.sh' }
+  - { src: 'template/upgrade_other_master_nodes.sh.j2', dest: '{{ path }}/upgrade_other_master_nodes.sh' }
+  - { src: 'template/upgrade_worker_nodes.sh.j2', dest: '{{ path }}/upgrade_worker_nodes.sh' }

@@ -1,0 +1,45 @@
+    global_defs {
+        router_id {{ routerID }}
+        vrrp_version 2
+        vrrp_garp_master_delay 1
+        vrrp_garp_master_refresh 1
+    }   
+
+    {% for v in vips -%}
+    vrrp_script chk-{{ v.name }} {
+        script       "nc -v -w 2 -z 127.0.0.1 {{ v.chkport }} 2>&1 | grep 'Connected to' | grep {{ v.chkport }}"
+        timeout 1
+        interval 5   # check every 5 second
+        fall 2       # require 2 failures for KO
+        rise 2       # require 2 successes for OK
+    }
+
+    vrrp_instance lb-vips-{{ v.name }} {
+        state BACKUP
+        interface {{ interface }}
+        virtual_router_id {{ vRouterID + loop.index }}
+        {% set vi = loop.index0 -%}
+        {% for host in ansible_play_batch -%}
+        {% if host == inventory_hostname -%}
+        {% if loop.index0 + vi > loop.length -%}
+        priority {{ loop.index + vi - loop.length }}
+        {% else -%}
+        priority {{ loop.index + vi }}
+        {% endif -%}
+        {% endif -%}
+        {% endfor -%}
+        advert_int 1
+        nopreempt
+        track_script {
+            chk-{{ v.name }}
+        }
+        authentication {
+            auth_type PASS
+            auth_pass blahblah
+        }
+        virtual_ipaddress {
+            {{ v.vip }}/{{ netmask }} dev {{ interface }}
+        }
+    }
+
+    {% endfor %}

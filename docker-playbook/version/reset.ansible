@@ -1,0 +1,13 @@
+- name: clean docker
+  hosts: hosts
+  user: root
+  tasks:
+  - name: remove docker
+    yum:
+      disablerepo: '*'
+      enablerepo: wise2c
+      state: absent
+      name: '{{ item }}'
+    with_items:
+    - docker-ce
+    - docker-compose

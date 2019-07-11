@@ -1,0 +1,29 @@
+- name: clean harbor
+  hosts: harbor
+  user: root
+  tasks:
+#  - name: stop & rm harbor
+#    docker_service:
+#      project_src: '{{ cpath }}/harbor'
+#      state: absent
+#      remove_volumes: true
+
+  - name: stop & rm harbor
+    shell: docker-compose stop && docker-compose rm -f
+    args:
+      chdir: '{{ cpath }}/harbor'
+ 
+  - name: clean harbor directory
+    file:
+      path: '{{ item }}'
+      state: absent
+    with_items:
+    - /data/registry
+    - /data/database
+    - /data/ca_download
+    - /data/config
+    - /data/job_logs
+    - /data/psc
+    - /data/secretkey
+    - /data/redis
+    - '{{ cpath }}'

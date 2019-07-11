@@ -1,0 +1,50 @@
+[
+    {
+        "variable": "self",
+        "label": "haproxy hosts",
+        "description": "hosts to be set up as haproxy/keepalived nodes",
+        "type": "host",
+        "default": "",
+        "required": true
+    },
+    {
+        "variable": "k8sVip",
+        "label": "vip for k8s master",
+        "description": "input a vip for k8s master",
+        "type": "string",
+        "default": "",
+        "required": true
+    },
+    {
+        "variable": "nic",
+        "label": "NIC",
+        "description": "Create virtual IP on this network interface card",
+        "type": "string",
+        "default": "",
+        "required": true
+    },
+    {
+        "variable": "netMask",
+        "label": "Subnet Host Bits",
+        "description": "Please input subnet host bits like 16 for 255.255.0.0 or 24 for 255.255.255.0",
+        "type": "int",
+        "default": "",
+        "required": true
+    },
+    {
+        "variable": "routerID",
+        "label": "Keepalived router id",
+        "description": "Keepalived router id",
+        "type": "string",
+        "default": "10",
+        "required": false
+    },
+    {
+        "variable": "vRouterID",
+        "label": "Keepalived virtual route id",
+        "description": "Keepalived virtual route id",
+        "type": "string",
+        "default": "160",
+        "required": false
+    }
+]
