@@ -209,7 +209,7 @@
 - name: kubeadm init
   shell: |
     kubeadm init --config {{ path }}/kubeadm.conf
-	
+
 - name: fetch admin.conf
   fetch:
     src: '{{ item.src }}'
