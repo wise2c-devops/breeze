@@ -7,10 +7,18 @@ command:
   {% endif -%}
   {% endfor -%}
 - --data-dir /var/lib/etcd
-- --advertise-client-urls http://{{ inventory_hostname }}:2379
-- --listen-client-urls http://{{ inventory_hostname }}:2379
-- --listen-peer-urls http://{{ inventory_hostname }}:2380
+- --advertise-client-urls https://{{ inventory_hostname }}:2379
+- --listen-client-urls https://{{ inventory_hostname }}:2379
+- --listen-peer-urls https://{{ inventory_hostname }}:2380
 - --initial-cluster-token etcd-cluster
-- --initial-advertise-peer-urls http://{{ inventory_hostname }}:2380
-- --initial-cluster {% for host in play_hosts %}etcd{{ loop.index0 }}=http://{{ host }}:2380{% if not loop.last %},{% endif %}{% endfor %}
+- --initial-advertise-peer-urls https://{{ inventory_hostname }}:2380
+- --initial-cluster {% for host in play_hosts %}etcd{{ loop.index0 }}=https://{{ host }}:2380{% if not loop.last %},{% endif %}{% endfor %}
 - --initial-cluster-state new
+- --client-cert-auth
+- --trusted-ca-file=/etcd-cert/ca.pem
+- --cert-file=/etcd-cert/etcd.pem
+- --key-file=/etcd-cert/etcd-key.pem
+- --peer-client-cert-auth
+- --peer-trusted-ca-file=/etcd-cert/ca.pem
+- --peer-cert-file=/etcd-cert/etcd.pem
+- --peer-key-file=/etcd-cert/etcd-key.pem
