@@ -209,12 +209,6 @@
 - name: kubeadm init
   shell: |
     kubeadm init --config {{ path }}/kubeadm.conf
-
-- name: change admin.conf's endpoint to web's endpoint
-  lineinfile:
-    dest: /etc/kubernetes/admin.conf
-    regexp: "server:"
-    line: "    server: https://{{ endpoint }}"
 	
 - name: fetch admin.conf
   fetch:
