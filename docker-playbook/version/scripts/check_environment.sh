@@ -14,12 +14,16 @@ if [ "${BREEZE_LSB_ID}" != "RedHat" ] && [ "${BREEZE_LSB_ID}" != "CentOS" ] && [
   exit
 fi
 
-if [ "${BREEZE_LSB_ID}" == "CentOS" ] && [ `version_lt 7.3 ${BREEZE_LSB_RELEASE}` ]; then
+if [ "${BREEZE_LSB_ID}" == "RedHat" ] && [ `version_lt 7.4 ${BREEZE_LSB_RELEASE}` ]; then
   echo "Breeze currently only supports RedHat/CentOS 7.4+ and Ubuntu 16/18."
   exit
 fi
 
-# TODO: complete unbuntu
+if [ "${BREEZE_LSB_ID}" == "CentOS" ] && [ `version_lt 7.4 ${BREEZE_LSB_RELEASE}` ]; then
+  echo "Breeze currently only supports RedHat/CentOS 7.4+ and Ubuntu 16/18."
+  exit
+fi
+
 if [ "${BREEZE_LSB_ID}" == "Ubuntu" ] && [ `version_lt 16 ${BREEZE_LSB_RELEASE}` ]; then
   echo "Breeze currently only supports RedHat/CentOS 7.4+ and Ubuntu 16/18."
   exit
