@@ -15,7 +15,7 @@
       state: absent
 
   - name: disable swap
-    command: swapoff -a
+    script: scripts/disable-swap.sh
 
   - block:
     - name: load ipvs
