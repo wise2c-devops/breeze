@@ -100,6 +100,7 @@
     - graphviz
     - nfs-common
     - gnupg
+    - ipset
     - docker-ce
     when: ansible_distribution =="Ubuntu"
 
@@ -167,7 +168,7 @@
     systemd:
       name: chronyd
       daemon_reload: true
-      enabled: true
+      enabled: yes
       state: started
     when: ansible_distribution =="RedHat" or ansible_distribution =="CentOS"
 
@@ -175,7 +176,7 @@
     systemd:
       name: chrony
       daemon_reload: true
-      enabled: true
+      enabled: yes
       state: started
     when: ansible_distribution =="Ubuntu"
 

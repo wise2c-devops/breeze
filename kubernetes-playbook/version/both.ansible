@@ -51,9 +51,9 @@
         name: '{{ item }}'
       with_items:
       - kubernetes-cni
-      - kubectl-{{ kubernetes_version[1:] }}
-      - kubelet-{{ kubernetes_version[1:] }}
-      - kubeadm-{{ kubernetes_version[1:] }}
+      - kubectl
+      - kubelet
+      - kubeadm
       when: ansible_distribution =="Ubuntu"
 
     - name: unarchive cfssl tool
@@ -68,14 +68,25 @@
         mode: 0755
       with_items:
       - { src: 'file/prometheus-fix-master-nodes.sh', dest: '/var/tmp/wise2c/kubernetes/' }
+      - { src: 'file/prometheus-fix-master-nodes-ubuntu.sh', dest: '/var/tmp/wise2c/kubernetes/' }
       - { src: 'file/prometheus-fix-worker-nodes.sh', dest: '/var/tmp/wise2c/kubernetes/' }
+      - { src: 'file/prometheus-fix-worker-nodes-ubuntu.sh', dest: '/var/tmp/wise2c/kubernetes/' }
 
-    - name: distribute kubelet config
+    - name: distribute kubelet config for Redhat/CentOS
       template:
         src: '{{ item.src }}'
         dest: '{{ item.dest }}'
       with_items:
       - { src: 'template/kubelet.conf.j2', dest: '/etc/sysconfig/kubelet' }
+      when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+
+    - name: distribute kubelet config for Ubuntu
+      template:
+        src: '{{ item.src }}'
+        dest: '{{ item.dest }}'
+      with_items:
+      - { src: 'template/kubelet.conf.j2', dest: '/etc/default/kubelet' }
+      when: ansible_distribution =="Ubuntu"
 
     - name: reload & enable kubelet
       systemd:
