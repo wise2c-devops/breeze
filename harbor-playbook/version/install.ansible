@@ -26,7 +26,7 @@
     - { src: 'template/harbor.yml.j2', dest: '{{ cpath }}/harbor/harbor.yml' }
 
   - name: copy harbor start and stop scripts
-    template:
+    copy:
       src: '{{ item.src }}'
       dest: '{{ item.dest }}'
       mode: 0755
