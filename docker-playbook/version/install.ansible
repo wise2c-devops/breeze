@@ -15,8 +15,8 @@
 
   - name: exit
     fail:
-      msg: check_env_output.stdout
-    when: check_env_output.stdout == "true"
+      msg: "{{ check_env_output.stdout }}"
+    when: check_env_output.stdout != "true"
       
   - name: get seed ip
     shell:
