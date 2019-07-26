@@ -2,7 +2,7 @@
   hosts: hosts
   user: root
   tasks:
-  - name: remove docker
+  - name: remove docker for Redhat/CentOS
     yum:
       disablerepo: '*'
       enablerepo: wise2c
@@ -11,3 +11,14 @@
     with_items:
     - docker-ce
     - docker-compose
+    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+
+  - name: remove docker for Ubuntu
+    apt:
+      state: absent
+      name: '{{ item }}'
+    with_items:
+    - docker-ce
+    - docker-compose
+    when: ansible_distribution =="Ubuntu"
+
