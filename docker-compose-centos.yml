@@ -32,12 +32,6 @@ services:
     ports:
     - 2009:2009 
     restart: always
-  apt-source:
-    container_name: deploy-aptsource
-    image: wise2c/apt-source:v1.14.4
-    ports:
-    - 2008:2008
-    restart: always
 volumes:
   playbook:
     external: false
