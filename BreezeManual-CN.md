@@ -54,7 +54,7 @@ firewall-cmd --complete-reload
 （2）安装docker-compose命令
 
 ```
-curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+curl -L https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 ```
 
 ```
@@ -73,11 +73,15 @@ systemctl enable docker
 
 ```
 curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.15.1/docker-compose.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.15.1/docker-compose-centos.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.15.1/docker-compose-ubuntu.yml -o docker-compose.yml
 ```
 
 ```
 docker-compose up -d
 ```
+
+上述文件docker-compose.yml支持混合部署，docker-compose-centos.yml支持单纯CentOS部署，docker-compose-ubuntu.yml支持单纯Ubuntu部署。
 
 如果一切正常（注意deploy-playbook这个容器是个卷容器，它是退出状态这是正常现象），部署机的88端口将能够被正常访问。
 
