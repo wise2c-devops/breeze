@@ -33,7 +33,9 @@ Breeze项目旨在提供一个可信的、安全的、稳定的Kubernetes集群�
 ## 组件
 - **breeze**: 用于部署docker, harbor, haproxy+keepalived, etcd, kubernetes等组件的Ansible playbook。 
 
-- **yum-repo**: 用于安装docker, docker-compose, kubelet, kubectl, kubeadm, kubernetes-cni等的yum仓库源。 
+- **yum-repo**: 用于RHEL/CentOS安装docker, docker-compose, kubelet, kubectl, kubeadm, kubernetes-cni等的yum仓库源。 
+
+- **apt-source**: 用于Ubuntu安装docker, docker-compose, kubelet, kubectl, kubeadm, kubernetes-cni等的yum仓库源。 
 
 - **deploy-ui**: 图形界面组件。
 

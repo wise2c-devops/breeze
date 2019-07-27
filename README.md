@@ -34,7 +34,9 @@ Project Breeze is an open source trusted solution allow you to create Kubernetes
 ## Components
 - **breeze**: Ansible playbook for deployments of docker, harbor, haproxy+keepalived, etcd, kubernetes.
 
-- **yum-repo**: Yum repository for docker, docker-compose, kubelet, kubectl, kubeadm, kubernetes-cni etc,. 
+- **yum-repo**: RHEL/CentOS yum repository for docker, docker-compose, kubelet, kubectl, kubeadm, kubernetes-cni etc,. 
+
+- **apt-source**: Ubuntu apt source repository for docker, docker-compose, kubelet, kubectl, kubeadm, kubernetes-cni etc,. 
 
 - **deploy-ui**: Graphical user interface.
 
