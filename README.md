@@ -48,7 +48,7 @@ Project Breeze is an open source trusted solution allow you to create Kubernetes
 
 **Deploy server:** docker 1.13.1+ and docker-compose 1.12.0+ .
 
-**Kubernetes cluster server:** CentOS 7.4/7.5/7.6 is required and minimal installation mode is recommended. 
+**Kubernetes cluster server:** CentOS 7.4/7.5/7.6 or Ubuntu 16/18 is required and minimal installation mode is recommended. 
 
 Refer to **[User Guide](manual/BreezeManual.pdf)** for more details on how to use Breeze.
 
