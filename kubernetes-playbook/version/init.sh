@@ -63,7 +63,7 @@ echo "metrics_server_version: ${metrics_server_version}" >> ${path}/yat/all.yml.
 #curl -sS https://raw.githubusercontent.com/kubernetes/dashboard/${dashboard_version}/src/deploy/recommended/kubernetes-dashboard.yaml \
 #    | sed -e "s,k8s.gcr.io,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kubernetes-dashboard.yml.j2
 
-curl -sSL https://github.com/wise2c-devops/breeze/raw/v1.15/kubernetes-playbook/kubernetes-dashboard-wise2c.yaml.j2 \
+curl -sSL https://github.com/wise2c-devops/breeze/raw/v1.12/kubernetes-playbook/kubernetes-dashboard-wise2c.yaml.j2 \
     | sed -e "s,k8s.gcr.io,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kubernetes-dashboard.yml.j2
     
 echo "=== pulling flannel image ==="

@@ -1,0 +1,19 @@
+#!/bin/bash
+long_k8s_version={{ kubernetes_version }}
+short_k8s_version=${long_k8s_version#*v}
+current_k8s_version=`kubectl version |awk '{print $5}' |awk -F':' '{print $2}' |awk -F'"' '{print $2}'`
+function version_gt() { test "$(echo "$@" | tr " " "\n" | sort -V | head -n 1)" != "$1"; }
+function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -V -r | head -n 1)" != "$1"; }
+if version_lt ${current_k8s_version} ${long_k8s_version}; then
+  apt-get update
+  apt-get install -y kubeadm --disableexcludes=kubernetes
+  kubectl drain `hostname` --ignore-daemonsets
+  kubeadm upgrade node config --kubelet-version ${long_k8s_version}
+  apt-get install -y kubelet kubectl --disableexcludes=kubernetes
+  systemctl daemon-reload
+  systemctl restart kubelet
+  kubectl uncordon `hostname`
+  rm -f $HOME/.kube/config
+else
+  echo "current version is not lower than ${long_k8s_version}"
+fi
