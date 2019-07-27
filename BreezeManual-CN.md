@@ -79,8 +79,6 @@ curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.12.10/docker-c
 
 ```
 docker-compose -f docker-compose.yml up -d
-docker-compose -f docker-compose-centos.yml up -d
-docker-compose -f docker-compose-ubuntu.yml up -d
 ```
 
 上述文件docker-compose.yml支持混合部署，docker-compose-centos.yml支持单纯CentOS部署，docker-compose-ubuntu.yml支持单纯Ubuntu部署。
