@@ -26,11 +26,11 @@ services:
     image: wise2c/playbook:v1.12.10
     volumes:
     - playbook:/workspace
-  apt-source:
-    container_name: deploy-aptsource
-    image: wise2c/apt-source:v1.12.10
+  yum-repo:
+    container_name: deploy-yumrepo
+    image: wise2c/yum-repo:v1.12.10
     ports:
-    - 2008:2008
+    - 2009:2009 
     restart: always
 volumes:
   playbook:
