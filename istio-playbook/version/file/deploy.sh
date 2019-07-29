@@ -1,5 +1,4 @@
 #!/bin/bash
-
 set -e
 
 #If seems that there is a bug on Ubuntu host to load the images. If no wait, it will return an error message: "Error response from daemon: No such image"
