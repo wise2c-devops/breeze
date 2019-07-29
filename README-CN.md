@@ -17,11 +17,11 @@ Breeze项目旨在提供一个可信的、安全的、稳定的Kubernetes集群�
 <img alt="Breeze" src="manual/BreezeCNCF.png">
 
 ## 功能
-* **运行简单**: Breeze将部署Kubernetes集群所需的全部资源文件打包在一个docker镜像内，这包括Kubernetes的组件镜像、docker、etcd、harbor、kubernetes集群部署的ansible playbook脚本文件等。同时，Breeze部署主机自身也作为一个yum仓库服务器角色存在，因此，您只需准备一台安装了docker和docker-compose命令的主机即可轻松的使Breeze运行起来并进行Kubernetes集群的部署。
+* **运行简单**: Breeze将部署Kubernetes集群所需的全部资源文件打包在一个docker镜像内，这包括Kubernetes的组件镜像、docker、etcd、harbor、kubernetes集群部署的ansible playbook脚本文件等。同时，Breeze部署主机自身也作为一个RHEL/CentOS的yum或Ubuntu的apt仓库服务器角色存在，因此，您只需准备一台安装了docker和docker-compose命令的主机即可轻松的使Breeze运行起来并进行Kubernetes集群的部署。
 
 * **简化Kubernetes集群部署流程**: 仅需几条简单命令，就能使Breeze程序运行起来，接下来的Kubernetes集群部署工作全都通过图形化操作界面完成。
 
-* **支持离线部署**: 在仅有的4个镜像(playbook, yum-repo, pagoda, deploy-ui) 被加载在Breeze部署主机之后，所有操作都不需要互联网的访问。Breeze自身作为yum仓库对被部署机提供yum源服务并使用kubeadm进行Kubernetes的部署工作，同时Breeze还会部署一个Harbor服务器用于内网的镜像下载服务。
+* **支持离线部署**: 在仅有的5个镜像(playbook, yum-repo/apt-source, pagoda, deploy-ui) 被加载在Breeze部署主机之后，所有操作都不需要互联网的访问。Breeze自身作为RHEL/CentOS的yum仓库或Ubuntu的apt仓库对被部署机提供yum/apt源服务并使用kubeadm进行Kubernetes的部署工作，同时Breeze还会部署一个Harbor服务器用于内网的镜像下载服务。
 
 * **支持多个集群批量部署**: Breeze支持批量部署多个Kubernetes集群。
 
@@ -35,7 +35,7 @@ Breeze项目旨在提供一个可信的、安全的、稳定的Kubernetes集群�
 
 - **yum-repo**: 用于RHEL/CentOS安装docker, docker-compose, kubelet, kubectl, kubeadm, kubernetes-cni等的yum仓库源。 
 
-- **apt-source**: 用于Ubuntu安装docker, docker-compose, kubelet, kubectl, kubeadm, kubernetes-cni等的yum仓库源。 
+- **apt-source**: 用于Ubuntu安装docker, docker-compose, kubelet, kubectl, kubeadm, kubernetes-cni等的apt仓库源。 
 
 - **deploy-ui**: 图形界面组件。
 
