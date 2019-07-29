@@ -18,11 +18,11 @@ Project Breeze is an open source trusted solution allow you to create Kubernetes
 <img alt="Breeze" src="manual/BreezeCNCF.png">
 
 ## Features
-* **Easy to run**: Breeze combines all resources you need such as kubernetes components images, ansible playbooks for the deployment of kubernetes clusters into a single docker image (wise2c/playbook). It also works as a local yum repository server. You just need a linux server with docker and docker-compose installed to run Breeze.
+* **Easy to run**: Breeze combines all resources you need such as kubernetes components images, ansible playbooks for the deployment of kubernetes clusters into a single docker image (wise2c/playbook). It also works as a local RHEL/CentOS yum and Ubuntu apt repository server. You just need a linux server with docker and docker-compose installed to run Breeze.
 
 * **Simplified the process of kubernetes clusters deployment**: With a few simple commands, you can get Breeze running, and then finish all the other deployment processes by the graphical interface.
 
-* **Support offline deployment**: After 4 images (playbook, yum-repo, pagoda, deploy-ui) have been loaded on the deploy server, kubernetes clusters can be setup without internet access. Breeze works as a yum repository server and deploys a local Harbor registry and uses kubeadm to setup kubernetes clusters. All docker images will be pulled from the local Harbor registry. 
+* **Support offline deployment**: After 5 images (playbook, yum-repo/apt-source, pagoda, deploy-ui) have been loaded on the deploy server, kubernetes clusters can be setup without internet access. Breeze works as a yum/apt repository server and deploys a local Harbor registry and uses kubeadm to setup kubernetes clusters. All docker images will be pulled from the local Harbor registry. 
 
 * **Support multi-cluster**: Breeze supports multiple kubernetes clusters deployment.
 
