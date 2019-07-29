@@ -5,10 +5,18 @@ current_k8s_version=`kubectl version |awk '{print $5}' |awk -F':' '{print $2}' |
 function version_gt() { test "$(echo "$@" | tr " " "\n" | sort -V | head -n 1)" != "$1"; }
 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -V -r | head -n 1)" != "$1"; }
 if version_lt ${current_k8s_version} ${long_k8s_version}; then
+  curl -o /tmp/breeze.pub http://wise2c-seed:2008/debs/ubuntu18/breeze.pub
+  apt-key add /tmp/breeze.pub
+  rm -f /tmp/breeze.pub
+  apt-mark unhold kubeadm
   apt-get update
-  apt-get install -y kubeadm --disableexcludes=kubernetes
+  apt-get install -y kubeadm
+  apt-mark hold kubeadm
   kubeadm upgrade apply -y ${long_k8s_version}
-  apt-get install -y kubelet kubectl --disableexcludes=kubernetes
+  apt-mark unhold kubelet kubectl 
+  apt-get update 
+  apt-get install -y kubelet kubectl
+  apt-mark hold kubelet kubectl
   systemctl daemon-reload
   systemctl restart kubelet
   echo 'first master node' > ./first_master_node.log
