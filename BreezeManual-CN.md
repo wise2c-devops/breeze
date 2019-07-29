@@ -11,7 +11,11 @@ Ubuntu 16/18
 Note:
 1. **请不要把Breeze所在的部署主机加入部署集群主机列表**
 2. **为了避免包冲突，请使用纯净的CentOS Minimal安装出来的OS来部署集群**
-3. **PrometheusOperator + Kube-Prometheus项目为选装项，需要该功能的中国区用户请务必先对每台被部署机节点设置正确的时区，可参照以下命令：**
+3. **对于最小化安装的Ubuntu系统，默认python版本为3，没有安装python2，因此需要对所有Ubuntu被部署节点执行一条命令：**
+```
+ln -s /usr/bin/python3 /usr/bin/python
+```
+4. **PrometheusOperator + Kube-Prometheus项目为选装项，需要该功能的中国区用户请务必先对每台被部署机节点设置正确的时区，可参照以下命令：**
 ```
 timedatectl set-timezone Asia/Shanghai
 ```
