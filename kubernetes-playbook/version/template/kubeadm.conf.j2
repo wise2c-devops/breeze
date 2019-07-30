@@ -27,13 +27,13 @@ controllerManagerExtraArgs:
   feature-gates: LocalStorageCapacityIsolation=true
 etcd:
   external:
-    caFile: ""
-    certFile: ""
+    caFile: /etc/kubernetes/pki/etcd/ca.pem
+    certFile: /etc/kubernetes/pki/etcd/etcd.pem
     endpoints:
 {% for host in groups['etcd'] %}
-    - http://{{ host }}:2379
-{% endfor %}    
-    keyFile: ""
+    - https://{{ host }}:2379
+{% endfor %}
+    keyFile: /etc/kubernetes/pki/etcd/etcd-key.pem
 imageRepository: {{ registry_endpoint }}/{{ registry_project }}
 kind: MasterConfiguration
 kubeProxy:

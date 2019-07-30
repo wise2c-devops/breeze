@@ -13,3 +13,8 @@
       state: absent
     with_items:
       - "{{ etcd_data_path }}"
+
+  - name: clean etcd cert directory
+    file:
+      path: '/etc/etcd/pki'
+      state: absent
