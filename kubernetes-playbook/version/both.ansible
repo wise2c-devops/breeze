@@ -8,11 +8,19 @@
     - '{{ path }}'
     - $HOME/.kube
 
-  - name: remove swapfile from /etc/fstab
+  - name: remove swapfile from /etc/fstab for CentOS
     mount:
       name: swap
       fstype: swap
       state: absent
+    when: ansible_distribution =="CentOS"
+
+  - name: remove swapfile from /etc/fstab for RHEL/Ubuntu
+    mount:
+      name: none
+      fstype: swap
+      state: absent
+    when: (ansible_distribution =="RedHat") or (ansible_distribution =="Ubuntu")
 
   - name: disable swap
     script: scripts/disable-swap.sh
