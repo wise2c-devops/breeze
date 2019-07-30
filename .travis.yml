@@ -9,11 +9,11 @@ before_install:
 
 script:
 - bash init.sh
-- docker build -t wise2c/playbook:$TRAVIS_BRANCH .
+- docker build -t wise2c/playbook:v1.15.1 .
 
 deploy:
   provider: script
-  script: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD && docker push wise2c/playbook:$TRAVIS_BRANCH
+  script: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD && docker push wise2c/playbook:v1.15.1
   on:
     all_branches: true
 #    condition: "$TRAVIS_BRANCH =~ ^v[0-9]+\\.[0-9]+(\\.[0-9]+)?(-\\S*)?$"
