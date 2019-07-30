@@ -1,4 +1,6 @@
 #!/bin/bash
+KubePrometheusVersion=`cat components-version.txt |grep "KubePrometheus" |awk '{print $3}'`
+
 kubectl apply -f kube-controller-manager.yaml
 kubectl apply -f kube-scheduler.yaml
 kubectl apply -f coredns.yaml
@@ -13,11 +15,11 @@ sed -i "s/etcd_3_address/${etcd3_address}/g" /var/tmp/wise2c/prometheus/etcd.yam
 
 kubectl -n monitoring create secret generic etcd-certs --from-file=/etc/etcd/pki/ca.pem --from-file=/etc/etcd/pki/etcd.pem --from-file=/etc/etcd/pki/etcd-key.pem
 
-cat >> kube-prometheus-0.1.0/manifests/phase2/prometheus-prometheus.yaml << EOF
+cat >> kube-prometheus-$KubePrometheusVersion/manifests/phase2/prometheus-prometheus.yaml << EOF
   secrets:
   - etcd-certs
 EOF
 
-kubectl -n monitoring apply -f kube-prometheus-0.1.0/manifests/phase2/prometheus-prometheus.yaml
+kubectl -n monitoring apply -f kube-prometheus-$KubePrometheusVersion/manifests/phase2/prometheus-prometheus.yaml
 
 kubectl -n monitoring apply -f etcd.yaml
