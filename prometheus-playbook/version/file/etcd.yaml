@@ -42,13 +42,13 @@ spec:
   endpoints:
   - port: api
     interval: 30s
-    scheme: http
-    #tlsConfig:
-      #caFile: /etc/prometheus/secrets/etcd-certs/ca.pem
-      #certFile: /etc/prometheus/secrets/etcd-certs/etcd.pem
-      #keyFile: /etc/prometheus/secrets/etcd-certs/etcd-key.pem
+    scheme: https
+    tlsConfig:
+      caFile: /etc/prometheus/secrets/etcd-certs/ca.pem
+      certFile: /etc/prometheus/secrets/etcd-certs/etcd.pem
+      keyFile: /etc/prometheus/secrets/etcd-certs/etcd-key.pem
       #use insecureSkipVerify only if you cannot use a Subject Alternative Name
-      #insecureSkipVerify: true
+      insecureSkipVerify: true
       #serverName: ETCD
   selector:
     matchLabels:

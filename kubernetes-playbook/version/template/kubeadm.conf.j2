@@ -36,13 +36,13 @@ dns:
   type: CoreDNS
 etcd:
   external:
-    caFile: ""
-    certFile: ""
+    caFile: /etc/etcd/pki/ca.pem
+    certFile: /etc/etcd/pki/etcd.pem
     endpoints:
 {% for host in groups['etcd'] %}
-    - http://{{ host }}:2379
+    - https://{{ host }}:2379
 {% endfor %}
-    keyFile: ""
+    keyFile: /etc/etcd/pki/etcd-key.pem
 imageRepository: {{ registry_endpoint }}/{{ registry_project }}
 kind: ClusterConfiguration
 kubernetesVersion: {{ kubernetes_version }}

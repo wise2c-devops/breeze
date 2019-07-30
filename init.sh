@@ -31,7 +31,8 @@ docker run --rm --name=kubeadm-version wise2c/kubeadm-version:v${kubernetes_vers
 etcd_version=`cat ${path}/k8s-images-list.txt |grep etcd |awk -F ':' '{print $2}'`
 mv etcd-playbook/version-by-kubeadm etcd-playbook/${etcd_version}
 
-echo "Kubernetes Version: ${kubernetes_version}" > ${path}/components-version.txt
+echo "ETCD Version: ${etcd_version}" > ${path}/components-version.txt
+echo "Kubernetes Version: ${kubernetes_version}" >> ${path}/components-version.txt
 echo "Harbor Version: ${harbor_version}" >> ${path}/components-version.txt
 echo "Docker Version: ${docker_version}" >> ${path}/components-version.txt
 echo "HAProxy Version: ${haproxy_version}" >> ${path}/components-version.txt
