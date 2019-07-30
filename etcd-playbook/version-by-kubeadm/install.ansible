@@ -95,7 +95,6 @@
       - { repo: 'k8s.gcr.io', name: 'etcd-amd64', tag: '{{ version }}' }
     run_once: ture
 
-#########################################
   - name: make etcd cert dir
     file:
       path: '/etc/etcd/pki'
@@ -154,7 +153,6 @@
     - { src: 'file/etcd.pem', dest: '/etc/etcd/pki/etcd.pem' }
     - { src: 'file/etcd-key.pem', dest: '/etc/etcd/pki/etcd-key.pem' }
 
-#########################################
   - name: run etcd
     docker_container:
       name: etcd
