@@ -2,12 +2,20 @@
 
 使用该工具，将抹平普通用户学习复杂的kubeadm部署技能学习曲线，体会到一键式部署Kubernetes集群的乐趣！
 
-适用操作系统为RHEL 7.4/7.5/7.6 或 CentOS 7.4/7.5/7.6
+适用操作系统：
+
+RHEL/CentOS: 7.4/7.5/7.6
+
+Ubuntu 16/18
 
 Note:
 1. **请不要把Breeze所在的部署主机加入部署集群主机列表**
-2. **为了避免包冲突，请使用纯净的CentOS Minimal安装出来的OS来部署集群**
-3. **PrometheusOperator + Kube-Prometheus项目为选装项，需要该功能的中国区用户请务必先对每台被部署机节点设置正确的时区，可参照以下命令：**
+2. **为了避免包冲突，请使用纯净的CentOS Minimal安装出来的OS或未经升级过的Ubuntu来部署集群**
+3. **对于最小化安装的Ubuntu系统，默认python版本为3，没有安装python2，因此需要对所有Ubuntu被部署节点执行一条命令：**
+```
+ln -s /usr/bin/python3 /usr/bin/python
+```
+4. **PrometheusOperator + Kube-Prometheus项目为选装项，需要该功能的中国区用户请务必先对每台被部署机节点设置正确的时区，可参照以下命令：**
 ```
 timedatectl set-timezone Asia/Shanghai
 ```
@@ -50,7 +58,7 @@ firewall-cmd --complete-reload
 （2）安装docker-compose命令
 
 ```
-curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+curl -L https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 ```
 
 ```
@@ -68,12 +76,16 @@ systemctl enable docker
 (4) 下载用于部署某个Kubernetes版本的docker-compose文件并使部署程序运行起来，例如：
 
 ```
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.15.0/docker-compose.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.15.1.1/docker-compose.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.15.1.1/docker-compose-centos.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.15.1.1/docker-compose-ubuntu.yml -o docker-compose.yml
 ```
 
 ```
 docker-compose up -d
 ```
+
+上述文件docker-compose.yml支持混合部署，docker-compose-centos.yml支持单纯CentOS部署，docker-compose-ubuntu.yml支持单纯Ubuntu部署。
 
 如果一切正常（注意deploy-playbook这个容器是个卷容器，它是退出状态这是正常现象），部署机的88端口将能够被正常访问。
 

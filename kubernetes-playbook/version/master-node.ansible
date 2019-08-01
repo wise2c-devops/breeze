@@ -231,10 +231,24 @@
     kubectl apply -f {{ path }}/metrics-server/
   run_once: true
 
-- name: execute prometheus-fix-master-nodes script
+- name: update kube-proxy HA setting
+  shell: |
+    kubectl -n kube-system get cm kube-proxy -o yaml > {{ path }}/kube-proxy-cm.yaml
+    sed -i "s#.*server:.*#        server: https://{{ endpoint }}#g" {{ path }}/kube-proxy-cm.yaml
+    kubectl -n kube-system apply -f {{ path }}/kube-proxy-cm.yaml
+  run_once: true
+
+- name: execute prometheus-fix-master-nodes script for Redhat/CentOS
   shell: ./prometheus-fix-master-nodes.sh
   args:
     chdir: '{{ path }}'
+  when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+
+- name: execute prometheus-fix-master-nodes script for Ubuntu
+  shell: ./prometheus-fix-master-nodes-ubuntu.sh
+  args:
+    chdir: '{{ path }}'
+  when: ansible_distribution =="Ubuntu"
 
 - name: copy helm binary
   copy:
@@ -257,6 +271,7 @@
     name: '{{ item }}'
   with_items:
   - git
+  when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
 
 - name: copy tiller-rbac
   template:
