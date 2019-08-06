@@ -17,7 +17,7 @@ metrics_server_version=0.3.3
 dashboard_version=1.10.1
 flannel_version=0.11.0
 helm_version=2.14.3
-istio_version=1.2.2
+istio_version=1.2.3
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
 mv ${path}/harbor-playbook/version ${path}/harbor-playbook/v${harbor_version}
