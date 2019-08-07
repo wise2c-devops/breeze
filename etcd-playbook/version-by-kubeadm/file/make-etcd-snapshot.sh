@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-etcdurl=`docker exec etcd ps -o args |grep -v ps |grep -v COMMAND |awk '{print $7}'`
+etcdurl=`docker exec etcd ps -o args |grep -v args |grep -v COMMAND |awk '{print $7}'`
 health=`docker exec etcd etcdctl --endpoints ${etcdurl} cluster-health |grep 'cluster is healthy'`
 if [ "$health" = "cluster is healthy" ]; then
   echo cluster is healthy
