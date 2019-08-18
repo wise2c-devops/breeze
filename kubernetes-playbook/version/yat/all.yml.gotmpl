@@ -7,3 +7,8 @@ registry_project: library
 add_worker_node_only: {{ .kubernetes.Property.AddWorkerNodesOnly }}
 upgrade_cluster: {{ .kubernetes.Property.UpgradeCluster }}
 auto_upgrade_nodes: {{ .kubernetes.Property.AutoUpgradeK8sNodes }}
+cni: {{ .kubernetes.Property.cni }}
+calico_nodes: {{ .kubernetes.Property.calico_nodes }}
+pod_cidr: {{ .kubernetes.Property.pod_cidr }}
+service_cidr: {{ .kubernetes.Property.service_cidr }}
+cluster_cidr: {{ .kubernetes.Property.cluster_cidr }}

@@ -5,7 +5,7 @@ set -e
 path=`dirname $0`
 
 kubernetes_version=1.15.2
-harbor_version=1.8.1
+harbor_version=1.8.2
 docker_version=18.09.8
 haproxy_version=2.0.0
 keepalived_version=1.3.5
@@ -16,8 +16,9 @@ kube_prometheus_version=0.1.0
 metrics_server_version=0.3.3
 dashboard_version=1.10.1
 flannel_version=0.11.0
+calico_version=3.8.2
 helm_version=2.14.3
-istio_version=1.2.3
+istio_version=1.2.4
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
 mv ${path}/harbor-playbook/version ${path}/harbor-playbook/v${harbor_version}
@@ -43,6 +44,7 @@ echo "KubePrometheus Version: ${kube_prometheus_version}" >> ${path}/components-
 echo "MetricsServer Version: ${metrics_server_version}" >> ${path}/components-version.txt
 echo "Dashboard Version: ${dashboard_version}" >> ${path}/components-version.txt
 echo "Flannel Version: ${flannel_version}" >> ${path}/components-version.txt
+echo "Calico Version: ${calico_version}" >> ${path}/components-version.txt
 echo "Helm Version: ${helm_version}" >> ${path}/components-version.txt
 echo "Istio Version: ${istio_version}" >> ${path}/components-version.txt
 
