@@ -19,6 +19,7 @@
     dest: '{{ item.dest }}'
   with_items:
   - { src: 'file/calico', dest: '{{ path }}/' }
+  run_once: true
 
 - name: load k8s images
   docker_image:
@@ -35,7 +36,7 @@
   - calico/images/calico-kube-controllers.tar.bz2
   - calico/images/calico-node.tar.bz2
   - calico/images/calico-typha.tar.bz2
-  - calico/images/calico-pod2daemon-flexvol.bz2
+  - calico/images/calico-pod2daemon-flexvol.tar.bz2
   run_once: true
 
 - name: docker login
