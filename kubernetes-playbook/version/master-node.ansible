@@ -134,6 +134,30 @@
   - { src: 'template/kubernetes-dashboard.yml.j2', dest: '{{ path }}/kubernetes-dashboard.yml' }
   - { src: 'template/metrics-server-deployment.yaml.j2', dest: '{{ path }}/metrics-server/metrics-server-deployment.yaml' }
 
+- name: replace pod cidr 10.244.0.0/16 in kubeadm.conf files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "podSubnet: 10.244.0.0/16"
+    replace: "podSubnet: {{ pod_cidr }}"
+  with_items:
+    - { filename: "{{ path }}/kubeadm.conf" }
+
+- name: replace ClusterCIDR 10.244.0.0/16 in kubeadm.conf files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "clusterCIDR: 10.244.0.0/16"
+    replace: "clusterCIDR: {{ cluster_cidr }}"
+  with_items:
+    - { filename: "{{ path }}/kubeadm.conf" }
+
+- name: replace serviceSubnet 10.96.0.0/12 in kubeadm.conf files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "serviceSubnet: 10.96.0.0/12"
+    replace: "serviceSubnet: {{ service_cidr }}"
+  with_items:
+    - { filename: "{{ path }}/kubeadm.conf" }
+
 - name: copy certificates JSON files
   copy:
     src: '{{ item.src }}'
@@ -259,13 +283,42 @@
   when: cni == 'Flannel'
 
 - name: replace image repo in calico yaml files
-  lineinfile:
+  replace:
     dest: "{{ item.filename }}"
     regexp: "image: calico/"
-    line: "image: {{ registry_endpoint }}/{{ registry_project }}/"
+    replace: "image: {{ registry_endpoint }}/{{ registry_project }}/"
   with_items:
     - { filename: "{{ path }}/calico/k8s-manifests/calico.yaml" }
     - { filename: "{{ path }}/calico/k8s-manifests/calico-typha.yaml" }
+    - { filename: "{{ path }}/calico/k8s-manifests/canal.yaml" }
+  run_once: true
+
+- name: replace pod cidr in calico yaml files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "192.168.0.0/16"
+    replace: "{{ pod_cidr }}"
+  with_items:
+    - { filename: "{{ path }}/calico/k8s-manifests/calico.yaml" }
+    - { filename: "{{ path }}/calico/k8s-manifests/calico-typha.yaml" }
+  run_once: true
+
+- name: replace pod cidr 10.244.0.0/16 in canal yaml files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "10.244.0.0/16"
+    replace: "{{ pod_cidr }}"
+  with_items:
+    - { filename: "{{ path }}/calico/k8s-manifests/canal.yaml" }
+  run_once: true
+
+- name: replace pod cidr 10.244.0.0/16 in flannel yaml files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "10.244.0.0/16"
+    replace: "{{ pod_cidr }}"
+  with_items:
+    - { filename: "{{ path }}/kube-flannel.yml" }
   run_once: true
 
 - name: apply calico cni for cluster with more than 50 nodes
