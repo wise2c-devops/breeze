@@ -254,13 +254,13 @@
   shell: |
     kubectl apply -f {{ path }}/calico/k8s-manifests/calico-typha.yaml
   run_once: true
-  when: (cni == 'Calico') and (calico-nodes == 'More-than-50-nodes')
+  when: (cni == 'Calico') and (calico_nodes == 'More_than_50_nodes')
 
 - name: apply calico cni for cluster with 50 nodes or less
   shell: |
     kubectl apply -f {{ path }}/calico/k8s-manifests/calico.yaml
   run_once: true
-  when: (cni == 'Calico') and (calico-nodes == '50-nodes-or-less')
+  when: (cni == 'Calico') and (calico_nodes == '50_nodes_or_less')
 
 - name: apply canal cni
   shell: |

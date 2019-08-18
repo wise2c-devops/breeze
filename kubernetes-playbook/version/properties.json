@@ -55,12 +55,12 @@
         "options": [ "Flannel", "Calico", "Canal" ]
     },
     {
-        "variable": "calico-nodes",
+        "variable": "calico_nodes",
         "label": "Number of Calico nodes",
-        "description": "50-nodes-or-less | More-than-50-nodes",
+        "description": "50_nodes_or_less | More_than_50_nodes",
         "type": "enum",
         "default": "More than 50 nodes",
         "required": true,
-        "options": [ "50-nodes-or-less", "More-than-50-nodes" ]
+        "options": [ "50_nodes_or_less", "More_than_50_nodes" ]
     }
 ]
