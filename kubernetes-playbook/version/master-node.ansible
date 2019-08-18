@@ -61,11 +61,11 @@
   - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ metrics_server_repo }}', name: 'metrics-server-amd64', tag: '{{ metrics_server_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
-  - { repo: '{{ calico }}', name: 'cni', tag: '{{ calico_version }}' }
-  - { repo: '{{ calico }}', name: 'kube-controllers', tag: '{{ calico_version }}' }
-  - { repo: '{{ calico }}', name: 'node', tag: '{{ calico_version }}' }
-  - { repo: '{{ calico }}', name: 'typha', tag: '{{ calico_version }}' }
-  - { repo: '{{ calico }}', name: 'pod2daemon-flexvol', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'cni', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'kube-controllers', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'node', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'typha', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'pod2daemon-flexvol', tag: '{{ calico_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
   - { repo: '{{ helm_repo }}', name: 'tiller', tag: '{{ helm_version }}' }
   run_once: true

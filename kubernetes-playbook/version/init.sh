@@ -49,6 +49,7 @@ curl -sSL https://raw.githubusercontent.com/coreos/flannel/master/Documentation/
    | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
 
 calico_version=v`cat ${path}/components-version.txt |grep "Calico" |awk '{print $3}'`
+echo "calico_version: ${calico_version}" >> ${path}/yat/all.yml.gotmpl
 echo "=== downloading calico release package ==="
 curl -L -o ${path}/file/calico-${calico_version}.tgz https://github.com/projectcalico/calico/releases/download/${calico_version}/release-${calico_version}.tgz
 echo "=== calico release package is downloaded successfully ==="
