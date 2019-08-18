@@ -53,6 +53,7 @@ echo "=== downloading calico release package ==="
 curl -L -o ${path}/file/calico-${calico_version}.tgz https://github.com/projectcalico/calico/releases/download/${calico_version}/release-${calico_version}.tgz
 echo "=== calico release package is downloaded successfully ==="
 tar zxf ${path}/file/calico-${calico_version}.tgz -C ${path}/file/
+rm -f ${path}/file/calico-${calico_version}.tgz
 mv ${path}/file/release-${calico_version} ${path}/file/calico
 rm -f ${path}/file/calico/bin/calicoctl-darwin-amd64
 rm -f ${path}/file/calico/bin/calicoctl-windows-amd64.exe

@@ -13,6 +13,13 @@
   - { src: 'file/metrics-server.tar.bz2', dest: '{{ path }}' }
   run_once: true
 
+- name: copy calico folder
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+  - { src: 'file/calico', dest: '{{ path }}/' }
+
 - name: load k8s images
   docker_image:
     load_path: '{{ path }}/{{ item }}'
@@ -108,13 +115,6 @@
   - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
   - { repo: '{{ helm_repo }}', name: 'tiller', tag: '{{ helm_version }}' }
   run_once: ture
-
-- name: copy calico folder
-  copy:
-    src: '{{ item.src }}'
-    dest: '{{ item.dest }}'
-  with_items:
-  - { src: 'file/calico', dest: '{{ path }}/' }
 
 - name: generate kubeadm config and other yaml files
   template:
