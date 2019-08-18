@@ -21,6 +21,13 @@
   - { src: 'file/calico', dest: '{{ path }}/' }
   run_once: true
 
+- name: copy metrics-server folder
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+  - { src: 'file/metrics-server', dest: '{{ path }}/' }
+
 - name: load k8s images
   docker_image:
     load_path: '{{ path }}/{{ item }}'
