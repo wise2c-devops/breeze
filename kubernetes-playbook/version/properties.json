@@ -25,24 +25,42 @@
     },
     {
         "variable": "master",
-        "label": "kubernetes master nodes",
+        "label": "Kubernetes master nodes",
         "description": "hosts to be set up as kubernetes master nodes",
         "type": "host",
         "required": false
     },
     {
         "variable": "worker",
-        "label": "kubenetes worker nodes",
+        "label": "Kubenetes worker nodes",
         "description": "hosts to be set up as kubernetes worker nodes",
         "type": "host",
         "required": false
     },
     {
         "variable": "endpoint",
-        "label": "kubernetes entry point",
+        "label": "Kubernetes entry point",
         "description": "IP:port of kubernetes cluster entrypoint (e.g. 192.168.1.100:6444)",
         "type": "string",
         "default": "",
         "required": false
+    },
+    {
+        "variable": "cni",
+        "label": "Kubernetes cni component",
+        "description": "Flannel | Calico | Canal",
+        "type": "enum",
+        "default": "Flannel",
+        "required": true,
+        "options": [ "Flannel", "Calico", "Canal" ]
+    },
+    {
+        "variable": "calico-nodes",
+        "label": "Number of Calico nodes",
+        "description": "50-nodes-or-less | More-than-50-nodes",
+        "type": "enum",
+        "default": "More than 50 nodes",
+        "required": true,
+        "options": [ "50-nodes-or-less", "More-than-50-nodes" ]
     }
 ]
