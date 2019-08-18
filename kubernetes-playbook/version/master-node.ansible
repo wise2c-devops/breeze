@@ -293,6 +293,15 @@
     - { filename: "{{ path }}/calico/k8s-manifests/canal.yaml" }
   run_once: true
 
+- name: replace image repo in canal yaml files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "image: quay.io/coreos/flannel:${flannel_version_short}"
+    replace: "image: {{ registry_endpoint }}/{{ registry_project }}/flannel:${flannel_version}"
+  with_items:
+    - { filename: "{{ path }}/calico/k8s-manifests/canal.yaml" }
+  run_once: true
+
 - name: replace pod cidr in calico yaml files
   replace:
     dest: "{{ item.filename }}"
