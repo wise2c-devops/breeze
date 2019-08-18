@@ -261,7 +261,7 @@
 - name: replace image repo in calico yaml files
   lineinfile:
     dest: "{{ item.filename }}"
-    regexp: "^image: calico/"
+    regexp: "image: calico/"
     line: "image: {{ registry_endpoint }}/{{ registry_project }}/"
   with_items:
     - { filename: "{{ path }}/calico/k8s-manifests/calico.yaml" }
