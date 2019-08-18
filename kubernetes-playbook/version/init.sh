@@ -50,17 +50,15 @@ curl -sSL https://raw.githubusercontent.com/coreos/flannel/master/Documentation/
 
 calico_version=v`cat ${path}/components-version.txt |grep "Calico" |awk '{print $3}'`
 echo "=== downloading calico release package ==="
-curl -L -o ${path}/file/calico-v${calico_version}.tgz https://github.com/projectcalico/calico/releases/download/v#{calico_version}/release-v${calico_version}.tgz
+curl -L -o ${path}/file/calico-${calico_version}.tgz https://github.com/projectcalico/calico/releases/download/${calico_version}/release-${calico_version}.tgz
 echo "=== calico release package is downloaded successfully ==="
 
-ls -alh ${path}/file/calico-v${calico_version}.tgz
-
-tar zxf ${path}/file/calico-v${calico_version}.tgz -C ${path}/file/
-mv ${path}/file/release-v${calico_version} ${path}/file/calico
+tar zxf ${path}/file/calico-${calico_version}.tgz -C ${path}/file/
+mv ${path}/file/release-${calico_version} ${path}/file/calico
 rm -f ${path}/file/calico/bin/calicoctl-darwin-amd64
 rm -f ${path}/file/calico/bin/calicoctl-windows-amd64.exe
-docker pull calico/pod2daemon-flexvol:v${calico_version}
-docker save calico/pod2daemon-flexvol:v${calico_version} -o ${path}/file/calico/images/calico-pod2daemon-flexvol.tar
+docker pull calico/pod2daemon-flexvol:${calico_version}
+docker save calico/pod2daemon-flexvol:${calico_version} -o ${path}/file/calico/images/calico-pod2daemon-flexvol.tar
 echo "=== bzip calico images ==="
 bzip2 -z --best ${path}/file/calico/images/calico-cni.tar
 bzip2 -z --best ${path}/file/calico/images/calico-kube-controllers.tar
