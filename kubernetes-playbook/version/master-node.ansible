@@ -344,7 +344,7 @@
 
 - name: apply canal cni
   shell: |
-    kubectl apply -f {{ path }}/calico/canal.yaml
+    kubectl apply -f {{ path }}/calico/k8s-manifests/canal.yaml
   run_once: true
   when: cni == 'Canal'
 
