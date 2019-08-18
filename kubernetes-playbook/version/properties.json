@@ -59,8 +59,16 @@
         "label": "Number of Calico nodes",
         "description": "50_nodes_or_less | More_than_50_nodes",
         "type": "enum",
-        "default": "More than 50 nodes",
+        "default": "More_than_50_nodes",
         "required": true,
         "options": [ "50_nodes_or_less", "More_than_50_nodes" ]
+    },
+    {
+        "variable": "calico_typha_replicas",
+        "label": "Desired number of replicas for calico-typha deployment",
+        "description": "Recommend at least one replica for every 200 nodes and no more than 20 replicas",
+        "type": "int",
+        "default": "2",
+        "required": true
     }
 ]
