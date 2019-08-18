@@ -52,6 +52,9 @@ calico_version=v`cat ${path}/components-version.txt |grep "Calico" |awk '{print 
 echo "=== downloading calico release package ==="
 curl -L -o ${path}/file/calico-v${calico_version}.tgz https://github.com/projectcalico/calico/releases/download/v#{calico_version}/release-v${calico_version}.tgz
 echo "=== calico release package is downloaded successfully ==="
+
+ls -alh ${path}/file/calico-v${calico_version}.tgz
+
 tar zxf ${path}/file/calico-v${calico_version}.tgz -C ${path}/file/
 mv ${path}/file/release-v${calico_version} ${path}/file/calico
 rm -f ${path}/file/calico/bin/calicoctl-darwin-amd64
