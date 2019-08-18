@@ -48,6 +48,24 @@ echo "flannel_version: ${flannel_version}-amd64" >> ${path}/yat/all.yml.gotmpl
 curl -sSL https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml \
    | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
 
+calico_version=v`cat ${path}/components-version.txt |grep "Calico" |awk '{print $3}'`
+echo "=== downloading calico release package ==="
+curl -L -o ${path}/file/calico-v${calico_version}.tgz https://github.com/projectcalico/calico/releases/download/v#{calico_version}/release-v${calico_version}.tgz
+echo "=== calico release package is downloaded successfully ==="
+tar zxf ${path}/file/calico-v${calico_version}.tgz -C ${path}/file/
+mv ${path}/file/release-v${calico_version} ${path}/file/calico
+rm -f ${path}/file/calico/bin/calicoctl-darwin-amd64
+rm -f ${path}/file/calico/bin/calicoctl-windows-amd64.exe
+docker pull calico/pod2daemon-flexvol:v${calico_version}
+docker save calico/pod2daemon-flexvol:v${calico_version} -o ${path}/file/calico/images/calico-pod2daemon-flexvol.tar
+echo "=== bzip calico images ==="
+bzip2 -z --best ${path}/file/calico/images/calico-cni.tar
+bzip2 -z --best ${path}/file/calico/images/calico-kube-controllers.tar
+bzip2 -z --best ${path}/file/calico/images/calico-node.tar
+bzip2 -z --best ${path}/file/calico/images/calico-pod2daemon-flexvol.tar
+bzip2 -z --best ${path}/file/calico/images/calico-typha.tar
+echo "=== calico images are bzipped successfully ==="
+
 dashboard_repo=${kubernetes_repo}
 dashboard_version=v`cat ${path}/components-version.txt |grep "Dashboard" |awk '{print $3}'`
 
