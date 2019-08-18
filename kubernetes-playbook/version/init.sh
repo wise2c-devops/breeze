@@ -40,6 +40,7 @@ flannel_version=v`cat ${path}/components-version.txt |grep "Flannel" |awk '{prin
 
 echo "flannel_repo: ${flannel_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "flannel_version: ${flannel_version}-amd64" >> ${path}/yat/all.yml.gotmpl
+echo "flannel_version_short: ${flannel_version}" >> ${path}/yat/all.yml.gotmpl
 
 #The image tag is incorrect in https://raw.githubusercontent.com/coreos/flannel/v0.11.0/Documentation/kube-flannel.yml
 #curl -sSL https://raw.githubusercontent.com/coreos/flannel/${flannel_version}/Documentation/kube-flannel.yml \
