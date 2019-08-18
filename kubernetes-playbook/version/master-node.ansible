@@ -258,6 +258,16 @@
   run_once: true
   when: cni == 'Flannel'
 
+- name: replace image repo in calico yaml files
+  lineinfile:
+    dest: "{{ item.filename }}"
+    regexp: "^image: calico/"
+    line: "image: {{ registry_endpoint }}/{{ registry_project }}/"
+  with_items:
+    - { filename: "{{ path }}/calico/k8s-manifests/calico.yaml" }
+    - { filename: "{{ path }}/calico/k8s-manifests/calico-typha.yaml" }
+  run_once: true
+
 - name: apply calico cni for cluster with more than 50 nodes
   shell: |
     kubectl apply -f {{ path }}/calico/k8s-manifests/calico-typha.yaml
