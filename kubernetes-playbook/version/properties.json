@@ -47,7 +47,7 @@
     },
     {
         "variable": "cni",
-        "label": "Kubernetes cni component",
+        "label": "Kubernetes cni component mode",
         "description": "Flannel | Calico | Canal",
         "type": "enum",
         "default": "Flannel",
