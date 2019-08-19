@@ -79,6 +79,15 @@
         "required": true
     },
     {
+        "variable": "calico_mode",
+        "label": "Calico working mode (Calicoa工作模型)",
+        "description": "IPIP_Tunnel | BGP",
+        "type": "enum",
+        "default": "BGP",
+        "required": true,
+        "options": [ "IPIP_Tunnel", "BGP" ]
+    },
+    {
         "variable": "calico_nodes",
         "label": "Number of Calico nodes (Calico节点数，50及50以内或50以上)",
         "description": "50_nodes_or_less | More_than_50_nodes",
