@@ -338,6 +338,17 @@
     - { filename: "{{ path }}/calico/k8s-manifests/canal.yaml" }
   run_once: true
 
+- name: replace calico_mode in calico yaml files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "value: \"Always\""
+    replace: "value: \"Off\""
+  with_items:
+    - { filename: "{{ path }}/calico/k8s-manifests/calico.yaml" }
+    - { filename: "{{ path }}/calico/k8s-manifests/calico-typha.yaml" }
+  when: calico_mode == 'BGP'
+  run_once: true
+
 - name: replace pod cidr 10.244.0.0/16 in flannel yaml files
   replace:
     dest: "{{ item.filename }}"
