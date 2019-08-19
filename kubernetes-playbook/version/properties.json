@@ -83,7 +83,7 @@
         "label": "Calico working mode (Calicoa工作模型)",
         "description": "IPIP_Tunnel | BGP",
         "type": "enum",
-        "default": "BGP",
+        "default": "IPIP_Tunnel",
         "required": true,
         "options": [ "IPIP_Tunnel", "BGP" ]
     },
