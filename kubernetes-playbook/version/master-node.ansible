@@ -190,7 +190,6 @@
   unarchive:
     src: file/ipcalc-0.41.tar.gz
     dest: /usr/local/bin
-  run_once: true
 
 - name: make a link for ipcalc
   shell: |
