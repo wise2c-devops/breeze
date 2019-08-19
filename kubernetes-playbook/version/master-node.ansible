@@ -193,6 +193,7 @@
 
 - name: make a link for ipcalc
   shell: |
+    rm -f /usr/local/bin/ipcalc
     ln -s /usr/local/bin/ipcalc-0.41/ipcalc /usr/local/bin/ipcalc
 
 - name: generate other certificates
