@@ -1,7 +1,7 @@
 [
     {
         "variable": "AddWorkerNodesOnly",
-        "label": "Just add new worker nodes, do not reinstall this cluster",
+        "label": "Just add new worker nodes, do not reinstall this cluster (仅添加计算节点而不重新安装集群)",
         "description": "Existing master nodes will not be updated. Please install docker for new worker nodes at first.",
         "type": "bool",
         "default": "false",
@@ -9,7 +9,7 @@
     },
     {
         "variable": "UpgradeCluster",
-        "label": "Upgrade existing cluster",
+        "label": "Upgrade existing cluster (升级现有集群)",
         "description": "Existing master/worker nodes will be upgraded. Please backup etcd at first.",
         "type": "bool",
         "default": "false",
@@ -17,7 +17,7 @@
     },
     {
         "variable": "AutoUpgradeK8sNodes",
-        "label": "Upgrade K8s nodes automatically",
+        "label": "Upgrade K8s nodes automatically (自动升级所有节点，生产环境慎用！)",
         "description": "All master and worker nodes will be upgraded automatically. During the upgrade process, worker nodes are cordoned and drained.",
         "type": "bool",
         "default": "true",
@@ -25,24 +25,83 @@
     },
     {
         "variable": "master",
-        "label": "kubernetes master nodes",
+        "label": "Kubernetes master nodes (主节点)",
         "description": "hosts to be set up as kubernetes master nodes",
         "type": "host",
         "required": false
     },
     {
         "variable": "worker",
-        "label": "kubenetes worker nodes",
+        "label": "Kubenetes worker nodes (计算节点)",
         "description": "hosts to be set up as kubernetes worker nodes",
         "type": "host",
         "required": false
     },
     {
         "variable": "endpoint",
-        "label": "kubernetes entry point",
+        "label": "Kubernetes entry point (高可用入口地址，默认为vip:6444)",
         "description": "IP:port of kubernetes cluster entrypoint (e.g. 192.168.1.100:6444)",
         "type": "string",
         "default": "",
         "required": false
+    },
+    {
+        "variable": "cni",
+        "label": "Kubernetes cni component (K8s容器CNI网络模型)",
+        "description": "Flannel | Calico | Canal",
+        "type": "enum",
+        "default": "Flannel",
+        "required": true,
+        "options": [ "Flannel", "Calico", "Canal" ]
+    },
+    {
+        "variable": "pod_cidr",
+        "label": "Kubernetes pod CIDR (K8s pod地址范围)",
+        "description": "Pod CIDR  (e.g. 10.244.0.0/16)",
+        "type": "string",
+        "default": "10.244.0.0/16",
+        "required": true
+    },
+    {
+        "variable": "cluster_cidr",
+        "label": "Kubernetes kubeproxy clusterIP CIDR (K8s ClusterIP地址范围)",
+        "description": "ClusterIP CIDR  (e.g. 10.244.0.0/16)",
+        "type": "string",
+        "default": "10.244.0.0/16",
+        "required": true
+    },
+    {
+        "variable": "service_cidr",
+        "label": "Kubernetes service CIDR (K8s服务地址范围)",
+        "description": "Kubernetes service CIDR  (e.g. 10.96.0.0/12)",
+        "type": "string",
+        "default": "10.96.0.0/12",
+        "required": true
+    },
+    {
+        "variable": "calico_mode",
+        "label": "Calico working mode (Calicoa工作模型)",
+        "description": "IPIP_Tunnel | BGP",
+        "type": "enum",
+        "default": "IPIP_Tunnel",
+        "required": true,
+        "options": [ "IPIP_Tunnel", "BGP" ]
+    },
+    {
+        "variable": "calico_nodes",
+        "label": "Number of Calico nodes (Calico节点数，50及50以内或50以上)",
+        "description": "50_nodes_or_less | More_than_50_nodes",
+        "type": "enum",
+        "default": "50_nodes_or_less",
+        "required": true,
+        "options": [ "50_nodes_or_less", "More_than_50_nodes" ]
+    },
+    {
+        "variable": "calico_typha_replicas",
+        "label": "Desired number of replicas for calico-typha deployment (大集群环境calico-typha的副本数)",
+        "description": "Recommend at least one replica for every 200 nodes and no more than 20 replicas. In production, we recommend a minimum of three replicas to reduce the impact of rolling upgrades and failures. The number of replicas should always be less than the number of nodes, otherwise rolling upgrades will stall.",
+        "type": "int",
+        "default": "3",
+        "required": true
     }
 ]
