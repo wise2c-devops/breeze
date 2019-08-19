@@ -185,11 +185,17 @@
     dest: '{{ item.dest }}'
   with_items:
   - { src: 'template/service_cidr.txt.j2', dest: '{{ path }}/service_cidr.txt' }
+  run_once: true
 
-- name: unarchive cfssl tool
+- name: unarchive ipcalc tool
   unarchive:
     src: file/ipcalc-0.41.tar.gz
     dest: /usr/local/bin
+  run_once: true
+
+- name: make a link for ipcalc
+  shell: |
+    ln -s /usr/local/bin/ipcalc-0.41/ipcalc /usr/local/bin/ipcalc
   run_once: true
 
 - name: generate other certificates
