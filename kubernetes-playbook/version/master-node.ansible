@@ -338,6 +338,17 @@
     - { filename: "{{ path }}/calico/k8s-manifests/canal.yaml" }
   run_once: true
 
+- name: replace calico_mode in calico yaml files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "value: \"Always\""
+    replace: "value: \"Off\""
+  with_items:
+    - { filename: "{{ path }}/calico/k8s-manifests/calico.yaml" }
+    - { filename: "{{ path }}/calico/k8s-manifests/calico-typha.yaml" }
+  when: calico_mode == 'BGP'
+  run_once: true
+
 - name: replace pod cidr 10.244.0.0/16 in flannel yaml files
   replace:
     dest: "{{ item.filename }}"
@@ -448,3 +459,9 @@
   shell: |
     helm repo add --username={{ registry_user }} --password={{ registry_password }} {{ registry_project }} http://{{ registry_endpoint }}/chartrepo/{{ registry_project }}
   when: not registry_https
+
+- name: scale calico-typha replicas
+  shell: |
+    kubectl -n kube-system scale deployment calico-typha --replicas={{ calico_typha_replicas }}
+  run_once: true
+  when: (cni == 'Calico') and (calico_nodes == 'More_than_50_nodes')
