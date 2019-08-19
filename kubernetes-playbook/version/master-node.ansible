@@ -342,7 +342,7 @@
   replace:
     dest: "{{ item.filename }}"
     regexp: "value: \"Always\""
-    replace: "value: \"Off\""
+    replace: "value: \"Never\""
   with_items:
     - { filename: "{{ path }}/calico/k8s-manifests/calico.yaml" }
     - { filename: "{{ path }}/calico/k8s-manifests/calico-typha.yaml" }
