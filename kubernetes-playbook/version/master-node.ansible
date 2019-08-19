@@ -179,6 +179,23 @@
   - { src: 'file/generate-other-certificates.sh', dest: '{{ path }}/' }
   - { src: 'file/generate-apiserver-certificate.sh', dest: '{{ path }}/' }
 
+- name: copy service_cidr.txt
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+  - { src: 'template/service_cidr.txt.j2', dest: '{{ path }}/service_cidr.txt' }
+
+- name: unarchive ipcalc tool
+  unarchive:
+    src: file/ipcalc-0.41.tar.gz
+    dest: /usr/local/bin
+  run_once: true
+
+- name: make a link for ipcalc
+  shell: |
+    ln -s /usr/local/bin/ipcalc-0.41/ipcalc /usr/local/bin/ipcalc
+
 - name: generate other certificates
   raw: |
     /var/tmp/wise2c/kubernetes/generate-other-certificates.sh
