@@ -28,7 +28,7 @@ apiServer:
 apiVersion: kubeadm.k8s.io/v1beta1
 certificatesDir: /etc/kubernetes/pki
 clusterName: kubernetes
-controlPlaneEndpoint: "{{ endpoint }}"
+controlPlaneEndpoint: {{ endpoint }}
 controllerManager:
   extraArgs:
     feature-gates: LocalStorageCapacityIsolation=true
@@ -36,13 +36,13 @@ dns:
   type: CoreDNS
 etcd:
   external:
-    caFile: /etc/kubernetes/pki/etcd/ca.pem
-    certFile: /etc/kubernetes/pki/etcd/etcd.pem
+    caFile: /etc/etcd/pki/ca.pem
+    certFile: /etc/etcd/pki/etcd.pem
     endpoints:
 {% for host in groups['etcd'] %}
     - https://{{ host }}:2379
 {% endfor %}
-    keyFile: /etc/kubernetes/pki/etcd/etcd-key.pem
+    keyFile: /etc/etcd/pki/etcd-key.pem
 imageRepository: {{ registry_endpoint }}/{{ registry_project }}
 kind: ClusterConfiguration
 kubernetesVersion: {{ kubernetes_version }}

@@ -5,7 +5,7 @@ set -e
 path=`dirname $0`
 
 kubernetes_version=1.14.5
-harbor_version=1.8.1
+harbor_version=1.8.2
 docker_version=18.09.8
 haproxy_version=2.0.0
 keepalived_version=1.3.5
@@ -16,8 +16,9 @@ kube_prometheus_version=0.1.0
 metrics_server_version=0.3.3
 dashboard_version=1.10.1
 flannel_version=0.11.0
+calico_version=3.8.2
 helm_version=2.14.3
-istio_version=1.2.3
+istio_version=1.2.4
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
 mv ${path}/harbor-playbook/version ${path}/harbor-playbook/v${harbor_version}
@@ -31,7 +32,8 @@ docker run --rm --name=kubeadm-version wise2c/kubeadm-version:v${kubernetes_vers
 etcd_version=`cat ${path}/k8s-images-list.txt |grep etcd |awk -F ':' '{print $2}'`
 mv etcd-playbook/version-by-kubeadm etcd-playbook/${etcd_version}
 
-echo "Kubernetes Version: ${kubernetes_version}" > ${path}/components-version.txt
+echo "ETCD Version: ${etcd_version}" > ${path}/components-version.txt
+echo "Kubernetes Version: ${kubernetes_version}" >> ${path}/components-version.txt
 echo "Harbor Version: ${harbor_version}" >> ${path}/components-version.txt
 echo "Docker Version: ${docker_version}" >> ${path}/components-version.txt
 echo "HAProxy Version: ${haproxy_version}" >> ${path}/components-version.txt
@@ -42,6 +44,7 @@ echo "KubePrometheus Version: ${kube_prometheus_version}" >> ${path}/components-
 echo "MetricsServer Version: ${metrics_server_version}" >> ${path}/components-version.txt
 echo "Dashboard Version: ${dashboard_version}" >> ${path}/components-version.txt
 echo "Flannel Version: ${flannel_version}" >> ${path}/components-version.txt
+echo "Calico Version: ${calico_version}" >> ${path}/components-version.txt
 echo "Helm Version: ${helm_version}" >> ${path}/components-version.txt
 echo "Istio Version: ${istio_version}" >> ${path}/components-version.txt
 

@@ -13,6 +13,21 @@
   - { src: 'file/metrics-server.tar.bz2', dest: '{{ path }}' }
   run_once: true
 
+- name: copy calico folder
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+  - { src: 'file/calico', dest: '{{ path }}/' }
+  run_once: true
+
+- name: copy metrics-server folder
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+  - { src: 'file/metrics-server', dest: '{{ path }}/' }
+
 - name: load k8s images
   docker_image:
     load_path: '{{ path }}/{{ item }}'
@@ -24,6 +39,11 @@
   - dashboard.tar.bz2
   - tiller.tar.bz2
   - metrics-server.tar.bz2
+  - calico/images/calico-cni.tar.bz2
+  - calico/images/calico-kube-controllers.tar.bz2
+  - calico/images/calico-node.tar.bz2
+  - calico/images/calico-typha.tar.bz2
+  - calico/images/calico-pod2daemon-flexvol.tar.bz2
   run_once: true
 
 - name: docker login
@@ -48,6 +68,11 @@
   - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ metrics_server_repo }}', name: 'metrics-server-amd64', tag: '{{ metrics_server_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
+  - { repo: 'calico', name: 'cni', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'kube-controllers', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'node', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'typha', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'pod2daemon-flexvol', tag: '{{ calico_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
   - { repo: '{{ helm_repo }}', name: 'tiller', tag: '{{ helm_version }}' }
   run_once: true
@@ -59,16 +84,21 @@
     push: true
     state: present
   with_items:
-  - { repo: '{{ kubernetes_repo }}', name: 'kube-controller-manager', tag: '{{ kubernetes_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'kube-apiserver', tag: '{{ kubernetes_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'kube-scheduler', tag: '{{ kubernetes_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'kube-proxy', tag: '{{ kubernetes_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'pause', tag: '{{ pause_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
-  - { repo: '{{ metrics_server_repo }}', name: 'metrics-server-amd64', tag: '{{ metrics_server_version }}' }
-  - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
-  - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
-  - { repo: '{{ helm_repo }}', name: 'tiller', tag: '{{ helm_version }}' }
+  - { name: 'kube-controller-manager', tag: '{{ kubernetes_version }}' }
+  - { name: 'kube-apiserver', tag: '{{ kubernetes_version }}' }
+  - { name: 'kube-scheduler', tag: '{{ kubernetes_version }}' }
+  - { name: 'kube-proxy', tag: '{{ kubernetes_version }}' }
+  - { name: 'pause', tag: '{{ pause_version }}' }
+  - { name: 'coredns', tag: '{{ dns_version }}' }
+  - { name: 'metrics-server-amd64', tag: '{{ metrics_server_version }}' }
+  - { name: 'flannel', tag: '{{ flannel_version }}' }
+  - { name: 'cni', tag: '{{ calico_version }}' }
+  - { name: 'kube-controllers', tag: '{{ calico_version }}' }
+  - { name: 'node', tag: '{{ calico_version }}' }
+  - { name: 'typha', tag: '{{ calico_version }}' }
+  - { name: 'pod2daemon-flexvol', tag: '{{ calico_version }}' }
+  - { name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
+  - { name: 'tiller', tag: '{{ helm_version }}' }
   run_once: true
 
 - name: Remove k8s.gcr.io images tag
@@ -85,16 +115,14 @@
   - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ metrics_server_repo }}', name: 'metrics-server-amd64', tag: '{{ metrics_server_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
+  - { repo: 'calico', name: 'cni', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'kube-controllers', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'node', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'typha', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'pod2daemon-flexvol', tag: '{{ calico_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
   - { repo: '{{ helm_repo }}', name: 'tiller', tag: '{{ helm_version }}' }
   run_once: ture
-
-- name: copy metrics-server folder
-  copy:
-    src: '{{ item.src }}'
-    dest: '{{ item.dest }}'
-  with_items:
-  - { src: 'file/metrics-server', dest: '{{ path }}/' }
 
 - name: generate kubeadm config and other yaml files
   template:
@@ -105,6 +133,30 @@
   - { src: 'template/kube-flannel.yml.j2', dest: '{{ path }}/kube-flannel.yml' }
   - { src: 'template/kubernetes-dashboard.yml.j2', dest: '{{ path }}/kubernetes-dashboard.yml' }
   - { src: 'template/metrics-server-deployment.yaml.j2', dest: '{{ path }}/metrics-server/metrics-server-deployment.yaml' }
+
+- name: replace pod cidr 10.244.0.0/16 in kubeadm.conf files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "podSubnet: 10.244.0.0/16"
+    replace: "podSubnet: {{ pod_cidr }}"
+  with_items:
+    - { filename: "{{ path }}/kubeadm.conf" }
+
+- name: replace ClusterCIDR 10.244.0.0/16 in kubeadm.conf files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "clusterCIDR: 10.244.0.0/16"
+    replace: "clusterCIDR: {{ cluster_cidr }}"
+  with_items:
+    - { filename: "{{ path }}/kubeadm.conf" }
+
+- name: replace serviceSubnet 10.96.0.0/12 in kubeadm.conf files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "serviceSubnet: 10.96.0.0/12"
+    replace: "serviceSubnet: {{ service_cidr }}"
+  with_items:
+    - { filename: "{{ path }}/kubeadm.conf" }
 
 - name: copy certificates JSON files
   copy:
@@ -126,6 +178,23 @@
   with_items:
   - { src: 'file/generate-other-certificates.sh', dest: '{{ path }}/' }
   - { src: 'file/generate-apiserver-certificate.sh', dest: '{{ path }}/' }
+
+- name: copy service_cidr.txt
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+  - { src: 'template/service_cidr.txt.j2', dest: '{{ path }}/service_cidr.txt' }
+
+- name: unarchive ipcalc tool
+  unarchive:
+    src: file/ipcalc-0.41.tar.gz
+    dest: /usr/local/bin
+
+- name: make a link for ipcalc
+  shell: |
+    rm -f /usr/local/bin/ipcalc
+    ln -s /usr/local/bin/ipcalc-0.41/ipcalc /usr/local/bin/ipcalc
 
 - name: generate other certificates
   raw: |
@@ -224,9 +293,91 @@
     cp /etc/kubernetes/admin.conf $HOME/.kube/config
     chown $(id -u):$(id -g) $HOME/.kube/config
 
-- name: apply addons
+- name: apply flannel cni
   shell: |
     kubectl apply -f {{ path }}/kube-flannel.yml
+  run_once: true
+  when: cni == 'Flannel'
+
+- name: replace image repo in calico yaml files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "image: calico/"
+    replace: "image: {{ registry_endpoint }}/{{ registry_project }}/"
+  with_items:
+    - { filename: "{{ path }}/calico/k8s-manifests/calico.yaml" }
+    - { filename: "{{ path }}/calico/k8s-manifests/calico-typha.yaml" }
+    - { filename: "{{ path }}/calico/k8s-manifests/canal.yaml" }
+  run_once: true
+
+- name: replace image repo in canal yaml files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "image: quay.io/coreos/flannel:{{ flannel_version_short }}"
+    replace: "image: {{ registry_endpoint }}/{{ registry_project }}/flannel:{{ flannel_version }}"
+  with_items:
+    - { filename: "{{ path }}/calico/k8s-manifests/canal.yaml" }
+  run_once: true
+
+- name: replace pod cidr in calico yaml files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "192.168.0.0/16"
+    replace: "{{ pod_cidr }}"
+  with_items:
+    - { filename: "{{ path }}/calico/k8s-manifests/calico.yaml" }
+    - { filename: "{{ path }}/calico/k8s-manifests/calico-typha.yaml" }
+  run_once: true
+
+- name: replace pod cidr 10.244.0.0/16 in canal yaml files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "10.244.0.0/16"
+    replace: "{{ pod_cidr }}"
+  with_items:
+    - { filename: "{{ path }}/calico/k8s-manifests/canal.yaml" }
+  run_once: true
+
+- name: replace calico_mode in calico yaml files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "value: \"Always\""
+    replace: "value: \"Never\""
+  with_items:
+    - { filename: "{{ path }}/calico/k8s-manifests/calico.yaml" }
+    - { filename: "{{ path }}/calico/k8s-manifests/calico-typha.yaml" }
+  when: calico_mode == 'BGP'
+  run_once: true
+
+- name: replace pod cidr 10.244.0.0/16 in flannel yaml files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "10.244.0.0/16"
+    replace: "{{ pod_cidr }}"
+  with_items:
+    - { filename: "{{ path }}/kube-flannel.yml" }
+  run_once: true
+
+- name: apply calico cni for cluster with more than 50 nodes
+  shell: |
+    kubectl apply -f {{ path }}/calico/k8s-manifests/calico-typha.yaml
+  run_once: true
+  when: (cni == 'Calico') and (calico_nodes == 'More_than_50_nodes')
+
+- name: apply calico cni for cluster with 50 nodes or less
+  shell: |
+    kubectl apply -f {{ path }}/calico/k8s-manifests/calico.yaml
+  run_once: true
+  when: (cni == 'Calico') and (calico_nodes == '50_nodes_or_less')
+
+- name: apply canal cni
+  shell: |
+    kubectl apply -f {{ path }}/calico/k8s-manifests/canal.yaml
+  run_once: true
+  when: cni == 'Canal'
+
+- name: apply addons
+  shell: |
     kubectl apply -f {{ path }}/kubernetes-dashboard.yml
     kubectl apply -f {{ path }}/metrics-server/
   run_once: true
@@ -308,3 +459,9 @@
   shell: |
     helm repo add --username={{ registry_user }} --password={{ registry_password }} {{ registry_project }} http://{{ registry_endpoint }}/chartrepo/{{ registry_project }}
   when: not registry_https
+
+- name: scale calico-typha replicas
+  shell: |
+    kubectl -n kube-system scale deployment calico-typha --replicas={{ calico_typha_replicas }}
+  run_once: true
+  when: (cni == 'Calico') and (calico_nodes == 'More_than_50_nodes')
