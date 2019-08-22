@@ -64,8 +64,8 @@
     },
     {
         "variable": "cluster_cidr",
-        "label": "Kubernetes cluster-cidr (K8s集群内部网地址范围，通常应与podCIDR保持一致)",
-        "description": "The CIDR range of pods in the cluster. It is used to bridge traffic coming from outside of the cluster and is specified to distinguish between internal and external traffic (e.g. 10.244.0.0/16)",
+        "label": "Kubernetes kubeproxy clusterIP CIDR (K8s ClusterIP地址范围)",
+        "description": "ClusterIP CIDR  (e.g. 10.244.0.0/16)",
         "type": "string",
         "default": "10.244.0.0/16",
         "required": true
