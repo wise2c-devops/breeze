@@ -88,6 +88,14 @@
         "options": [ "IPIP_Tunnel", "BGP" ]
     },
     {
+        "variable": "calico_node_ip_detection_mode",
+        "label": "IP_AUTODETECTION_METHOD for Calico nodes (Calico节点IP地址自动判断机制)",
+        "description": "The method to use to autodetect the IPv4 address for calico node.(e.g. 'eth*' or 'can-reach=8.8.8.8' 可以填网卡名如eth*或者填写can-reach=节点路由可达的IP地址)",
+        "type": "string",
+        "default": "can-reach=",
+        "required": true
+    },
+    {
         "variable": "calico_nodes",
         "label": "Number of Calico nodes (Calico节点数，50及50以内或50以上)",
         "description": "50_nodes_or_less | More_than_50_nodes",

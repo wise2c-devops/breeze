@@ -354,6 +354,16 @@
   when: calico_mode == 'BGP'
   run_once: true
 
+- name: add calico_node_ip_detection_mode in calico yaml files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: '- name: FELIX_HEALTHENABLED[\S\s]*?value: "true"'
+    replace: '- name: FELIX_HEALTHENABLED\n              value: "true"\n            - name: IP_AUTODETECTION_METHOD\n              value: {{ calico_node_ip_detection_mode }}'
+  with_items:
+  - { filename: '/root/calico.yaml' }
+  - { filename: '/root/calico-typha.yaml' }
+  run_once: true
+
 - name: replace pod cidr 10.244.0.0/16 in flannel yaml files
   replace:
     dest: "{{ item.filename }}"
