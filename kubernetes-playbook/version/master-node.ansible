@@ -44,7 +44,7 @@
   - calico/images/calico-node.tar.bz2
   - calico/images/calico-typha.tar.bz2
   - calico/images/calico-pod2daemon-flexvol.tar.bz2
-  - calico/images/calico-cli.tar.bz2
+  - calico/images/calico-ctl.tar.bz2
   run_once: true
 
 - name: docker login
@@ -74,7 +74,7 @@
   - { repo: 'calico', name: 'node', tag: '{{ calico_version }}' }
   - { repo: 'calico', name: 'typha', tag: '{{ calico_version }}' }
   - { repo: 'calico', name: 'pod2daemon-flexvol', tag: '{{ calico_version }}' }
-  - { repo: 'calico', name: 'cli', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'ctl', tag: '{{ calico_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
   - { repo: '{{ helm_repo }}', name: 'tiller', tag: '{{ helm_version }}' }
   run_once: true
@@ -99,7 +99,7 @@
   - { name: 'node', tag: '{{ calico_version }}' }
   - { name: 'typha', tag: '{{ calico_version }}' }
   - { name: 'pod2daemon-flexvol', tag: '{{ calico_version }}' }
-  - { name: 'cli', tag: '{{ calico_version }}' }
+  - { name: 'ctl', tag: '{{ calico_version }}' }
   - { name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
   - { name: 'tiller', tag: '{{ helm_version }}' }
   run_once: true
@@ -123,7 +123,7 @@
   - { repo: 'calico', name: 'node', tag: '{{ calico_version }}' }
   - { repo: 'calico', name: 'typha', tag: '{{ calico_version }}' }
   - { repo: 'calico', name: 'pod2daemon-flexvol', tag: '{{ calico_version }}' }
-  - { repo: 'calico', name: 'cli', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'ctl', tag: '{{ calico_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
   - { repo: '{{ helm_repo }}', name: 'tiller', tag: '{{ helm_version }}' }
   run_once: ture
