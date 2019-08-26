@@ -57,16 +57,18 @@ echo "=== calico release package is downloaded successfully ==="
 tar zxf ${path}/file/calico-${calico_version}.tgz -C ${path}/file/
 rm -f ${path}/file/calico-${calico_version}.tgz
 mv ${path}/file/release-${calico_version} ${path}/file/calico
-rm -f ${path}/file/calico/bin/calicoctl-darwin-amd64
-rm -f ${path}/file/calico/bin/calicoctl-windows-amd64.exe
+rm -rf ${path}/file/calico/bin
 docker pull calico/pod2daemon-flexvol:${calico_version}
 docker save calico/pod2daemon-flexvol:${calico_version} -o ${path}/file/calico/images/calico-pod2daemon-flexvol.tar
+docker pull calico/ctl:${calico_version}
+docker save calico/ctl:${calico_version} -o ${path}/file/calico/images/calico-ctl.tar
 echo "=== Compressing calico images ==="
 bzip2 -z --best ${path}/file/calico/images/calico-cni.tar
 bzip2 -z --best ${path}/file/calico/images/calico-kube-controllers.tar
 bzip2 -z --best ${path}/file/calico/images/calico-node.tar
 bzip2 -z --best ${path}/file/calico/images/calico-pod2daemon-flexvol.tar
 bzip2 -z --best ${path}/file/calico/images/calico-typha.tar
+bzip2 -z --best ${path}/file/calico/images/calico-ctl.tar
 echo "=== Calico images are compressed as bzip format successfully ==="
 echo "calico_version: ${calico_version}" >> ${path}/yat/all.yml.gotmpl
 
