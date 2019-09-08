@@ -201,7 +201,7 @@
     ln -s /usr/local/bin/ipcalc-0.41/ipcalc /usr/local/bin/ipcalc
 
 - name: generate other certificates
-  raw: |
+  shell: |
     /var/tmp/wise2c/kubernetes/generate-other-certificates.sh
   run_once: true
 
@@ -240,7 +240,7 @@
   - { src: 'file/sa.key', dest: '/etc/kubernetes/pki/sa.key' }
 
 - name: generate kube-apiserver certificate
-  raw: |
+  shell: |
     /var/tmp/wise2c/kubernetes/generate-apiserver-certificate.sh
 
 - name: copy kubeadm-token.sh and update-api-advertise-address.sh
