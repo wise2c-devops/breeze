@@ -35,8 +35,8 @@ controllerManagerExtraArgs:
   feature-gates: LocalStorageCapacityIsolation=true
 etcd:
   external:
-    caFile: /etc/etcd/pki/etcd/ca.pem
-    certFile: /etc/etcd/pki/etcd/etcd.pem
+    caFile: /etc/etcd/pki/ca.pem
+    certFile: /etc/etcd/pki/etcd.pem
     endpoints:
 {% for host in groups['etcd'] %}
     - https://{{ host }}:2379
