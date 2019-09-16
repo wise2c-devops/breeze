@@ -13,12 +13,12 @@ loadbalancer_version=HAProxy-${haproxy_version}_Keepalived-${keepalived_version}
 prometheus_version=2.7.2
 prometheus_operator_version=0.30.0
 kube_prometheus_version=0.1.0
-metrics_server_version=0.3.3
+metrics_server_version=0.3.4
 dashboard_version=1.10.1
 flannel_version=0.11.0
 calico_version=3.8.2
 helm_version=2.14.3
-istio_version=1.2.5
+istio_version=1.3.0
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
 mv ${path}/harbor-playbook/version ${path}/harbor-playbook/v${harbor_version}
