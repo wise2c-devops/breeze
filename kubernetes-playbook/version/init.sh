@@ -70,7 +70,6 @@ bzip2 -z --best ${path}/file/calico/images/calico-pod2daemon-flexvol.tar
 bzip2 -z --best ${path}/file/calico/images/calico-typha.tar
 bzip2 -z --best ${path}/file/calico/images/calico-ctl.tar
 echo "=== Calico images are compressed as bzip format successfully ==="
-echo "calico_version: ${calico_version}" >> ${path}/yat/all.yml.gotmpl
 
 dashboard_repo=${kubernetes_repo}
 dashboard_version=v`cat ${path}/components-version.txt |grep "Dashboard" |awk '{print $3}'`
