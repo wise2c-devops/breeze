@@ -33,7 +33,7 @@ etcd:
 {% for host in groups['etcd'] %}
     - https://{{ host }}:2379
 {% endfor %}
-    keyFile: /etc/etcd/pki/etcd/etcd-key.pem
+    keyFile: /etc/etcd/pki/etcd-key.pem
 imageRepository: {{ registry_endpoint }}/{{ registry_project }}
 kind: MasterConfiguration
 kubeProxy:
