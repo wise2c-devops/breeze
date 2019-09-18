@@ -128,6 +128,17 @@
   - { repo: '{{ helm_repo }}', name: 'tiller', tag: '{{ helm_version }}' }
   run_once: ture
 
+- name: install git command for helm-push and perl library for ipcalc
+  yum:
+    disablerepo: '*'
+    enablerepo: wise2c
+    update_cache: true
+    state: present
+    name: '{{ item }}'
+  with_items:
+  - git
+  when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+
 - name: generate kubeadm config and other yaml files
   template:
     src: '{{ item.src }}'
@@ -429,17 +440,6 @@
   shell: |
     tar zxvf {{ path }}/helm-linux-amd64.tar.gz --strip-components=1 -C /tmp/
     mv /tmp/helm /usr/local/bin/helm
-
-- name: install git command for helm-push
-  yum:
-    disablerepo: '*'
-    enablerepo: wise2c
-    update_cache: true
-    state: present
-    name: '{{ item }}'
-  with_items:
-  - git
-  when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
 
 - name: copy tiller-rbac
   template:
