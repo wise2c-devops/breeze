@@ -61,6 +61,13 @@ mkdir manifests
 mv phase1 manifests
 mv phase2 manifests
 
+######### Update yaml files to supports K8s v1.16 #########
+cd manifests/phase1
+sed -i "s#apps/v1beta2#apps/v1#g" $(ls)
+cd ../phase2
+sed -i "s#apps/v1beta2#apps/v1#g" $(ls)
+cd ../../
+
 ######### Deploy prometheus operator and kube-prometheus #########
 
 kctl() {
