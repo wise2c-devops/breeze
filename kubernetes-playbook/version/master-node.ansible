@@ -451,7 +451,7 @@
 - name: setup helm with tiller
   shell: |
     helm init --client-only --skip-refresh
-    helm init --tiller-image {{ registry_endpoint }}/{{ registry_project }}/tiller:{{ helm_version }}
+#    helm init --tiller-image {{ registry_endpoint }}/{{ registry_project }}/tiller:{{ helm_version }}
 
 - name: setup rbac for tiller
   shell: |
@@ -466,16 +466,16 @@
   with_items:
   - { src: 'template/helm_init.sh.j2', dest: '{{ path }}/helm_init.sh' }
 
-- name: execute helm init script
-  shell: ./helm_init.sh
-  args:
-    chdir: '{{ path }}'
-  async: 600
+#- name: execute helm init script
+#  shell: ./helm_init.sh
+#  args:
+#    chdir: '{{ path }}'
+#  async: 600
 
-- name: upgrade tiller repo
-  shell: |
-    helm repo add --username={{ registry_user }} --password={{ registry_password }} {{ registry_project }} http://{{ registry_endpoint }}/chartrepo/{{ registry_project }}
-  when: not registry_https
+#- name: upgrade tiller repo
+#  shell: |
+#    helm repo add --username={{ registry_user }} --password={{ registry_password }} {{ registry_project }} http://{{ registry_endpoint }}/chartrepo/{{ registry_project }}
+#  when: not registry_https
 
 - name: scale calico-typha replicas
   shell: |
