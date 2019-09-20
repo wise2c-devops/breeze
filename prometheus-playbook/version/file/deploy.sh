@@ -36,8 +36,8 @@ sed -i "s/ImageRepositoryIP/$MyImageRepositoryIP/g" temp.txt
 sed -i '23 r temp.txt' kube-prometheus-$KubePrometheusVersion/manifests/0prometheus-operator-deployment.yaml
 rm -f temp.txt
 
-# Fix issue 2291 of prometheus operator
-sed -i "s/0.29.0/$PrometheusOperatorVersion/g" kube-prometheus-$KubePrometheusVersion/manifests/0prometheus-operator-deployment.yaml
+# Fix issue 2291 of prometheus operator (no need for v0.2.0)
+# sed -i "s/0.29.0/$PrometheusOperatorVersion/g" kube-prometheus-$KubePrometheusVersion/manifests/0prometheus-operator-deployment.yaml
 
 # Wait for CRDs to be ready, we need to split all yaml files to two parts
 cd kube-prometheus-$KubePrometheusVersion/
@@ -61,12 +61,12 @@ mkdir manifests
 mv phase1 manifests
 mv phase2 manifests
 
-######### Update yaml files to supports K8s v1.16 #########
-cd manifests/phase1
-sed -i "s#apps/v1beta2#apps/v1#g" $(ls)
-cd ../phase2
-sed -i "s#apps/v1beta2#apps/v1#g" $(ls)
-cd ../../
+######### Update yaml files to supports K8s v1.16 (No need for v0.2.0) #########
+# cd manifests/phase1
+# sed -i "s#apps/v1beta2#apps/v1#g" $(ls)
+# cd ../phase2
+# sed -i "s#apps/v1beta2#apps/v1#g" $(ls)
+# cd ../../
 
 ######### Deploy prometheus operator and kube-prometheus #########
 
