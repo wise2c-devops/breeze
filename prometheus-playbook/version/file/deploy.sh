@@ -28,16 +28,8 @@ sed -i "s/grafana\/grafana/$MyImageRepositoryIP\/$MyImageRepositoryProject\/graf
 sed -i "s/gcr.io\/google_containers/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "gcr.io/google_containers" ./ |grep .yaml)
 sed -i "s/k8s.gcr.io/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "k8s.gcr.io" ./ |grep .yaml)
 
-# For offline deploy
 cd ..
 rm -f temp.txt
-cp -p append-lines.txt temp.txt
-sed -i "s/ImageRepositoryIP/$MyImageRepositoryIP/g" temp.txt
-sed -i '23 r temp.txt' kube-prometheus-$KubePrometheusVersion/manifests/0prometheus-operator-deployment.yaml
-rm -f temp.txt
-
-# Fix issue 2291 of prometheus operator (no need for v0.2.0)
-# sed -i "s/0.29.0/$PrometheusOperatorVersion/g" kube-prometheus-$KubePrometheusVersion/manifests/0prometheus-operator-deployment.yaml
 
 # Wait for CRDs to be ready, we need to split all yaml files to two parts
 cd kube-prometheus-$KubePrometheusVersion/
