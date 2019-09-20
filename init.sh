@@ -4,15 +4,15 @@ set -e
 
 path=`dirname $0`
 
-kubernetes_version=1.14.6
-harbor_version=1.8.2
+kubernetes_version=1.14.7
+harbor_version=1.9.0
 docker_version=18.09.8
 haproxy_version=2.0.0
 keepalived_version=1.3.5
 loadbalancer_version=HAProxy-${haproxy_version}_Keepalived-${keepalived_version}
-prometheus_version=2.7.2
-prometheus_operator_version=0.30.0
-kube_prometheus_version=0.1.0
+prometheus_version=2.11.0
+prometheus_operator_version=0.33.0
+kube_prometheus_version=0.2.0
 metrics_server_version=0.3.4
 dashboard_version=1.10.1
 flannel_version=0.11.0
