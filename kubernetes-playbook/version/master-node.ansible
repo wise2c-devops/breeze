@@ -308,6 +308,15 @@
     cp /etc/kubernetes/admin.conf $HOME/.kube/config
     chown $(id -u):$(id -g) $HOME/.kube/config
 
+- name: fix the bug of flannel issues-1178
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: '"name": "cbr0",'
+    replace: '"name": "cbr0",\n      "cniVersion":"0.3.1",'
+  with_items:
+  - { filename: '{{ path }}/kube-flannel.yml' }
+  run_once: true
+
 - name: apply flannel cni
   shell: |
     kubectl apply -f {{ path }}/kube-flannel.yml
