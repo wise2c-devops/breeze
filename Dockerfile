@@ -9,5 +9,5 @@ COPY kubernetes-playbook /workspace/kubernetes-playbook
 COPY harbor-playbook /workspace/harbor-playbook
 COPY loadbalancer-playbook /workspace/loadbalancer-playbook
 COPY prometheus-playbook /workspace/prometheus-playbook
-#COPY istio-playbook /workspace/istio-playbook
+COPY istio-playbook /workspace/istio-playbook
 COPY components_order.conf /workspace
