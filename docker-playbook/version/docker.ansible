@@ -74,7 +74,7 @@
       name: chronyd
       daemon_reload: true
       enabled: true
-      state: started
+      state: restarted
 
   - name: clear docker config
     copy:
