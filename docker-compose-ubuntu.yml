@@ -23,7 +23,7 @@ services:
     network_mode: "service:deploy"
   playbook:
     container_name: deploy-playbook
-    image: wise2c/playbook:v1.16.0
+    image: wise2c/playbook:v1.16.0.1
     volumes:
     - playbook:/workspace
   apt-source:
