@@ -169,7 +169,7 @@
       name: chronyd
       daemon_reload: true
       enabled: yes
-      state: started
+      state: restarted
     when: ansible_distribution =="RedHat" or ansible_distribution =="CentOS"
 
   - name: start chrony for Ubuntu
