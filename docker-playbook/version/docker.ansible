@@ -172,12 +172,12 @@
       state: started
     when: ansible_distribution =="RedHat" or ansible_distribution =="CentOS"
 
-  - name: start chrony for Redhat/CentOS
+  - name: start chrony for Ubuntu
     systemd:
       name: chrony
       daemon_reload: true
       enabled: yes
-      state: started
+      state: restarted
     when: ansible_distribution =="Ubuntu"
 
   - name: clear docker config for Redhat/CentOS
