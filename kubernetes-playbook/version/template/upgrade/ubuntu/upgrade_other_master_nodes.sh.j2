@@ -2,22 +2,14 @@
 if [ ! -f "./first_master_node.log" ];then
   long_k8s_version={{ kubernetes_version }}
   short_k8s_version=${long_k8s_version#*v}
-  current_k8s_version=`kubectl version |awk '{print $5}' |awk -F':' '{print $2}' |awk -F'"' '{print $2}'`
+  current_k8s_version=`kubectl version |grep "Server Version" |awk '{print $5}' |awk -F':' '{print $2}' |awk -F'"' '{print $2}'`
   function version_gt() { test "$(echo "$@" | tr " " "\n" | sort -V | head -n 1)" != "$1"; }
   function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -V -r | head -n 1)" != "$1"; }
   if version_lt ${current_k8s_version} ${long_k8s_version}; then
-    curl -o /tmp/breeze.pub http://wise2c-seed:2008/debs/ubuntu18/breeze.pub
-    apt-key add /tmp/breeze.pub
-    rm -f /tmp/breeze.pub
-    apt-mark unhold kubeadm
     apt-get update
-    apt-get install -y kubeadm
-    apt-mark hold kubeadm
+    apt-get install -y kubeadm --disableexcludes=kubernetes
     kubeadm upgrade node experimental-control-plane
-    apt-mark unhold kubelet kubectl
-    apt-get update
-    apt-get install -y kubelet kubectl
-    apt-mark hold kubelet kubectl
+    apt-get install -y kubelet kubectl --disableexcludes=kubernetes
     systemctl daemon-reload
     systemctl restart kubelet
   else
