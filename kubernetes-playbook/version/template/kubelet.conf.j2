@@ -1,6 +1,7 @@
-KUBELET_EXTRA_ARGS=
+KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.1
 
-#KUBELET_EXTRA_ARGS=--feature-gates=LocalStorageCapacityIsolation=true \
+#KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.1 \
+#                   --feature-gates=LocalStorageCapacityIsolation=true \
 #                   --kube-reserved-cgroup=/kubepods.slice --kube-reserved=cpu=500m,memory=500Mi,ephemeral-storage=1Gi \
 #                   --system-reserved-cgroup=/system.slice --system-reserved=cpu=500m,memory=500Mi,ephemeral-storage=1Gi \
 #                   --eviction-hard=memory.available<500Mi,nodefs.available<10%

@@ -12,6 +12,17 @@
     - { src: '../../kubernetes-playbook/{{ kubernetes_version }}/file/admin.conf', dest: '{{ ansible_env.HOME }}/.kube/config' }
     run_once: true
 
+  - name: copy etcd cert for prometheus installation
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+    - { src: '../../etcd-playbook/{{ etcd_version }}/file/ca.pem', dest: '/etc/etcd/pki/' }
+    - { src: '../../etcd-playbook/{{ etcd_version }}/file/ca-key.pem', dest: '/etc/etcd/pki/' }
+    - { src: '../../etcd-playbook/{{ etcd_version }}/file/etcd.pem', dest: '/etc/etcd/pki/' }
+    - { src: '../../etcd-playbook/{{ etcd_version }}/file/etcd-key.pem', dest: '/etc/etcd/pki/' }
+    run_once: true
+
   - name: setup kubectl certification
     shell: |
       sed -i "s/.*server:.*/    server: https:\/\/{{ kubernetes_endpoint }}/g" $HOME/.kube/config
@@ -128,6 +139,11 @@
     with_items:
       - '{{ ansible_env.HOME }}/.kube/config'
     run_once: ture
+
+  - name: remove etcd cert
+    file:
+      path: '/etc/etcd/pki'
+      state: absent
 
   - name: copy clean-images-tags.sh
     copy:

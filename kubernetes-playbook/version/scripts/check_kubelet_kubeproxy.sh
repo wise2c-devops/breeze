@@ -7,13 +7,13 @@ kubeproxy_code_errortest=`curl -sLk -o /dev/null -w %{response_code} http://127.
 if ( [ "$kubelet_code_stats" == "200" ] || [ "$kubelet_code_stats" == "401" ] ) && [ "$kubelet_code_errortest" == "404" ]; then
   kubelet_health=true
 else
-  kubelet_haalth=false
+  kubelet_health=false
 fi
 
 if ( [ "$kubeproxy_code_healthz" == "200" ] || [ "$kubeproxy_code_healthz" == "503" ] ) && [ "$kubeproxy_code_errortest" == "404" ]; then
   kubeproxy_health=true
 else
-  kubeproxy_haalth=false
+  kubeproxy_health=false
 fi
 
 if [ "${kubelet_health}" == true ] && [ "${kubeproxy_health}" == true ]; then

@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+#If seems that there is a bug on Ubuntu host to load the images. If no wait, it will return an error message: "Error response from daemon: No such image"
+sleep 60
+
 MyImageRepositoryIP=`cat harbor-address.txt`
 MyImageRepositoryProject=library
 KubePrometheusVersion=`cat components-version.txt |grep "KubePrometheus" |awk '{print $3}'`
@@ -25,16 +28,8 @@ sed -i "s/grafana\/grafana/$MyImageRepositoryIP\/$MyImageRepositoryProject\/graf
 sed -i "s/gcr.io\/google_containers/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "gcr.io/google_containers" ./ |grep .yaml)
 sed -i "s/k8s.gcr.io/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "k8s.gcr.io" ./ |grep .yaml)
 
-# For offline deploy
 cd ..
 rm -f temp.txt
-cp -p append-lines.txt temp.txt
-sed -i "s/ImageRepositoryIP/$MyImageRepositoryIP/g" temp.txt
-sed -i '23 r temp.txt' kube-prometheus-$KubePrometheusVersion/manifests/0prometheus-operator-deployment.yaml
-rm -f temp.txt
-
-# Fix issue 2291 of prometheus operator
-sed -i "s/0.29.0/$PrometheusOperatorVersion/g" kube-prometheus-$KubePrometheusVersion/manifests/0prometheus-operator-deployment.yaml
 
 # Wait for CRDs to be ready, we need to split all yaml files to two parts
 cd kube-prometheus-$KubePrometheusVersion/
@@ -57,6 +52,13 @@ mv manifests phase1
 mkdir manifests
 mv phase1 manifests
 mv phase2 manifests
+
+######### Update yaml files to supports K8s v1.16 #########
+cd manifests/phase1
+sed -i "s#apps/v1beta2#apps/v1#g" $(ls)
+cd ../phase2
+sed -i "s#apps/v1beta2#apps/v1#g" $(ls)
+cd ../../
 
 ######### Deploy prometheus operator and kube-prometheus #########
 

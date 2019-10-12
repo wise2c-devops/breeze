@@ -40,6 +40,7 @@ flannel_version=v`cat ${path}/components-version.txt |grep "Flannel" |awk '{prin
 
 echo "flannel_repo: ${flannel_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "flannel_version: ${flannel_version}-amd64" >> ${path}/yat/all.yml.gotmpl
+echo "flannel_version_short: ${flannel_version}" >> ${path}/yat/all.yml.gotmpl
 
 #The image tag is incorrect in https://raw.githubusercontent.com/coreos/flannel/v0.11.0/Documentation/kube-flannel.yml
 #curl -sSL https://raw.githubusercontent.com/coreos/flannel/${flannel_version}/Documentation/kube-flannel.yml \
@@ -47,6 +48,28 @@ echo "flannel_version: ${flannel_version}-amd64" >> ${path}/yat/all.yml.gotmpl
 
 curl -sSL https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml \
    | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
+
+calico_version=v`cat ${path}/components-version.txt |grep "Calico" |awk '{print $3}'`
+echo "calico_version: ${calico_version}" >> ${path}/yat/all.yml.gotmpl
+echo "=== downloading calico release package ==="
+curl -L -o ${path}/file/calico-${calico_version}.tgz https://github.com/projectcalico/calico/releases/download/${calico_version}/release-${calico_version}.tgz
+echo "=== calico release package is downloaded successfully ==="
+tar zxf ${path}/file/calico-${calico_version}.tgz -C ${path}/file/
+rm -f ${path}/file/calico-${calico_version}.tgz
+mv ${path}/file/release-${calico_version} ${path}/file/calico
+rm -rf ${path}/file/calico/bin
+docker pull calico/pod2daemon-flexvol:${calico_version}
+docker save calico/pod2daemon-flexvol:${calico_version} -o ${path}/file/calico/images/calico-pod2daemon-flexvol.tar
+docker pull calico/ctl:${calico_version}
+docker save calico/ctl:${calico_version} -o ${path}/file/calico/images/calico-ctl.tar
+echo "=== Compressing calico images ==="
+bzip2 -z --best ${path}/file/calico/images/calico-cni.tar
+bzip2 -z --best ${path}/file/calico/images/calico-kube-controllers.tar
+bzip2 -z --best ${path}/file/calico/images/calico-node.tar
+bzip2 -z --best ${path}/file/calico/images/calico-pod2daemon-flexvol.tar
+bzip2 -z --best ${path}/file/calico/images/calico-typha.tar
+bzip2 -z --best ${path}/file/calico/images/calico-ctl.tar
+echo "=== Calico images are compressed as bzip format successfully ==="
 
 dashboard_repo=${kubernetes_repo}
 dashboard_version=v`cat ${path}/components-version.txt |grep "Dashboard" |awk '{print $3}'`
@@ -63,7 +86,7 @@ echo "metrics_server_version: ${metrics_server_version}" >> ${path}/yat/all.yml.
 #curl -sS https://raw.githubusercontent.com/kubernetes/dashboard/${dashboard_version}/src/deploy/recommended/kubernetes-dashboard.yaml \
 #    | sed -e "s,k8s.gcr.io,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kubernetes-dashboard.yml.j2
 
-curl -sSL https://github.com/wise2c-devops/breeze/raw/v1.15/kubernetes-playbook/kubernetes-dashboard-wise2c.yaml.j2 \
+curl -sSL https://github.com/wise2c-devops/breeze/raw/v1.12/kubernetes-playbook/kubernetes-dashboard-wise2c.yaml.j2 \
     | sed -e "s,k8s.gcr.io,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kubernetes-dashboard.yml.j2
     
 echo "=== pulling flannel image ==="

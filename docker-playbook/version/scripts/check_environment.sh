@@ -15,7 +15,7 @@ if [ "${BREEZE_LSB_ID}" != "CentOS" ] && [ "${BREEZE_LSB_ID}" != "Ubuntu" ]; the
 fi
 
 if [ "${BREEZE_LSB_ID}" == "CentOS" ] && [ `version_gt 7.3 ${BREEZE_LSB_RELEASE}` ]; then
-  echo "please use CentOS 7.4/7.5/7.6 for Breeze"
+  echo "please use CentOS 7.4/7.5/7.6/7.7 for Breeze"
   exit
 fi
 

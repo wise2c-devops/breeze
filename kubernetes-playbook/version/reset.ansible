@@ -9,12 +9,13 @@
   - name: iptables reset
     shell: |
       firewall-cmd --complete-reload
+    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
 
   - name: ipvs reset
     shell: |
       ipvsadm --clear
 
-  - name: remove kubernetes components
+  - name: remove kubernetes components for Redhat/CentOS
     yum:
       state: absent
       disablerepo: '*'
@@ -25,6 +26,18 @@
     - kubectl-{{ kubernetes_version[1:] }}
     - kubelet-{{ kubernetes_version[1:] }}
     - kubeadm-{{ kubernetes_version[1:] }}
+    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+
+  - name: remove kubernetes components for Ubuntu
+    apt:
+      state: absent
+      name: '{{ item }}'
+    with_items:
+    - kubernetes-cni
+    - kubectl-{{ kubernetes_version[1:] }}
+    - kubelet-{{ kubernetes_version[1:] }}
+    - kubeadm-{{ kubernetes_version[1:] }}
+    when: ansible_distribution =="Ubuntu"
     
   - name: clean flannel link
     shell: |

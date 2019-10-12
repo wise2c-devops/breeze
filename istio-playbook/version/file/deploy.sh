@@ -1,6 +1,8 @@
 #!/bin/bash
-
 set -e
+
+#It seems that there is a bug on Ubuntu host to load the images. If no wait, it will return an error message: "Error response from daemon: No such image"
+sleep 60
 
 MyImageRepositoryIP=`cat harbor-address.txt`
 MyImageRepositoryProject=library

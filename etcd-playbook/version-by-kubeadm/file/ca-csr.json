@@ -1,0 +1,20 @@
+{
+  "CN": "etcd",
+  "ca": {
+    "expiry": "876000h"
+  },
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "CN",
+      "ST": "Guangdong",
+      "L": "Shenzhen",
+      "O": "etcd",
+      "OU": "Wise2C"
+    }
+  ]
+}
+
