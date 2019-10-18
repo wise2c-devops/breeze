@@ -13,10 +13,10 @@ loadbalancer_version=HAProxy-${haproxy_version}_Keepalived-${keepalived_version}
 prometheus_version=2.7.2
 prometheus_operator_version=0.30.0
 kube_prometheus_version=0.1.0
-metrics_server_version=0.3.4
+metrics_server_version=0.3.6
 dashboard_version=1.10.1
 flannel_version=0.11.0
-calico_version=3.9.1
+calico_version=3.9.2
 helm_version=2.14.3
 istio_version=1.3.3
 
