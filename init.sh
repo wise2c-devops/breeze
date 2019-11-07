@@ -16,7 +16,7 @@ kube_prometheus_version=0.2.0
 metrics_server_version=0.3.6
 dashboard_version=1.10.1
 flannel_version=0.11.0
-calico_version=3.10.0
+calico_version=3.10.1
 helm_version=2.16.0
 istio_version=1.3.4
 
