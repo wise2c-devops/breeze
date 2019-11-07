@@ -16,9 +16,9 @@ kube_prometheus_version=0.1.0
 metrics_server_version=0.3.4
 dashboard_version=1.10.1
 flannel_version=0.11.0
-calico_version=3.9.1
+calico_version=3.9.2
 helm_version=2.14.3
-istio_version=1.3.2
+istio_version=1.3.4
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
 mv ${path}/harbor-playbook/version ${path}/harbor-playbook/v${harbor_version}
