@@ -28,7 +28,7 @@ services:
     - playbook:/workspace
   apt-source:
     container_name: deploy-aptsource
-    image: wise2c/apt-source:v1.15
+    image: wise2c/apt-source:v1.15.5.1
     ports:
     - 2008:2008
     restart: always
