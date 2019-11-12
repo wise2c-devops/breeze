@@ -6,7 +6,7 @@ path=`dirname $0`
 
 kubernetes_version=1.15.5
 harbor_version=1.9.2
-docker_version=18.09.8
+docker_version=18.09.9
 haproxy_version=2.0.0
 keepalived_version=1.3.5
 loadbalancer_version=HAProxy-${haproxy_version}_Keepalived-${keepalived_version}
@@ -16,8 +16,8 @@ kube_prometheus_version=0.2.0
 metrics_server_version=0.3.6
 dashboard_version=1.10.1
 flannel_version=0.11.0
-calico_version=3.9.3
-helm_version=2.14.3
+calico_version=3.10.1
+helm_version=2.15.2
 istio_version=1.3.5
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
