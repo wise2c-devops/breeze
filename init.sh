@@ -18,7 +18,7 @@ dashboard_version=1.10.1
 flannel_version=0.11.0
 calico_version=3.10.1
 helm_version=2.15.2
-istio_version=1.3.4
+istio_version=1.3.5
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
 mv ${path}/harbor-playbook/version ${path}/harbor-playbook/v${harbor_version}
