@@ -9,7 +9,7 @@ if [ "${WISE2C_IP_LABEL}" = "0" ]; then
 else
   for IP_Addresses in $(cat /etc/hosts |grep -A 1 'BEGIN WISE2C DEPLOY MANAGED BLOCK' |grep -v '#' |grep -v '^\-\-' |awk '{print $1}');
   do
-    GrepStr=$(ip a |grep "inet $IP_Addresses")
+    GrepStr=$(ip a |grep -w "inet $IP_Addresses")
     if [ -n "$GrepStr" ]; then
       HOST_IP=$IP_Addresses
     fi
