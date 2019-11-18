@@ -142,5 +142,5 @@ echo "helm_version: ${helm_version}" >> ${path}/yat/all.yml.gotmpl
 
 echo "=== download helm binary package ==="
 rm ${path}/file/helm-linux-amd64.tar.gz -f
-curl -o ${path}/file/helm-linux-amd64.tar.gz https://storage.googleapis.com/kubernetes-helm/helm-${helm_version}-linux-amd64.tar.gz
+curl -o ${path}/file/helm-linux-amd64.tar.gz https://get.helm.sh/helm-${helm_version}-linux-amd64.tar.gz
 echo "=== helm binary package is saved successfully ==="

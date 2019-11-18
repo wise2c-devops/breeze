@@ -9,7 +9,6 @@
   - { src: 'file/k8s.tar.bz2', dest: '{{ path }}' }
   - { src: 'file/flannel.tar.bz2', dest: '{{ path }}' }
   - { src: 'file/dashboard.tar.bz2', dest: '{{ path }}' }
-  - { src: 'file/tiller.tar.bz2', dest: '{{ path }}' }
   - { src: 'file/metrics-server.tar.bz2', dest: '{{ path }}' }
   run_once: true
 
@@ -37,7 +36,6 @@
   - k8s.tar.bz2
   - flannel.tar.bz2
   - dashboard.tar.bz2
-  - tiller.tar.bz2
   - metrics-server.tar.bz2
   - calico/images/calico-cni.tar.bz2
   - calico/images/calico-kube-controllers.tar.bz2
@@ -446,10 +444,6 @@
   shell: |
     tar zxvf {{ path }}/helm-linux-amd64.tar.gz --strip-components=1 -C /tmp/
     mv /tmp/helm /usr/local/bin/helm
-
-- name: setup helm
-  shell: |
-    helm init --client-only --skip-refresh
 
 - name: upgrade helm repo
   shell: |
