@@ -76,7 +76,6 @@
   - { repo: 'calico', name: 'pod2daemon-flexvol', tag: '{{ calico_version }}' }
   - { repo: 'calico', name: 'ctl', tag: '{{ calico_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
-  - { repo: '{{ helm_repo }}', name: 'tiller', tag: '{{ helm_version }}' }
   run_once: true
 
 - name: push images
@@ -101,7 +100,6 @@
   - { name: 'pod2daemon-flexvol', tag: '{{ calico_version }}' }
   - { name: 'ctl', tag: '{{ calico_version }}' }
   - { name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
-  - { name: 'tiller', tag: '{{ helm_version }}' }
   run_once: true
 
 - name: Remove k8s.gcr.io images tag
@@ -125,7 +123,6 @@
   - { repo: 'calico', name: 'pod2daemon-flexvol', tag: '{{ calico_version }}' }
   - { repo: 'calico', name: 'ctl', tag: '{{ calico_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
-  - { repo: '{{ helm_repo }}', name: 'tiller', tag: '{{ helm_version }}' }
   run_once: ture
 
 - name: install git command for helm-push and perl library for ipcalc
@@ -450,38 +447,11 @@
     tar zxvf {{ path }}/helm-linux-amd64.tar.gz --strip-components=1 -C /tmp/
     mv /tmp/helm /usr/local/bin/helm
 
-- name: copy tiller-rbac
-  template:
-    src: '{{ item.src }}'
-    dest: '{{ item.dest }}'
-  with_items:
-  - { src: 'template/tiller-rbac.yaml', dest: '{{ path }}/tiller-rbac.yaml' }
-
-- name: setup helm with tiller
+- name: setup helm
   shell: |
     helm init --client-only --skip-refresh
-    helm init --tiller-image {{ registry_endpoint }}/{{ registry_project }}/tiller:{{ helm_version }}
 
-- name: setup rbac for tiller
-  shell: |
-    kubectl apply -f {{ path }}/tiller-rbac.yaml
-  run_once: true
-
-- name: copy helm init script
-  template:
-    src: '{{ item.src }}'
-    dest: '{{ item.dest }}'
-    mode: 0755
-  with_items:
-  - { src: 'template/helm_init.sh.j2', dest: '{{ path }}/helm_init.sh' }
-
-- name: execute helm init script
-  shell: ./helm_init.sh
-  args:
-    chdir: '{{ path }}'
-  async: 600
-
-- name: upgrade tiller repo
+- name: upgrade helm repo
   shell: |
     helm repo add --username={{ registry_user }} --password={{ registry_password }} {{ registry_project }} http://{{ registry_endpoint }}/chartrepo/{{ registry_project }}
   when: not registry_https
