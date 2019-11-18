@@ -130,17 +130,17 @@ helm_version=v`cat ${path}/components-version.txt |grep "Helm" |awk '{print $3}'
 echo "helm_repo: ${helm_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "helm_version: ${helm_version}" >> ${path}/yat/all.yml.gotmpl
 
-echo "=== pulling helm tiller image ==="
-docker pull ${helm_repo}/tiller:${helm_version}
-echo "=== helm tiller image is pulled successfully ==="
+#echo "=== pulling helm tiller image ==="
+#docker pull ${helm_repo}/tiller:${helm_version}
+#echo "=== helm tiller image is pulled successfully ==="
 
-echo "=== saving helm tiller image ==="
-docker save ${helm_repo}/tiller:${helm_version} > ${path}/file/tiller.tar
-rm ${path}/file/tiller.tar.bz2 -f
-bzip2 -z --best ${path}/file/tiller.tar
-echo "=== helm tiller image is saved successfully ==="
+#echo "=== saving helm tiller image ==="
+#docker save ${helm_repo}/tiller:${helm_version} > ${path}/file/tiller.tar
+#rm ${path}/file/tiller.tar.bz2 -f
+#bzip2 -z --best ${path}/file/tiller.tar
+#echo "=== helm tiller image is saved successfully ==="
 
 echo "=== download helm binary package ==="
 rm ${path}/file/helm-linux-amd64.tar.gz -f
-curl -o ${path}/file/helm-linux-amd64.tar.gz https://storage.googleapis.com/kubernetes-helm/helm-${helm_version}-linux-amd64.tar.gz
+curl -o ${path}/file/helm-linux-amd64.tar.gz https://get.helm.sh/helm-${helm_version}-linux-amd64.tar.gz
 echo "=== helm binary package is saved successfully ==="
