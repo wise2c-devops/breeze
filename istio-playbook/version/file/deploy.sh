@@ -29,7 +29,8 @@ sed -i "s/quay.io\/kiali/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(gr
 cd ../../
 
 # Istio init deploy
-helm install install/kubernetes/helm/istio-init --name istio-init --namespace istio-system
+kubectl create ns istio-system
+helm install install/kubernetes/helm/istio-init -g --namespace istio-system
 
 set +e
 ######### Deploy Istio #########
@@ -46,7 +47,7 @@ until [ `for istiocrds in $(kubectl get crds |grep 'istio.io\|certmanager.k8s.io
 echo 'Phase1 done!'
 set -e
 
-helm install install/kubernetes/helm/istio --name istio --namespace istio-system --set gateways.istio-ingressgateway.type=NodePort --values install/kubernetes/helm/istio/values-istio-demo-auth.yaml
+helm install install/kubernetes/helm/istio -g --namespace istio-system --set gateways.istio-ingressgateway.type=NodePort --values install/kubernetes/helm/istio/values-istio-demo.yaml
 
 echo 'Phase2 done!'
 
