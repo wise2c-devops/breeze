@@ -11,6 +11,7 @@ before_install:
 script:
 - bash init.sh
 - docker build -t wise2c/playbook:$TRAVIS_BRANCH .
+- docker tag wise2c/playbook:$TRAVIS_BRANCH wise2c/playbook:v1.14.9
 
 deploy:
   provider: script
