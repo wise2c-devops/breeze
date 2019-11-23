@@ -85,6 +85,12 @@ curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.16.3/docker-co
 docker-compose up -d
 ```
 
+如果机器磁盘性能较差，需要调整超时，请用以下命令启动：
+
+```
+COMPOSE_HTTP_TIMEOUT=300 docker-compose up -d
+```
+
 上述文件docker-compose.yml支持混合部署，docker-compose-centos.yml支持单纯CentOS部署，docker-compose-ubuntu.yml支持单纯Ubuntu部署。
 
 如果一切正常（注意deploy-playbook这个容器是个卷容器，它是退出状态这是正常现象），部署机的88端口将能够被正常访问。
