@@ -120,11 +120,13 @@ echo "=== kubernetes dashboard and metrics-server images are saved successfully 
 
 contour_repo="docker.io/projectcontour"
 contour_envoyproxy_repo="docker.io/envoyproxy"
+contour_demo_repo="gcr.io/kuar-demo"
 contour_version=v`cat ${path}/components-version.txt |grep "Contour Version" |awk '{print $3}'`
 contour_envoyproxy_version=v`cat ${path}/components-version.txt |grep "ContourEnvoyProxy Version" |awk '{print $3}'`
 
 echo "contour_repo: ${contour_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "contour_envoyproxy_repo: ${contour_envoyproxy_repo}" >> ${path}/yat/all.yml.gotmpl
+echo "contour_demo_repo: ${contour_demo_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "contour_version: ${contour_version}" >> ${path}/yat/all.yml.gotmpl
 echo "contour_envoyproxy_version: ${contour_envoyproxy_version}" >> ${path}/yat/all.yml.gotmpl
 
@@ -132,18 +134,25 @@ curl -sS https://raw.githubusercontent.com/projectcontour/contour/v{contour_vers
     | sed -e "s,docker.io/projectcontour,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/contour.yml.j2
 sed -e "s,docker.io/envoyproxy,{{ registry_endpoint }}/{{ registry_project }},g" ${path}/template/contour.yml.j2
 
+curl -sS https://projectcontour.io/examples/kuard.yaml \
+    | sed -e "s,gcr.io/kuar-demo,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/contour-demo.yml.j2
+
 echo "=== pulling contour and envoyproxy images ==="
 docker pull ${contour_repo}/contour:${contour_version}
 docker pull ${contour_envoyproxy_repo}/envoy:${contour_envoyproxy_version}
+docker pull ${contour_demo_repo}/kuard-amd64:1
 echo "=== contour and envoyproxy images are pulled successfully ==="
 
 echo "=== saving contour and envoyproxy images ==="
 docker save ${contour_repo}/contour:${contour_version} -o ${path}/file/contour.tar
 docker save ${contour_envoyproxy_repo}/envoy:${contour_envoyproxy_version} -o ${path}/file/contour-envoyproxy.tar
+docker save ${contour_demo_repo}/kuard-amd64:1 -o ${path}/file/contour-demo.tar
 rm -f ${path}/file/contour.tar.bz2
 rm -f ${path}/file/contour-envoyproxy.tar.bz2
+rm -f ${path}/file/contour-demo.tar.bz2
 bzip2 -z --best ${path}/file/contour.tar
 bzip2 -z --best ${path}/file/contour-envoyproxy.tar
+bzip2 -z --best ${path}/file/contour-demo.tar
 
 echo "=== contour and envoyproxy images are saved successfully ==="
 
