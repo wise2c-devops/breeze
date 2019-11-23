@@ -120,7 +120,8 @@ echo "=== kubernetes dashboard and metrics-server images are saved successfully 
 
 contour_repo="projectcontour"
 contour_long_repo="docker.io/projectcontour"
-contour_envoyproxy_repo="docker.io/envoyproxy"
+contour_envoyproxy_repo="envoyproxy"
+contour_envoyproxy_long_repo="docker.io/envoyproxy"
 contour_demo_repo="gcr.io/kuar-demo"
 contour_version=v`cat ${path}/components-version.txt |grep "Contour Version" |awk '{print $3}'`
 contour_envoyproxy_version=v`cat ${path}/components-version.txt |grep "ContourEnvoyProxy Version" |awk '{print $3}'`
@@ -128,6 +129,7 @@ contour_envoyproxy_version=v`cat ${path}/components-version.txt |grep "ContourEn
 echo "contour_repo: ${contour_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "contour_long_repo: ${contour_long_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "contour_envoyproxy_repo: ${contour_envoyproxy_repo}" >> ${path}/yat/all.yml.gotmpl
+echo "contour_envoyproxy_long_repo: ${contour_envoyproxy_long_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "contour_demo_repo: ${contour_demo_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "contour_version: ${contour_version}" >> ${path}/yat/all.yml.gotmpl
 echo "contour_envoyproxy_version: ${contour_envoyproxy_version}" >> ${path}/yat/all.yml.gotmpl
