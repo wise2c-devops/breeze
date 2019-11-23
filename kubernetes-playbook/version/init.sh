@@ -71,11 +71,13 @@ bzip2 -z --best ${path}/file/calico/images/calico-typha.tar
 bzip2 -z --best ${path}/file/calico/images/calico-ctl.tar
 echo "=== Calico images are compressed as bzip format successfully ==="
 
-dashboard_repo=${kubernetes_repo}
+dashboard_repo=kubernetesui
 dashboard_version=v`cat ${path}/components-version.txt |grep "Dashboard" |awk '{print $3}'`
+metrics_scraper_version=v`cat ${path}/components-version.txt |grep "MetricsScraper" |awk '{print $3}'`
 
 echo "dashboard_repo: ${dashboard_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "dashboard_version: ${dashboard_version}" >> ${path}/yat/all.yml.gotmpl
+echo "metrics_scraper_version: ${metrics_scraper_version}" >> ${path}/yat/all.yml.gotmpl
 
 metrics_server_repo=${kubernetes_repo}
 metrics_server_version=v`cat ${path}/components-version.txt |grep "MetricsServer" |awk '{print $3}'`
@@ -83,12 +85,9 @@ metrics_server_version=v`cat ${path}/components-version.txt |grep "MetricsServer
 echo "metrics_server_repo: ${metrics_server_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "metrics_server_version: ${metrics_server_version}" >> ${path}/yat/all.yml.gotmpl
 
-#curl -sS https://raw.githubusercontent.com/kubernetes/dashboard/${dashboard_version}/src/deploy/recommended/kubernetes-dashboard.yaml \
-#    | sed -e "s,k8s.gcr.io,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kubernetes-dashboard.yml.j2
+curl -sS https://raw.githubusercontent.com/kubernetes/dashboard/${dashboard_version}/aio/deploy/recommended.yaml \
+    | sed -e "s,kubernetesui,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kubernetes-dashboard.yml.j2
 
-curl -sSL https://github.com/wise2c-devops/breeze/raw/v1.12/kubernetes-playbook/kubernetes-dashboard-wise2c.yaml.j2 \
-    | sed -e "s,k8s.gcr.io,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kubernetes-dashboard.yml.j2
-    
 echo "=== pulling flannel image ==="
 docker pull ${flannel_repo}/flannel:${flannel_version}-amd64
 echo "=== flannel image is pulled successfully ==="
@@ -101,18 +100,22 @@ bzip2 -z --best ${path}/file/flannel.tar
 echo "=== flannel image is saved successfully ==="
 
 echo "=== pulling kubernetes dashboard and metrics-server images ==="
-docker pull ${dashboard_repo}/kubernetes-dashboard-amd64:${dashboard_version}
+docker pull ${dashboard_repo}/dashboard:${dashboard_version}
+docker pull ${dashboard_repo}/metrics-scraper:${metrics_scraper_version}
 docker pull ${metrics_server_repo}/metrics-server-amd64:${metrics_server_version}
 echo "=== kubernetes dashboard and metrics-server images are pulled successfully ==="
 
 echo "=== saving kubernetes dashboard images ==="
-docker save ${dashboard_repo}/kubernetes-dashboard-amd64:${dashboard_version} \
-    > ${path}/file/dashboard.tar
+docker save ${dashboard_repo}/dashboard:${dashboard_version} -o ${path}/file/dashboard.tar
+docker save ${dashboard_repo}/metrics-scraper:${metrics_scraper_version} -o ${path}/file/metrics-scraper.tar
 docker save ${metrics_server_repo}/metrics-server-amd64:${metrics_server_version} -o ${path}/file/metrics-server.tar
-rm ${path}/file/dashboard.tar.bz2 -f
-rm ${path}/file/metrics-server.tar.bz2 -f
+rm -f ${path}/file/dashboard.tar.bz2
+rm -f ${path}/file/metrics-scraper.tar.bz2
+rm -f ${path}/file/metrics-server.tar.bz2
 bzip2 -z --best ${path}/file/dashboard.tar
+bzip2 -z --best ${path}/file/metrics-scraper.tar
 bzip2 -z --best ${path}/file/metrics-server.tar
+
 echo "=== kubernetes dashboard and metrics-server images are saved successfully ==="
 
 echo "=== download cfssl tools ==="
@@ -124,21 +127,7 @@ chmod +x cfssl cfssljson cfssl-certinfo
 tar zcvf ${path}/file/cfssl-tools.tar.gz cfssl cfssl-certinfo cfssljson
 echo "=== cfssl tools is download successfully ==="
 
-helm_repo="gcr.io/kubernetes-helm"
 helm_version=v`cat ${path}/components-version.txt |grep "Helm" |awk '{print $3}'`
-
-echo "helm_repo: ${helm_repo}" >> ${path}/yat/all.yml.gotmpl
-echo "helm_version: ${helm_version}" >> ${path}/yat/all.yml.gotmpl
-
-#echo "=== pulling helm tiller image ==="
-#docker pull ${helm_repo}/tiller:${helm_version}
-#echo "=== helm tiller image is pulled successfully ==="
-
-#echo "=== saving helm tiller image ==="
-#docker save ${helm_repo}/tiller:${helm_version} > ${path}/file/tiller.tar
-#rm ${path}/file/tiller.tar.bz2 -f
-#bzip2 -z --best ${path}/file/tiller.tar
-#echo "=== helm tiller image is saved successfully ==="
 
 echo "=== download helm binary package ==="
 rm ${path}/file/helm-linux-amd64.tar.gz -f

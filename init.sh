@@ -14,11 +14,13 @@ prometheus_version=2.11.0
 prometheus_operator_version=0.33.0
 kube_prometheus_version=0.2.0
 metrics_server_version=0.3.6
-dashboard_version=1.10.1
+dashboard_version=2.0.0-beta6
+metrics_scraper_version=1.0.2
 flannel_version=0.11.0
 calico_version=3.10.1
 helm_version=3.0.0
 istio_version=1.4.0
+contour_version=1.0.0
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
 mv ${path}/harbor-playbook/version ${path}/harbor-playbook/v${harbor_version}
@@ -43,10 +45,12 @@ echo "PrometheusOperator Version: ${prometheus_operator_version}" >> ${path}/com
 echo "KubePrometheus Version: ${kube_prometheus_version}" >> ${path}/components-version.txt
 echo "MetricsServer Version: ${metrics_server_version}" >> ${path}/components-version.txt
 echo "Dashboard Version: ${dashboard_version}" >> ${path}/components-version.txt
+echo "MetricsScraper Version: ${metrics_scraper_version}" >> ${path}/components-version.txt
 echo "Flannel Version: ${flannel_version}" >> ${path}/components-version.txt
 echo "Calico Version: ${calico_version}" >> ${path}/components-version.txt
 echo "Helm Version: ${helm_version}" >> ${path}/components-version.txt
 echo "Istio Version: ${istio_version}" >> ${path}/components-version.txt
+echo "Contour Version: ${contour_version}" >> ${path}/components-version.txt
 
 for dir in `ls ${path}`
 do
