@@ -6,7 +6,7 @@ metadata:
   labels:
     k8s-app: kubernetes-dashboard
   name: kubernetes-dashboard
-  namespace: kube-system
+  namespace: kubernetes-dashboard
 spec:
   type: NodePort
   ports:
@@ -25,7 +25,7 @@ metadata:
 
 ---
 # ------------------- Dashboard Cluster Role Binding------------------- #
-apiVersion: rbac.authorization.k8s.io/v1beta2
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: admin-user

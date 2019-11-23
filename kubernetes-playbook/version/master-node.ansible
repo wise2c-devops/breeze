@@ -30,6 +30,7 @@
     dest: '{{ item.dest }}'
   with_items:
   - { src: 'file/metrics-server', dest: '{{ path }}/' }
+  run_once: true
 
 - name: load k8s images
   docker_image:
@@ -137,7 +138,7 @@
   - { repo: 'calico', name: 'pod2daemon-flexvol', tag: '{{ calico_version }}' }
   - { repo: 'calico', name: 'ctl', tag: '{{ calico_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'dashboard', tag: '{{ dashboard_version }}' }
-  - { repo: '{{ metrics_scraper_repo }}', name: 'metrics-scraper', tag: '{{ metrics_scraper_version }}' }
+  - { repo: '{{ dashboard_repo }}', name: 'metrics-scraper', tag: '{{ metrics_scraper_version }}' }
   - { repo: '{{ contour_repo }}', name: 'contour', tag: '{{ contour_version }}' }
   - { repo: '{{ contour_envoyproxy_repo }}', name: 'envoy', tag: '{{ contour_envoyproxy_version }}' }
   - { repo: '{{ contour_demo_repo }}', name: 'kuard-amd64', tag: '1' }
@@ -164,8 +165,8 @@
   - { src: 'template/kubernetes-dashboard.yml.j2', dest: '{{ path }}/kubernetes-dashboard.yml' }
   - { src: 'template/kubernetes-dashboard-svc.yml.j2', dest: '{{ path }}/kubernetes-dashboard-svc.yml' }
   - { src: 'template/metrics-server-deployment.yaml.j2', dest: '{{ path }}/metrics-server/metrics-server-deployment.yaml' }
-  - { src: 'template/contour.yaml.j2', dest: '{{ path }}/contour.yaml' }
-  - { src: 'template/contour-demo.yaml.j2', dest: '{{ path }}/contour-demo.yaml' }
+  - { src: 'template/contour.yml.j2', dest: '{{ path }}/contour.yml' }
+  - { src: 'template/contour-demo.yml.j2', dest: '{{ path }}/contour-demo.yml' }
 
 - name: replace pod cidr 10.244.0.0/16 in kubeadm.conf files
   replace:
