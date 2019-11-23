@@ -30,7 +30,6 @@
     dest: '{{ item.dest }}'
   with_items:
   - { src: 'file/metrics-server', dest: '{{ path }}/' }
-  run_once: true
 
 - name: load k8s images
   docker_image:
