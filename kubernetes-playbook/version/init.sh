@@ -49,6 +49,17 @@ echo "flannel_version_short: ${flannel_version}" >> ${path}/yat/all.yml.gotmpl
 curl -sSL https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml \
    | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
 
+echo "=== pulling flannel image ==="
+docker pull ${flannel_repo}/flannel:${flannel_version}-amd64
+echo "=== flannel image is pulled successfully ==="
+
+echo "=== saving flannel image ==="
+docker save ${flannel_repo}/flannel:${flannel_version}-amd64 \
+    > ${path}/file/flannel.tar
+rm ${path}/file/flannel.tar.bz2 -f
+bzip2 -z --best ${path}/file/flannel.tar
+echo "=== flannel image is saved successfully ==="
+
 calico_version=v`cat ${path}/components-version.txt |grep "Calico" |awk '{print $3}'`
 echo "calico_version: ${calico_version}" >> ${path}/yat/all.yml.gotmpl
 echo "=== downloading calico release package ==="
@@ -88,17 +99,6 @@ echo "metrics_server_version: ${metrics_server_version}" >> ${path}/yat/all.yml.
 curl -sS https://raw.githubusercontent.com/kubernetes/dashboard/${dashboard_version}/aio/deploy/recommended.yaml \
     | sed -e "s,kubernetesui,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kubernetes-dashboard.yml.j2
 
-echo "=== pulling flannel image ==="
-docker pull ${flannel_repo}/flannel:${flannel_version}-amd64
-echo "=== flannel image is pulled successfully ==="
-
-echo "=== saving flannel image ==="
-docker save ${flannel_repo}/flannel:${flannel_version}-amd64 \
-    > ${path}/file/flannel.tar
-rm ${path}/file/flannel.tar.bz2 -f
-bzip2 -z --best ${path}/file/flannel.tar
-echo "=== flannel image is saved successfully ==="
-
 echo "=== pulling kubernetes dashboard and metrics-server images ==="
 docker pull ${dashboard_repo}/dashboard:${dashboard_version}
 docker pull ${dashboard_repo}/metrics-scraper:${metrics_scraper_version}
@@ -117,6 +117,35 @@ bzip2 -z --best ${path}/file/metrics-scraper.tar
 bzip2 -z --best ${path}/file/metrics-server.tar
 
 echo "=== kubernetes dashboard and metrics-server images are saved successfully ==="
+
+contour_repo="docker.io/projectcontour"
+contour_envoyproxy_repo="docker.io/envoyproxy"
+contour_version=v`cat ${path}/components-version.txt |grep "Contour Version" |awk '{print $3}'`
+contour_envoyproxy_version=v`cat ${path}/components-version.txt |grep "ContourEnvoyProxy Version" |awk '{print $3}'`
+
+echo "contour_repo: ${contour_repo}" >> ${path}/yat/all.yml.gotmpl
+echo "contour_envoyproxy_repo: ${contour_envoyproxy_repo}" >> ${path}/yat/all.yml.gotmpl
+echo "contour_version: ${contour_version}" >> ${path}/yat/all.yml.gotmpl
+echo "contour_envoyproxy_version: ${contour_envoyproxy_version}" >> ${path}/yat/all.yml.gotmpl
+
+curl -sS https://raw.githubusercontent.com/projectcontour/contour/v{contour_version}/examples/render/contour.yaml \
+    | sed -e "s,docker.io/projectcontour,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/contour.yml.j2
+sed -e "s,docker.io/envoyproxy,{{ registry_endpoint }}/{{ registry_project }},g" ${path}/template/contour.yml.j2
+
+echo "=== pulling contour and envoyproxy images ==="
+docker pull ${contour_repo}/contour:${contour_version}
+docker pull ${contour_envoyproxy_repo}/envoy:${contour_envoyproxy_version}
+echo "=== contour and envoyproxy images are pulled successfully ==="
+
+echo "=== saving contour and envoyproxy images ==="
+docker save ${contour_repo}/contour:${contour_version} -o ${path}/file/contour.tar
+docker save ${contour_envoyproxy_repo}/envoy:${contour_envoyproxy_version} -o ${path}/file/contour-envoyproxy.tar
+rm -f ${path}/file/contour.tar.bz2
+rm -f ${path}/file/contour-envoyproxy.tar.bz2
+bzip2 -z --best ${path}/file/contour.tar
+bzip2 -z --best ${path}/file/contour-envoyproxy.tar
+
+echo "=== contour and envoyproxy images are saved successfully ==="
 
 echo "=== download cfssl tools ==="
 export CFSSL_URL=https://pkg.cfssl.org/R1.2

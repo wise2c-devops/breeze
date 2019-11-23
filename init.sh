@@ -21,6 +21,7 @@ calico_version=3.10.1
 helm_version=3.0.0
 istio_version=1.4.0
 contour_version=1.0.0
+contour_envoyproxy_version=1.11.2
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
 mv ${path}/harbor-playbook/version ${path}/harbor-playbook/v${harbor_version}
@@ -51,6 +52,7 @@ echo "Calico Version: ${calico_version}" >> ${path}/components-version.txt
 echo "Helm Version: ${helm_version}" >> ${path}/components-version.txt
 echo "Istio Version: ${istio_version}" >> ${path}/components-version.txt
 echo "Contour Version: ${contour_version}" >> ${path}/components-version.txt
+echo "ContourEnvoyProxy Version: ${contour_envoyproxy_version}" >> ${path}/components-version.txt
 
 for dir in `ls ${path}`
 do
