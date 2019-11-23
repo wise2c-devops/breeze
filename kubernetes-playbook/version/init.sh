@@ -118,13 +118,15 @@ bzip2 -z --best ${path}/file/metrics-server.tar
 
 echo "=== kubernetes dashboard and metrics-server images are saved successfully ==="
 
-contour_repo="docker.io/projectcontour"
+contour_repo="projectcontour"
+contour_long_repo="docker.io/projectcontour"
 contour_envoyproxy_repo="docker.io/envoyproxy"
 contour_demo_repo="gcr.io/kuar-demo"
 contour_version=v`cat ${path}/components-version.txt |grep "Contour Version" |awk '{print $3}'`
 contour_envoyproxy_version=v`cat ${path}/components-version.txt |grep "ContourEnvoyProxy Version" |awk '{print $3}'`
 
 echo "contour_repo: ${contour_repo}" >> ${path}/yat/all.yml.gotmpl
+echo "contour_long_repo: ${contour_long_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "contour_envoyproxy_repo: ${contour_envoyproxy_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "contour_demo_repo: ${contour_demo_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "contour_version: ${contour_version}" >> ${path}/yat/all.yml.gotmpl
@@ -132,7 +134,7 @@ echo "contour_envoyproxy_version: ${contour_envoyproxy_version}" >> ${path}/yat/
 
 curl -sS https://raw.githubusercontent.com/projectcontour/contour/${contour_version}/examples/render/contour.yaml \
     | sed -e "s,docker.io/projectcontour,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/contour.yml.j2
-sed -e "s,docker.io/envoyproxy,{{ registry_endpoint }}/{{ registry_project }},g" ${path}/template/contour.yml.j2
+sed -i "s,docker.io/envoyproxy,{{ registry_endpoint }}/{{ registry_project }},g" ${path}/template/contour.yml.j2
 
 curl -sS https://projectcontour.io/examples/kuard.yaml \
     | sed -e "s,gcr.io/kuar-demo,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/contour-demo.yml.j2
