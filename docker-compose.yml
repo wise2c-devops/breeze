@@ -28,13 +28,13 @@ services:
     - playbook:/workspace
   yum-repo:
     container_name: deploy-yumrepo
-    image: wise2c/yum-repo:v1.14.9.1
+    image: wise2c/yum-repo:v1.14.9
     ports:
     - 2009:2009 
     restart: always
   apt-source:
     container_name: deploy-aptsource
-    image: wise2c/apt-source:v1.14.9.1
+    image: wise2c/apt-source:v1.14.9
     ports:
     - 2008:2008
     restart: always
