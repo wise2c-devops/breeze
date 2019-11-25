@@ -33,7 +33,7 @@
       src: '{{ item.src }}'
       dest: '{{ item.dest }}'
     with_items:
-    - { src: 'file/elasticcloud-images-{{ elastic_cloud_version }}.tar.bz2', dest: '{{ path }}' }
+    - { src: 'file/elasticcloud-images.tar.bz2', dest: '{{ path }}' }
     run_once: true
 
   - name: copy elasticcloud operator deploy and reset script
@@ -52,7 +52,7 @@
       name: elasticcloud
       timeout: 600
     with_items:
-    - kube-elasticcloud-images-v{{ kube_elasticcloud_version }}.tar.bz2
+    - kube-elasticcloud-images.tar.bz2
     run_once: true
 
   - name: docker login
