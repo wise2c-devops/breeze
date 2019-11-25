@@ -1,0 +1,10 @@
+apiVersion: kibana.k8s.elastic.co/v1beta1
+kind: Kibana
+metadata:
+  name: quickstart
+spec:
+  image: 192.168.9.120/library/kibana:7.4.2
+  version: 7.4.2
+  count: 1
+  elasticsearchRef:
+    name: quickstart

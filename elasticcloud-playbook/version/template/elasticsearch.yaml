@@ -1,0 +1,20 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1beta1
+kind: Elasticsearch
+metadata:
+  name: quickstart
+spec:
+  image: 192.168.1.120/library/elasticsearch:7.4.2
+  version: 7.4.2
+  nodeSets:
+  - name: default
+    count: 1
+    config:
+      node.master: true
+      node.data: true
+      node.ingest: true
+      node.store.allow_mmap: false
+    podTemplate:
+      spec:
+        volumes:
+        - name: elasticsearch-data
+          emptyDir: {}

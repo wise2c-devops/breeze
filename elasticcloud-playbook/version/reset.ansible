@@ -1,0 +1,9 @@
+- name: clean elastic cloud
+  hosts: all
+  user: root
+  tasks:
+  - name: stop & rm elastic service
+    shell: ./remove.sh
+    args:
+      chdir: '{{ cpath }}'
+    ignore_errors: true

@@ -1,0 +1,114 @@
+- name: setup elasticcloud operator
+  hosts: elasticcloud
+  user: root
+  vars:
+    path: /var/tmp/wise2c/elasticcloud
+  tasks:
+  - name: copy k8s admin.conf for elasticcloud installation
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+    - { src: '../../kubernetes-playbook/{{ kubernetes_version }}/file/admin.conf', dest: '{{ ansible_env.HOME }}/.kube/config' }
+    run_once: true
+
+  - name: setup kubectl certification
+    shell: |
+      sed -i "s/.*server:.*/    server: https:\/\/{{ kubernetes_endpoint }}/g" $HOME/.kube/config
+      chown $(id -u):$(id -g) $HOME/.kube/config
+    run_once: ture
+
+  - name: make elasticcloud dir
+    file:
+      path: '{{ item }}'
+      state: directory
+      mode: 0755
+    with_items:
+      - '{{ cpath }}'
+      - '{{ path }}'
+    run_once: ture
+
+  - name: copy elasticcloud images
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+    - { src: 'file/elasticcloud-images-{{ elastic_cloud_version }}.tar.bz2', dest: '{{ path }}' }
+    run_once: true
+
+  - name: copy elasticcloud operator deploy and reset script
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+      mode: 0755
+    with_items:
+    - { src: 'file/deploy.sh', dest: '{{ path }}' }
+    - { src: 'file/remove.sh', dest: '{{ path }}' }
+    run_once: true
+
+  - name: load elasticcloud operator images
+    docker_image:
+      load_path: '{{ path }}/{{ item }}'
+      name: elasticcloud
+      timeout: 600
+    with_items:
+    - kube-elasticcloud-images-v{{ kube_elasticcloud_version }}.tar.bz2
+    run_once: true
+
+  - name: docker login
+    docker_login:
+      registry: '{{ registry_endpoint }}'
+      username: '{{ registry_user }}'
+      password: '{{ registry_password }}'
+      reauthorize: true
+    run_once: true
+
+  - name: set harbor address for deploy script
+    replace:
+      path: "/var/tmp/wise2c/elasticcloud/{{ item }}"
+      regexp: "harbor-address"
+      replace: "{{ registry_endpoint }}"
+    with_items:
+      - "harbor-address.txt"
+    run_once: ture
+
+  - name: copy elasticcloud yaml files
+    template:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+      - { src: 'template/eck.yaml.j2', dest: '{{ cpath }}/eck.yaml' }
+      - { src: 'template/elasticsearch.yaml.j2', dest: '{{ cpath }}/elasticsearch.yaml' }
+      - { src: 'template/elasticsearch-service.yaml.j2', dest: '{{ cpath }}/elasticsearch-service.yaml' }
+      - { src: 'template/kibana.yaml.j2', dest: '{{ cpath }}/kibana.yaml' }
+      - { src: 'template/kibana-service.yaml.j2', dest: '{{ cpath }}/kibana-service.yaml' }
+    run_once: ture
+
+  - name: elasticcloud operator deploy
+    shell: ./deploy.sh
+    args:
+      chdir: '{{ cpath }}/'
+    run_once: ture
+
+  - name: remove kubectl cert
+    file:
+      path: '{{ item }}'
+      state: absent
+    with_items:
+      - '{{ ansible_env.HOME }}/.kube/config'
+    run_once: ture
+
+  - name: copy clean-images-tags.sh
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+      mode: 0755
+    with_items:
+    - { src: 'file/clean-images-tags.sh', dest: '{{ path }}' }
+    run_once: true
+
+  - name: clean image tag
+    shell: ./clean-images-tags.sh
+    args:
+      chdir: '{{ cpath }}/'
+    run_once: ture
