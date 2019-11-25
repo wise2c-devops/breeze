@@ -3,8 +3,8 @@ kind: Elasticsearch
 metadata:
   name: quickstart
 spec:
-  image: {{ registry_endpoint }}/{{ registry_project }}/elasticsearch:7.4.2
-  version: 7.4.2
+  image: {{ registry_endpoint }}/{{ registry_project }}/elasticsearch:{{ elastic_stack_version }}
+  version: {{ elastic_stack_version }}
   nodeSets:
   - name: default
     count: 1

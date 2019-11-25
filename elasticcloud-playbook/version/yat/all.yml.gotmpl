@@ -9,3 +9,5 @@ grafana_nodeport: {{ .prometheus.Property.GrafanaNodePort }}
 kubernetes_endpoint: {{ .kubernetes.Inherent.endpoint }}
 kubernetes_version: {{ .kubernetes.Inherent.version }}
 etcd_version: {{ .etcd.Inherent.etcd_version }}
+elasticsearch_nodeport: {{ .elasticcloud.Property.ElasticsearchNodePort }}
+kibana_nodeport: {{ .elasticcloud.Property.KibanaNodePort }}

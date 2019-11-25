@@ -36,13 +36,12 @@
     - { src: 'file/elasticcloud-images.tar.bz2', dest: '{{ path }}' }
     run_once: true
 
-  - name: copy elasticcloud operator deploy and reset script
+  - name: copy elasticcloud operator reset script
     copy:
       src: '{{ item.src }}'
       dest: '{{ item.dest }}'
       mode: 0755
     with_items:
-    - { src: 'file/deploy.sh', dest: '{{ path }}' }
     - { src: 'file/remove.sh', dest: '{{ path }}' }
     run_once: true
 
@@ -52,7 +51,7 @@
       name: elasticcloud
       timeout: 600
     with_items:
-    - kube-elasticcloud-images.tar.bz2
+    - elasticcloud-images.tar.bz2
     run_once: true
 
   - name: docker login
@@ -69,9 +68,9 @@
       repository: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
       tag: '{{ item.tag }}'
     with_items:
-    - { repo: '{{ kubernetes_repo }}', name: 'kube-controller-manager', tag: '{{ kubernetes_version }}' }
-    - { repo: '{{ kubernetes_repo }}', name: 'kube-apiserver', tag: '{{ kubernetes_version }}' }
-    - { repo: '{{ kubernetes_repo }}', name: 'kube-scheduler', tag: '{{ kubernetes_version }}' }
+    - { repo: 'docker.elastic.co/eck', name: 'eck-operator', tag: '{{ elastic_cloud_version }}' }
+    - { repo: 'docker.elastic.co/elasticsearch', name: 'elasticsearch', tag: '{{ elastic_stack_version }}' }
+    - { repo: 'docker.elastic.co/kibana', name: 'kibana', tag: '{{ elastic_stack_version }}' }
     run_once: true
 
   - name: push images
@@ -81,10 +80,9 @@
       push: true
       state: present
     with_items:
-    - { name: 'kube-controller-manager', tag: '{{ kubernetes_version }}' }
-    - { name: 'kube-apiserver', tag: '{{ kubernetes_version }}' }
-    - { name: 'kube-scheduler', tag: '{{ kubernetes_version }}' }
-    - { name: 'kube-proxy', tag: '{{ kubernetes_version }}' }
+    - { name: 'eck-operator', tag: '{{ elastic_cloud_version }}' }
+    - { name: 'elasticsearch', tag: '{{ elastic_stack_version }}' }
+    - { name: 'kibana', tag: '{{ elastic_stack_version }}' }
     run_once: true
 
   - name: copy elasticcloud yaml files
@@ -100,7 +98,7 @@
     run_once: ture
 
   - name: elasticcloud operator deploy
-    shell: ./deploy.sh
+    shell: |
       kubectl apply -f {{ path }}/eck.yml
       kubectl apply -f {{ path }}/elasticsearch.yml
       kubectl apply -f {{ path }}/kibana.yml
@@ -116,17 +114,13 @@
       - '{{ ansible_env.HOME }}/.kube/config'
     run_once: ture
 
-  - name: copy clean-images-tags.sh
-    copy:
-      src: '{{ item.src }}'
-      dest: '{{ item.dest }}'
-      mode: 0755
+  - name: remove original images tag
+    docker_image:
+      state: absent
+      name: '{{ item.repo }}/{{ item.name }}'
+      tag: '{{ item.tag }}'
     with_items:
-    - { src: 'file/clean-images-tags.sh', dest: '{{ path }}' }
-    run_once: true
-
-  - name: clean image tag
-    shell: ./clean-images-tags.sh
-    args:
-      chdir: '{{ cpath }}/'
+    - { repo: 'docker.elastic.co/eck', name: 'eck-operator', tag: '{{ elastic_cloud_version }}' }
+    - { repo: 'docker.elastic.co/elasticsearch', name: 'elasticsearch', tag: '{{ elastic_stack_version }}' }
+    - { repo: 'docker.elastic.co/kibana', name: 'kibana', tag: '{{ elastic_stack_version }}' }
     run_once: ture
