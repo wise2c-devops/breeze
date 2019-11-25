@@ -23,9 +23,9 @@ cat images-list.txt
 for file in $(cat images-list.txt); do docker pull $file; done
 echo 'Images pulled.'
 
-docker save $(cat images-list.txt) -o elastic-cloud-images.tar
+docker save $(cat images-list.txt) -o ${path}/file/elastic-cloud-images.tar
 echo 'Images saved.'
-bzip2 -z --best elastic-cloud-images.tar
+bzip2 -z --best ${path}/file/elastic-cloud-images.tar
 echo 'Images are compressed as bzip format.'
 
 sed -i "s,docker.elastic.co/eck,{{ registry_endpoint }}/{{ registry_project }},g" ${path}/template/eck.yml.j2
