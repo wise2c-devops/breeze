@@ -6,9 +6,12 @@ path=`dirname $0`
 
 ElasticCloudVersion=`cat ${path}/components-version.txt |grep "ElasticCloud" |awk '{print $3}'`
 ElasticStackVersion=`cat ${path}/components-version.txt |grep "ElasticCloud" |awk '{print $3}'`
+echo $ElasticCloudVersion
+echo $ElasticStackVersion
 
 echo "" >> ${path}/group_vars/elasticcloud.yml
-echo "istio_version: ${IstioVersion}" >> ${path}/group_vars/elasticcloud.yml
+echo "elastic_cloud_version: ${ElasticCloudVersion}" >> ${path}/group_vars/elasticcloud.yml
+echo "elastic_stack_version: ${ElasticStackVersion}" >> ${path}/group_vars/elasticcloud.yml
 
 curl -L -o ${path}/file/eck.yaml https://download.elastic.co/downloads/eck/${ElasticCloudVersion}/all-in-one.yaml
 
