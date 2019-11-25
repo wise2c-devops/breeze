@@ -3,7 +3,7 @@ kind: Kibana
 metadata:
   name: quickstart
 spec:
-  image: 192.168.9.120/library/kibana:7.4.2
+  image: {{ registry_endpoint }}/{{ registry_project }}/kibana:7.4.2
   version: 7.4.2
   count: 1
   elasticsearchRef:
