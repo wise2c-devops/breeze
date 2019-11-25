@@ -5,8 +5,13 @@ set -e
 path=`dirname $0`
 
 ElasticCloudVersion=`cat ${path}/components-version.txt |grep "ElasticCloud" |awk '{print $3}'`
-ElasticStackVersion=`cat ${path}/components-version.txt |grep "ElasticCloud" |awk '{print $3}'`
+ElasticStackVersion=`cat ${path}/components-version.txt |grep "ElasticStack" |awk '{print $3}'`
+
+echo "Debug info 1:"
+cat ${path}/components-version.txt
+echo "Debug info 2:"
 echo $ElasticCloudVersion
+echo "Debug info 3:"
 echo $ElasticStackVersion
 
 echo "" >> ${path}/group_vars/elasticcloud.yml
