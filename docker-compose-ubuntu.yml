@@ -18,7 +18,7 @@ services:
     - playbook
   ui:
     container_name: deploy-ui
-    image: wise2c/deploy-ui:v1.6
+    image: wise2c/deploy-ui:v1.8
     restart: always
     network_mode: "service:deploy"
   playbook:
