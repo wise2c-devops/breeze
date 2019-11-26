@@ -36,12 +36,13 @@
     - { src: 'file/elastic-cloud-images.tar.bz2', dest: '{{ path }}' }
     run_once: true
 
-  - name: copy elasticcloud operator reset script
+  - name: copy elasticcloud operator deploy and reset script
     copy:
       src: '{{ item.src }}'
       dest: '{{ item.dest }}'
       mode: 0755
     with_items:
+    - { src: 'file/deploy.sh', dest: '{{ path }}' }
     - { src: 'file/remove.sh', dest: '{{ path }}' }
     run_once: true
 
@@ -98,12 +99,9 @@
     run_once: ture
 
   - name: elasticcloud operator deploy
-    shell: |
-      kubectl apply -f {{ path }}/eck.yml
-      kubectl apply -f {{ path }}/elasticsearch.yml
-      kubectl apply -f {{ path }}/kibana.yml
-      kubectl apply -f {{ path }}/elasticsearch-service.yml
-      kubectl apply -f {{ path }}/kibana-service.yml
+    shell: ./deploy.sh
+    args:
+      chdir: '{{ path }}'
     run_once: true
 
   - name: remove kubectl cert
