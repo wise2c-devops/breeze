@@ -5,6 +5,10 @@ metadata:
 spec:
   image: {{ registry_endpoint }}/{{ registry_project }}/elasticsearch:{{ elastic_stack_version }}
   version: {{ elastic_stack_version }}
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
   nodeSets:
   - name: default
     count: 1

@@ -29,3 +29,8 @@ kubectl apply -f elasticsearch-service.yml
 kubectl apply -f kibana-service.yml
 
 echo 'Elastic Cloud has been deployed.'
+
+# Deploy Fluentd
+PASSWORD=$(kubectl get secret quickstart-es-elastic-user -o=jsonpath='{.data.elastic}' | base64 --decode)
+sed -i "s,elastic_user_password,${PASSWORD},g" fluentd.yml
+kubectl apply -f fluentd.yml
