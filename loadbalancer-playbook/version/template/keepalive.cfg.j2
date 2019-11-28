@@ -9,10 +9,10 @@
 
     {% for v in vips -%}
     vrrp_script chk-{{ v.name }} {
-        script       "curl -sLk -o /dev/null -w %{response_code} https://127.0.0.1:6444 |grep 403"
-        timeout 1
+        script       "/usr/bin/curl -sLk -o /dev/null -w %{response_code} https://127.0.0.1:6444 |grep 403"
+        timeout 3
         interval 5   # check every 5 second
-        fall 2       # require 2 failures for KO
+        fall 3       # require 3 failures for KO
         rise 2       # require 2 successes for OK
     }
 
