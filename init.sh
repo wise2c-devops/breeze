@@ -22,6 +22,8 @@ helm_version=3.0.0
 istio_version=1.4.0
 contour_version=1.0.0
 contour_envoyproxy_version=1.11.2
+elastic_cloud_version=1.0.0-beta1
+elastic_stack_version=7.4.2
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
 mv ${path}/harbor-playbook/version ${path}/harbor-playbook/v${harbor_version}
@@ -29,6 +31,7 @@ mv ${path}/docker-playbook/version ${path}/docker-playbook/${docker_version}-CE
 mv ${path}/loadbalancer-playbook/version ${path}/loadbalancer-playbook/${loadbalancer_version}
 mv ${path}/prometheus-playbook/version ${path}/prometheus-playbook/v${prometheus_version}
 mv ${path}/istio-playbook/version ${path}/istio-playbook/v${istio_version}
+mv ${path}/elasticcloud-playbook/version ${path}/elasticcloud-playbook/v${elastic_cloud_version}
 
 docker run --rm --name=kubeadm-version wise2c/kubeadm-version:v${kubernetes_version} kubeadm config images list --kubernetes-version ${kubernetes_version} > ${path}/k8s-images-list.txt
 
@@ -53,6 +56,8 @@ echo "Helm Version: ${helm_version}" >> ${path}/components-version.txt
 echo "Istio Version: ${istio_version}" >> ${path}/components-version.txt
 echo "Contour Version: ${contour_version}" >> ${path}/components-version.txt
 echo "ContourEnvoyProxy Version: ${contour_envoyproxy_version}" >> ${path}/components-version.txt
+echo "ElasticCloud Version: ${elastic_cloud_version}" >> ${path}/components-version.txt
+echo "ElasticStack Version: ${elastic_stack_version}" >> ${path}/components-version.txt
 
 for dir in `ls ${path}`
 do

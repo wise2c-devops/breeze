@@ -1,0 +1,28 @@
+- name: clean elastic cloud operator
+  hosts: all
+  user: root
+  tasks:
+  - name: copy k8s admin.conf for elastic cloud installation
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+    - { src: '../../kubernetes-playbook/{{ kubernetes_version }}/file/admin.conf', dest: '{{ ansible_env.HOME }}/.kube/config' }
+
+  - name: setup kubectl certification
+    shell: |
+      sed -i "s/.*server:.*/    server: https:\/\/{{ kubernetes_endpoint }}/g" $HOME/.kube/config
+      chown $(id -u):$(id -g) $HOME/.kube/config
+
+  - name: stop & rm elastic cloud service
+    shell: ./remove.sh
+    args:
+      chdir: '{{ cpath }}'
+    ignore_errors: true
+
+  - name: remove kubectl cert
+    file:
+      path: '{{ item }}'
+      state: absent
+    with_items:
+    - '{{ ansible_env.HOME }}/.kube/config'
