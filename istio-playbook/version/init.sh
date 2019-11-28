@@ -6,7 +6,7 @@ path=`dirname $0`
 
 IstioVersion=`cat ${path}/components-version.txt |grep "Istio" |awk '{print $3}'`
 
-echo "" >> ${path}/group_vars/istio.yml.gotmpl
+echo "" >> ${path}/group_vars/istio.yml
 echo "istio_version: ${IstioVersion}" >> ${path}/group_vars/istio.yml
 
 curl -L -o ${path}/file/istio-$IstioVersion-origin.tar.gz https://github.com/istio/istio/releases/download/$IstioVersion/istio-$IstioVersion-linux.tar.gz
