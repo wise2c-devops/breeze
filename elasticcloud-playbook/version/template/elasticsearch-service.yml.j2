@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    common.k8s.elastic.co/type: elasticsearch
+    elasticsearch.k8s.elastic.co/cluster-name: quickstart
+  name: quickstart-es-http
+  namespace: default
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - name: https
+    nodePort: {{ elasticsearch_nodeport }}
+    port: 9200
+    protocol: TCP
+    targetPort: 9200
+  selector:
+    common.k8s.elastic.co/type: elasticsearch
+    elasticsearch.k8s.elastic.co/cluster-name: quickstart
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}

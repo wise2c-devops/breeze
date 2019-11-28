@@ -18,12 +18,12 @@ services:
     - playbook
   ui:
     container_name: deploy-ui
-    image: wise2c/deploy-ui:v1.6
+    image: wise2c/deploy-ui:v1.8
     restart: always
     network_mode: "service:deploy"
   playbook:
     container_name: deploy-playbook
-    image: wise2c/playbook:v1.14.9.1
+    image: wise2c/playbook:v1.14.9.2
     volumes:
     - playbook:/workspace
   apt-source:
