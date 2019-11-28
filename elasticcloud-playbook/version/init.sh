@@ -30,3 +30,8 @@ bzip2 -z --best ${path}/file/elastic-cloud-images.tar
 echo 'Images are compressed as bzip format.'
 
 sed -i "s,docker.elastic.co/eck,{{ registry_endpoint }}/{{ registry_project }},g" ${path}/template/eck.yml.j2
+
+# Comment out for v1.16
+# curl -L -o ${path}/template/fluentd.yml.j2 https://github.com/fluent/fluentd-kubernetes-daemonset/blob/master/fluentd-daemonset-elasticsearch.yaml
+# sed -i "s,fluent/fluentd-kubernetes-daemonset,{{ registry_endpoint }}/{{ registry_project }},g" ${path}/template/fluentd.yml.j2
+# sed -i "s,elasticsearch-logging,quickstart-es-http.default.svc.cluster.local,g" ${path}/template/fluentd.yml.j2
