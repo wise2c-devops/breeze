@@ -32,5 +32,5 @@ echo 'Elastic Cloud has been deployed.'
 
 # Deploy Fluentd
 PASSWORD=$(kubectl get secret quickstart-es-elastic-user -o=jsonpath='{.data.elastic}' | base64 --decode)
-sed -i "s,elastic_user_password,${PASSWORD},g" fluentd.yml
+sed -i "s,changeme,${PASSWORD},g" fluentd.yml
 kubectl apply -f fluentd.yml
