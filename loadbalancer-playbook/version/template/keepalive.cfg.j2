@@ -3,6 +3,8 @@
         vrrp_version 2
         vrrp_garp_master_delay 1
         vrrp_garp_master_refresh 1
+        script_user root
+        enable_script_security
     }   
 
     {% for v in vips -%}
