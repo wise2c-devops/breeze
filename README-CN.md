@@ -1,7 +1,7 @@
 # Breeze
 - 可用于生产环境的图形化Kubernetes集群部署工具
 
-[![Build Status](https://travis-ci.org/wise2c-devops/breeze.svg?branch=v1.16)](https://travis-ci.org/wise2c-devops/breeze)
+[![Build Status](https://travis-ci.org/wise2c-devops/breeze.svg?branch=v1.17)](https://travis-ci.org/wise2c-devops/breeze)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/wise2c-devops/breeze/blob/master/LICENSE)
 
 [English](./README.md) | [中文](./README-CN.md)
