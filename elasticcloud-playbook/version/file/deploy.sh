@@ -31,6 +31,9 @@ kubectl apply -f kibana-service.yml
 echo 'Elastic Cloud has been deployed.'
 
 # Deploy Fluentd
+set +e
+estatus="false"
+until [ "$estatus" = "Secret" ]; do sleep 1; printf "."; estatus=`kubectl get secret quickstart-es-elastic-user -o jsonpath='{.kind}'`; done
 PASSWORD=$(kubectl get secret quickstart-es-elastic-user -o=jsonpath='{.data.elastic}' | base64 --decode)
 sed -i "s,changeme,${PASSWORD},g" fluentd.yml
 kubectl apply -f fluentd.yml
