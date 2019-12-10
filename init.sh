@@ -6,7 +6,7 @@ path=`dirname $0`
 
 kubernetes_version=1.17.0
 harbor_version=1.9.3
-docker_version=18.09.9
+docker_version=19.03.5
 haproxy_version=2.0.0
 keepalived_version=1.3.5
 loadbalancer_version=HAProxy-${haproxy_version}_Keepalived-${keepalived_version}
