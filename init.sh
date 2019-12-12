@@ -19,9 +19,9 @@ metrics_scraper_version=1.0.1
 flannel_version=0.11.0
 calico_version=3.10.2
 helm_version=3.0.1
-istio_version=1.4.1
-contour_version=1.0.0
-contour_envoyproxy_version=1.11.2
+istio_version=1.4.2
+contour_version=1.0.1
+contour_envoyproxy_version=1.12.2
 elastic_cloud_version=1.0.0-beta1
 elastic_stack_version=7.4.2
 
