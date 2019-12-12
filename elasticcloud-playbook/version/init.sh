@@ -34,4 +34,3 @@ sed -i "s,docker.elastic.co/eck,{{ registry_endpoint }}/{{ registry_project }},g
 curl -L -o ${path}/template/fluentd.yml.j2 https://raw.githubusercontent.com/fluent/fluentd-kubernetes-daemonset/master/fluentd-daemonset-elasticsearch-rbac.yaml
 sed -i "s,fluent/fluentd-kubernetes-daemonset,{{ registry_endpoint }}/{{ registry_project }},g" ${path}/template/fluentd.yml.j2
 sed -i "s,elasticsearch-logging,quickstart-es-http.default.svc.cluster.local,g" ${path}/template/fluentd.yml.j2
-sed -i "s,apps/v1,extensions/v1beta1,g" ${path}/template/fluentd.yml.j2
