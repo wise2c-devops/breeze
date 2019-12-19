@@ -32,7 +32,7 @@ cd ..
 rm -f temp.txt
 
 ######### Update yaml files to supports K8s v1.16 #########
-cd manifests/
+cd kube-prometheus-$KubePrometheusVersion/manifests/
 sed -i "s#apps/v1beta2#apps/v1#g" $(ls *.yaml)
 cd setup
 sed -i "s#apps/v1beta2#apps/v1#g" $(ls *.yaml)
