@@ -4,7 +4,7 @@ set -e
 
 path=`dirname $0`
 
-kubernetes_version=1.15.7
+kubernetes_version=1.14.10
 harbor_version=1.10.0
 docker_version=18.09.9
 haproxy_version=2.0.0
@@ -12,10 +12,10 @@ keepalived_version=1.3.5
 loadbalancer_version=HAProxy-${haproxy_version}_Keepalived-${keepalived_version}
 prometheus_version=2.11.0
 prometheus_operator_version=0.33.0
-kube_prometheus_version=0.2.0
+kube_prometheus_version=0.3.0
 metrics_server_version=0.3.6
-dashboard_version=2.0.0-beta4
-metrics_scraper_version=1.0.1
+dashboard_version=2.0.0-beta1
+metrics_scraper_version=1.0.0
 flannel_version=0.11.0
 calico_version=3.10.2
 helm_version=3.0.1
@@ -29,7 +29,7 @@ mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes
 mv ${path}/harbor-playbook/version ${path}/harbor-playbook/v${harbor_version}
 mv ${path}/docker-playbook/version ${path}/docker-playbook/${docker_version}-CE
 mv ${path}/loadbalancer-playbook/version ${path}/loadbalancer-playbook/${loadbalancer_version}
-mv ${path}/prometheus-playbook/version ${path}/prometheus-playbook/v${prometheus_version}
+mv ${path}/prometheus-playbook/version ${path}/prometheus-playbook/Kube-Prometheus-v${kube_prometheus_version}
 mv ${path}/istio-playbook/version ${path}/istio-playbook/v${istio_version}
 mv ${path}/elasticcloud-playbook/version ${path}/elasticcloud-playbook/v${elastic_cloud_version}
 
