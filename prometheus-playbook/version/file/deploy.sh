@@ -32,9 +32,9 @@ cd ..
 rm -f temp.txt
 
 ######### Update yaml files to supports K8s v1.16 #########
-cd manifests/phase1
+cd manifests/
 sed -i "s#apps/v1beta2#apps/v1#g" $(ls *.yaml)
-cd ../phase2
+cd setup
 sed -i "s#apps/v1beta2#apps/v1#g" $(ls *.yaml)
 cd ../../
 
