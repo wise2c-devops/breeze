@@ -11,7 +11,7 @@
 
   - name: setup master nodes
     include_tasks: master-node.ansible
-    when: (not (check_output.stdout == True)) and (not (add_worker_node_only == True)) and (not (upgrade_cluster == true))
+    when: (not (check_output.stdout == 'true')) and (not (add_worker_node_only == True)) and (not (upgrade_cluster == true))
 
   - name: fetch admin.conf
     fetch:
@@ -20,6 +20,38 @@
       flat: true
     with_items:
     - { src: '/etc/kubernetes/admin.conf', dest: 'file/admin.conf' }
+    run_once: true
+
+  - name: make kubernetes dir
+    file:
+      path: '{{ item }}'
+      state: directory
+      mode: 0755
+    with_items:
+    - '{{ path }}'
+
+  - name: copy kubeadm-generate-join-command.sh
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+      mode: 0755
+    with_items:
+    - { src: 'file/kubeadm-generate-join-command.sh', dest: '{{ path }}/' }
+    run_once: true
+
+  - name: kubeadm-generate-join-command
+    shell: ./kubeadm-generate-join-command.sh
+    args:
+      chdir: '{{ path }}'
+    run_once: true
+
+  - name: fetch worker-join-command.sh
+    fetch:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+      flat: true
+    with_items:
+    - { src: '{{ path }}/worker-join-command.sh', dest: 'file/worker-join-command.sh' }
     run_once: true
 
 - name: setup kubernetes worker nodes
@@ -35,7 +67,7 @@
 
   - name: setup worker nodes
     include_tasks: worker-node.ansible
-    when: not (check_output.stdout == True) and (not (upgrade_cluster == true))
+    when: (not (check_output.stdout == 'true')) and (not (upgrade_cluster == true))
 
 - name: upgrade kubernetes master nodes
   hosts: master
