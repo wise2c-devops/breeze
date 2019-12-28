@@ -10,7 +10,7 @@ function version_gt() { test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$
 [ ${BREEZE_PYTHON_VERSION} ]
 
 if [ "${BREEZE_LSB_ID}" != "RedHat" ] && [ "${BREEZE_LSB_ID}" != "CentOS" ] && [ "${BREEZE_LSB_ID}" != "Ubuntu" ]; then
-  echo "please use CentOS or Ubuntu"
+  echo "please use RHEL or CentOS or Ubuntu"
   exit
 fi
 
