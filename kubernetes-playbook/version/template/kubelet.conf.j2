@@ -5,8 +5,8 @@ KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ regist
 #KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.1 \
 #                   --feature-gates=LocalStorageCapacityIsolation=true \
 #                   --kubelet-cgroups=/system.slice/kubelet.service \
-#                   --runtime-cgroups=/system.slice/docker.service
+#                   --runtime-cgroups=/system.slice/docker.service \
 #                   --kube-reserved-cgroup=/kubepods.slice --kube-reserved=cpu=500m,memory=500Mi,ephemeral-storage=1Gi \
 #                   --system-reserved-cgroup=/system.slice --system-reserved=cpu=500m,memory=500Mi,ephemeral-storage=1Gi \
-#                   --eviction-hard=memory.available<500Mi,nodefs.available<10%
+#                   --eviction-hard=memory.available<500Mi,nodefs.available<10% \
 #                   --max-pods=200
