@@ -8,6 +8,18 @@ RHEL/CentOS: 7.4/7.5/7.6/7.7
 
 Ubuntu 16/18
 
+所有社区用户请注意：
+
+凡是2020年以前发布的Breeze版本( https://github.com/wise2c-devops/breeze/releases )，请在部署完集群之后在三台master节点，手动执行以下命令：
+
+```
+TIME_STRING=`date "+%Y-%m-%d-%H-%M-%S"`
+cd /etc/kubernetes/
+cp -p /etc/kubernetes/kubelet.conf /etc/kubernetes/kubelet.conf.$TIME_STRING
+sed -i 's#client-certificate-data:.*$#client-certificate: /var/lib/kubelet/pki/kubelet-client-current.pem#g' kubelet.conf 
+sed -i 's#client-key-data:.*$#client-key: /var/lib/kubelet/pki/kubelet-client-current.pem#g' kubelet.conf
+```
+
 Note:
 1. **请不要把Breeze所在的部署主机加入部署集群主机列表**
 2. **为了避免包冲突，请使用纯净的CentOS Minimal安装出来的OS或未经升级过的Ubuntu来部署集群**
