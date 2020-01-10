@@ -36,13 +36,13 @@ dns:
   type: CoreDNS
 etcd:
   external:
-    caFile: ""
-    certFile: ""
+    caFile: /etc/etcd/pki/ca.pem
+    certFile: /etc/etcd/pki/etcd.pem
     endpoints:
 {% for host in groups['etcd'] %}
-    - http://{{ host }}:2379
+    - https://{{ host }}:2379
 {% endfor %}
-    keyFile: ""
+    keyFile: /etc/etcd/pki/etcd-key.pem
 imageRepository: {{ registry_endpoint }}/{{ registry_project }}
 kind: ClusterConfiguration
 kubernetesVersion: {{ kubernetes_version }}
@@ -65,7 +65,6 @@ clientConnection:
 clusterCIDR: 10.244.0.0/16
 configSyncPeriod: 15m0s
 conntrack:
-  max: null
   maxPerCore: 32768
   min: 131072
   tcpCloseWaitTimeout: 1h0m0s

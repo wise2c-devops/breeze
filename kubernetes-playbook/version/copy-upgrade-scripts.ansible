@@ -1,9 +1,21 @@
-- name: copy upgrade scripts
+- name: copy upgrade scripts for Redhat/CentOS
   template:
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
     mode: 0755
   with_items:
-  - { src: 'template/upgrade_first_master_node.sh.j2', dest: '{{ path }}/upgrade_first_master_node.sh' }
-  - { src: 'template/upgrade_other_master_nodes.sh.j2', dest: '{{ path }}/upgrade_other_master_nodes.sh' }
-  - { src: 'template/upgrade_worker_nodes.sh.j2', dest: '{{ path }}/upgrade_worker_nodes.sh' }
+  - { src: 'template/upgrade/redhat-centos/upgrade_first_master_node.sh.j2', dest: '{{ path }}/upgrade_first_master_node.sh' }
+  - { src: 'template/upgrade/redhat-centos/upgrade_other_master_nodes.sh.j2', dest: '{{ path }}/upgrade_other_master_nodes.sh' }
+  - { src: 'template/upgrade/redhat-centos/upgrade_worker_nodes.sh.j2', dest: '{{ path }}/upgrade_worker_nodes.sh' }
+  when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+
+- name: copy upgrade scripts for Ubuntu
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: 0755
+  with_items:
+  - { src: 'template/upgrade/ubuntu/upgrade_first_master_node.sh.j2', dest: '{{ path }}/upgrade_first_master_node.sh' }
+  - { src: 'template/upgrade/ubuntu/upgrade_other_master_nodes.sh.j2', dest: '{{ path }}/upgrade_other_master_nodes.sh' }
+  - { src: 'template/upgrade/ubuntu/upgrade_worker_nodes.sh.j2', dest: '{{ path }}/upgrade_worker_nodes.sh' }
+  when: ansible_distribution =="Ubuntu"

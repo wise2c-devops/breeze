@@ -3,27 +3,59 @@
       name: '{{ hostname }}'
     when: format_hostname
 
+  - name: distribute wise2c apt source for Ubuntu 16 hosts
+    template:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+    - { src: 'template/wise2c.list-ubuntu16.j2', dest: '/etc/apt/sources.list.d/wise2c.list' }
+    when: ansible_distribution =="Ubuntu" and ansible_distribution_major_version == "16"
+
+  - name: distribute wise2c apt source for Ubuntu 18 hosts
+    template:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+    - { src: 'template/wise2c.list-ubuntu18.j2', dest: '/etc/apt/sources.list.d/wise2c.list' }
+    when: ansible_distribution =="Ubuntu" and ansible_distribution_major_version == "18"
+
+  - name: install python2 for Ubuntu
+    shell: |
+      mv /etc/apt/sources.list /etc/apt/sources.list.bak
+      curl -so /tmp/breeze.pub http://wise2c-seed:2008/debs/ubuntu18/breeze.pub
+      apt-key add /tmp/breeze.pub
+      rm -f /tmp/breeze.pub
+      apt-get update
+      export DEBIAN_FRONTEND=noninteractive
+      apt-get install -y python python-apt python-docker python-chardet python-requests
+    when:
+    - ansible_distribution =="Ubuntu"
+
   - name: disabled selinux
     selinux:
       state: disabled
+    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
 
   - name: start firewalld
     systemd:
       name: firewalld
       enabled: true
       state: started
+    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
 
   - name: config firewalld
     shell: |
       firewall-cmd --set-default-zone=trusted
       firewall-cmd --complete-reload
+    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
 
-  - name: distribute wise2c repo
+  - name: distribute wise2c yum repo
     template:
       src: '{{ item.src }}'
       dest: '{{ item.dest }}'
     with_items:
     - { src: 'template/wise2c.repo.j2', dest: '/etc/yum.repos.d/wise2c.repo' }
+    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
 
   - name: distribute ipvs bootload file
     template:
@@ -35,8 +67,9 @@
   - name: clean yum cache
     shell: |
       yum clean all
+    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
 
-  - name: install docker
+  - name: yum install docker
     yum:
       disablerepo: '*'
       enablerepo: wise2c
@@ -52,31 +85,102 @@
     - chrony
     - ipvsadm
     - graphviz
+    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
 
-  - name: distribute chrony server config
+  - name: apt install docker
+    apt:
+      update_cache: true
+      state: present
+      name: '{{ item }}'
+    with_items:
+    - docker-compose
+    - chrony
+    - jq
+    - ipvsadm
+    - graphviz
+    - nfs-common
+    - gnupg
+    - ipset
+    - docker-ce
+    when: ansible_distribution =="Ubuntu"
+
+  - name: distribute chrony server config for Redhat/CentOS
     template:
       src: '{{ item.src }}'
       dest: '{{ item.dest }}'
     with_items:
-    - { src: 'template/chrony-server.conf.j2', dest: '/etc/chrony.conf' }
-    when: inventory_hostname == ansible_play_batch[0]
-    
-  - name: distribute chrony client config
+    - { src: 'template/chrony/redhat-centos/chrony-server.conf.j2', dest: '/etc/chrony.conf' }
+    when:
+    - inventory_hostname == ansible_play_batch[0]
+    - ansible_distribution =="RedHat" or ansible_distribution =="CentOS"
+
+  - name: distribute chrony server config for Ubuntu 16
     template:
       src: '{{ item.src }}'
       dest: '{{ item.dest }}'
     with_items:
-    - { src: 'template/chrony-client.conf.j2', dest: '/etc/chrony.conf' }
-    when: inventory_hostname != ansible_play_batch[0]
+    - { src: 'template/chrony/ubuntu16/chrony-server.conf.j2', dest: '/etc/chrony/chrony.conf' }
+    when: 
+    - inventory_hostname == ansible_play_batch[0]
+    - ansible_distribution =="Ubuntu" and ansible_distribution_major_version == "16"
 
-  - name: start chrony
+  - name: distribute chrony server config for Ubuntu 18
+    template:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+    - { src: 'template/chrony/ubuntu18/chrony-server.conf.j2', dest: '/etc/chrony/chrony.conf' }
+    when:
+    - inventory_hostname == ansible_play_batch[0]
+    - ansible_distribution =="Ubuntu" and ansible_distribution_major_version == "18"
+
+  - name: distribute chrony client config for Redhat/CentOS
+    template:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+    - { src: 'template/chrony/redhat-centos/chrony-client.conf.j2', dest: '/etc/chrony.conf' }
+    when:
+    - inventory_hostname != ansible_play_batch[0]
+    - ansible_distribution =="RedHat" or ansible_distribution =="CentOS"
+
+  - name: distribute chrony client config for Ubuntu 16
+    template:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+    - { src: 'template/chrony/ubuntu16/chrony-client.conf.j2', dest: '/etc/chrony/chrony.conf' }
+    when:
+    - inventory_hostname != ansible_play_batch[0]
+    - ansible_distribution =="Ubuntu" and ansible_distribution_major_version == "16"
+
+  - name: distribute chrony client config for Ubuntu 18
+    template:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+    - { src: 'template/chrony/ubuntu18/chrony-client.conf.j2', dest: '/etc/chrony/chrony.conf' }
+    when:
+    - inventory_hostname != ansible_play_batch[0]
+    - ansible_distribution =="Ubuntu" and ansible_distribution_major_version == "18"
+
+  - name: start chrony for Redhat/CentOS
     systemd:
       name: chronyd
       daemon_reload: true
-      enabled: true
-      state: started
+      enabled: yes
+      state: restarted
+    when: ansible_distribution =="RedHat" or ansible_distribution =="CentOS"
 
-  - name: clear docker config
+  - name: start chrony for Ubuntu
+    systemd:
+      name: chrony
+      daemon_reload: true
+      enabled: yes
+      state: restarted
+    when: ansible_distribution =="Ubuntu"
+
+  - name: clear docker config for Redhat/CentOS
     copy:
       content: ''
       dest: '{{ item }}'
@@ -85,6 +189,8 @@
     - /etc/sysconfig/docker-storage
     - /etc/sysconfig/docker-storage-setup
     - /etc/sysconfig/docker-network
+    when:
+    - ansible_distribution =="RedHat" or ansible_distribution =="CentOS"
 
   - name: init docker to create folder /etc/docker
     systemd:
@@ -126,3 +232,7 @@
     - net.ipv4.ip_forward
     - net.bridge.bridge-nf-call-iptables
     - net.bridge.bridge-nf-call-ip6tables
+
+  - name: Fix the warning message "No swap limit support" with docker on Ubuntu
+    script: scripts/fix-ubuntu-docker-warning.sh
+    when: ansible_distribution =="Ubuntu"

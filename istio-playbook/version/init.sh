@@ -6,7 +6,7 @@ path=`dirname $0`
 
 IstioVersion=`cat ${path}/components-version.txt |grep "Istio" |awk '{print $3}'`
 
-echo "" >> ${path}/group_vars/istio.yml.gotmpl
+echo "" >> ${path}/group_vars/istio.yml
 echo "istio_version: ${IstioVersion}" >> ${path}/group_vars/istio.yml
 
 curl -L -o ${path}/file/istio-$IstioVersion-origin.tar.gz https://github.com/istio/istio/releases/download/$IstioVersion/istio-$IstioVersion-linux.tar.gz
@@ -14,6 +14,8 @@ curl -L -o ${path}/file/istio-$IstioVersion-origin.tar.gz https://github.com/ist
 cd ${path}/file/
 tar zxf istio-$IstioVersion-origin.tar.gz
 cat istio-$IstioVersion/install/kubernetes/istio-demo.yaml |grep "image:" |grep -v '\[\[' |grep -v '{' |awk -F':' '{print $2":"$3}' |awk -F "[\"\"]" '{print $2}' |awk '!a[$0]++{print}' > images-list.txt
+#echo "istio/proxy_init:"${IstioVersion} >> images-list.txt
+echo "ubuntu:bionic" >> images-list.txt
 
 echo 'Images list for Istio:'
 cat images-list.txt

@@ -1,3 +1,3 @@
 endpoint: {{ range $i, $v := .Hosts.self -}}
-          http://{{ $v.IP }}:2379{{if notLast $i $.Hosts.self}},{{end}}
+          https://{{ $v.IP }}:2379{{if notLast $i $.Hosts.self}},{{end}}
           {{- end }}

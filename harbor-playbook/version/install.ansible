@@ -26,15 +26,17 @@
     - { src: 'template/harbor.yml.j2', dest: '{{ cpath }}/harbor/harbor.yml' }
 
   - name: copy harbor start and stop scripts
-    template:
+    copy:
       src: '{{ item.src }}'
       dest: '{{ item.dest }}'
       mode: 0755
     with_items:
+    - { src: 'file/install-harbor.sh', dest: '{{ cpath }}/harbor/install-harbor.sh' }
     - { src: 'file/start-harbor.sh', dest: '{{ cpath }}/harbor/start-harbor.sh' }
     - { src: 'file/stop-harbor.sh', dest: '{{ cpath }}/harbor/stop-harbor.sh' }
+    - { src: 'file/docker-compose', dest: '/usr/bin/docker-compose' }
 
   - name: launch harbor
-    shell: ./install.sh --with-clair --with-chartmuseum
+    shell: ./install-harbor.sh
     args:
       chdir: '{{ cpath }}/harbor'
