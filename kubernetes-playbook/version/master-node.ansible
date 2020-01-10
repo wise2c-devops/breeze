@@ -300,3 +300,16 @@
   shell: |
     helm repo add --username={{ registry_user }} --password={{ registry_password }} {{ registry_project }} http://{{ registry_endpoint }}/chartrepo/{{ registry_project }}
   when: not registry_https
+
+- name: copy kubelet-conf patch script
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: 0755
+  with_items:
+  - { src: 'file/patch-kubelet-conf.sh', dest: '{{ path }}' }
+
+- name: execute patch-kubelet-conf script
+  shell: ./patch-kubelet-conf.sh
+  args:
+    chdir: '{{ path }}'
