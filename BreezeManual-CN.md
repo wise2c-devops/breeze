@@ -8,7 +8,7 @@ RHEL/CentOS: 7.4/7.5/7.6/7.7
 
 Ubuntu 16/18
 
-***所有社区用户请注意：***
+**所有社区用户请注意：**
 
 凡是2020年以前发布的Breeze版本( https://github.com/wise2c-devops/breeze/releases )，请在部署完集群之后在三台master节点，手动执行以下命令：
 
