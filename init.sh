@@ -22,7 +22,7 @@ helm_version=3.0.2
 istio_version=1.4.3
 contour_version=1.0.1
 contour_envoyproxy_version=1.12.2
-elastic_cloud_version=1.0.0-rc5
+elastic_cloud_version=1.0.0
 elastic_stack_version=7.5.1
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
