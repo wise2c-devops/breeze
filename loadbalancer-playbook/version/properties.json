@@ -35,7 +35,7 @@
         "variable": "routerID",
         "label": "Keepalived router id",
         "description": "Keepalived router id",
-        "type": "string",
+        "type": "int",
         "default": "10",
         "required": false
     },
@@ -43,7 +43,7 @@
         "variable": "vRouterID",
         "label": "Keepalived virtual route id",
         "description": "Keepalived virtual route id",
-        "type": "string",
+        "type": "int",
         "default": "160",
         "required": false
     }

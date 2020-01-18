@@ -26,40 +26,17 @@ sed -i "s/quay.io\/coreos/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(g
 sed -i "s/quay.io\/prometheus/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "quay.io/prometheus" ./ |grep .yaml)
 sed -i "s/grafana\/grafana/$MyImageRepositoryIP\/$MyImageRepositoryProject\/grafana/g" $(grep -lr "grafana/grafana" ./ |grep .yaml)
 sed -i "s/gcr.io\/google_containers/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "gcr.io/google_containers" ./ |grep .yaml)
-sed -i "s/k8s.gcr.io/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "k8s.gcr.io" ./ |grep .yaml)
+#sed -i "s/k8s.gcr.io/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "k8s.gcr.io" ./ |grep .yaml)
 
-# For offline deploy
 cd ..
 rm -f temp.txt
-cp -p append-lines.txt temp.txt
-sed -i "s/ImageRepositoryIP/$MyImageRepositoryIP/g" temp.txt
-sed -i '23 r temp.txt' kube-prometheus-$KubePrometheusVersion/manifests/0prometheus-operator-deployment.yaml
-rm -f temp.txt
 
-# Fix issue 2291 of prometheus operator
-sed -i "s/0.29.0/$PrometheusOperatorVersion/g" kube-prometheus-$KubePrometheusVersion/manifests/0prometheus-operator-deployment.yaml
-
-# Wait for CRDs to be ready, we need to split all yaml files to two parts
-cd kube-prometheus-$KubePrometheusVersion/
-mkdir phase2
-mv manifests/0prometheus-operator-serviceMonitor.yaml phase2/
-mv manifests/alertmanager-alertmanager.yaml phase2/
-mv manifests/alertmanager-serviceMonitor.yaml phase2/
-mv manifests/kube-state-metrics-serviceMonitor.yaml phase2/
-mv manifests/node-exporter-serviceMonitor.yaml phase2/
-mv manifests/prometheus-prometheus.yaml phase2/
-mv manifests/prometheus-rules.yaml phase2/
-mv manifests/prometheus-serviceMonitor.yaml phase2/
-mv manifests/prometheus-serviceMonitorApiserver.yaml phase2/
-mv manifests/prometheus-serviceMonitorCoreDNS.yaml phase2/
-mv manifests/prometheus-serviceMonitorKubeControllerManager.yaml phase2/
-mv manifests/prometheus-serviceMonitorKubeScheduler.yaml phase2/
-mv manifests/prometheus-serviceMonitorKubelet.yaml phase2/
-mv manifests/grafana-serviceMonitor.yaml phase2/
-mv manifests phase1
-mkdir manifests
-mv phase1 manifests
-mv phase2 manifests
+######### Update yaml files to supports K8s v1.16 #########
+cd kube-prometheus-$KubePrometheusVersion/manifests/
+sed -i "s#apps/v1beta2#apps/v1#g" $(ls *.yaml)
+cd setup
+sed -i "s#apps/v1beta2#apps/v1#g" $(ls *.yaml)
+cd ../../
 
 ######### Deploy prometheus operator and kube-prometheus #########
 
@@ -67,7 +44,7 @@ kctl() {
     kubectl --namespace "$NAMESPACE" "$@"
 }
 
-kubectl apply -f manifests/phase1
+kubectl apply -f manifests/setup
 
 # Wait for CRDs to be ready.
 printf "Waiting for Operator to register custom resource definitions..."
@@ -87,7 +64,7 @@ until kctl get alertmanagers.monitoring.coreos.com > /dev/null 2>&1; do sleep 1;
 
 echo 'Phase1 done!'
 
-kubectl apply -f manifests/phase2
+kubectl apply -f manifests/
 
 echo 'Phase2 done!'
 

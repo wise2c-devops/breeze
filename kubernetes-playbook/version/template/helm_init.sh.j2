@@ -1,3 +1,0 @@
-#!/bin/bash
-tiller_status="";
-until [ -n "$tiller_status" ]; do sleep 5; printf "."; tiller_status=`helm init --tiller-image {{ registry_endpoint }}/{{ registry_project }}/tiller:{{ helm_version }} --service-account tiller --upgrade |grep "has been upgraded"`; done

@@ -6,6 +6,7 @@ services:
 before_install:
 - sudo apt-get -qq update
 - sudo apt-get install -y bzip2
+- while sleep 5m; do echo "=====[ $SECONDS seconds, still building... ]====="; done &
 
 script:
 - bash init.sh

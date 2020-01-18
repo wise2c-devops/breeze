@@ -16,9 +16,6 @@ curl -L -o ${path}/file/kube-prometheus-v$KubePrometheusVersion-origin.tar.gz ht
 cd ${path}/file/
 tar zxf kube-prometheus-v$KubePrometheusVersion-origin.tar.gz
 
-# Fix issue 2291 of prometheus operator
-sed -i "s/0.29.0/$PrometheusOperatorVersion/g" kube-prometheus-$KubePrometheusVersion/manifests/0prometheus-operator-deployment.yaml
-
 for file in $(grep -lr "quay.io/coreos" kube-prometheus-$KubePrometheusVersion/manifests/); do cat $file |grep "quay.io/coreos" ; done > image-lists-temp.txt
 for file in $(grep -lr "grafana/grafana" kube-prometheus-$KubePrometheusVersion/manifests/); do cat $file |grep "grafana/grafana" ; done >> image-lists-temp.txt
 for file in $(grep -lr "quay.io/prometheus" kube-prometheus-$KubePrometheusVersion/manifests/); do cat $file |grep "quay.io/prometheus" ; done >> image-lists-temp.txt

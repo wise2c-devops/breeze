@@ -1,0 +1,127 @@
+- name: setup elasticcloud operator
+  hosts: elasticcloud
+  user: root
+  vars:
+    path: /var/tmp/wise2c/elasticcloud
+  tasks:
+  - name: copy k8s admin.conf for elasticcloud installation
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+    - { src: '../../kubernetes-playbook/{{ kubernetes_version }}/file/admin.conf', dest: '{{ ansible_env.HOME }}/.kube/config' }
+    run_once: true
+
+  - name: setup kubectl certification
+    shell: |
+      sed -i "s/.*server:.*/    server: https:\/\/{{ kubernetes_endpoint }}/g" $HOME/.kube/config
+      chown $(id -u):$(id -g) $HOME/.kube/config
+    run_once: ture
+
+  - name: make elasticcloud dir
+    file:
+      path: '{{ item }}'
+      state: directory
+      mode: 0755
+    with_items:
+      - '{{ cpath }}'
+      - '{{ path }}'
+    run_once: ture
+
+  - name: copy elasticcloud images
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+    - { src: 'file/elastic-cloud-images.tar.bz2', dest: '{{ path }}' }
+    run_once: true
+
+  - name: copy elasticcloud operator deploy and reset script
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+      mode: 0755
+    with_items:
+    - { src: 'file/deploy.sh', dest: '{{ path }}' }
+    - { src: 'file/remove.sh', dest: '{{ path }}' }
+    run_once: true
+
+  - name: load elasticcloud operator images
+    docker_image:
+      load_path: '{{ path }}/{{ item }}'
+      name: elasticcloud
+      timeout: 600
+    with_items:
+    - elastic-cloud-images.tar.bz2
+    run_once: true
+
+  - name: docker login
+    docker_login:
+      registry: '{{ registry_endpoint }}'
+      username: '{{ registry_user }}'
+      password: '{{ registry_password }}'
+      reauthorize: true
+    run_once: true
+
+  - name: tag images
+    docker_image:
+      name: '{{ item.repo }}/{{ item.name }}'
+      repository: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
+      tag: '{{ item.tag }}'
+    with_items:
+    - { repo: 'docker.elastic.co/eck', name: 'eck-operator', tag: '{{ elastic_cloud_version }}' }
+    - { repo: 'docker.elastic.co/elasticsearch', name: 'elasticsearch', tag: '{{ elastic_stack_version }}' }
+    - { repo: 'docker.elastic.co/kibana', name: 'kibana', tag: '{{ elastic_stack_version }}' }
+    - { repo: 'fluent', name: 'fluentd-kubernetes-daemonset', tag: 'v1-debian-elasticsearch' }
+    run_once: true
+
+  - name: push images
+    docker_image:
+      name: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
+      tag: '{{ item.tag }}'
+      push: true
+      state: present
+    with_items:
+    - { name: 'eck-operator', tag: '{{ elastic_cloud_version }}' }
+    - { name: 'elasticsearch', tag: '{{ elastic_stack_version }}' }
+    - { name: 'kibana', tag: '{{ elastic_stack_version }}' }
+    - { name: 'fluentd-kubernetes-daemonset', tag: 'v1-debian-elasticsearch' }
+    run_once: true
+
+  - name: copy elasticcloud yaml files
+    template:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+      - { src: 'template/eck.yml.j2', dest: '{{ cpath }}/eck.yml' }
+      - { src: 'template/elasticsearch.yml.j2', dest: '{{ cpath }}/elasticsearch.yml' }
+      - { src: 'template/elasticsearch-service.yml.j2', dest: '{{ cpath }}/elasticsearch-service.yml' }
+      - { src: 'template/kibana.yml.j2', dest: '{{ cpath }}/kibana.yml' }
+      - { src: 'template/kibana-service.yml.j2', dest: '{{ cpath }}/kibana-service.yml' }
+      - { src: 'template/fluentd.yml.j2', dest: '{{ cpath }}/fluentd.yml' }
+    run_once: ture
+
+  - name: elasticcloud operator deploy
+    shell: ./deploy.sh
+    args:
+      chdir: '{{ path }}'
+    run_once: true
+
+  - name: remove kubectl cert
+    file:
+      path: '{{ item }}'
+      state: absent
+    with_items:
+      - '{{ ansible_env.HOME }}/.kube/config'
+    run_once: ture
+
+  - name: remove original images tag
+    docker_image:
+      state: absent
+      name: '{{ item.repo }}/{{ item.name }}'
+      tag: '{{ item.tag }}'
+    with_items:
+    - { repo: 'docker.elastic.co/eck', name: 'eck-operator', tag: '{{ elastic_cloud_version }}' }
+    - { repo: 'docker.elastic.co/elasticsearch', name: 'elasticsearch', tag: '{{ elastic_stack_version }}' }
+    - { repo: 'docker.elastic.co/kibana', name: 'kibana', tag: '{{ elastic_stack_version }}' }
+    run_once: ture

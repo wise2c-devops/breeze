@@ -1,0 +1,26 @@
+[
+    {
+        "variable": "self",
+        "label": "Elastic Cloud on Kubernetes (ECK) installation node",
+        "description": "please select a kubernetes worker node for installation",
+        "type": "host",
+        "default": "",
+        "required": true
+    },
+    {
+        "variable": "ElasticsearchNodePort",
+        "label": "NodePort for Elasticsearch",
+        "description": "NodePort for Elasticsearch service, e.g.: 30920",
+        "type": "int",
+        "default": "30920",
+        "required": true
+    },
+    {
+        "variable": "KibanaNodePort",
+        "label": "NodePort for Kibana",
+        "description": "NodePort for Kibana service, e.g.: 30561",
+        "type": "int",
+        "default": "30561",
+        "required": true
+    }
+]

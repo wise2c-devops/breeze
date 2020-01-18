@@ -1,20 +1,21 @@
 - name: init setup on worker nodes
   include_tasks: both.ansible
 
-- name: copy kubeadm.conf
+- name: copy worker-join-command.sh
   copy:
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
+    mode: 0755
   with_items:
-  - { src: 'template/kubeadm.conf', dest: '{{ path }}/kubeadm.conf' }
+  - { src: 'file/worker-join-command.sh', dest: '{{ path }}/worker-join-command.sh' }
 
 - name: setup node
-  shell: |
-    /var/tmp/wise2c/kubernetes/get-kubeadm-token.sh
-    kubeadm join --token `cat /var/tmp/wise2c/kubernetes/kubeadm.conf |grep token: |awk '{print $2}'` --discovery-token-unsafe-skip-ca-verification --ignore-preflight-errors=cri {{ endpoint }}
-    rm -f /var/tmp/wise2c/kubernetes/kubeadm.conf
-    sed -i "s/.*server:.*/    server: https:\/\/{{ endpoint }}/g" /etc/kubernetes/kubelet.conf
+  shell: /var/tmp/wise2c/kubernetes/worker-join-command.sh
   async: 600
+
+- name: update kubelet.conf
+  shell: |
+    sed -i "s/.*server:.*/    server: https:\/\/{{ endpoint }}/g" /etc/kubernetes/kubelet.conf
 
 - name: restart kubelet
   systemd: 

@@ -9,9 +9,27 @@
   - { src: 'file/k8s.tar.bz2', dest: '{{ path }}' }
   - { src: 'file/flannel.tar.bz2', dest: '{{ path }}' }
   - { src: 'file/dashboard.tar.bz2', dest: '{{ path }}' }
-  - { src: 'file/tiller.tar.bz2', dest: '{{ path }}' }
+  - { src: 'file/metrics-scraper.tar.bz2', dest: '{{ path }}' }
   - { src: 'file/metrics-server.tar.bz2', dest: '{{ path }}' }
+  - { src: 'file/contour.tar.bz2', dest: '{{ path }}' }
+  - { src: 'file/contour-envoyproxy.tar.bz2', dest: '{{ path }}' }
+  - { src: 'file/contour-demo.tar.bz2', dest: '{{ path }}' }
   run_once: true
+
+- name: copy calico folder
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+  - { src: 'file/calico', dest: '{{ path }}/' }
+  run_once: true
+
+- name: copy metrics-server folder
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+  - { src: 'file/metrics-server', dest: '{{ path }}/' }
 
 - name: load k8s images
   docker_image:
@@ -22,8 +40,17 @@
   - k8s.tar.bz2
   - flannel.tar.bz2
   - dashboard.tar.bz2
-  - tiller.tar.bz2
+  - metrics-scraper.tar.bz2
   - metrics-server.tar.bz2
+  - contour.tar.bz2
+  - contour-envoyproxy.tar.bz2
+  - contour-demo.tar.bz2
+  - calico/images/calico-cni.tar.bz2
+  - calico/images/calico-kube-controllers.tar.bz2
+  - calico/images/calico-node.tar.bz2
+  - calico/images/calico-typha.tar.bz2
+  - calico/images/calico-pod2daemon-flexvol.tar.bz2
+  - calico/images/calico-ctl.tar.bz2
   run_once: true
 
 - name: docker login
@@ -48,8 +75,17 @@
   - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ metrics_server_repo }}', name: 'metrics-server-amd64', tag: '{{ metrics_server_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
-  - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
-  - { repo: '{{ helm_repo }}', name: 'tiller', tag: '{{ helm_version }}' }
+  - { repo: 'calico', name: 'cni', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'kube-controllers', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'node', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'typha', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'pod2daemon-flexvol', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'ctl', tag: '{{ calico_version }}' }
+  - { repo: '{{ dashboard_repo }}', name: 'dashboard', tag: '{{ dashboard_version }}' }
+  - { repo: '{{ dashboard_repo }}', name: 'metrics-scraper', tag: '{{ metrics_scraper_version }}' }
+  - { repo: '{{ contour_repo }}', name: 'contour', tag: '{{ contour_version }}' }
+  - { repo: '{{ contour_envoyproxy_repo }}', name: 'envoy', tag: '{{ contour_envoyproxy_version }}' }
+  - { repo: '{{ contour_demo_repo }}', name: 'kuard-amd64', tag: '1' }
   run_once: true
 
 - name: push images
@@ -59,19 +95,28 @@
     push: true
     state: present
   with_items:
-  - { repo: '{{ kubernetes_repo }}', name: 'kube-controller-manager', tag: '{{ kubernetes_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'kube-apiserver', tag: '{{ kubernetes_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'kube-scheduler', tag: '{{ kubernetes_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'kube-proxy', tag: '{{ kubernetes_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'pause', tag: '{{ pause_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
-  - { repo: '{{ metrics_server_repo }}', name: 'metrics-server-amd64', tag: '{{ metrics_server_version }}' }
-  - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
-  - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
-  - { repo: '{{ helm_repo }}', name: 'tiller', tag: '{{ helm_version }}' }
+  - { name: 'kube-controller-manager', tag: '{{ kubernetes_version }}' }
+  - { name: 'kube-apiserver', tag: '{{ kubernetes_version }}' }
+  - { name: 'kube-scheduler', tag: '{{ kubernetes_version }}' }
+  - { name: 'kube-proxy', tag: '{{ kubernetes_version }}' }
+  - { name: 'pause', tag: '{{ pause_version }}' }
+  - { name: 'coredns', tag: '{{ dns_version }}' }
+  - { name: 'metrics-server-amd64', tag: '{{ metrics_server_version }}' }
+  - { name: 'flannel', tag: '{{ flannel_version }}' }
+  - { name: 'cni', tag: '{{ calico_version }}' }
+  - { name: 'kube-controllers', tag: '{{ calico_version }}' }
+  - { name: 'node', tag: '{{ calico_version }}' }
+  - { name: 'typha', tag: '{{ calico_version }}' }
+  - { name: 'pod2daemon-flexvol', tag: '{{ calico_version }}' }
+  - { name: 'ctl', tag: '{{ calico_version }}' }
+  - { name: 'dashboard', tag: '{{ dashboard_version }}' }
+  - { name: 'metrics-scraper', tag: '{{ metrics_scraper_version }}' }
+  - { name: 'contour', tag: '{{ contour_version }}' }
+  - { name: 'envoy', tag: '{{ contour_envoyproxy_version }}' }
+  - { name: 'kuard-amd64', tag: '1' }
   run_once: true
 
-- name: Remove k8s.gcr.io images tag
+- name: Remove k8s.gcr.io and original images tag
   docker_image:
     state: absent
     name: '{{ item.repo }}/{{ item.name }}'
@@ -85,16 +130,29 @@
   - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ metrics_server_repo }}', name: 'metrics-server-amd64', tag: '{{ metrics_server_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
-  - { repo: '{{ dashboard_repo }}', name: 'kubernetes-dashboard-amd64', tag: '{{ dashboard_version }}' }
-  - { repo: '{{ helm_repo }}', name: 'tiller', tag: '{{ helm_version }}' }
+  - { repo: 'calico', name: 'cni', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'kube-controllers', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'node', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'typha', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'pod2daemon-flexvol', tag: '{{ calico_version }}' }
+  - { repo: 'calico', name: 'ctl', tag: '{{ calico_version }}' }
+  - { repo: '{{ dashboard_repo }}', name: 'dashboard', tag: '{{ dashboard_version }}' }
+  - { repo: '{{ dashboard_repo }}', name: 'metrics-scraper', tag: '{{ metrics_scraper_version }}' }
+  - { repo: '{{ contour_repo }}', name: 'contour', tag: '{{ contour_version }}' }
+  - { repo: '{{ contour_envoyproxy_repo }}', name: 'envoy', tag: '{{ contour_envoyproxy_version }}' }
+  - { repo: '{{ contour_demo_repo }}', name: 'kuard-amd64', tag: '1' }
   run_once: ture
 
-- name: copy metrics-server folder
-  copy:
-    src: '{{ item.src }}'
-    dest: '{{ item.dest }}'
+- name: install git command for helm-push and perl library for ipcalc
+  yum:
+    disablerepo: '*'
+    enablerepo: wise2c
+    update_cache: true
+    state: present
+    name: '{{ item }}'
   with_items:
-  - { src: 'file/metrics-server', dest: '{{ path }}/' }
+  - git
+  when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
 
 - name: generate kubeadm config and other yaml files
   template:
@@ -104,7 +162,34 @@
   - { src: 'template/kubeadm.conf.j2', dest: '{{ path }}/kubeadm.conf' }
   - { src: 'template/kube-flannel.yml.j2', dest: '{{ path }}/kube-flannel.yml' }
   - { src: 'template/kubernetes-dashboard.yml.j2', dest: '{{ path }}/kubernetes-dashboard.yml' }
+  - { src: 'template/kubernetes-dashboard-svc.yml.j2', dest: '{{ path }}/kubernetes-dashboard-svc.yml' }
   - { src: 'template/metrics-server-deployment.yaml.j2', dest: '{{ path }}/metrics-server/metrics-server-deployment.yaml' }
+  - { src: 'template/contour.yml.j2', dest: '{{ path }}/contour.yml' }
+  - { src: 'template/contour-demo.yml.j2', dest: '{{ path }}/contour-demo.yml' }
+
+- name: replace pod cidr 10.244.0.0/16 in kubeadm.conf files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "podSubnet: 10.244.0.0/16"
+    replace: "podSubnet: {{ pod_cidr }}"
+  with_items:
+    - { filename: "{{ path }}/kubeadm.conf" }
+
+- name: replace ClusterCIDR 10.244.0.0/16 in kubeadm.conf files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "clusterCIDR: 10.244.0.0/16"
+    replace: "clusterCIDR: {{ cluster_cidr }}"
+  with_items:
+    - { filename: "{{ path }}/kubeadm.conf" }
+
+- name: replace serviceSubnet 10.96.0.0/12 in kubeadm.conf files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "serviceSubnet: 10.96.0.0/12"
+    replace: "serviceSubnet: {{ service_cidr }}"
+  with_items:
+    - { filename: "{{ path }}/kubeadm.conf" }
 
 - name: copy certificates JSON files
   copy:
@@ -127,8 +212,25 @@
   - { src: 'file/generate-other-certificates.sh', dest: '{{ path }}/' }
   - { src: 'file/generate-apiserver-certificate.sh', dest: '{{ path }}/' }
 
+- name: copy service_cidr.txt
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+  - { src: 'template/service_cidr.txt.j2', dest: '{{ path }}/service_cidr.txt' }
+
+- name: unarchive ipcalc tool
+  unarchive:
+    src: file/ipcalc-0.41.tar.gz
+    dest: /usr/local/bin
+
+- name: make a link for ipcalc
+  shell: |
+    rm -f /usr/local/bin/ipcalc
+    ln -s /usr/local/bin/ipcalc-0.41/ipcalc /usr/local/bin/ipcalc
+
 - name: generate other certificates
-  raw: |
+  shell: |
     /var/tmp/wise2c/kubernetes/generate-other-certificates.sh
   run_once: true
 
@@ -167,7 +269,7 @@
   - { src: 'file/sa.key', dest: '/etc/kubernetes/pki/sa.key' }
 
 - name: generate kube-apiserver certificate
-  raw: |
+  shell: |
     /var/tmp/wise2c/kubernetes/generate-apiserver-certificate.sh
 
 - name: copy kubeadm-token.sh and update-api-advertise-address.sh
@@ -224,10 +326,117 @@
     cp /etc/kubernetes/admin.conf $HOME/.kube/config
     chown $(id -u):$(id -g) $HOME/.kube/config
 
-- name: apply addons
+- name: fix the bug of flannel issues-1178
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: '"name": "cbr0",'
+    replace: '"name": "cbr0",\n      "cniVersion":"0.3.1",'
+  with_items:
+  - { filename: '{{ path }}/kube-flannel.yml' }
+  run_once: true
+
+- name: apply flannel cni
   shell: |
     kubectl apply -f {{ path }}/kube-flannel.yml
+  run_once: true
+  when: cni == 'Flannel'
+
+- name: replace image repo in calico yaml files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "image: calico/"
+    replace: "image: {{ registry_endpoint }}/{{ registry_project }}/"
+  with_items:
+    - { filename: "{{ path }}/calico/k8s-manifests/calico.yaml" }
+    - { filename: "{{ path }}/calico/k8s-manifests/calico-typha.yaml" }
+    - { filename: "{{ path }}/calico/k8s-manifests/canal.yaml" }
+    - { filename: "{{ path }}/calico/k8s-manifests/calicoctl.yaml" }
+  run_once: true
+
+- name: replace image repo in canal yaml files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "image: quay.io/coreos/flannel:{{ flannel_version_short }}"
+    replace: "image: {{ registry_endpoint }}/{{ registry_project }}/flannel:{{ flannel_version }}"
+  with_items:
+    - { filename: "{{ path }}/calico/k8s-manifests/canal.yaml" }
+  run_once: true
+
+- name: replace pod cidr in calico yaml files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "192.168.0.0/16"
+    replace: "{{ pod_cidr }}"
+  with_items:
+    - { filename: "{{ path }}/calico/k8s-manifests/calico.yaml" }
+    - { filename: "{{ path }}/calico/k8s-manifests/calico-typha.yaml" }
+  run_once: true
+
+- name: replace pod cidr 10.244.0.0/16 in canal yaml files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "10.244.0.0/16"
+    replace: "{{ pod_cidr }}"
+  with_items:
+    - { filename: "{{ path }}/calico/k8s-manifests/canal.yaml" }
+  run_once: true
+
+- name: replace calico_mode in calico yaml files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "value: \"Always\""
+    replace: "value: \"Never\""
+  with_items:
+    - { filename: "{{ path }}/calico/k8s-manifests/calico.yaml" }
+    - { filename: "{{ path }}/calico/k8s-manifests/calico-typha.yaml" }
+  when: calico_mode == 'BGP'
+  run_once: true
+
+- name: add calico_node_ip_detection_mode in calico yaml files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: '- name: FELIX_HEALTHENABLED[\S\s]*?value: "true"'
+    replace: '- name: FELIX_HEALTHENABLED\n              value: "true"\n            - name: IP_AUTODETECTION_METHOD\n              value: {{ calico_node_ip_detection_mode }}'
+  with_items:
+  - { filename: '{{ path }}/calico/k8s-manifests/calico.yaml' }
+  - { filename: '{{ path }}/calico/k8s-manifests/calico-typha.yaml' }
+  run_once: true
+
+- name: replace pod cidr 10.244.0.0/16 in flannel yaml files
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "10.244.0.0/16"
+    replace: "{{ pod_cidr }}"
+  with_items:
+    - { filename: "{{ path }}/kube-flannel.yml" }
+  run_once: true
+
+- name: apply calico cni for cluster with more than 50 nodes
+  shell: |
+    kubectl apply -f {{ path }}/calico/k8s-manifests/calico-typha.yaml
+    kubectl apply -f {{ path }}/calico/k8s-manifests/calicoctl.yaml
+  run_once: true
+  when: (cni == 'Calico') and (calico_nodes == 'More_than_50_nodes')
+
+- name: apply calico cni for cluster with 50 nodes or less
+  shell: |
+    kubectl apply -f {{ path }}/calico/k8s-manifests/calico.yaml
+    kubectl apply -f {{ path }}/calico/k8s-manifests/calicoctl.yaml
+  run_once: true
+  when: (cni == 'Calico') and (calico_nodes == '50_nodes_or_less')
+
+- name: apply canal cni
+  shell: |
+    kubectl apply -f {{ path }}/calico/k8s-manifests/canal.yaml
+  run_once: true
+  when: cni == 'Canal'
+
+- name: apply addons
+  shell: |
     kubectl apply -f {{ path }}/kubernetes-dashboard.yml
+    kubectl apply -f {{ path }}/kubernetes-dashboard-svc.yml
+    kubectl apply -f {{ path }}/contour.yml
+    kubectl apply -f {{ path }}/contour-demo.yml
     kubectl apply -f {{ path }}/metrics-server/
   run_once: true
 
@@ -262,49 +471,26 @@
     tar zxvf {{ path }}/helm-linux-amd64.tar.gz --strip-components=1 -C /tmp/
     mv /tmp/helm /usr/local/bin/helm
 
-- name: install git command for helm-push
-  yum:
-    disablerepo: '*'
-    enablerepo: wise2c
-    update_cache: true
-    state: present
-    name: '{{ item }}'
-  with_items:
-  - git
-  when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
-
-- name: copy tiller-rbac
-  template:
-    src: '{{ item.src }}'
-    dest: '{{ item.dest }}'
-  with_items:
-  - { src: 'template/tiller-rbac.yaml', dest: '{{ path }}/tiller-rbac.yaml' }
-
-- name: setup helm with tiller
+- name: upgrade helm repo
   shell: |
-    helm init --client-only --skip-refresh
-    helm init --tiller-image {{ registry_endpoint }}/{{ registry_project }}/tiller:{{ helm_version }}
+    helm repo add --username={{ registry_user }} --password={{ registry_password }} {{ registry_project }} http://{{ registry_endpoint }}/chartrepo/{{ registry_project }}
+  when: not registry_https
 
-- name: setup rbac for tiller
+- name: scale calico-typha replicas
   shell: |
-    kubectl apply -f {{ path }}/tiller-rbac.yaml
+    kubectl -n kube-system scale deployment calico-typha --replicas={{ calico_typha_replicas }}
   run_once: true
+  when: (cni == 'Calico') and (calico_nodes == 'More_than_50_nodes')
 
-- name: copy helm init script
-  template:
+- name: copy kubelet-conf patch script
+  copy:
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
     mode: 0755
   with_items:
-  - { src: 'template/helm_init.sh.j2', dest: '{{ path }}/helm_init.sh' }
+  - { src: 'file/patch-kubelet-conf.sh', dest: '{{ path }}' }
 
-- name: execute helm init script
-  shell: ./helm_init.sh
+- name: execute patch-kubelet-conf script
+  shell: ./patch-kubelet-conf.sh
   args:
     chdir: '{{ path }}'
-  async: 600
-
-- name: upgrade tiller repo
-  shell: |
-    helm repo add --username={{ registry_user }} --password={{ registry_password }} {{ registry_project }} http://{{ registry_endpoint }}/chartrepo/{{ registry_project }}
-  when: not registry_https

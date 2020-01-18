@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-#If seems that there is a bug on Ubuntu host to load the images. If no wait, it will return an error message: "Error response from daemon: No such image"
+#It seems that there is a bug on Ubuntu host to load the images. If no wait, it will return an error message: "Error response from daemon: No such image"
 sleep 60
 
 MyImageRepositoryIP=`cat harbor-address.txt`
@@ -29,8 +29,10 @@ sed -i "s/quay.io\/kiali/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(gr
 cd ../../
 
 # Istio init deploy
-helm install install/kubernetes/helm/istio-init --name istio-init --namespace istio-system
+kubectl create ns istio-system
+helm install install/kubernetes/helm/istio-init -g --namespace istio-system
 
+set +e
 ######### Deploy Istio #########
 # We need to verify that all 23 Istio CRDs were committed to the Kubernetes api-server
 printf "Waiting for Istio to commit custom resource definitions..."
@@ -43,8 +45,9 @@ for ((i=1; i<=23; i++)); do crdresult=${crdresult}"True"; done
 until [ `for istiocrds in $(kubectl get crds |grep 'istio.io\|certmanager.k8s.io' |awk '{print $1}'); do kubectl get crd ${istiocrds} -o jsonpath='{.status.conditions[1].status}'; done` = $crdresult ]; do sleep 1; printf "."; done
 
 echo 'Phase1 done!'
+set -e
 
-helm install install/kubernetes/helm/istio --name istio --namespace istio-system --set gateways.istio-ingressgateway.type=NodePort --values install/kubernetes/helm/istio/values-istio-demo-auth.yaml
+helm install install/kubernetes/helm/istio -g --namespace istio-system --set gateways.istio-ingressgateway.type=NodePort --values install/kubernetes/helm/istio/values-istio-demo.yaml
 
 echo 'Phase2 done!'
 

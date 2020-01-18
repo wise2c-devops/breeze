@@ -1,7 +1,7 @@
 # Breeze
 - Deploy a Production Ready Kubernetes Cluster with graphical interface
 
-[![Build Status](https://travis-ci.org/wise2c-devops/breeze.svg?branch=v1.15)](https://travis-ci.org/wise2c-devops/breeze)
+[![Build Status](https://travis-ci.org/wise2c-devops/breeze.svg?branch=v1.17)](https://travis-ci.org/wise2c-devops/breeze)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/wise2c-devops/breeze/blob/master/LICENSE)
 
 [English](./README.md) | [中文](./README-CN.md)
@@ -50,7 +50,7 @@ Project Breeze is an open source trusted solution allow you to create Kubernetes
 
 **Deploy server:** docker 1.13.1+ and docker-compose 1.12.0+ .
 
-**Kubernetes cluster server:** CentOS 7.4/7.5/7.6 or Ubuntu 16/18 is required and minimal installation mode is recommended. 
+**Kubernetes cluster server:** CentOS 7.4/7.5/7.6/7.7 or Ubuntu 16/18 is required and minimal installation mode is recommended. 
 
 Refer to **[User Guide](manual/BreezeManual.pdf)** for more details on how to use Breeze.
 

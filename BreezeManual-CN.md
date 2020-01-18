@@ -4,9 +4,22 @@
 
 适用操作系统：
 
-RHEL/CentOS: 7.4/7.5/7.6
+RHEL/CentOS: 7.4/7.5/7.6/7.7
 
 Ubuntu 16/18
+
+**所有社区用户请注意：**
+
+凡是2020年以前发布的Breeze版本( https://github.com/wise2c-devops/breeze/releases )，请在部署完集群之后在三台master节点，手动执行以下命令：
+
+```
+TIME_STRING=`date "+%Y-%m-%d-%H-%M-%S"`
+cd /etc/kubernetes/
+cp -p /etc/kubernetes/kubelet.conf /etc/kubernetes/kubelet.conf.$TIME_STRING
+sed -i 's#client-certificate-data:.*$#client-certificate: /var/lib/kubelet/pki/kubelet-client-current.pem#g' kubelet.conf 
+sed -i 's#client-key-data:.*$#client-key: /var/lib/kubelet/pki/kubelet-client-current.pem#g' kubelet.conf
+systemctl restart kubelet
+```
 
 Note:
 1. **请不要把Breeze所在的部署主机加入部署集群主机列表**
@@ -76,13 +89,19 @@ systemctl enable docker
 (4) 下载用于部署某个Kubernetes版本的docker-compose文件并使部署程序运行起来，例如：
 
 ```
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.15.1.1/docker-compose.yml -o docker-compose.yml
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.15.1.1/docker-compose-centos.yml -o docker-compose.yml
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.15.1.1/docker-compose-ubuntu.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.17.0/docker-compose.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.17.0/docker-compose-centos.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.17.0/docker-compose-ubuntu.yml -o docker-compose.yml
 ```
 
 ```
 docker-compose up -d
+```
+
+如果机器磁盘性能较差，需要调整超时，请用以下命令启动：
+
+```
+COMPOSE_HTTP_TIMEOUT=300 docker-compose up -d
 ```
 
 上述文件docker-compose.yml支持混合部署，docker-compose-centos.yml支持单纯CentOS部署，docker-compose-ubuntu.yml支持单纯Ubuntu部署。
@@ -107,7 +126,7 @@ docker-compose up -d
        
        ...
 
-3. 打开浏览器，访问部署程序的图形界面，添加主机列表、添加服务角色并将加入的主机进行角色分配，然后开始部署：
+3. 打开浏览器，访问部署程序的图形界面，添加主机列表、添加服务角色并将加入的主机进行角色分配，然后开始部署，注意页面下方可以切换中、英、法等语言显示：
 
 ![Alt](./manual/BreezeScreenShots001.png)
 
@@ -147,7 +166,7 @@ docker-compose up -d
 
 点击“下一步”再点击“添加组件”按钮，对每个组件进行设置和分配服务器：
 
-（docker角色、harbor角色、loadbalance角色、etcd角色、kubernetes角色、prometheus角色）
+（docker角色、harbor角色、loadbalance角色、etcd角色、kubernetes角色、prometheus角色、istio角色）
 
 ![Alt](./manual/BreezeScreenShots015.png)
 
@@ -157,9 +176,13 @@ docker-compose up -d
 
 ![Alt](./manual/BreezeScreenShots017.png)
 
-镜像仓库设置这里的harbor entry point是指用户端访问镜像仓库的URL，可以直接写IP地址或写对应的域名：
+镜像仓库设置这里如果选择某个版本，那么Breeze会自动部署非https的Harbor，如果在版本里选择external，那么Breeze则不再部署Harbor而是和现有Harbor做对接。
+
+参数harbor entry point是指用户端访问镜像仓库的URL，可以直接写IP地址或写对应的域名；如果对接外部的Harbor，请注意勾选外部Harbor是以http访问还是以https访问的：
 
 ![Alt](./manual/BreezeScreenShots018.png)
+
+![Alt](./manual/BreezeScreenShotsExternalHarbor.png)
 
 ![Alt](./manual/BreezeScreenShots019.png)
 
@@ -169,19 +192,26 @@ vip for k8s master是指三个k8s master服务器的高可用虚拟浮动IP地�
 
 ![Alt](./manual/haproxy-keepalived-001.png)
 
-Etcd可以选择部署于K8S Master节点也可以选择独立的三台主机：
+Etcd可以选择部署于K8S Master节点也可以选择独立的三台主机，Back up etcd database folder and upgrade etcd cluster 和 Make a snapshot backup for etcd and upgrade etcd cluster 这两个选项是用于升级环节的，在升级Etcd集群前做备份，默认新装集群不要勾选这两项：
 
 ![Alt](./manual/BreezeScreenShots020.png)
 
-![Alt](./manual/BreezeScreenShots021.png)
-
 ![Alt](./manual/BreezeScreenShots022.png)
 
-kubernetes entry point是指高可用的一个设定值，如果生产环境有硬件或软件负载均衡指向这里的k8s master所有节点，那么就可以在这里填写负载均衡的统一入口地址。
+
+Kubernetes entry point是指高可用的一个设定值，如果生产环境有硬件或软件负载均衡指向这里的k8s master所有节点，那么就可以在这里填写负载均衡的统一入口地址。
 
 相对于昂贵的F5专业硬件设备，我们也可以使用HAProxy和Keepalived的组合轻松完成这个设置，Breeze自带这个组合模块的部署。
 
 例如下图的 192.168.9.30:6444 就是k8s集群高可用的统一入口，k8s的worker node会使用这个地址访问API Server。请注意如果使用的是Breeze自带的高可用组件haproxy+keepalived，则请填写实际的虚IP与默认端口6444。
+
+Just add new worker nodes, do not reinstall this cluster 这个选项是用于向现有集群添加计算节点（Worker Nodes），Upgrade existing cluster 和 Upgrade K8s nodes automatically 选项用于升级现有集群而不是新装集群，而在生产环境升级集群一般采用对节点逐步进行，Breeze只负责将需要升级的镜像及脚本发到工作节点，应由管理员手动执行，并在执行过程中观察业务应用的高可用不受影响，如果勾选了 Upgrade K8s nodes automatically 这这一切会全自动进行，如果所有业务都是有多副本分布在不同计算节点，那么这不会影响业务服务，否则不推荐使用这种方式进行集群在线升级。
+
+关于升级的详情，请参考本项目视频演示。
+
+Kubernetes的界面里还有CNI模型供选择，请按实际需求选择部署Flannel、Calico还是Canal，至于Calico又分为IPIP隧道模式和BGP路由模式，还需要注意集群规模，详情请参考Calico官方网站文档解释。
+
+对于网络地址范围CIDR参数共有三个，分别是Pod、Service、和ClusterIP的地址范围定义，默认值即可正常工作，除非它与你实际网络分配相冲突，才需要手动修改后进行部署。
 
 ![Alt](./manual/BreezeScreenShots023.png)
 
