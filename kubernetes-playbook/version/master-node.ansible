@@ -202,6 +202,9 @@
   - { src: 'file/kubelet-csr.json', dest: '{{ path }}/' }
   - { src: 'file/front-proxy-ca-csr.json', dest: '{{ path }}/' }
   - { src: 'file/front-proxy-client-csr.json', dest: '{{ path }}/' }
+  - { src: 'file/admin-csr.json', dest: '{{ path }}/' }
+  - { src: 'file/controller-manager-csr.json', dest: '{{ path }}/' }
+  - { src: 'file/scheduler-csr.json', dest: '{{ path }}/' }
 
 - name: copy certificates generation scripts
   template:
@@ -250,6 +253,12 @@
   - { src: '/etc/kubernetes/pki/front-proxy-client.key', dest: 'file/front-proxy-client.key' }
   - { src: '/etc/kubernetes/pki/sa.pub', dest: 'file/sa.pub' }
   - { src: '/etc/kubernetes/pki/sa.key', dest: 'file/sa.key' }
+  - { src: '/etc/kubernetes/pki/admin-key.pem', dest: 'file/admin-key.pem' }
+  - { src: '/etc/kubernetes/pki/admin.pem', dest: 'file/admin.pem' }
+  - { src: '/etc/kubernetes/pki/controller-manager-key.pem', dest: 'file/controller-manager-key.pem' }
+  - { src: '/etc/kubernetes/pki/controller-manager.pem', dest: 'file/controller-manager.pem' }
+  - { src: '/etc/kubernetes/pki/scheduler-key.pem', dest: 'file/scheduler-key.pem' }
+  - { src: '/etc/kubernetes/pki/scheduler.pem', dest: 'file/scheduler.pem' }  
   run_once: true
 
 - name: copy certificates
@@ -267,7 +276,13 @@
   - { src: 'file/front-proxy-client.key', dest: '/etc/kubernetes/pki/front-proxy-client.key' }
   - { src: 'file/sa.pub', dest: '/etc/kubernetes/pki/sa.pub' }
   - { src: 'file/sa.key', dest: '/etc/kubernetes/pki/sa.key' }
-
+  - { dest: '/etc/kubernetes/pki/admin-key.pem', src: 'file/admin-key.pem' }
+  - { dest: '/etc/kubernetes/pki/admin.pem', src: 'file/admin.pem' }
+  - { dest: '/etc/kubernetes/pki/controller-manager-key.pem', src: 'file/controller-manager-key.pem' }
+  - { dest: '/etc/kubernetes/pki/controller-manager.pem', src: 'file/controller-manager.pem' }
+  - { dest: '/etc/kubernetes/pki/scheduler-key.pem', src: 'file/scheduler-key.pem' }
+  - { dest: '/etc/kubernetes/pki/scheduler.pem', src: 'file/scheduler.pem' }
+  
 - name: generate kube-apiserver certificate
   shell: |
     /var/tmp/wise2c/kubernetes/generate-apiserver-certificate.sh
@@ -311,6 +326,19 @@
 - name: kubeadm init
   shell: |
     kubeadm init --config {{ path }}/kubeadm.conf
+
+- name: copy patch-kubeconfig.sh
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: 0755
+  with_items:
+  - { src: 'file/patch-kubeconfig.sh', dest: '{{ path }}/' }
+
+- name: run patch-kubeconfig.sh
+  shell: ./patch-kubeconfig.sh
+  args:
+    chdir: '{{ path }}'
 
 - name: fetch admin.conf
   fetch:

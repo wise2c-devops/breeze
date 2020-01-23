@@ -1,0 +1,16 @@
+{
+  "CN": "kubernetes-admin",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "CN",
+      "ST": "Guangdong",
+      "L": "Shenzhen",
+      "O": "system:masters",
+      "OU": "Wise2C"
+    }
+  ]
+}
