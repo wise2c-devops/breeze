@@ -23,12 +23,12 @@ services:
     network_mode: "service:deploy"
   playbook:
     container_name: deploy-playbook
-    image: wise2c/playbook:v1.15.7
+    image: wise2c/playbook:v1.15.9
     volumes:
     - playbook:/workspace
   apt-source:
     container_name: deploy-aptsource
-    image: wise2c/apt-source:v1.15.7
+    image: wise2c/apt-source:v1.15.9
     ports:
     - 2008:2008
     restart: always
