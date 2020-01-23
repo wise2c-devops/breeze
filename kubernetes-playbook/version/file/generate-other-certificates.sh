@@ -22,6 +22,15 @@ cfssl gencert -ca=front-proxy-ca.pem -ca-key=front-proxy-ca-key.pem -config=ca-c
 openssl genrsa -out sa.key 2048
 openssl rsa -in sa.key -pubout -out sa.pub
 
+#生成admin证书
+cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=kubernetes admin-csr.json | cfssljson -bare admin
+
+#生成controller-manager证书
+cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=kubernetes controller-manager-csr.json | cfssljson -bare controller-manager
+
+#生成scheduler证书
+cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=kubernetes scheduler-csr.json | cfssljson -bare scheduler
+
 cd /var/tmp/wise2c/kubernetes/
 mv ca.pem /etc/kubernetes/pki/ca.crt
 mv ca-key.pem /etc/kubernetes/pki/ca.key
@@ -33,3 +42,5 @@ mv front-proxy-client.pem /etc/kubernetes/pki/front-proxy-client.crt
 mv front-proxy-client-key.pem /etc/kubernetes/pki/front-proxy-client.key
 mv sa.pub /etc/kubernetes/pki/sa.pub
 mv sa.key /etc/kubernetes/pki/sa.key
+
+mv *.pem /etc/kubernetes/pki/
