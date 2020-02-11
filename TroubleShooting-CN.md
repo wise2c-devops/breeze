@@ -87,4 +87,8 @@
 	
 	cp -f /etc/kubernetes/admin.conf $HOME/.kube/config
 	chown $(id -u):$(id -g) $HOME/.kube/config
+
+	#restart controller-manager and scheduler
+	docker ps|grep kube-controller-manager|awk '{print $1}'|xargs docker stop
+	docker ps|grep kube-scheduler|awk '{print $1}'|xargs docker stop
 	```
