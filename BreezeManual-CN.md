@@ -8,6 +8,10 @@ RHEL/CentOS: 7.4/7.5/7.6/7.7
 
 Ubuntu 16/18
 
+**所有社区用户请注意：**	
+
+凡是2020年以前发布的Breeze版本( https://github.com/wise2c-devops/breeze/releases )，由于kubeadm生成的kubeconfig文件（admin.conf, controller-manager.conf, kubelet.conf, scheduler.conf)内嵌了1年期的证书，请参考[常见排错说明](./TroubleShooting-CN.md)中的第13点来将内嵌证书替换为长期证书。
+
 Note:
 1. **请不要把Breeze所在的部署主机加入部署集群主机列表**
 2. **为了避免包冲突，请使用纯净的CentOS Minimal安装出来的OS或未经升级过的Ubuntu来部署集群**
