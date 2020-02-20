@@ -79,11 +79,15 @@
 	cd /etc/kubernetes/
 	mv admin.conf admin.conf.$TIME_STRING
 	mv controller-manager.conf controller-manager.conf.$TIME_STRING 
-	mv scheduler.conf scheduler.conf$TIME_STRING
+	mv scheduler.conf scheduler.conf.$TIME_STRING
 	
 	kubeadm init phase kubeconfig admin
 	kubeadm init phase kubeconfig controller-manager
 	kubeadm init phase kubeconfig scheduler
+
+	sed -i 's#server: https:.*$#server: https://127.0.0.1:6444#g' admin.conf
+	sed -i 's#server: https:.*$#server: https://127.0.0.1:6444#g' controller-manager.conf
+	sed -i 's#server: https:.*$#server: https://127.0.0.1:6444#g' scheduler.conf
 	
 	cp -f /etc/kubernetes/admin.conf $HOME/.kube/config
 	chown $(id -u):$(id -g) $HOME/.kube/config
