@@ -96,3 +96,9 @@
 	docker ps|grep kube-controller-manager|awk '{print $1}'|xargs docker stop
 	docker ps|grep kube-scheduler|awk '{print $1}'|xargs docker stop
 	```
+
+        比如我们将上述脚本保存为/root/renewk8scert.sh，则可以执行命令crontab -e后编辑如下内容保存即可：
+	```
+	0 0 1 1,7 * /root/renewk8scert.sh
+	```
+        这样系统每年的1月1日和7月1日的0:00会执行该脚本。
