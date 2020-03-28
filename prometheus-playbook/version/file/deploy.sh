@@ -37,6 +37,8 @@ kctl() {
     kubectl --namespace "$NAMESPACE" "$@"
 }
 
+cd kube-prometheus-$KubePrometheusVersion
+
 kubectl apply -f manifests/setup
 
 # Wait for CRDs to be ready.
