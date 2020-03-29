@@ -2,7 +2,7 @@
   hosts: elasticcloud
   user: root
   vars:
-    path: /var/tmp/wise2c/elasticcloud
+    path: /var/lib/wise2c/tmp/elasticcloud
   tasks:
   - name: copy k8s admin.conf for elasticcloud installation
     copy:

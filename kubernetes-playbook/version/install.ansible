@@ -2,7 +2,7 @@
   hosts: master
   user: root
   vars:
-    path: /var/tmp/wise2c/kubernetes
+    path: /var/lib/wise2c/tmp/kubernetes
 
   tasks:
   - name: check kubernetes services
@@ -58,7 +58,7 @@
   hosts: node
   user: root
   vars:
-    path: /var/tmp/wise2c/kubernetes
+    path: /var/lib/wise2c/tmp/kubernetes
 
   tasks:
   - name: check kubernetes services
@@ -73,7 +73,7 @@
   hosts: master
   user: root
   vars:
-    path: /var/tmp/wise2c/kubernetes
+    path: /var/lib/wise2c/tmp/kubernetes
 
   tasks:
   - name: push images
@@ -102,7 +102,7 @@
   hosts: node
   user: root
   vars:
-    path: /var/tmp/wise2c/kubernetes
+    path: /var/lib/wise2c/tmp/kubernetes
 
   tasks:
   - name: copy upgrade scripts
