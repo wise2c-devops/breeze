@@ -2,7 +2,7 @@
   hosts: prometheus
   user: root
   vars:
-    path: /var/tmp/wise2c/prometheus
+    path: /var/lib/wise2c/tmp/prometheus
   tasks:
   - name: copy k8s admin.conf for prometheus installation
     copy:
@@ -94,7 +94,7 @@
 
   - name: set harbor address for deploy script
     replace:
-      path: "/var/tmp/wise2c/prometheus/{{ item }}"
+      path: "/var/lib/wise2c/tmp/prometheus/{{ item }}"
       regexp: "harbor-address"
       replace: "{{ registry_endpoint }}"
     with_items:
@@ -103,7 +103,7 @@
 
   - name: set etcd address for deploy script
     replace:
-      path: "/var/tmp/wise2c/prometheus/{{ item }}"
+      path: "/var/lib/wise2c/tmp/prometheus/{{ item }}"
       regexp: "etcd-address"
       replace: "{{ etcd_endpoint }}"
     with_items:

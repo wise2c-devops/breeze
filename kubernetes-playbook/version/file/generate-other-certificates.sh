@@ -7,9 +7,9 @@ fi
 
 # K8S CA
 
-cd /var/tmp/wise2c/kubernetes/
+cd /var/lib/wise2c/tmp/kubernetes/
 
-cfssl gencert -initca ca-csr.json | cfssljson -bare /var/tmp/wise2c/kubernetes/ca
+cfssl gencert -initca ca-csr.json | cfssljson -bare /var/lib/wise2c/tmp/kubernetes/ca
 
 # K8S apiserver-kubelet-client certificate
 cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=kubernetes kubelet-csr.json | cfssljson -bare apiserver-kubelet-client
@@ -31,7 +31,7 @@ cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=kube
 #生成scheduler证书
 cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=kubernetes scheduler-csr.json | cfssljson -bare scheduler
 
-cd /var/tmp/wise2c/kubernetes/
+cd /var/lib/wise2c/tmp/kubernetes/
 mv ca.pem /etc/kubernetes/pki/ca.crt
 mv ca-key.pem /etc/kubernetes/pki/ca.key
 mv apiserver-kubelet-client.pem /etc/kubernetes/pki/apiserver-kubelet-client.crt

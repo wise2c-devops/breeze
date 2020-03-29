@@ -2,7 +2,7 @@
   hosts: hosts
   user: root
   vars:
-    path: /var/tmp/wise2c/loadbalancer
+    path: /var/lib/wise2c/tmp/loadbalancer
     cpath: /var/lib/wise2c/loadbalancer
   tasks:
   - name: make lb dir
