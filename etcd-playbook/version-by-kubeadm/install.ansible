@@ -2,7 +2,7 @@
   hosts: etcd
   user: root
   vars:
-    path: /var/tmp/wise2c/etcd
+    path: /var/lib/wise2c/tmp/etcd
   tasks:
   - name: copy backup scripts
     template:
@@ -128,7 +128,7 @@
 
   - name: generate etcd certificates
     raw: |
-      /var/tmp/wise2c/etcd/generate-etcd-certificates.sh
+      /var/lib/wise2c/tmp/etcd/generate-etcd-certificates.sh
     run_once: true
 
   - name: fetch etcd certificates

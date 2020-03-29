@@ -234,7 +234,7 @@
 
 - name: generate other certificates
   shell: |
-    /var/tmp/wise2c/kubernetes/generate-other-certificates.sh
+    /var/lib/wise2c/tmp/kubernetes/generate-other-certificates.sh
   run_once: true
 
 - name: fetch certificates
@@ -285,7 +285,7 @@
   
 - name: generate kube-apiserver certificate
   shell: |
-    /var/tmp/wise2c/kubernetes/generate-apiserver-certificate.sh
+    /var/lib/wise2c/tmp/kubernetes/generate-apiserver-certificate.sh
 
 - name: copy kubeadm-token.sh and update-api-advertise-address.sh
   copy:
