@@ -3,7 +3,7 @@
   user: root
   any_errors_fatal: true
   vars:
-    path: /var/tmp/wise2c/docker
+    path: /var/lib/wise2c/tmp/docker
   tasks:
   - name: check environment
     script: scripts/check_environment.sh

@@ -51,9 +51,9 @@ helm install install/kubernetes/helm/istio -g --namespace istio-system --set gat
 
 echo 'Phase2 done!'
 
-kubectl apply -f /var/tmp/wise2c/istio/kiali-service.yaml
-kubectl apply -f /var/tmp/wise2c/istio/jaeger-service.yaml
-kubectl apply -f /var/tmp/wise2c/istio/prometheus-service.yaml
-kubectl apply -f /var/tmp/wise2c/istio/grafana-service.yaml
+kubectl apply -f /var/lib/wise2c/tmp/istio/kiali-service.yaml
+kubectl apply -f /var/lib/wise2c/tmp/istio/jaeger-service.yaml
+kubectl apply -f /var/lib/wise2c/tmp/istio/prometheus-service.yaml
+kubectl apply -f /var/lib/wise2c/tmp/istio/grafana-service.yaml
 
 echo 'NodePorts are set for services.'
