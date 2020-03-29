@@ -131,8 +131,8 @@ echo "contour_version: ${contour_version}" >> ${path}/yat/all.yml.gotmpl
 echo "contour_envoyproxy_version: ${contour_envoyproxy_version}" >> ${path}/yat/all.yml.gotmpl
 
 curl -sS https://raw.githubusercontent.com/projectcontour/contour/${contour_version}/examples/render/contour.yaml \
-    | sed -e "s#image: docker.io/projectcontour/contour:latest#image: docker.io/projectcontour/contour:${contour_version}#g"
-sed -i "s,docker.io/projectcontour,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/contour.yml.j2
+    | sed -e "s#image: docker.io/projectcontour/contour:latest#image: docker.io/projectcontour/contour:${contour_version}#g" > ${path}/template/contour.yml.j2
+sed -i "s,docker.io/projectcontour,{{ registry_endpoint }}/{{ registry_project }},g" ${path}/template/contour.yml.j2
 sed -i "s,docker.io/envoyproxy,{{ registry_endpoint }}/{{ registry_project }},g" ${path}/template/contour.yml.j2
 
 curl -sS https://projectcontour.io/examples/kuard.yaml \
