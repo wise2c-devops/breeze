@@ -2,7 +2,7 @@
   hosts: harbor
   user: root
   vars:
-    path: /var/tmp/wise2c/harbor
+    path: /var/lib/wise2c/tmp/harbor
   tasks:
   - name: make harbor dir
     file:

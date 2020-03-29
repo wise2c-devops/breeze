@@ -9,6 +9,6 @@ kubectl delete clusterrolebindings istio-citadel-istio-system istio-galley-admin
 
 kubectl delete MutatingWebhookConfiguration/istio-sidecar-injector
 
-kubectl delete -f /var/tmp/wise2c/istio/istio-*/install/kubernetes/helm/istio-init/files
+kubectl delete -f /var/lib/wise2c/tmp/istio/istio-*/install/kubernetes/helm/istio-init/files
 
 kubectl delete ns istio-system

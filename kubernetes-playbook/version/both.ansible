@@ -75,10 +75,10 @@
         dest: '{{ item.dest }}'
         mode: 0755
       with_items:
-      - { src: 'file/prometheus-fix-master-nodes.sh', dest: '/var/tmp/wise2c/kubernetes/' }
-      - { src: 'file/prometheus-fix-master-nodes-ubuntu.sh', dest: '/var/tmp/wise2c/kubernetes/' }
-      - { src: 'file/prometheus-fix-worker-nodes.sh', dest: '/var/tmp/wise2c/kubernetes/' }
-      - { src: 'file/prometheus-fix-worker-nodes-ubuntu.sh', dest: '/var/tmp/wise2c/kubernetes/' }
+      - { src: 'file/prometheus-fix-master-nodes.sh', dest: '/var/lib/wise2c/tmp/kubernetes/' }
+      - { src: 'file/prometheus-fix-master-nodes-ubuntu.sh', dest: '/var/lib/wise2c/tmp/kubernetes/' }
+      - { src: 'file/prometheus-fix-worker-nodes.sh', dest: '/var/lib/wise2c/tmp/kubernetes/' }
+      - { src: 'file/prometheus-fix-worker-nodes-ubuntu.sh', dest: '/var/lib/wise2c/tmp/kubernetes/' }
 
     - name: distribute kubelet config for Redhat/CentOS
       template:
