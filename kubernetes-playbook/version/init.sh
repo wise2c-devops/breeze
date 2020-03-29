@@ -42,7 +42,7 @@ echo "flannel_repo: ${flannel_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "flannel_version: ${flannel_version}-amd64" >> ${path}/yat/all.yml.gotmpl
 echo "flannel_version_short: ${flannel_version}" >> ${path}/yat/all.yml.gotmpl
 
-curl -sSL https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml \
+curl -sSL https://raw.githubusercontent.com/coreos/flannel/${flannel_version}/Documentation/kube-flannel.yml \
    | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
 
 echo "=== pulling flannel image ==="
@@ -131,7 +131,8 @@ echo "contour_version: ${contour_version}" >> ${path}/yat/all.yml.gotmpl
 echo "contour_envoyproxy_version: ${contour_envoyproxy_version}" >> ${path}/yat/all.yml.gotmpl
 
 curl -sS https://raw.githubusercontent.com/projectcontour/contour/${contour_version}/examples/render/contour.yaml \
-    | sed -e "s,docker.io/projectcontour,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/contour.yml.j2
+    | sed -e "s#image: docker.io/projectcontour/contour:latest#image: docker.io/projectcontour/contour:${contour_version}#g"
+sed -i "s,docker.io/projectcontour,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/contour.yml.j2
 sed -i "s,docker.io/envoyproxy,{{ registry_endpoint }}/{{ registry_project }},g" ${path}/template/contour.yml.j2
 
 curl -sS https://projectcontour.io/examples/kuard.yaml \
