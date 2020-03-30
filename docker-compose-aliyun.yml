@@ -1,0 +1,43 @@
+version: '2'
+services:
+  deploy:
+    container_name: deploy-main
+    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/pagoda:v1.2.0
+    restart: always
+    entrypoint: sh
+    command:
+    - -c
+    - "/root/pagoda -logtostderr -v 4 -w /workspace"
+    ports:
+    - 88:80
+    - 8088:8080
+    volumes:
+    - $HOME/.ssh:/root/.ssh
+    - $PWD/deploy:/deploy
+    volumes_from:
+    - playbook
+  ui:
+    container_name: deploy-ui
+    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/deploy-ui:v1.6
+    restart: always
+    network_mode: "service:deploy"
+  playbook:
+    container_name: deploy-playbook
+    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/playbook:v1.18.0
+    volumes:
+    - playbook:/workspace
+  yum-repo:
+    container_name: deploy-yumrepo
+    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/yum-repo:v1.18.0
+    ports:
+    - 2009:2009 
+    restart: always
+  apt-source:
+    container_name: deploy-aptsource
+    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/apt-source:v1.18.0
+    ports:
+    - 2008:2008
+    restart: always
+volumes:
+  playbook:
+    external: false
