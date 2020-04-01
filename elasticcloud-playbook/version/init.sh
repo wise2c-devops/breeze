@@ -13,7 +13,7 @@ echo "elastic_stack_version: ${ElasticStackVersion}" >> ${path}/group_vars/elast
 
 curl -L -o ${path}/template/eck.yml.j2 https://download.elastic.co/downloads/eck/${ElasticCloudVersion}/all-in-one.yaml
 
-cat ${path}/template/eck.yaml |grep "image: docker.elastic.co/eck/" |awk -F":" '{print $2":"$3}' > images-list.txt
+cat ${path}/template/eck.yaml.j2 |grep "image: docker.elastic.co/eck/" |awk -F":" '{print $2":"$3}' > images-list.txt
 echo "docker.elastic.co/elasticsearch/elasticsearch:${ElasticStackVersion}" >> images-list.txt
 echo "docker.elastic.co/kibana/kibana:${ElasticStackVersion}" >> images-list.txt
 echo "fluent/fluentd-kubernetes-daemonset:v1-debian-elasticsearch" >> images-list.txt
