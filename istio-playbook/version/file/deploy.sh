@@ -34,13 +34,13 @@ helm install install/kubernetes/helm/istio-init -g --namespace istio-system
 
 set +e
 ######### Deploy Istio #########
-# We need to verify that all 23 Istio CRDs were committed to the Kubernetes api-server
+# We need to verify that all 25 Istio CRDs were committed to the Kubernetes api-server
 printf "Waiting for Istio to commit custom resource definitions..."
 
-until [ `kubectl get crds |grep 'istio.io\|certmanager.k8s.io' |wc -l` -eq 23 ]; do printf "."; done
+until [ `kubectl get crds |grep 'istio.io\|certmanager.k8s.io' |wc -l` -eq 25 ]; do printf "."; done
 
 crdresult=""
-for ((i=1; i<=23; i++)); do crdresult=${crdresult}"True"; done
+for ((i=1; i<=25; i++)); do crdresult=${crdresult}"True"; done
 
 until [ `for istiocrds in $(kubectl get crds |grep 'istio.io\|certmanager.k8s.io' |awk '{print $1}'); do kubectl get crd ${istiocrds} -o jsonpath='{.status.conditions[1].status}'; done` = $crdresult ]; do sleep 1; printf "."; done
 
