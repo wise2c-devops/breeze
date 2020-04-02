@@ -32,5 +32,5 @@ echo 'Images are compressed as bzip format.'
 sed -i "s,docker.elastic.co/eck,{{ registry_endpoint }}/{{ registry_project }},g" ${path}/template/eck.yml.j2
 
 curl -L -o ${path}/template/fluentd.yml.j2 https://raw.githubusercontent.com/fluent/fluentd-kubernetes-daemonset/master/fluentd-daemonset-elasticsearch-rbac.yaml
-sed -i "s,fluent/fluentd-kubernetes-daemonset,{{ registry_endpoint }}/{{ registry_project }},g" ${path}/template/fluentd.yml.j2
+sed -i "s,fluent/fluentd-kubernetes-daemonset,{{ registry_endpoint }}/{{ registry_project }}/fluentd-kubernetes-daemonset,g" ${path}/template/fluentd.yml.j2
 sed -i "s,elasticsearch-logging,quickstart-es-http.default.svc.cluster.local,g" ${path}/template/fluentd.yml.j2
