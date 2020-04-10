@@ -4,8 +4,8 @@ set -e
 
 path=`dirname $0`
 
-kubernetes_version=1.18.0
-harbor_version=1.10.1
+kubernetes_version=1.18.1
+harbor_version=1.10.2
 docker_version=19.03.5
 haproxy_version=2.0.0
 keepalived_version=1.3.5
@@ -14,8 +14,8 @@ prometheus_version=2.11.0
 prometheus_operator_version=0.34.0
 kube_prometheus_version=0.3.0
 metrics_server_version=0.3.6
-dashboard_version=2.0.0-rc6
-metrics_scraper_version=1.0.3
+dashboard_version=2.0.0-rc7
+metrics_scraper_version=1.0.4
 flannel_version=0.12.0
 calico_version=3.13.1
 helm_version=3.1.2
