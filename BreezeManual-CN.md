@@ -81,6 +81,16 @@ curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.16.9/docker-co
 curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.16.9/docker-compose-ubuntu.yml -o docker-compose.yml
 ```
 
+国内用户可以使用阿里云镜像站点文件，部署所用的image将从阿里云拉取：
+
+```
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.16.9/docker-compose-aliyun.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.16.9/docker-compose-centos-aliyun.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.16.9/docker-compose-ubuntu-aliyun.yml -o docker-compose.yml
+```
+
+然后：
+
 ```
 docker-compose up -d
 ```
