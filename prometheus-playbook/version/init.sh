@@ -38,6 +38,8 @@ sed "s/image: //g" 2.txt > 3.txt
 rm -f image-lists-temp.txt 1.txt 2.txt
 mv 3.txt images-list.txt
 
+cat images-list.txt
+
 for file in $(cat images-list.txt); do docker pull $file; done
 echo 'Images pulled.'
 
