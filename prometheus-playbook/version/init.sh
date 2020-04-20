@@ -22,7 +22,7 @@ for file in $(grep -lr "quay.io/prometheus" kube-prometheus-$KubePrometheusVersi
 for file in $(grep -lr "gcr.io/" kube-prometheus-$KubePrometheusVersion/manifests/); do cat $file |grep "gcr.io/" ; done >> image-lists-temp.txt
 
 prometheus_base_image=`cat kube-prometheus-$KubePrometheusVersion/manifests/prometheus-prometheus.yaml |grep "image: " |awk -F':' '{print $2}'`
-prometheus_image_tag=`cat kube-prometheus-$KubePrometheusVersion/manifests/prometheus-prometheus.yaml |grep "image " |awk -F':' '{print $3}'`
+prometheus_image_tag=`cat kube-prometheus-$KubePrometheusVersion/manifests/prometheus-prometheus.yaml |grep "image: " |awk -F':' '{print $3}'`
 
 alertmanager_base_image=`cat kube-prometheus-$KubePrometheusVersion/manifests/alertmanager-alertmanager.yaml |grep "image: " |awk -F':' '{print $2}'`
 alertmanager_image_tag=`cat kube-prometheus-$KubePrometheusVersion/manifests/alertmanager-alertmanager.yaml |grep "image: " |awk -F':' '{print $3}'`
