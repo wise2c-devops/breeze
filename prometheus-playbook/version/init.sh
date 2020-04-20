@@ -22,7 +22,7 @@ for file in $(grep -lr "quay.io/prometheus" kube-prometheus-$KubePrometheusVersi
 for file in $(grep -lr "gcr.io/" kube-prometheus-$KubePrometheusVersion/manifests/); do cat $file |grep "gcr.io/" ; done >> image-lists-temp.txt
 
 prometheus_base_image=`cat kube-prometheus-$KubePrometheusVersion/manifests/prometheus-prometheus.yaml |grep "image: " |awk -F':' '{print $2}'`
-prometheus_image_tag=`cat kube-prometheus-$KubePrometheusVersion/manifests/prometheus-prometheus.yaml |grep "image " |awk -F':' '{print $3}'`
+prometheus_image_tag=`cat kube-prometheus-$KubePrometheusVersion/manifests/prometheus-prometheus.yaml |grep "image: " |awk -F':' '{print $3}'`
 
 alertmanager_base_image=`cat kube-prometheus-$KubePrometheusVersion/manifests/alertmanager-alertmanager.yaml |grep "image: " |awk -F':' '{print $2}'`
 alertmanager_image_tag=`cat kube-prometheus-$KubePrometheusVersion/manifests/alertmanager-alertmanager.yaml |grep "image: " |awk -F':' '{print $3}'`
@@ -37,6 +37,8 @@ sed "s/- --prometheus-config-reloader=//g" 1.txt > 2.txt
 sed "s/image: //g" 2.txt > 3.txt
 rm -f image-lists-temp.txt 1.txt 2.txt
 mv 3.txt images-list.txt
+
+cat images-list.txt
 
 for file in $(cat images-list.txt); do docker pull $file; done
 echo 'Images pulled.'
