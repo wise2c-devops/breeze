@@ -65,6 +65,14 @@ firewall-cmd --complete-reload
 curl -L https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 ```
 
+或从镜像站点下载：
+
+```
+curl -L http://mirror.azure.cn/docker-toolbox/linux/compose/1.25.4/docker-compose-Linux-x86_64 -o /usr/local/bin/docker-compose
+```
+
+然后设置权限：
+
 ```
 chmod +x /usr/local/bin/docker-compose
 ```
