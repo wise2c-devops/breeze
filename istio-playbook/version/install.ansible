@@ -2,7 +2,7 @@
   hosts: istio
   user: root
   vars:
-    path: /var/tmp/wise2c/istio
+    path: /var/lib/wise2c/tmp/istio
   tasks:
   - name: make istio dir
     file:
@@ -62,7 +62,7 @@
 
   - name: set harbor address for deploy script
     replace:
-      path: "/var/tmp/wise2c/istio/{{ item }}"
+      path: "/var/lib/wise2c/tmp/istio/{{ item }}"
       regexp: "harbor-address"
       replace: "{{ registry_endpoint }}"
     with_items:

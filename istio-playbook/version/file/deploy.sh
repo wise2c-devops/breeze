@@ -34,13 +34,13 @@ helm install install/kubernetes/helm/istio-init -g --namespace istio-system
 
 set +e
 ######### Deploy Istio #########
-# We need to verify that all 23 Istio CRDs were committed to the Kubernetes api-server
+# We need to verify that all 25 Istio CRDs were committed to the Kubernetes api-server
 printf "Waiting for Istio to commit custom resource definitions..."
 
-until [ `kubectl get crds |grep 'istio.io\|certmanager.k8s.io' |wc -l` -eq 23 ]; do printf "."; done
+until [ `kubectl get crds |grep 'istio.io\|certmanager.k8s.io' |wc -l` -eq 25 ]; do printf "."; done
 
 crdresult=""
-for ((i=1; i<=23; i++)); do crdresult=${crdresult}"True"; done
+for ((i=1; i<=25; i++)); do crdresult=${crdresult}"True"; done
 
 until [ `for istiocrds in $(kubectl get crds |grep 'istio.io\|certmanager.k8s.io' |awk '{print $1}'); do kubectl get crd ${istiocrds} -o jsonpath='{.status.conditions[1].status}'; done` = $crdresult ]; do sleep 1; printf "."; done
 
@@ -51,9 +51,9 @@ helm install install/kubernetes/helm/istio -g --namespace istio-system --set gat
 
 echo 'Phase2 done!'
 
-kubectl apply -f /var/tmp/wise2c/istio/kiali-service.yaml
-kubectl apply -f /var/tmp/wise2c/istio/jaeger-service.yaml
-kubectl apply -f /var/tmp/wise2c/istio/prometheus-service.yaml
-kubectl apply -f /var/tmp/wise2c/istio/grafana-service.yaml
+kubectl apply -f /var/lib/wise2c/tmp/istio/kiali-service.yaml
+kubectl apply -f /var/lib/wise2c/tmp/istio/jaeger-service.yaml
+kubectl apply -f /var/lib/wise2c/tmp/istio/prometheus-service.yaml
+kubectl apply -f /var/lib/wise2c/tmp/istio/grafana-service.yaml
 
 echo 'NodePorts are set for services.'

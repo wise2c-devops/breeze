@@ -7,10 +7,10 @@ if [ -f ${certificate_path}/ca.pem ] || [ -f ${certificate_path}/ca-key.pem ] ||
   echo 'Existing etcd certificate files will not be replaced.'
 else
   # ETCD CA
-  cd /var/tmp/wise2c/etcd/
+  cd /var/lib/wise2c/tmp/etcd/
   cfssl gencert -initca ca-csr.json | cfssljson -bare ca
   # ETCD certificate
   cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -hostname=127.0.0.1,{% for host in play_hosts %}{{ host }}{% if not loop.last %},{% endif %}{% endfor %} -profile=etcd etcd-csr.json | cfssljson -bare etcd
-  cd /var/tmp/wise2c/etcd/
+  cd /var/lib/wise2c/tmp/etcd/
   cp *.pem /etc/etcd/pki/
 fi

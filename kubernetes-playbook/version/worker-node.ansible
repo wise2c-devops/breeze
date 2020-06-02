@@ -10,7 +10,7 @@
   - { src: 'file/worker-join-command.sh', dest: '{{ path }}/worker-join-command.sh' }
 
 - name: setup node
-  shell: /var/tmp/wise2c/kubernetes/worker-join-command.sh
+  shell: /var/lib/wise2c/tmp/kubernetes/worker-join-command.sh
   async: 600
 
 - name: update kubelet.conf
@@ -25,11 +25,11 @@
 - name: execute prometheus-fix-worker-nodes script for Redhat/CentOS
   shell: ./prometheus-fix-worker-nodes.sh
   args:
-    chdir: '/var/tmp/wise2c/kubernetes/'
+    chdir: '/var/lib/wise2c/tmp/kubernetes/'
   when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS") 
 
 - name: execute prometheus-fix-worker-nodes script for Ubuntu
   shell: ./prometheus-fix-worker-nodes-ubuntu.sh
   args:
-    chdir: '/var/tmp/wise2c/kubernetes/'
+    chdir: '/var/lib/wise2c/tmp/kubernetes/'
   when: ansible_distribution =="Ubuntu"

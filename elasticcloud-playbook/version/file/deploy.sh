@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-cd /var/tmp/wise2c/elasticcloud
+cd /var/lib/wise2c/tmp/elasticcloud
 
 # Elastic Operator deploy
 kubectl create -f  ./eck.yml

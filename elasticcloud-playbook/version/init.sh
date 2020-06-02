@@ -13,7 +13,7 @@ echo "elastic_stack_version: ${ElasticStackVersion}" >> ${path}/group_vars/elast
 
 curl -L -o ${path}/template/eck.yml.j2 https://download.elastic.co/downloads/eck/${ElasticCloudVersion}/all-in-one.yaml
 
-cat ${path}/template/eck.yaml |grep "image: docker.elastic.co/eck/" |awk -F":" '{print $2":"$3}' > images-list.txt
+cat ${path}/template/eck.yml.j2 |grep "image: docker.elastic.co/eck/" |awk -F":" '{print $2":"$3}' > images-list.txt
 echo "docker.elastic.co/elasticsearch/elasticsearch:${ElasticStackVersion}" >> images-list.txt
 echo "docker.elastic.co/kibana/kibana:${ElasticStackVersion}" >> images-list.txt
 echo "fluent/fluentd-kubernetes-daemonset:v1-debian-elasticsearch" >> images-list.txt
@@ -32,5 +32,5 @@ echo 'Images are compressed as bzip format.'
 sed -i "s,docker.elastic.co/eck,{{ registry_endpoint }}/{{ registry_project }},g" ${path}/template/eck.yml.j2
 
 curl -L -o ${path}/template/fluentd.yml.j2 https://raw.githubusercontent.com/fluent/fluentd-kubernetes-daemonset/master/fluentd-daemonset-elasticsearch-rbac.yaml
-sed -i "s,fluent/fluentd-kubernetes-daemonset,{{ registry_endpoint }}/{{ registry_project }},g" ${path}/template/fluentd.yml.j2
+sed -i "s,fluent/fluentd-kubernetes-daemonset,{{ registry_endpoint }}/{{ registry_project }}/fluentd-kubernetes-daemonset,g" ${path}/template/fluentd.yml.j2
 sed -i "s,elasticsearch-logging,quickstart-es-http.default.svc.cluster.local,g" ${path}/template/fluentd.yml.j2

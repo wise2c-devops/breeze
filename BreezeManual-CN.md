@@ -65,6 +65,14 @@ firewall-cmd --complete-reload
 curl -L https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 ```
 
+或从镜像站点下载：
+
+```
+curl -L http://mirror.azure.cn/docker-toolbox/linux/compose/1.25.4/docker-compose-Linux-x86_64 -o /usr/local/bin/docker-compose
+```
+
+然后设置权限：
+
 ```
 chmod +x /usr/local/bin/docker-compose
 ```
@@ -80,10 +88,20 @@ systemctl enable docker
 (4) 下载用于部署某个Kubernetes版本的docker-compose文件并使部署程序运行起来，例如：
 
 ```
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.17.3/docker-compose.yml -o docker-compose.yml
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.17.3/docker-compose-centos.yml -o docker-compose.yml
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.17.3/docker-compose-ubuntu.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.18.2/docker-compose.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.18.2/docker-compose-centos.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.18.2/docker-compose-ubuntu.yml -o docker-compose.yml
 ```
+
+国内用户可以使用阿里云镜像站点文件，部署所用的image将从阿里云拉取：
+
+```
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.18.2/docker-compose-aliyun.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.18.2/docker-compose-centos-aliyun.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.18.2/docker-compose-ubuntu-aliyun.yml -o docker-compose.yml
+```
+
+然后：
 
 ```
 docker-compose up -d
