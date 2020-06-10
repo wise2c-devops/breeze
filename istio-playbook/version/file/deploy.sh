@@ -20,36 +20,21 @@ echo 'Images pushed.'
 ######### Update deploy yaml files #########
 rm -rf istio-$IstioVersion
 tar zxvf istio-$IstioVersion-origin.tar.gz
-cd istio-$IstioVersion/install/kubernetes
-sed -i "s/docker.io\/istio/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "docker.io/istio" ./ |grep .yaml)
-sed -i "s/docker.io\/prom/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "docker.io/prom" ./ |grep .yaml)
-sed -i "s/docker.io\/jaegertracing/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "docker.io/jaegertracing" ./ |grep .yaml)
-sed -i "s/grafana\/grafana/$MyImageRepositoryIP\/$MyImageRepositoryProject\/grafana/g" $(grep -lr "grafana/grafana" ./ |grep .yaml)
-sed -i "s/quay.io\/kiali/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "quay.io/kiali" ./ |grep .yaml)
+cd istio-$IstioVersion/
+
+sed -i "s/quay.io\/kiali/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" samples/addons/kiali.yaml
+sed -i "s/docker.io\/jaegertracing/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" samples/addons/jaeger.yaml
+sed -i "s/openzipkin\/zipkin-slim/$MyImageRepositoryIP\/$MyImageRepositoryProject\/zipkin-slim/g" samples/addons/extras/zipkin.yaml
+sed -i "s/prom\/prometheus/$MyImageRepositoryIP\/$MyImageRepositoryProject\/prometheus/g" samples/addons/prometheus.yaml
+sed -i "s/jimmidyson\/configmap-reload/$MyImageRepositoryIP\/$MyImageRepositoryProject\/configmap-reload/g" samples/addons/prometheus.yaml
+sed -i "s/grafana\/grafana/$MyImageRepositoryIP\/$MyImageRepositoryProject\/grafana/g" samples/addons/grafana.yaml
+
 cd ../../
 
 # Istio init deploy
-kubectl create ns istio-system
-helm install install/kubernetes/helm/istio-init -g --namespace istio-system
-
-set +e
-######### Deploy Istio #########
-# We need to verify that all 25 Istio CRDs were committed to the Kubernetes api-server
-printf "Waiting for Istio to commit custom resource definitions..."
-
-until [ `kubectl get crds |grep 'istio.io\|certmanager.k8s.io' |wc -l` -eq 25 ]; do printf "."; done
-
-crdresult=""
-for ((i=1; i<=25; i++)); do crdresult=${crdresult}"True"; done
-
-until [ `for istiocrds in $(kubectl get crds |grep 'istio.io\|certmanager.k8s.io' |awk '{print $1}'); do kubectl get crd ${istiocrds} -o jsonpath='{.status.conditions[1].status}'; done` = $crdresult ]; do sleep 1; printf "."; done
-
-echo 'Phase1 done!'
-set -e
-
-helm install install/kubernetes/helm/istio -g --namespace istio-system --set gateways.istio-ingressgateway.type=NodePort --values install/kubernetes/helm/istio/values-istio-demo.yaml
-
-echo 'Phase2 done!'
+rm -f /usr/bin/istioctl
+cp bin/istioctl /usr/bin/
+istioctl install --set profile=demo --set hub=$MyImageRepositoryIP\/$MyImageRepositoryProject
 
 kubectl apply -f /var/lib/wise2c/tmp/istio/kiali-service.yaml
 kubectl apply -f /var/lib/wise2c/tmp/istio/jaeger-service.yaml
