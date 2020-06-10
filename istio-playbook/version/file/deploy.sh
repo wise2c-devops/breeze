@@ -42,8 +42,6 @@ sed -i "s/hub: docker.io\/omnition/hub: $MyImageRepositoryIP\/$MyImageRepository
 sed -i "s/hub: docker.io\/prom/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/charts/istio-telemetry/prometheusOperator/values.yaml
 sed -i "s/hub: docker.io\/prom/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/charts/istio-telemetry/prometheus/values.yaml
 
-cd ../../
-
 # Istio init deploy
 rm -f /usr/bin/istioctl
 cp bin/istioctl /usr/bin/
