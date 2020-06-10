@@ -13,9 +13,18 @@ curl -L -o ${path}/file/istio-$IstioVersion-origin.tar.gz https://github.com/ist
 
 cd ${path}/file/
 tar zxf istio-$IstioVersion-origin.tar.gz
-cat istio-$IstioVersion/install/kubernetes/istio-demo.yaml |grep "image:" |grep -v '\[\[' |grep -v '{' |awk -F':' '{print $2":"$3}' |awk -F "[\"\"]" '{print $2}' |awk '!a[$0]++{print}' > images-list.txt
-#echo "istio/proxy_init:"${IstioVersion} >> images-list.txt
-echo "ubuntu:bionic" >> images-list.txt
+echo "istio/proxyv2:$IstioVersion" > images-list.txt
+echo "istio/pilot:$IstioVersion" >> images-list.txt
+echo "istio/mixer:$IstioVersion" >> images-list.txt
+echo "istio/operator:$IstioVersion" >> images-list.txt
+
+cat istio-$IstioVersion/samples/addons/kiali.yaml |grep image |awk -F ":" '{print $2":"$3}' |grep -v IfNotPresent >> images-list.txt
+cat istio-$IstioVersion/samples/addons/jaeger.yaml |grep image |awk -F "[\"]" '{print $2}' |awk -F "/" '{print $2"/"$3}' >> images-list.txt
+cat istio-$IstioVersion/samples/addons/extras/zipkin.yaml |grep image |awk -F':' '{print $2":"$3}' >> images-list.txt
+cat istio-$IstioVersion/samples/addons/prometheus.yaml |grep "image:" |awk -F':' '{print $2":"$3}' |awk -F "[\"]" '{print $2}' >> images-list.txt
+cat istio-$IstioVersion/samples/addons/grafana.yaml |grep image |awk -F "[\"]" '{print $2}' >> images-list.txt
+
+#echo "ubuntu:bionic" >> images-list.txt
 
 echo 'Images list for Istio:'
 cat images-list.txt
