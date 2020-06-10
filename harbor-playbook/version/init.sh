@@ -14,7 +14,7 @@ curl -L https://github.com/docker/compose/releases/download/1.24.1/docker-compos
 curl -L https://storage.googleapis.com/harbor-releases/release-${version%.*}.0/harbor-offline-installer-v${version}.tgz \
     -o ${path}/file/harbor-offline-installer-v${version}.tgz
 
-curl -sSL https://raw.githubusercontent.com/vmware/harbor/v${version}/make/harbor.yml \
+curl -sSL https://raw.githubusercontent.com/vmware/harbor/v${version}/make/harbor.yml.tmpl \
     | sed \
     -e "s,hostname: reg\.mydomain\.com,hostname: {{ inventory_hostname }},g" \
     -e "s,harbor_admin_password: Harbor12345,harbor_admin_password: {{ password }},g" \
