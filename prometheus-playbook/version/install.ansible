@@ -159,3 +159,4 @@
     args:
       chdir: '{{ cpath }}/'
     run_once: ture
+    ignore_errors: true
