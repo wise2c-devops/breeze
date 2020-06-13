@@ -47,14 +47,14 @@ rm -f /usr/bin/istioctl
 cp bin/istioctl /usr/bin/
 istioctl install --set profile=demo --set addonComponents.kiali.enabled=false --set addonComponents.prometheus.enabled=false --set addonComponents.grafana.enabled=false --set addonComponents.tracing.enabled=false --set hub=$MyImageRepositoryIP\/$MyImageRepositoryProject
 
-kubectl apply -f samples/addons/kiali.yaml
-kubectl apply -f samples/addons/jaeger.yaml
-kubectl apply -f samples/addons/prometheus.yaml
-kubectl apply -f samples/addons/grafana.yaml
+kubectl -n istio-system apply -f samples/addons/kiali.yaml
+kubectl -n istio-system apply -f samples/addons/jaeger.yaml
+kubectl -n istio-system apply -f samples/addons/prometheus.yaml
+kubectl -n istio-system apply -f samples/addons/grafana.yaml
 
-kubectl apply -f /var/lib/wise2c/tmp/istio/kiali-service.yaml
-kubectl apply -f /var/lib/wise2c/tmp/istio/jaeger-service.yaml
-kubectl apply -f /var/lib/wise2c/tmp/istio/prometheus-service.yaml
-kubectl apply -f /var/lib/wise2c/tmp/istio/grafana-service.yaml
+kubectl -n istio-system apply -f /var/lib/wise2c/tmp/istio/kiali-service.yaml
+kubectl -n istio-system apply -f /var/lib/wise2c/tmp/istio/jaeger-service.yaml
+kubectl -n istio-system apply -f /var/lib/wise2c/tmp/istio/prometheus-service.yaml
+kubectl -n istio-system apply -f /var/lib/wise2c/tmp/istio/grafana-service.yaml
 
 echo 'NodePorts are set for services.'
