@@ -29,23 +29,28 @@ sed -i "s/prom\/prometheus/$MyImageRepositoryIP\/$MyImageRepositoryProject\/prom
 sed -i "s/jimmidyson\/configmap-reload/$MyImageRepositoryIP\/$MyImageRepositoryProject\/configmap-reload/g" samples/addons/prometheus.yaml
 sed -i "s/grafana\/grafana/$MyImageRepositoryIP\/$MyImageRepositoryProject\/grafana/g" samples/addons/grafana.yaml
 
-sed -i "s/hub: docker.io\/istio/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/profiles/default.yaml
-sed -i "s/hub: docker.io\/prom/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/profiles/default.yaml
-sed -i "s/hub: docker.io\/jaegertracing/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/profiles/default.yaml
-sed -i "s/hub: docker.io\/openzipkin/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/profiles/default.yaml
-sed -i "s/hub: docker.io\/omnition/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/profiles/default.yaml
-sed -i "s/hub: quay.io\/kiali/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/profiles/default.yaml
-sed -i "s/hub: quay.io\/kiali/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/charts/istio-telemetry/kiali/values.yaml
-sed -i "s/hub: docker.io\/jaegertracing/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/charts/istio-telemetry/tracing/values.yaml 
-sed -i "s/hub: docker.io\/openzipkin/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/charts/istio-telemetry/tracing/values.yaml
-sed -i "s/hub: docker.io\/omnition/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/charts/istio-telemetry/tracing/values.yaml
-sed -i "s/hub: docker.io\/prom/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/charts/istio-telemetry/prometheusOperator/values.yaml
-sed -i "s/hub: docker.io\/prom/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/charts/istio-telemetry/prometheus/values.yaml
+#sed -i "s/hub: docker.io\/istio/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/profiles/default.yaml
+#sed -i "s/hub: docker.io\/prom/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/profiles/default.yaml
+#sed -i "s/hub: docker.io\/jaegertracing/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/profiles/default.yaml
+#sed -i "s/hub: docker.io\/openzipkin/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/profiles/default.yaml
+#sed -i "s/hub: docker.io\/omnition/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/profiles/default.yaml
+#sed -i "s/hub: quay.io\/kiali/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/profiles/default.yaml
+#sed -i "s/hub: quay.io\/kiali/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/charts/istio-telemetry/kiali/values.yaml
+#sed -i "s/hub: docker.io\/jaegertracing/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/charts/istio-telemetry/tracing/values.yaml 
+#sed -i "s/hub: docker.io\/openzipkin/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/charts/istio-telemetry/tracing/values.yaml
+#sed -i "s/hub: docker.io\/omnition/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/charts/istio-telemetry/tracing/values.yaml
+#sed -i "s/hub: docker.io\/prom/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/charts/istio-telemetry/prometheusOperator/values.yaml
+#sed -i "s/hub: docker.io\/prom/hub: $MyImageRepositoryIP\/$MyImageRepositoryProject/g" manifests/charts/istio-telemetry/prometheus/values.yaml
 
 # Istio init deploy
 rm -f /usr/bin/istioctl
 cp bin/istioctl /usr/bin/
-istioctl install --set profile=demo --set hub=$MyImageRepositoryIP\/$MyImageRepositoryProject
+istioctl install --set profile=demo --set addonComponents.kiali.enabled=false --set addonComponents.prometheus.enabled=false --set addonComponents.grafana.enabled=false --set addonComponents.tracing.enabled=false --set hub=$MyImageRepositoryIP\/$MyImageRepositoryProject
+
+kubectl apply -f samples/addons/kiali.yaml
+kubectl apply -f samples/addons/jaeger.yaml
+kubectl apply -f samples/addons/prometheus.yaml
+kubectl apply -f samples/addons/grafana.yaml
 
 kubectl apply -f /var/lib/wise2c/tmp/istio/kiali-service.yaml
 kubectl apply -f /var/lib/wise2c/tmp/istio/jaeger-service.yaml
