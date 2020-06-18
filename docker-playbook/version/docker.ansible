@@ -84,7 +84,6 @@
     - docker-compose
     - chrony
     - ipvsadm
-    - graphviz
     when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
 
   - name: apt install docker
