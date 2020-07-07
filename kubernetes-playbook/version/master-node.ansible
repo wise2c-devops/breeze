@@ -327,6 +327,14 @@
   shell: |
     kubeadm init --config {{ path }}/kubeadm.conf
 
+- name: copy kube-proxy-ds-patch.yaml
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+  with_items:
+  - { src: 'file/kube-proxy-ds-patch.yaml', dest: '{{ path }}/' }
+  run_once: true
+
 - name: copy patch-kubeconfig.sh
   copy:
     src: '{{ item.src }}'
@@ -461,10 +469,25 @@
 
 - name: update kube-proxy HA setting
   shell: |
-    kubectl -n kube-system get cm kube-proxy -o yaml > {{ path }}/kube-proxy-cm.yaml
-    sed -i "s#.*server:.*#        server: https://{{ endpoint }}#g" {{ path }}/kube-proxy-cm.yaml
-    kubectl -n kube-system apply -f {{ path }}/kube-proxy-cm.yaml
+    kubectl -n kube-system get cm kube-proxy -o yaml > {{ path }}/kube-proxy-cm-master.yaml
+    kubectl -n kube-system get cm kube-proxy -o yaml > {{ path }}/kube-proxy-cm-worker.yaml
+    sed -i "s#name: kube-proxy#name: kube-proxy-master#g" {{ path }}/kube-proxy-cm-master.yaml
+    sed -i "s#.*server:.*#        server: https://127.0.0.1:6443#g" {{ path }}/kube-proxy-cm-master.yaml
+    sed -i "s#.*server:.*#        server: https://{{ endpoint }}#g" {{ path }}/kube-proxy-cm-worker.yaml
+    kubectl -n kube-system get ds kube-proxy -o json | jq '.metadata.name = "kube-proxy-master"' | jq '.spec.template.spec.volumes[0].configMap.name = "kube-proxy-master"' | jq '.spec.template.spec.nodeSelector."node-role.ku
+bernetes.io/master"=""' > {{ path }}/kube-proxy-ds-master.json
+    kubectl -n kube-system apply -f {{ path }}/kube-proxy-cm-master.yaml
+    kubectl -n kube-system apply -f {{ path }}/kube-proxy-cm-worker.yaml
+    kubectl -n kube-system apply -f {{ path }}/kube-proxy-ds-master.json
+    kubectl -n kube-system patch ds kube-proxy --patch "$(cat /var/lib/wise2c/tmp/kubernetes/kube-proxy-ds-patch.yaml)"
   run_once: true
+
+- name: update HA setting for master nodes
+  shell: |
+    sed -i "s#.*server:.*#    server: https://127.0.0.1:6443#g" /etc/kubernetes/kubelet.conf
+    sed -i "s#.*server:.*#    server: https://127.0.0.1:6443#g" /etc/kubernetes/scheduler.conf
+    sed -i "s#.*server:.*#    server: https://127.0.0.1:6443#g" /etc/kubernetes/controller-manager.conf
+    systemctl restart kubelet
 
 - name: execute prometheus-fix-master-nodes script for Redhat/CentOS
   shell: ./prometheus-fix-master-nodes.sh
