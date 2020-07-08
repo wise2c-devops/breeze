@@ -487,6 +487,7 @@ bernetes.io/master"=""' > {{ path }}/kube-proxy-ds-master.json
     sed -i "s#.*server:.*#    server: https://127.0.0.1:6443#g" /etc/kubernetes/kubelet.conf
     sed -i "s#.*server:.*#    server: https://127.0.0.1:6443#g" /etc/kubernetes/scheduler.conf
     sed -i "s#.*server:.*#    server: https://127.0.0.1:6443#g" /etc/kubernetes/controller-manager.conf
+    sed -i "s#.*server:.*#    server: https://127.0.0.1:6443#g" /root/.kube/config
     systemctl restart kubelet
 
 - name: execute prometheus-fix-master-nodes script for Redhat/CentOS
