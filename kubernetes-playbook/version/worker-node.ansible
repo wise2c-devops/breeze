@@ -9,6 +9,10 @@
   with_items:
   - { src: 'file/worker-join-command.sh', dest: '{{ path }}/worker-join-command.sh' }
 
+- name: update worker-join-command.sh
+  shell: |
+    sed -i "s/127.0.0.1:6443/{{ endpoint }}/g" {{ path }}/worker-join-command.sh
+
 - name: setup node
   shell: /var/lib/wise2c/tmp/kubernetes/worker-join-command.sh
   async: 600
