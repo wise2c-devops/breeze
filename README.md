@@ -31,6 +31,8 @@ Project Breeze is an open source trusted solution allow you to create Kubernetes
 ## Architecture
 ![Alt](./manual/Wise2C-Breeze-Architecture.png)
 
+![Alt](./manual/Kubernetes-HA-Breeze.png)
+
 ## Components
 - **breeze**: Ansible playbook for deployments of docker, harbor, haproxy+keepalived, etcd, kubernetes.
 
