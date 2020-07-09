@@ -474,8 +474,7 @@
     sed -i "s#name: kube-proxy#name: kube-proxy-master#g" {{ path }}/kube-proxy-cm-master.yaml
     sed -i "s#.*server:.*#        server: https://127.0.0.1:6443#g" {{ path }}/kube-proxy-cm-master.yaml
     sed -i "s#.*server:.*#        server: https://{{ endpoint }}#g" {{ path }}/kube-proxy-cm-worker.yaml
-    kubectl -n kube-system get ds kube-proxy -o json | jq '.metadata.name = "kube-proxy-master"' | jq '.spec.template.spec.volumes[0].configMap.name = "kube-proxy-master"' | jq '.spec.template.spec.nodeSelector."node-role.ku
-bernetes.io/master"=""' > {{ path }}/kube-proxy-ds-master.json
+    kubectl -n kube-system get ds kube-proxy -o json | jq '.metadata.name = "kube-proxy-master"' | jq '.spec.template.spec.volumes[0].configMap.name = "kube-proxy-master"' | jq '.spec.template.spec.nodeSelector."node-role.kubernetes.io/master"=""' > {{ path }}/kube-proxy-ds-master.json
     kubectl -n kube-system apply -f {{ path }}/kube-proxy-cm-master.yaml
     kubectl -n kube-system apply -f {{ path }}/kube-proxy-cm-worker.yaml
     kubectl -n kube-system apply -f {{ path }}/kube-proxy-ds-master.json
