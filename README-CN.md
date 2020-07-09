@@ -30,6 +30,8 @@ Breeze项目旨在提供一个可信的、安全的、稳定的Kubernetes集群�
 ## 架构原理图
 ![Alt](./manual/Wise2C-Breeze-Architecture.png)
 
+![Alt](./manual/Kubernetes-HA-Breeze.png)
+
 ## 组件
 - **breeze**: 用于部署docker, harbor, haproxy+keepalived, etcd, kubernetes等组件的Ansible playbook。 
 
