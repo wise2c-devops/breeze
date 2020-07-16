@@ -9,7 +9,8 @@ if (version_lt ${current_k8s_server_version} ${long_k8s_version}) || (version_lt
   apt-get update
   apt-get install -y kubeadm --disableexcludes=kubernetes
   kubectl drain `hostname` --ignore-daemonsets
-  kubeadm upgrade node config --kubelet-version ${long_k8s_version}
+  #kubeadm upgrade node config --kubelet-version ${long_k8s_version} --certificate-renewal=false
+  kubeadm upgrade node --certificate-renewal=false -y
   apt-get install -y kubelet kubectl --disableexcludes=kubernetes
   systemctl daemon-reload
   systemctl restart kubelet
