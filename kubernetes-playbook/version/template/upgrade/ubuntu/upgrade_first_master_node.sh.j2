@@ -8,10 +8,12 @@ function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -V -r | head -n 1
 if (version_lt ${current_k8s_server_version} ${long_k8s_version}) || (version_lt ${current_k8s_client_version} ${long_k8s_version}); then
   apt-get update
   apt-get install -y kubeadm --disableexcludes=kubernetes
-  kubeadm upgrade apply -y ${long_k8s_version}
+  kubectl drain `hostname`
+  kubeadm upgrade apply --certificate-renewal=false -y ${long_k8s_version}
   apt-get install -y kubelet kubectl --disableexcludes=kubernetes
   systemctl daemon-reload
   systemctl restart kubelet
+  kubectl uncordon `hostname`
   echo 'first master node' > ./first_master_node.log
 else
   echo "current version is not lower than ${long_k8s_version}" 
