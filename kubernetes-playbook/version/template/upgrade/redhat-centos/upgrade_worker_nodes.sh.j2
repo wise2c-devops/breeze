@@ -9,7 +9,8 @@ if (version_lt ${current_k8s_server_version} ${long_k8s_version}) || (version_lt
   yum clean all
   yum install -y --disablerepo=* --enablerepo=wise2c kubeadm-${short_k8s_version}-0 --disableexcludes=kubernetes
   kubectl drain `hostname` --ignore-daemonsets
-  kubeadm upgrade node config --kubelet-version ${long_k8s_version}
+  #kubeadm upgrade node config --kubelet-version ${long_k8s_version} --certificate-renewal=false
+  kubeadm upgrade node --certificate-renewal=false -y
   yum install -y --disablerepo=* --enablerepo=wise2c kubelet-${short_k8s_version}-0 kubectl-${short_k8s_version}-0 --disableexcludes=kubernetes
   systemctl daemon-reload
   systemctl restart kubelet
