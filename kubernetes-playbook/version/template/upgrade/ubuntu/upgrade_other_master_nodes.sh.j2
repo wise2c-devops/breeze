@@ -9,10 +9,12 @@ if [ ! -f "./first_master_node.log" ];then
   if (version_lt ${current_k8s_server_version} ${long_k8s_version}) || (version_lt ${current_k8s_client_version} ${long_k8s_version}); then
     apt-get update
     apt-get install -y kubeadm --disableexcludes=kubernetes
-    kubeadm upgrade node experimental-control-plane
+    kubectl drain `hostname`
+    kubeadm upgrade node --certificate-renewal=false -y
     apt-get install -y kubelet kubectl --disableexcludes=kubernetes
     systemctl daemon-reload
     systemctl restart kubelet
+    kubectl uncordon `hostname`
   else
     echo "current version is not lower than ${long_k8s_version}"
   fi
