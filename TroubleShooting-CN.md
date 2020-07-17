@@ -131,6 +131,11 @@ openssl x509 -noout -text -in /var/lib/kubelet/pki/kubelet-client-current.pem |g
 
      c) 管理员操作kubectl命令的主机
 
-        当前用户的.kube/config文件，例如/root/.kube/config
+        当前用户的.kube/config文件，例如/root/.kube/config 注意此证书有效性仅仅只影响管理员操作命令，对集群自身功能无影响
 
+        这个证书比较特殊，检查的命令和参数有些不同，需要这样操作：
+
+        cat /root/.kube/config | grep client-certificate-data | awk '{print $2}'|base64 -d | openssl x509 -noout -dates
+
+        注意此文件其实是master节点/etc/kubernetes/admin.conf文件的一份拷贝
 ```
