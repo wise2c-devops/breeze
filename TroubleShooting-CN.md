@@ -102,3 +102,35 @@
 	0 0 1 1,7 * /root/renewk8scert.sh
 	```
         这样系统每年的1月1日和7月1日的0:00会执行该脚本。
+
+**如何检查系统证书有效期**
+
+```
+（1）检查证书有效时间的命令及参数：
+
+openssl x509 -noout -text -in 证书文件全名 |grep Not
+
+例如：
+
+openssl x509 -noout -text -in /var/lib/kubelet/pki/kubelet-client-current.pem |grep Not
+
+（2）所需检查的证书列表：
+
+     a) 所有master节点
+
+        /etc/kubernetes/pki/ca.crt
+        /etc/kubernetes/pki/apiserver.crt
+        /etc/kubernetes/pki/front-proxy-ca.crt
+        /etc/kubernetes/pki/front-proxy-client.crt
+        /etc/kubernetes/pki/apiserver-kubelet-client.crt
+
+     b) master及worker节点（即：集群内所有节点）
+
+        /var/lib/kubelet/pki/kubelet-client-current.pem
+        /var/lib/kubelet/pki/kubelet.crt
+
+     c) 管理员操作kubectl命令的主机
+
+        当前用户的.kube/config文件，例如/root/.kube/config
+
+```
