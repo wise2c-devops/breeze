@@ -127,7 +127,8 @@ openssl x509 -noout -text -in /var/lib/kubelet/pki/kubelet-client-current.pem |g
      b) master及worker节点（即：集群内所有节点）
 
         /var/lib/kubelet/pki/kubelet-client-current.pem
-        /var/lib/kubelet/pki/kubelet.crt
+
+        **注意这个文件有效期每年会自动更新**
 
      c) 管理员操作kubectl命令的主机
 
