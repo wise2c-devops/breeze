@@ -19,10 +19,10 @@ metrics_scraper_version=1.0.3
 flannel_version=0.12.0
 calico_version=3.15.1
 helm_version=3.2.4
-istio_version=1.6.4
+istio_version=1.6.5
 contour_version=1.6.1
 contour_envoyproxy_version=1.14.3
-elastic_cloud_version=1.1.2
+elastic_cloud_version=1.2.0
 elastic_stack_version=7.8.0
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
