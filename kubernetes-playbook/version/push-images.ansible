@@ -41,7 +41,7 @@
   - { repo: '{{ kubernetes_repo }}', name: 'kube-proxy', tag: '{{ kubernetes_version }}' }
   - { repo: '{{ kubernetes_repo }}', name: 'pause', tag: '{{ pause_version }}' }
   - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
-  - { repo: '{{ metrics_server_repo }}', name: 'metrics-server-amd64', tag: '{{ metrics_server_version }}' }
+  - { repo: '{{ metrics_server_repo }}/metrics-server', name: 'metrics-server', tag: '{{ metrics_server_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'dashboard', tag: '{{ dashboard_version }}' }
   run_once: true
@@ -59,7 +59,7 @@
   - { repo: '{{ kubernetes_repo }}', name: 'kube-proxy', tag: '{{ kubernetes_version }}' }
   - { repo: '{{ kubernetes_repo }}', name: 'pause', tag: '{{ pause_version }}' }
   - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
-  - { repo: '{{ metrics_server_repo }}', name: 'metrics-server-amd64', tag: '{{ metrics_server_version }}' }
+  - { repo: '{{ metrics_server_repo }}/metrics-server', name: 'metrics-server', tag: '{{ metrics_server_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'dashboard', tag: '{{ dashboard_version }}' }
   run_once: true
@@ -76,7 +76,7 @@
   - { repo: '{{ kubernetes_repo }}', name: 'kube-proxy', tag: '{{ kubernetes_version }}' }
   - { repo: '{{ kubernetes_repo }}', name: 'pause', tag: '{{ pause_version }}' }
   - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
-  - { repo: '{{ metrics_server_repo }}', name: 'metrics-server-amd64', tag: '{{ metrics_server_version }}' }
+  - { repo: '{{ metrics_server_repo }}/metrics-server', name: 'metrics-server', tag: '{{ metrics_server_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'dashboard', tag: '{{ dashboard_version }}' }
   run_once: ture
