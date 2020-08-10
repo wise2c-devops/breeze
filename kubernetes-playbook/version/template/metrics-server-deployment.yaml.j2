@@ -29,9 +29,21 @@ spec:
         emptyDir: {}
       containers:
       - name: metrics-server
-        image: {{ registry_endpoint }}/{{ registry_project }}/metrics-server-amd64:{{ metrics_server_version }}
+        image: {{ registry_endpoint }}/{{ registry_project }}/metrics-server:{{ metrics_server_version }}
         imagePullPolicy: IfNotPresent
+        args:
+          - --cert-dir=/tmp
+          - --secure-port=4443
+        ports:
+        - name: main-port
+          containerPort: 4443
+          protocol: TCP
+        securityContext:
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1000
         volumeMounts:
         - name: tmp-dir
           mountPath: /tmp
-
+      nodeSelector:
+        kubernetes.io/os: linux

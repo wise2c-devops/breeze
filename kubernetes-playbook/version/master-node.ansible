@@ -101,7 +101,7 @@
   - { name: 'kube-proxy', tag: '{{ kubernetes_version }}' }
   - { name: 'pause', tag: '{{ pause_version }}' }
   - { name: 'coredns', tag: '{{ dns_version }}' }
-  - { name: 'metrics-server-amd64', tag: '{{ metrics_server_version }}' }
+  - { name: 'metrics-server', tag: '{{ metrics_server_version }}' }
   - { name: 'flannel', tag: '{{ flannel_version }}' }
   - { name: 'cni', tag: '{{ calico_version }}' }
   - { name: 'kube-controllers', tag: '{{ calico_version }}' }
