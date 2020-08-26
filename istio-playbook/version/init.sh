@@ -21,7 +21,7 @@ echo "prom/prometheus:"`cat istio-$IstioVersion/manifests/profiles/default.yaml 
 echo "grafana/grafana:"`cat istio-$IstioVersion/manifests/profiles/default.yaml |grep -A1 grafana/grafana |grep tag |awk '{print $2}'` >> images-list.txt
 echo "jaegertracing/all-in-one:"`cat istio-$IstioVersion/manifests/profiles/default.yaml |grep -A1 docker.io/jaegertracing |grep tag |awk '{print $2}' |awk -F "[\"]" '{print $2}'` >> images-list.txt
 echo "quay.io/kiali/kiali:"`cat istio-$IstioVersion/manifests/profiles/default.yaml |grep -A 1 "hub: quay.io/kiali" |awk 'END{print}' |awk '{print $2}'` >> images-list.txt
-cat istio-$IstioVersion/samples/addons/kiali.yaml |grep image |awk -F ":" '{print $2":"$3}' |grep -v IfNotPresent >> images-list.txt
+#cat istio-$IstioVersion/samples/addons/kiali.yaml |grep image |awk -F ":" '{print $2":"$3}' |grep -v IfNotPresent >> images-list.txt
 cat istio-$IstioVersion/manifests/profiles/default.yaml |grep coredns-plugin |awk '{print $2}' >> images-list.txt
 #cat istio-$IstioVersion/samples/addons/prometheus.yaml |grep "image:" |awk -F':' '{print $2":"$3}' |awk -F "[\"]" '{print $2}' >> images-list.txt
 #echo "jaegertracing/zipkin-slim:"`cat istio-$IstioVersion/manifests/profiles/default.yaml |grep -A1 docker.io/openzipkin |grep tag |awk '{print $2}'` >> images-list.txt
