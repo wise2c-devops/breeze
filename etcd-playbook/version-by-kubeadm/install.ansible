@@ -73,7 +73,7 @@
       repository: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
       tag: '{{ item.tag }}'
     with_items:
-      - { repo: 'k8s.gcr.io', name: 'etcd-amd64', tag: '{{ version }}' }
+      - { repo: 'k8s.gcr.io', name: 'etcd', tag: '{{ version }}' }
     run_once: true
 
   - name: push images
@@ -83,7 +83,7 @@
       push: true
       state: present
     with_items:
-      - { repo: 'k8s.gcr.io', name: 'etcd-amd64', tag: '{{ version }}' }
+      - { repo: 'k8s.gcr.io', name: 'etcd', tag: '{{ version }}' }
     run_once: true
 
   - name: remove original images tag
@@ -92,7 +92,7 @@
       name: '{{ item.repo }}/{{ item.name }}'
       tag: '{{ item.tag }}'
     with_items:
-      - { repo: 'k8s.gcr.io', name: 'etcd-amd64', tag: '{{ version }}' }
+      - { repo: 'k8s.gcr.io', name: 'etcd', tag: '{{ version }}' }
     run_once: ture
 
   - name: make etcd cert dir
@@ -158,7 +158,7 @@
       name: etcd
       network_mode: host
       restart_policy: unless-stopped
-      image: "{{ registry_endpoint }}/{{ registry_project }}/etcd-amd64:{{ version }}"
+      image: "{{ registry_endpoint }}/{{ registry_project }}/etcd:{{ version }}"
       command: '{{ command }}'
       volumes:
         - "{{ etcd_data_path }}:/var/lib/etcd"
