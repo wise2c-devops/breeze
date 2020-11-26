@@ -15,7 +15,7 @@ cd ${path}/file/
 tar zxf istio-$IstioVersion-origin.tar.gz
 echo "istio/proxyv2:$IstioVersion" > images-list.txt
 echo "istio/pilot:$IstioVersion" >> images-list.txt
-echo "istio/mixer:$IstioVersion" >> images-list.txt
+#echo "istio/mixer:$IstioVersion" >> images-list.txt
 echo "istio/operator:$IstioVersion" >> images-list.txt
 echo "prom/prometheus:"`cat istio-$IstioVersion/manifests/profiles/default.yaml |grep -A1 docker.io/prom |grep tag |awk '{print $2}'` >> images-list.txt
 echo "grafana/grafana:"`cat istio-$IstioVersion/manifests/profiles/default.yaml |grep -A1 grafana/grafana |grep tag |awk '{print $2}'` >> images-list.txt
