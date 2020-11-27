@@ -24,15 +24,13 @@ cd istio-$IstioVersion/
 rm -f /usr/bin/istioctl
 cp bin/istioctl /usr/bin/
 
-istioctl install --set profile=demo --set values.tracing.jaeger.hub=$MyImageRepositoryIP\/$MyImageRepositoryProject --set values.kiali.hub=$MyImageRepositoryIP\/$MyImageRepositoryProject --set values.prometheus.hub=$MyImageRepositoryIP\/$MyImageRepositoryProject --set values.grafana.image.repository=$MyImageRepositoryIP\/$MyImageRepositoryProject/grafana --set hub=$MyImageRepositoryIP\/$MyImageRepositoryProject
+#istioctl install --set profile=demo --set values.tracing.jaeger.hub=$MyImageRepositoryIP\/$MyImageRepositoryProject --set values.kiali.hub=$MyImageRepositoryIP\/$MyImageRepositoryProject --set values.prometheus.hub=$MyImageRepositoryIP\/$MyImageRepositoryProject --set values.grafana.image.repository=$MyImageRepositoryIP\/$MyImageRepositoryProject/grafana --set hub=$MyImageRepositoryIP\/$MyImageRepositoryProject
 
-#--set values.tracing.jaeger.tag=
-#--set values.prometheus.tag=
-#--set values.grafana.image.tag=
+istioctl install -y --set profile=demo --set hub=$MyImageRepositoryIP\/$MyImageRepositoryProject
 
-kubectl apply -f /var/lib/wise2c/tmp/istio/kiali-service.yaml
-kubectl apply -f /var/lib/wise2c/tmp/istio/jaeger-service.yaml
-kubectl apply -f /var/lib/wise2c/tmp/istio/prometheus-service.yaml
-kubectl apply -f /var/lib/wise2c/tmp/istio/grafana-service.yaml
+#kubectl apply -f /var/lib/wise2c/tmp/istio/kiali-service.yaml
+#kubectl apply -f /var/lib/wise2c/tmp/istio/jaeger-service.yaml
+#kubectl apply -f /var/lib/wise2c/tmp/istio/prometheus-service.yaml
+#kubectl apply -f /var/lib/wise2c/tmp/istio/grafana-service.yaml
 
-echo 'NodePorts are set for services.'
+#echo 'NodePorts are set for services.'
