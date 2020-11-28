@@ -303,6 +303,14 @@ http://任意服务器IP:30201/kiali
 
 ![Alt](./manual/Istio-Kiali-002.png)
 
+新版本Kiali引入了验证模式，Breeze默认使用与Kubernetes Dashboard相同的token方式，可以通过以下命令获取admin-user的访问令牌：
+
+```
+kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
+```
+
+将返回的token字串粘贴至登录窗口即可实现登录。
+
 Jaeger：
 
 http://任意服务器IP:30280
