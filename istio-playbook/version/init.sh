@@ -17,6 +17,7 @@ echo "istio/proxyv2:$IstioVersion" > images-list.txt
 echo "istio/pilot:$IstioVersion" >> images-list.txt
 echo "istio/operator:$IstioVersion" >> images-list.txt
 cat istio-$IstioVersion/samples/addons/prometheus.yaml |grep image: |grep prom |awk '{print $2}' |awk -F "[\"]" '{print $2}' >> images-list.txt
+cat istio-$IstioVersion/samples/addons/prometheus.yaml |grep image: |grep configmap |awk '{print $2}' |awk -F "[\"]" '{print $2}' >> images-list.txt
 cat istio-$IstioVersion/samples/addons/grafana.yaml |grep image: |grep grafana |awk '{print $2}' |awk -F "[\"]" '{print $2}' >> images-list.txt
 cat istio-$IstioVersion/samples/addons/jaeger.yaml |grep image: |grep jaegertracing |awk '{print $2}' |awk -F "[\"]" '{print $2}' >> images-list.txt
 cat istio-$IstioVersion/samples/addons/kiali.yaml |grep image:  |awk '{print $3}' |awk -F "[\"]" '{print $2}' >> images-list.txt
