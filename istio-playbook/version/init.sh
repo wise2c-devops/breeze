@@ -20,6 +20,7 @@ cat istio-$IstioVersion/samples/addons/prometheus.yaml |grep image: |grep prom |
 cat istio-$IstioVersion/samples/addons/prometheus.yaml |grep image: |grep configmap |awk '{print $2}' |awk -F "[\"]" '{print $2}' >> images-list.txt
 cat istio-$IstioVersion/samples/addons/grafana.yaml |grep image: |grep grafana |awk '{print $2}' |awk -F "[\"]" '{print $2}' >> images-list.txt
 cat istio-$IstioVersion/samples/addons/jaeger.yaml |grep image: |grep jaegertracing |awk '{print $2}' |awk -F "[\"]" '{print $2}' >> images-list.txt
+cat istio-$IstioVersion/samples/addons/extras/zipkin.yaml |grep image: |grep zipkin |awk '{print $2}' >> images-list.txt
 cat istio-$IstioVersion/samples/addons/kiali.yaml |grep image:  |awk '{print $3}' |awk -F "[\"]" '{print $2}' >> images-list.txt
 cat istio-$IstioVersion/manifests/profiles/default.yaml |grep coredns-plugin |awk '{print $2}' >> images-list.txt
 
