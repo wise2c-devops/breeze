@@ -24,7 +24,7 @@ cd istio-$IstioVersion/
 rm -f /usr/bin/istioctl
 cp bin/istioctl /usr/bin/
 
-istioctl install --set profile=demo --set hub=$MyImageRepositoryIP\/$MyImageRepositoryProject
+istioctl install -y --set profile=demo --set hub=$MyImageRepositoryIP\/$MyImageRepositoryProject
 
 sed -i "s,image: \"grafana/,image: \"$MyImageRepositoryIP/$MyImageRepositoryProject/,g" samples/addons/grafana.yaml
 sed -i "s,image: \"docker.io/jaegertracing/,image: \"$MyImageRepositoryIP/$MyImageRepositoryProject/,g" samples/addons/jaeger.yaml 
@@ -33,7 +33,7 @@ sed -i "s,image: \"jimmidyson/,image: \"$MyImageRepositoryIP/$MyImageRepositoryP
 sed -i "s,- image: \"quay.io/kiali/,- image: \"$MyImageRepositoryIP/$MyImageRepositoryProject/,g" samples/addons/kiali.yaml
 sed -i "s,strategy: anonymous,strategy: token,g" samples/addons/kiali.yaml
 
-kubectl create -f /var/lib/wise2c/tmp/istio/addons
+kubectl apply -f samples/addons/
             
 kubectl apply -f /var/lib/wise2c/tmp/istio/kiali-service.yaml
 kubectl apply -f /var/lib/wise2c/tmp/istio/jaeger-service.yaml
