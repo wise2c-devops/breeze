@@ -39,18 +39,18 @@ flannel_repo="quay.io/coreos"
 flannel_version=v`cat ${path}/components-version.txt |grep "Flannel" |awk '{print $3}'`
 
 echo "flannel_repo: ${flannel_repo}" >> ${path}/yat/all.yml.gotmpl
-echo "flannel_version: ${flannel_version}-amd64" >> ${path}/yat/all.yml.gotmpl
+echo "flannel_version: ${flannel_version}" >> ${path}/yat/all.yml.gotmpl
 echo "flannel_version_short: ${flannel_version}" >> ${path}/yat/all.yml.gotmpl
 
 curl -sSL https://raw.githubusercontent.com/coreos/flannel/${flannel_version}/Documentation/kube-flannel.yml \
    | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
 
 echo "=== pulling flannel image ==="
-docker pull ${flannel_repo}/flannel:${flannel_version}-amd64
+docker pull ${flannel_repo}/flannel:${flannel_version}
 echo "=== flannel image is pulled successfully ==="
 
 echo "=== saving flannel image ==="
-docker save ${flannel_repo}/flannel:${flannel_version}-amd64 \
+docker save ${flannel_repo}/flannel:${flannel_version} \
     > ${path}/file/flannel.tar
 rm ${path}/file/flannel.tar.bz2 -f
 bzip2 -z --best ${path}/file/flannel.tar
