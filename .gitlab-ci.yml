@@ -3,7 +3,7 @@ build_image:
   services:
     - docker:dind
   before_script:
-    - init.sh
+    - . init.sh
   script:
     - docker build -t wise2c/playbook:$CI_COMMIT_REF_NAME .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
