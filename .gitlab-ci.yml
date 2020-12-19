@@ -1,0 +1,10 @@
+build_image:
+  image: docker:git
+  services:
+    - docker:dind
+  script:
+    - bash init.sh
+    - docker build -t wise2c/playbook:$CI_COMMIT_REF_NAME .
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - docker push wise2c/yum-repo:$CI_COMMIT_REF_NAME
+  when: always
