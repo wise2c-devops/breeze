@@ -6,7 +6,7 @@ build_image:
 #    - chmod +x /builds/$CI_PROJECT_PATH/init.sh
     - cd /builds/$CI_PROJECT_PATH
     - chmod +x ./init.sh
-    - ./init.sh
+    - . init.sh
     - docker build -t wise2c/playbook:$CI_COMMIT_REF_NAME .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker push wise2c/yum-repo:$CI_COMMIT_REF_NAME
