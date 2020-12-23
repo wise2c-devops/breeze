@@ -64,6 +64,8 @@ echo "ContourEnvoyProxy Version: ${contour_envoyproxy_version}" >> ${path}/compo
 echo "ElasticCloud Version: ${elastic_cloud_version}" >> ${path}/components-version.txt
 echo "ElasticStack Version: ${elastic_stack_version}" >> ${path}/components-version.txt
 
+cat ${path}/components-version.txt
+
 for dir in `ls ${path}`
 do
     if [[ ${dir} =~ -playbook$ ]]; then

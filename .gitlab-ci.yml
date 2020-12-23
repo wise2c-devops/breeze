@@ -3,7 +3,9 @@ build_image:
   services:
     - docker:dind
   script:
-    - . init.sh
+    - apk add --no-cache bash
+    - . bash init.sh
+    # - . init.sh
     - docker build -t wise2c/playbook:$CI_COMMIT_REF_NAME .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker push wise2c/yum-repo:$CI_COMMIT_REF_NAME
