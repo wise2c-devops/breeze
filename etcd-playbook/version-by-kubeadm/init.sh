@@ -2,7 +2,8 @@
 
 set -e
 
-path=`dirname $0`
+#path=`dirname $0`
+path=/builds/$CI_PROJECT_PATH
 
 image=k8s.gcr.io/etcd:${1}
 echo "" >> ${path}/group_vars/etcd.yml

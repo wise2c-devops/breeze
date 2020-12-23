@@ -1,6 +1,8 @@
 #! /bin/bash
 set -e
-path=`dirname $0`
+
+#path=`dirname $0`
+path=/builds/$CI_PROJECT_PATH
 
 haproxy_version=`cat ${path}/components-version.txt |grep "HAProxy" |awk '{print $3}'`
 keepalived_version=`cat ${path}/components-version.txt |grep "Keepalived" |awk '{print $3}'`

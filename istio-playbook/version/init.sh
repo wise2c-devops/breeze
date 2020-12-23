@@ -2,7 +2,8 @@
 
 set -e
 
-path=`dirname $0`
+#path=`dirname $0`
+path=/builds/$CI_PROJECT_PATH
 
 IstioVersion=`cat ${path}/components-version.txt |grep "Istio" |awk '{print $3}'`
 

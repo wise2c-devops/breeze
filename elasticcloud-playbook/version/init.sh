@@ -2,7 +2,8 @@
 
 set -e
 
-path=`dirname $0`
+#path=`dirname $0`
+path=/builds/$CI_PROJECT_PATH
 
 ElasticCloudVersion=`cat ${path}/components-version.txt |grep "ElasticCloud" |awk '{print $3}'`
 ElasticStackVersion=`cat ${path}/components-version.txt |grep "ElasticStack" |awk '{print $3}'`

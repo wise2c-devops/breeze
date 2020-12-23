@@ -2,7 +2,8 @@
 
 set -e
 
-path=`dirname $0`
+#path=`dirname $0`
+path=/builds/$CI_PROJECT_PATH
 
 version=`cat ${path}/components-version.txt |grep "Harbor" |awk '{print $3}'`
 
