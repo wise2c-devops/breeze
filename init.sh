@@ -2,7 +2,8 @@
 
 set -e
 
-path=`dirname $0`
+#path=`dirname $0`
+path=/builds/$CI_PROJECT_PATH
 
 kubernetes_version=1.20.1
 harbor_version=2.1.1
