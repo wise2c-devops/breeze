@@ -2,8 +2,7 @@
 
 set -e
 
-#path=`dirname $0`
-path=/builds/$CI_PROJECT_PATH
+path=`dirname $0`
 
 KubePrometheusVersion=`cat ${path}/components-version.txt |grep "KubePrometheus" |awk '{print $3}'`
 PrometheusOperatorVersion=`cat ${path}/components-version.txt |grep "PrometheusOperator" |awk '{print $3}'`

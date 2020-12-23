@@ -2,8 +2,7 @@
 
 set -e
 
-#path=`dirname $0`
-path=/builds/$CI_PROJECT_PATH
+path=`dirname $0`
 
 k8s_version=`cat ${path}/components-version.txt |grep "Kubernetes" |awk '{print $3}'`
 
