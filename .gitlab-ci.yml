@@ -4,7 +4,7 @@ build_image:
     - docker:dind
   script:
     - apk add --no-cache bash
-    - . bash init.sh
+    - bash init.sh
     # - . init.sh
     - docker build -t wise2c/playbook:$CI_COMMIT_REF_NAME .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
