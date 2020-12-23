@@ -4,6 +4,8 @@ build_image:
     - docker:dind
   script:
     - cd /builds/$CI_PROJECT_PATH
+    - pwd
+    - ls
     - /builds/$CI_PROJECT_PATH/init.sh
     - docker build -t wise2c/playbook:$CI_COMMIT_REF_NAME .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
