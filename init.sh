@@ -34,7 +34,9 @@ mv ${path}/prometheus-playbook/version ${path}/prometheus-playbook/Kube-Promethe
 mv ${path}/istio-playbook/version ${path}/istio-playbook/v${istio_version}
 mv ${path}/elasticcloud-playbook/version ${path}/elasticcloud-playbook/v${elastic_cloud_version}
 
+set +e
 docker run --rm --name=kubeadm-version wise2c/kubeadm-version:v${kubernetes_version} kubeadm config images list --kubernetes-version ${kubernetes_version} > ${path}/k8s-images-list.txt
+set -e
 
 cat ${path}/k8s-images-list.txt
 
