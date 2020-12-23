@@ -3,7 +3,7 @@ build_image:
   services:
     - docker:dind
   script:
-    - apk add --no-cache bash bzip2 curl
+    - apk add --no-cache curl bash bzip2
     - bash init.sh
     - docker build -t wise2c/playbook:$CI_COMMIT_REF_NAME .
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
