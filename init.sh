@@ -3,7 +3,6 @@
 set -e
 
 path=`dirname $0`
-#path=/builds/$CI_PROJECT_PATH
 
 kubernetes_version=1.20.1
 harbor_version=2.1.1
@@ -34,11 +33,7 @@ mv ${path}/prometheus-playbook/version ${path}/prometheus-playbook/Kube-Promethe
 mv ${path}/istio-playbook/version ${path}/istio-playbook/v${istio_version}
 mv ${path}/elasticcloud-playbook/version ${path}/elasticcloud-playbook/v${elastic_cloud_version}
 
-set +e
 docker run --rm --name=kubeadm-version wise2c/kubeadm-version:v${kubernetes_version} kubeadm config images list --kubernetes-version ${kubernetes_version} > ${path}/k8s-images-list.txt
-set -e
-
-cat ${path}/k8s-images-list.txt
 
 etcd_version=`cat ${path}/k8s-images-list.txt |grep etcd |awk -F ':' '{print $2}'`
 mv etcd-playbook/version-by-kubeadm etcd-playbook/${etcd_version}
@@ -63,8 +58,6 @@ echo "Contour Version: ${contour_version}" >> ${path}/components-version.txt
 echo "ContourEnvoyProxy Version: ${contour_envoyproxy_version}" >> ${path}/components-version.txt
 echo "ElasticCloud Version: ${elastic_cloud_version}" >> ${path}/components-version.txt
 echo "ElasticStack Version: ${elastic_stack_version}" >> ${path}/components-version.txt
-
-cat ${path}/components-version.txt
 
 for dir in `ls ${path}`
 do
