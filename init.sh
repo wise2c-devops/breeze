@@ -62,7 +62,7 @@ echo "ElasticStack Version: ${elastic_stack_version}" >> ${path}/components-vers
 for dir in `ls ${path}`
 do
     if [[ ${dir} =~ -playbook$ ]]; then
-        chmod +R 775 ${dir}
+        chmod -R 775 ${dir}
         for version in `ls ${path}/${dir}`
         do
             echo ${version}
