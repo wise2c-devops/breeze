@@ -15,11 +15,11 @@ sed -i "s/etcd_3_address/${etcd3_address}/g" /var/lib/wise2c/tmp/prometheus/etcd
 
 kubectl -n monitoring create secret generic etcd-certs --from-file=/etc/etcd/pki/ca.pem --from-file=/etc/etcd/pki/etcd.pem --from-file=/etc/etcd/pki/etcd-key.pem
 
-cat >> kube-prometheus-$KubePrometheusVersion/manifests/phase2/prometheus-prometheus.yaml << EOF
+cat >> kube-prometheus-$KubePrometheusVersion/manifests/prometheus-prometheus.yaml << EOF
   secrets:
   - etcd-certs
 EOF
 
-kubectl -n monitoring apply -f kube-prometheus-$KubePrometheusVersion/manifests/phase2/prometheus-prometheus.yaml
+kubectl -n monitoring apply -f kube-prometheus-$KubePrometheusVersion/manifests/prometheus-prometheus.yaml
 
 kubectl -n monitoring apply -f etcd.yaml
