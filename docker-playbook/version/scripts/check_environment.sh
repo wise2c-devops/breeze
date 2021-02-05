@@ -2,11 +2,32 @@
 
 set -e
 
-function version_gt() { test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1"; }
+function version_gt() { test "$(echo "$@" | tr " " "\n" | sort -V | head -n 1)" != "$1"; }
+
+: '
+function version_le() { test "$(echo "$@" | tr " " "\n" | sort -V | head -n 1)" == "$1"; }
+function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
+function version_ge() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" == "$1"; }
+
+if version_gt $VERSION $VERSION2; then
+   echo "$VERSION is greater than $VERSION2"
+fi
+
+if version_le $VERSION $VERSION2; then
+   echo "$VERSION is less than or equal to $VERSION2"
+fi
+
+if version_lt $VERSION $VERSION2; then
+   echo "$VERSION is less than $VERSION2"
+fi
+
+if version_ge $VERSION $VERSION2; then
+   echo "$VERSION is greater than or equal to $VERSION2"
+fi
+'
 
 [ ${BREEZE_LSB_ID} ]
 [ ${BREEZE_LSB_RELEASE} ]
-#[ ${BREEZE_KERNEL} ]
 [ ${BREEZE_PYTHON_VERSION} ]
 
 if [ "${BREEZE_LSB_ID}" != "RedHat" ] && [ "${BREEZE_LSB_ID}" != "CentOS" ] && [ "${BREEZE_LSB_ID}" != "Ubuntu" ]; then
