@@ -30,27 +30,27 @@ fi
 [ ${BREEZE_LSB_RELEASE} ]
 [ ${BREEZE_PYTHON_VERSION} ]
 
-if [ "${BREEZE_LSB_ID}" != "RedHat" ] && [ "${BREEZE_LSB_ID}" != "CentOS" ] && [ "${BREEZE_LSB_ID}" != "Ubuntu" ]; then
+if [[ "${BREEZE_LSB_ID}" != "RedHat" ]] && [[ "${BREEZE_LSB_ID}" != "CentOS" ]] && [[ "${BREEZE_LSB_ID}" != "Ubuntu" ]]; then
   echo "please use RHEL or CentOS or Ubuntu"
   exit
 fi
 
-if [ "${BREEZE_LSB_ID}" == "RedHat" ] && [ `version_gt 7.3 ${BREEZE_LSB_RELEASE}` ]; then
+if version_gt 7.4 ${BREEZE_LSB_RELEASE} && [[ "${BREEZE_LSB_ID}" == "RedHat" ]]; then
   echo "please use RHEL 7.x (x>3) for Breeze"
   exit
 fi
 
-if [ "${BREEZE_LSB_ID}" == "CentOS" ] && [ `version_gt 7.3 ${BREEZE_LSB_RELEASE}` ]; then
+if version_gt 7.4 ${BREEZE_LSB_RELEASE} && [[ "${BREEZE_LSB_ID}" == "CentOS" ]]; then
   echo "please use CentOS 7.x (x>3) for Breeze"
   exit
 fi
 
-if [ "${BREEZE_LSB_ID}" == "Ubuntu" ] && [ `version_gt 16 ${BREEZE_LSB_RELEASE}` ]; then
+if version_gt 16 ${BREEZE_LSB_RELEASE} && [[ "${BREEZE_LSB_ID}" == "Ubuntu" ]]; then
   echo "please use Ubuntu 16/18 for Breeze"
   exit
 fi
 
-if [ `version_gt 2.7 ${BREEZE_PYTHON_VERSION}` ]; then
+if version_gt 2.7 ${BREEZE_PYTHON_VERSION}; then
   echo "please use python 2.7+"
   exit
 fi
