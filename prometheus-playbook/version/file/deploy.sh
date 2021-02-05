@@ -22,13 +22,14 @@ for file in $(cat images-list.txt); do docker push $MyImageRepositoryIP/$MyImage
 echo 'Images pushed.'
 ######### Update deploy yaml files #########
 rm -rf kube-prometheus-$KubePrometheusVersion
-tar zxvf kube-prometheus-v$KubePrometheusVersion-origin.tar.gz
+tar zxf kube-prometheus-v$KubePrometheusVersion-origin.tar.gz
 cd kube-prometheus-$KubePrometheusVersion
+
+sed -i "s/quay.io\/prometheus-operator/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "quay.io/prometheus" ./ |grep .yaml)
 sed -i "s/quay.io\/prometheus/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "image:" ./ |grep .yaml)
 sed -i "s/quay.io\/brancz/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "image:" ./ |grep .yaml)
 sed -i "s#directxman12\/#$MyImageRepositoryIP\/$MyImageRepositoryProject\/#g" $(grep -lr "image:" ./ |grep .yaml)
 sed -i "s/quay.io\/coreos/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "quay.io/coreos" ./ |grep .yaml)
-sed -i "s/quay.io\/prometheus-operator/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "quay.io/prometheus" ./ |grep .yaml)
 sed -i "s/grafana\/grafana/$MyImageRepositoryIP\/$MyImageRepositoryProject\/grafana/g" $(grep -lr "grafana/grafana" ./ |grep .yaml)
 sed -i "s/gcr.io\/google_containers/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "gcr.io/google_containers" ./ |grep .yaml)
 #sed -i "s/jimmidyson\/configmap-reload/$MyImageRepositoryIP\/$MyImageRepositoryProject\/configmap-reload/g" $(grep -lr "jimmidyson/configmap-reload" ./ |grep .yaml)
