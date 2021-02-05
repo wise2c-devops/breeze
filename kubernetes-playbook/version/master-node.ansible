@@ -377,6 +377,14 @@
     - { filename: "{{ path }}/calico/k8s-manifests/calico.yaml" }
     - { filename: "{{ path }}/calico/k8s-manifests/calico-typha.yaml" }
     - { filename: "{{ path }}/calico/k8s-manifests/canal.yaml" }
+  run_once: true
+
+- name: replace image repo in calicoctl yaml file
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "image: calico/"
+    replace: "image: {{ registry_endpoint }}/{{ registry_project }}/"
+  with_items:
     - { filename: "{{ path }}/calico/k8s-manifests/calicoctl.yaml" }
   run_once: true
 
