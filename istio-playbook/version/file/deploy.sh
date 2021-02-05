@@ -35,7 +35,11 @@ sed -i "s,image: \"jimmidyson/,image: \"$MyImageRepositoryIP/$MyImageRepositoryP
 sed -i "s,- image: \"quay.io/kiali/,- image: \"$MyImageRepositoryIP/$MyImageRepositoryProject/,g" samples/addons/kiali.yaml
 sed -i "s,strategy: anonymous,strategy: token,g" samples/addons/kiali.yaml
 
+set +e
+
 kubectl apply -f samples/addons/
+
+set -e
             
 kubectl apply -f /var/lib/wise2c/tmp/istio/kiali-service.yaml
 kubectl apply -f /var/lib/wise2c/tmp/istio/jaeger-service.yaml
