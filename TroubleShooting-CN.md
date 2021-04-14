@@ -140,3 +140,9 @@ openssl x509 -noout -text -in /var/lib/kubelet/pki/kubelet-client-current.pem |g
 
         注意此文件其实是master节点/etc/kubernetes/admin.conf文件的一份拷贝
 ```
+
+注意事项：
+
+(1). 用户选了2020年开始的Breeze版本部署集群，长期运行没事，证书都会一直有效，也会自动轮新。
+
+(2). 用户对现有的Breeze部署的K8s集群升级，新版本一定要选用2020年7月后的版本，否则kubeadm就把证书给换坏了，如果是手动升级，也千万要记得加参数kubeadm upgrade node --certificate-renewal=false
