@@ -22,7 +22,7 @@ __metaclass__ = type
 import os
 import time
 import json
-import httplib
+import http.client
 from collections import MutableMapping
 
 from ansible.module_utils._text import to_bytes
@@ -74,7 +74,7 @@ class CallbackModule(CallbackBase):
         now = time.strftime(self.TIME_FORMAT, time.localtime())
         self.task["state"] = category
         
-        h1 = httplib.HTTPConnection('127.0.0.1:8080')
+        h1 = http.client.HTTPConnection('127.0.0.1:8080')
         h1.request(
             "POST", 
             "/v1/notify",
