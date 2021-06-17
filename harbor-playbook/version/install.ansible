@@ -4,6 +4,60 @@
   vars:
     path: /var/lib/wise2c/tmp/harbor
   tasks:
+  - name: yum remove crio and podman
+    yum:
+      state: absent
+      name: '{{ item }}'
+    with_items:
+    - containernetworking-plugins
+    - container-selinux
+    - containers-common
+    - crio
+    - podman
+    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+
+  - name: yum install docker
+    yum:
+      disablerepo: '*'
+      enablerepo: wise2c-k8s
+      update_cache: true
+      state: present
+      name: '{{ item }}'
+    with_items:
+    - docker-ce
+    - docker-ce-cli
+    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+
+  - name: apt remove crio and podman
+    apt:
+      state: absent
+      name: '{{ item }}'
+    with_items:
+    - containernetworking-plugins
+    - container-selinux
+    - containers-common
+    - crio
+    - podman
+    when: ansible_distribution =="Ubuntu"
+
+  - name: apt install docker
+    apt:
+      disablerepo: '*'
+      enablerepo: wise2c
+      update_cache: true
+      state: present
+      name: '{{ item }}'
+    with_items:
+    - docker-ce
+    - docker-ce-cli
+    when: ansible_distribution =="Ubuntu"
+
+  - name: start docker
+    systemd:
+      name: docker
+      enabled: true
+      state: started
+
   - name: make harbor dir
     file:
       path: '{{ item }}'

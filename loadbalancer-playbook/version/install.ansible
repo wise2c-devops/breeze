@@ -39,35 +39,32 @@
       - { src: 'file/keepalived.sh', dest: '{{ cpath }}' }
   
   - name: load lb image
-    docker_image:
-      load_path: '{{ path }}/{{ item }}'
-      name: lb
-      timeout: 600
+    shell: |
+      podman load -i '{{ path }}/{{ item }}'
     with_items:
       - haproxy-{{ haproxy_version }}.tar.bz2
       - keepalived-{{ keepalived_version }}.tar.bz2
+    async: 60
+    poll: 5
     run_once: true
 
-  - name: docker login
-    docker_login:
+  - name: podman login
+    containers.podman.podman_login:
       registry: '{{ registry_endpoint }}'
       username: '{{ registry_user }}'
       password: '{{ registry_password }}'
-      reauthorize: true
     run_once: true
 
   - name: tag images
-    docker_image:
-      name: '{{ item.repo }}/{{ item.name }}'
-      repository: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
-      tag: '{{ item.tag }}'
+    shell: |
+      podman tag {{ item.repo }}/{{ item.name }}:{{ item.tag }} {{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}:{{ item.tag }}
     with_items:
       - { repo: 'wise2c', name: 'k8s-haproxy', tag: '{{ haproxy_version }}' }
       - { repo: 'wise2c', name: 'k8s-keepalived', tag: '{{ keepalived_version }}' }
     run_once: true
 
   - name: push images
-    docker_image:
+    containers.podman.podman_image:
       name: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
       tag: '{{ item.tag }}'
       push: true
@@ -78,14 +75,14 @@
     run_once: true
 
   - name: remove original images tag
-    docker_image:
+    containers.podman.podman_image:
       state: absent
       name: '{{ item.repo }}/{{ item.name }}'
       tag: '{{ item.tag }}'
     with_items:
       - { repo: 'wise2c', name: 'k8s-haproxy', tag: '{{ haproxy_version }}' }
       - { repo: 'wise2c', name: 'k8s-keepalived', tag: '{{ keepalived_version }}' }
-    run_once: ture
+    run_once: true
 
   - name: get port
     set_fact:
@@ -97,7 +94,7 @@
     run_once: true
 
   - name: run haproxy
-    docker_container:
+    containers.podman.podman_container:
       name: haproxy
       restart_policy: unless-stopped
       image: "{{ registry_endpoint }}/{{ registry_project }}/k8s-haproxy:{{ haproxy_version  }}"
@@ -106,7 +103,7 @@
       - '{{ cpath }}/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro'
 
   - name: run keepalived
-    docker_container:
+    containers.podman.podman_container:
       name: keepalived
       network_mode: host
       restart_policy: unless-stopped

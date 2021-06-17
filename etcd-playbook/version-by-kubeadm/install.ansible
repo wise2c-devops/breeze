@@ -22,7 +22,7 @@
 
   - name: stop etcd container
     shell: |
-      docker stop etcd
+      podman stop etcd
     when: (backup_etcd_folder == true)
 
   - name: backup etcd database folder
@@ -33,7 +33,7 @@
 
   - name: start etcd container
     shell: |
-      docker start etcd
+      podman start etcd
     when: (backup_etcd_folder == true)
 
   - name: make etcd dir
@@ -53,31 +53,26 @@
     run_once: true
 
   - name: load etcd image
-    docker_image:
-      load_path: '{{ path }}/etcd.tar.bz2'
-      name: etcd
-      timeout: 600
+    shell: |
+      podman load -i {{ path }}/etcd.tar.bz2
+    async: 60
+    poll: 5
     run_once: true
 
-  - name: docker login
-    docker_login:
+  - name: podman login
+    containers.podman.podman_login:
       registry: '{{ registry_endpoint }}'
       username: '{{ registry_user }}'
       password: '{{ registry_password }}'
-      reauthorize: true
     run_once: true
 
   - name: tag images
-    docker_image:
-      name: '{{ item.repo }}/{{ item.name }}'
-      repository: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
-      tag: '{{ item.tag }}'
-    with_items:
-      - { repo: 'k8s.gcr.io', name: 'etcd', tag: '{{ version }}' }
+    shell: |
+      podman tag k8s.gcr.io/etcd:{{ version }} {{ registry_project }}/etcd:{{ version }}
     run_once: true
 
   - name: push images
-    docker_image:
+    containers.podman.podman_image:
       name: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
       tag: '{{ item.tag }}'
       push: true
@@ -87,13 +82,13 @@
     run_once: true
 
   - name: remove original images tag
-    docker_image:
+    containers.podman.podman_image:
       state: absent
       name: '{{ item.repo }}/{{ item.name }}'
       tag: '{{ item.tag }}'
     with_items:
       - { repo: 'k8s.gcr.io', name: 'etcd', tag: '{{ version }}' }
-    run_once: ture
+    run_once: true
 
   - name: make etcd cert dir
     file:
@@ -153,8 +148,12 @@
     - { src: 'file/etcd.pem', dest: '/etc/etcd/pki/etcd.pem' }
     - { src: 'file/etcd-key.pem', dest: '/etc/etcd/pki/etcd-key.pem' }
 
+  - name: makdir etc database folder
+    shell: |
+      mkdir -p {{ etcd_data_path }}
+
   - name: run etcd
-    docker_container:
+    containers.podman.podman_container:
       name: etcd
       network_mode: host
       restart_policy: unless-stopped
