@@ -76,20 +76,17 @@
     run_once: true
 
   - name: load prometheus operator images
-    docker_image:
-      load_path: '{{ path }}/{{ item }}'
-      name: prometheus
-      timeout: 600
-    with_items:
-    - kube-prometheus-images-v{{ kube_prometheus_version }}.tar.bz2
+    shell: |
+      podman load -i {{ path }}/kube-prometheus-images-v{{ kube_prometheus_version }}.tar.bz2
+    async: 180
+    poll: 5
     run_once: true
 
-  - name: docker login
-    docker_login:
+  - name: podman login
+    containers.podman.podman_login:
       registry: '{{ registry_endpoint }}'
       username: '{{ registry_user }}'
       password: '{{ registry_password }}'
-      reauthorize: true
     run_once: true
 
   - name: set harbor address for deploy script

@@ -11,11 +11,11 @@ MyImageRepositoryProject=library
 IstioVersion=`cat components-version.txt |grep "Istio Version" |awk '{print $3}'`
 
 ######### Push images #########
-for file in $(cat images-list.txt); do docker tag $file $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
+for file in $(cat images-list.txt); do podman tag $file $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
 
 echo 'Images taged.'
 
-for file in $(cat images-list.txt); do docker push $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
+for file in $(cat images-list.txt); do podman push $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
 
 echo 'Images pushed.'
 
