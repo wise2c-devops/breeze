@@ -220,6 +220,7 @@
       enabled: true
       state: restarted
 
+# crio service uses k8s.gcr.io/pause:3.5 as default
   - name: update pause image in crio.conf
     shell: |
       echo '[crio.image]' >> /etc/crio/crio.conf
