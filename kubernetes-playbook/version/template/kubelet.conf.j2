@@ -1,5 +1,6 @@
 KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.4.1 \
                    --container-runtime=remote \
+                   --cgroup-driver=cgroupfs \
                    --container-runtime-endpoint=unix:///var/run/crio/crio.sock \
                    --runtime-request-timeout=10m
 

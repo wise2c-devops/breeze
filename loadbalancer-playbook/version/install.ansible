@@ -107,7 +107,9 @@
       name: keepalived
       network_mode: host
       restart_policy: unless-stopped
-      capabilities: NET_ADMIN
+      capabilities:
+      - NET_ADMIN
+      - NET_RAW
       image: "{{ registry_endpoint }}/{{ registry_project }}/k8s-keepalived:{{ keepalived_version }}"
       entrypoint: /bin/bash
       command: /usr/bin/keepalived.sh
