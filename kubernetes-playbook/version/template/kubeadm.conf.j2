@@ -12,7 +12,7 @@ localAPIEndpoint:
   advertiseAddress: 127.0.0.1
   bindPort: 6443
 nodeRegistration:
-  criSocket: /var/run/crio/crio.sock
+  criSocket: "unix:///var/run/crio/crio.sock"
   taints:
   - effect: NoSchedule
     key: node-role.kubernetes.io/master
@@ -54,4 +54,4 @@ scheduler:
 ---
 kind: KubeletConfiguration
 apiVersion: kubelet.config.k8s.io/v1beta1
-cgroupDriver: cgroupfs
+cgroupDriver: systemd
