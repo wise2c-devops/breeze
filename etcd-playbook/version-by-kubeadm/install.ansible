@@ -68,7 +68,7 @@
 
   - name: tag images
     shell: |
-      podman tag k8s.gcr.io/etcd:{{ version }} {{ registry_project }}/etcd:{{ version }}
+      podman tag k8s.gcr.io/etcd:{{ version }} {{ registry_endpoint }}/{{ registry_project }}/etcd:{{ version }}
     run_once: true
 
   - name: push images
