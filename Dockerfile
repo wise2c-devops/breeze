@@ -4,6 +4,7 @@ WORKDIR /workspace
 
 COPY callback_plugins /workspace/callback_plugins
 COPY docker-playbook /workspace/docker-playbook
+COPY crio-playbook /workspace/crio-playbook
 COPY etcd-playbook /workspace/etcd-playbook
 COPY kubernetes-playbook /workspace/kubernetes-playbook
 COPY harbor-playbook /workspace/harbor-playbook
