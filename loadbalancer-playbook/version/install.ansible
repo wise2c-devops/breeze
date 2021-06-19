@@ -96,7 +96,7 @@
   - name: run haproxy
     containers.podman.podman_container:
       name: haproxy
-      restart_policy: unless-stopped
+      restart_policy: always
       image: "{{ registry_endpoint }}/{{ registry_project }}/k8s-haproxy:{{ haproxy_version  }}"
       ports: '{{ ports | d([], true) | list }}'
       volumes:
@@ -106,7 +106,7 @@
     containers.podman.podman_container:
       name: keepalived
       network_mode: host
-      restart_policy: unless-stopped
+      restart_policy: always
       capabilities:
       - NET_ADMIN
       - NET_RAW
