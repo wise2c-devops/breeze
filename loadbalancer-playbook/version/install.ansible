@@ -116,3 +116,10 @@
       volumes:
       - '{{ cpath }}/keepalive.cfg:/etc/keepalived/keepalived.conf'
       - '{{ cpath }}/keepalived.sh:/usr/bin/keepalived.sh'
+
+  - name: add haproxy and keepalived systemd service
+    shell: |
+      podman generate systemd --new --name haproxy > /etc/systemd/system/haproxy.service
+      podman generate systemd --new --name keepalived > /etc/systemd/system/keepalived.service
+      systemctl enable haproxy
+      systemctl enable keepalived

@@ -162,3 +162,8 @@
       volumes:
         - "{{ etcd_data_path }}:/var/lib/etcd"
         - "/etc/etcd/pki:/etcd-cert"
+
+  - name: add etcd systemd service
+    shell: |
+      podman generate systemd --new --name etcd > /etc/systemd/system/etcd.service
+      systemctl enable etcd
