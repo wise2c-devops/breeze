@@ -17,5 +17,3 @@ command:
 - --peer-trusted-ca-file=/etcd-cert/ca.pem
 - --peer-cert-file=/etcd-cert/etcd.pem
 - --peer-key-file=/etcd-cert/etcd-key.pem
-
-version: 3.4.13-0
