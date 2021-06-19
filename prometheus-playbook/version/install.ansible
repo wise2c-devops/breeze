@@ -27,7 +27,7 @@
     shell: |
       sed -i "s/.*server:.*/    server: https:\/\/{{ kubernetes_endpoint }}/g" $HOME/.kube/config
       chown $(id -u):$(id -g) $HOME/.kube/config
-    run_once: ture
+    run_once: true
 
   - name: make prometheus dir
     file:
@@ -37,7 +37,7 @@
     with_items:
       - '{{ cpath }}'
       - '{{ path }}'
-    run_once: ture
+    run_once: true
 
   - name: copy prometheus operator tarball and images
     copy:
@@ -96,7 +96,7 @@
       replace: "{{ registry_endpoint }}"
     with_items:
       - "harbor-address.txt"
-    run_once: ture
+    run_once: true
 
   - name: set etcd address for deploy script
     replace:
@@ -105,7 +105,7 @@
       replace: "{{ etcd_endpoint }}"
     with_items:
       - "etcd-address.txt"
-    run_once: ture
+    run_once: true
     
   - name: set nodeport for prometheus alertmanager and grafana service
     template:
@@ -115,19 +115,19 @@
       - { src: 'template/prometheus-service.yaml.j2', dest: '{{ cpath }}/prometheus-service.yaml' }
       - { src: 'template/alertmanager-service.yaml.j2', dest: '{{ cpath }}/alertmanager-service.yaml' }
       - { src: 'template/grafana-service.yaml.j2', dest: '{{ cpath }}/grafana-service.yaml' }
-    run_once: ture
+    run_once: true
 
   - name: prometheus operator deploy
     shell: ./deploy.sh
     args:
       chdir: '{{ cpath }}/'
-    run_once: ture
+    run_once: true
 
   - name: prometheus add-on deploy
     shell: ./add-on.sh
     args:
       chdir: '{{ cpath }}/'
-    run_once: ture
+    run_once: true
 
   - name: remove kubectl cert
     file:
@@ -135,7 +135,7 @@
       state: absent
     with_items:
       - '{{ ansible_env.HOME }}/.kube/config'
-    run_once: ture
+    run_once: true
 
   - name: remove etcd cert
     file:
@@ -155,5 +155,5 @@
     shell: ./clean-images-tags.sh
     args:
       chdir: '{{ cpath }}/'
-    run_once: ture
+    run_once: true
     ignore_errors: true
