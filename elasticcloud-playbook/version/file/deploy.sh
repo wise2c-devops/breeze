@@ -38,4 +38,4 @@ PASSWORD=$(kubectl get secret quickstart-es-elastic-user -o=jsonpath='{.data.ela
 sed -i "s,changeme,${PASSWORD},g" fluentd.yml
 #kubectl apply -f fluentd.yml
 # https://github.com/fluent/fluent-plugin-parser-cri
-# cri log parser is not is not implemented
+# cri log parser is not implemented
