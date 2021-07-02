@@ -209,7 +209,6 @@
     with_items:
     - /etc/crio/crio.conf
     - /etc/containers/registries.conf
-    - /etc/containers/storage.conf
 
   - name: init crio on Redhat/CentOS to create folder /etc/crio
     systemd:
