@@ -18,6 +18,6 @@
       state: absent
       name: '{{ item }}'
     with_items:
-    - crio
+    - cri-o
     - podman
     when: ansible_distribution =="Ubuntu"
