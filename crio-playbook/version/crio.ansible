@@ -25,8 +25,7 @@
       curl -so /tmp/breeze.pub http://wise2c-seed:2008/debs/ubuntu18/breeze.pub
       apt-key add /tmp/breeze.pub
       rm -f /tmp/breeze.pub
-      apt-get update
-      export DEBIAN_FRONTEND=noninteractive
+      apt-get update && export DEBIAN_FRONTEND=noninteractive
       apt-get install -y python python-apt python3-docker python-chardet python3-requests
     when:
     - ansible_distribution =="Ubuntu"
