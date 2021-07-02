@@ -36,14 +36,12 @@
     - containernetworking-plugins
     - container-selinux
     - containers-common
-    - crio
+    - cri-o
     - podman
     when: ansible_distribution =="Ubuntu"
 
   - name: apt install docker
     apt:
-      disablerepo: '*'
-      enablerepo: wise2c
       update_cache: true
       state: present
       name: '{{ item }}'
