@@ -85,9 +85,9 @@
 	kubeadm init phase kubeconfig controller-manager
 	kubeadm init phase kubeconfig scheduler
 
-	sed -i 's#server: https:.*$#server: https://127.0.0.1:6444#g' admin.conf
-	sed -i 's#server: https:.*$#server: https://127.0.0.1:6444#g' controller-manager.conf
-	sed -i 's#server: https:.*$#server: https://127.0.0.1:6444#g' scheduler.conf
+	sed -i 's#server: https:.*$#server: https://127.0.0.1:6443#g' admin.conf
+	sed -i 's#server: https:.*$#server: https://127.0.0.1:6443#g' controller-manager.conf
+	sed -i 's#server: https:.*$#server: https://127.0.0.1:6443#g' scheduler.conf
 	
 	cp -f /etc/kubernetes/admin.conf $HOME/.kube/config
 	chown $(id -u):$(id -g) $HOME/.kube/config
@@ -102,3 +102,49 @@
 	0 0 1 1,7 * /root/renewk8scert.sh
 	```
         这样系统每年的1月1日和7月1日的0:00会执行该脚本。
+
+**如何检查系统证书有效期**
+
+```
+（1）检查证书有效时间的命令及参数：
+
+openssl x509 -noout -text -in 证书文件全名 |grep Not
+
+例如：
+
+openssl x509 -noout -text -in /var/lib/kubelet/pki/kubelet-client-current.pem |grep Not
+
+（2）所需检查的证书列表：
+
+     a) 所有master节点
+
+        /etc/kubernetes/pki/ca.crt
+        /etc/kubernetes/pki/apiserver.crt
+        /etc/kubernetes/pki/front-proxy-ca.crt
+        /etc/kubernetes/pki/front-proxy-client.crt
+        /etc/kubernetes/pki/apiserver-kubelet-client.crt
+
+     b) master及worker节点（即：集群内所有节点）
+
+        /var/lib/kubelet/pki/kubelet-client-current.pem
+
+        **注意这个文件有效期每年会自动更新**
+
+     c) 管理员操作kubectl命令的主机
+
+        当前用户的.kube/config文件，例如/root/.kube/config 注意此证书有效性仅仅只影响管理员操作命令，对集群自身功能无影响
+
+        这个证书比较特殊，检查的命令和参数有些不同，需要这样操作：
+
+        cat /root/.kube/config | grep client-certificate-data | awk '{print $2}'|base64 -d | openssl x509 -noout -dates
+
+        注意此文件其实是master节点/etc/kubernetes/admin.conf文件的一份拷贝
+```
+
+注意事项：
+
+(1). 用户选了2020年开始的Breeze版本部署集群，长期运行没事，证书都会一直有效，也会自动轮新。
+
+(2). 用户对现有的Breeze部署的K8s集群升级，新版本一定要选用2020年7月后的版本，否则kubeadm就把证书给换坏了，如果是手动升级，也千万要记得加参数kubeadm upgrade node --certificate-renewal=false
+
+14. 自2021年7月开始发布的Breeze版本，Ubuntu16不再被支持，请使用Ubuntu18/Ubuntu20。同时，从2021年7月开始的版本，Docker也被更换为CRI-O（Harbor角色机除外），敬请留意。

@@ -1,8 +1,10 @@
-KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.2 \
-                   --kubelet-cgroups=/system.slice/kubelet.service \
-                   --runtime-cgroups=/system.slice/docker.service
+KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.4.1 \
+                   --container-runtime=remote \
+                   --cgroup-driver=systemd \
+                   --container-runtime-endpoint=unix:///var/run/crio/crio.sock \
+                   --runtime-request-timeout=10m
 
-#KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.2 \
+#KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.4.1 \
 #                   --feature-gates=LocalStorageCapacityIsolation=true \
 #                   --kubelet-cgroups=/system.slice/kubelet.service \
 #                   --runtime-cgroups=/system.slice/docker.service \

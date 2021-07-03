@@ -19,7 +19,7 @@
     yum:
       state: absent
       disablerepo: '*'
-      enablerepo: wise2c
+      enablerepo: wise2c-k8s
       name: '{{ item }}'
     with_items:
     - kubernetes-cni

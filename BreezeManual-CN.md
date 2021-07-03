@@ -4,9 +4,9 @@
 
 适用操作系统：
 
-RHEL/CentOS: 7.4/7.5/7.6/7.7/7.8
+RHEL/CentOS: 7.4/7.5/7.6/7.7/7.8/7.9
 
-Ubuntu 16/18
+Ubuntu 18/20 LTS
 
 **所有社区用户请注意：**	
 
@@ -88,17 +88,17 @@ systemctl enable docker
 (4) 下载用于部署某个Kubernetes版本的docker-compose文件并使部署程序运行起来，例如：
 
 ```
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.19.10/docker-compose.yml -o docker-compose.yml
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.19.10/docker-compose-centos.yml -o docker-compose.yml
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.19.10/docker-compose-ubuntu.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.19.11/docker-compose.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.19.11/docker-compose-centos.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.19.11/docker-compose-ubuntu.yml -o docker-compose.yml
 ```
 
 国内用户可以使用阿里云镜像站点文件，部署所用的image将从阿里云拉取：
 
 ```
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.19.10/docker-compose-aliyun.yml -o docker-compose.yml
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.19.10/docker-compose-centos-aliyun.yml -o docker-compose.yml
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.19.10/docker-compose-ubuntu-aliyun.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.19.11/docker-compose-aliyun.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.19.11/docker-compose-centos-aliyun.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.19.11/docker-compose-ubuntu-aliyun.yml -o docker-compose.yml
 ```
 
 然后：
@@ -298,6 +298,14 @@ http://任意服务器IP:30903
 Kiali：
 
 http://任意服务器IP:30201/kiali
+
+新版本Kiali引入了验证模式，Breeze默认使用与Kubernetes Dashboard相同的token方式，可以通过以下命令获取admin-user的访问令牌：
+
+```
+kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
+```
+
+将返回的token字串粘贴至登录窗口即可实现登录。
 
 ![Alt](./manual/Istio-Kiali-001.png)
 
