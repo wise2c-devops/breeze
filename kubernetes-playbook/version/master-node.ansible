@@ -85,6 +85,13 @@
     - { repo: '{{ contour_demo_repo }}', name: 'kuard-amd64', tag: '1' }
   run_once: true
 
+- name: tag coredns image
+  shell: |
+    podman tag {{ item.repo }}/{{ item.name }}:{{ item.tag }} {{ registry_endpoint }}/{{ registry_project }}/coredns:{{ item.tag }}
+  with_items:
+    - { repo: '{{ kubernetes_repo }}', name: 'coredns/coredns', tag: '{{ dns_version }}' }
+  run_once: true
+
 - name: push images
   containers.podman.podman_image:
     name: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
@@ -97,6 +104,7 @@
   - { name: 'kube-scheduler', tag: '{{ kubernetes_version }}' }
   - { name: 'kube-proxy', tag: '{{ kubernetes_version }}' }
   - { name: 'pause', tag: '{{ pause_version }}' }
+  - { name: 'coredns', tag: '{{ dns_version }}' }
   - { name: 'coredns/coredns', tag: '{{ dns_version }}' }
   - { name: 'metrics-server', tag: '{{ metrics_server_version }}' }
   - { name: 'flannel', tag: '{{ flannel_version }}' }
@@ -124,6 +132,7 @@
   - { repo: '{{ kubernetes_repo }}', name: 'kube-scheduler', tag: '{{ kubernetes_version }}' }
   - { repo: '{{ kubernetes_repo }}', name: 'kube-proxy', tag: '{{ kubernetes_version }}' }
   - { repo: '{{ kubernetes_repo }}', name: 'pause', tag: '{{ pause_version }}' }
+  - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ kubernetes_repo }}', name: 'coredns/coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ metrics_server_repo }}/metrics-server', name: 'metrics-server', tag: '{{ metrics_server_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
