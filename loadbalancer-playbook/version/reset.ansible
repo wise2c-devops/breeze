@@ -4,8 +4,8 @@
   tasks:
   - name: stop & rm old lb
     shell: |
-      docker stop haproxy
-      docker rm haproxy
-      docker stop keepalived
-      docker rm keepalived
+      podman stop haproxy
+      podman rm haproxy
+      podman stop keepalived
+      podman rm keepalived
     ignore_errors: true
