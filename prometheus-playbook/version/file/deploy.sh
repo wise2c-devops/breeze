@@ -13,11 +13,11 @@ PrometheusOperatorVersion=`cat components-version.txt |grep "PrometheusOperator 
 NAMESPACE=monitoring
 
 ######### Push images #########
-for file in $(cat images-list.txt); do docker tag $file $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
+for file in $(cat images-list.txt); do podman tag $file $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
 
 echo 'Images taged.'
 
-for file in $(cat images-list.txt); do docker push $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
+for file in $(cat images-list.txt); do podman push $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
 
 echo 'Images pushed.'
 ######### Update deploy yaml files #########
@@ -29,12 +29,12 @@ sed -i "s/quay.io\/prometheus-operator/$MyImageRepositoryIP\/$MyImageRepositoryP
 sed -i "s/quay.io\/prometheus/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "image:" ./ |grep .yaml)
 sed -i "s/quay.io\/brancz/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "image:" ./ |grep .yaml)
 sed -i "s#directxman12\/#$MyImageRepositoryIP\/$MyImageRepositoryProject\/#g" $(grep -lr "image:" ./ |grep .yaml)
-sed -i "s/quay.io\/coreos/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "quay.io/coreos" ./ |grep .yaml)
+#sed -i "s/quay.io\/coreos/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "quay.io/coreos" ./ |grep .yaml)
 sed -i "s/grafana\/grafana/$MyImageRepositoryIP\/$MyImageRepositoryProject\/grafana/g" $(grep -lr "grafana/grafana" ./ |grep .yaml)
 sed -i "s/gcr.io\/google_containers/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "gcr.io/google_containers" ./ |grep .yaml)
 #sed -i "s/jimmidyson\/configmap-reload/$MyImageRepositoryIP\/$MyImageRepositoryProject\/configmap-reload/g" $(grep -lr "jimmidyson/configmap-reload" ./ |grep .yaml)
 #sed -i "s/directxman12\/k8s-prometheus-adapter/$MyImageRepositoryIP\/$MyImageRepositoryProject\/k8s-prometheus-adapter/g" $(grep -lr "directxman12/k8s-prometheus-adapter" ./ |grep .yaml)
-#sed -i "s/k8s.gcr.io/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "k8s.gcr.io" ./ |grep .yaml)
+sed -i "s/k8s.gcr.io\/kube-state-metrics/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "k8s.gcr.io" ./ |grep .yaml)
 
 cd ..
 rm -f temp.txt
