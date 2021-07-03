@@ -1,2 +1,2 @@
 #!/bin/bash
-cp -pr {{ etcd_data_path }} {{ etcd_data_path }}-backup-`date +%F-%H-%M-%S`
+cp -pr /data/etcd /data/etcd-backup-`date +%F-%H-%M-%S`

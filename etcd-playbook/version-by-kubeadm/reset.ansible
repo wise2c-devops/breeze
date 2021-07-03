@@ -3,10 +3,10 @@
   user: root
   tasks:
   - name: stop & rm old etcd container
-    docker_container:
+    containers.podman.podman_container:
       name: etcd
       state: absent
-        
+
   - name: clean etcd directory
     file:
       path: '{{ item }}'

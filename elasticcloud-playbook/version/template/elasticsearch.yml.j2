@@ -19,6 +19,12 @@ spec:
       node.store.allow_mmap: false
     podTemplate:
       spec:
+        containers:
+        - name: elasticsearch
+          securityContext:
+            capabilities:
+              add:
+              - SYS_CHROOT
         volumes:
         - name: elasticsearch-data
           emptyDir: {}

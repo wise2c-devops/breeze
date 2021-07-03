@@ -1,7 +1,7 @@
 # Breeze
 - 可用于生产环境的图形化Kubernetes集群部署工具
 
-[![Build Status](https://travis-ci.org/wise2c-devops/breeze.svg?branch=v1.18)](https://travis-ci.org/wise2c-devops/breeze)
+[![pipeline status](https://gitlab.com/alanpeng/breeze/badges/master/pipeline.svg)](https://gitlab.com/alanpeng/breeze/-/commits/v1.18)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/wise2c-devops/breeze/blob/master/LICENSE)
 
 [English](./README.md) | [中文](./README-CN.md)
@@ -30,6 +30,8 @@ Breeze项目旨在提供一个可信的、安全的、稳定的Kubernetes集群�
 ## 架构原理图
 ![Alt](./manual/Wise2C-Breeze-Architecture.png)
 
+![Alt](./manual/Kubernetes-HA-Breeze.png)
+
 ## 组件
 - **breeze**: 用于部署docker, harbor, haproxy+keepalived, etcd, kubernetes等组件的Ansible playbook。 
 
@@ -49,7 +51,7 @@ Breeze项目旨在提供一个可信的、安全的、稳定的Kubernetes集群�
 
 **部署机:** docker 1.13.1+ and docker-compose 1.12.0+ .
 
-**Kubernetes集群节点:** 兼容CentOS 7.4/7.5/7.6/7.7 及 Ubuntu 16/18 版本，Minimal安装模式是推荐的方式，为了确保部署的顺利进行，应尽可能保证系统的干净。
+**Kubernetes集群节点:** 兼容CentOS 7.4/7.5/7.6/7.7/7.8/7.9 及 Ubuntu 18/20 LTS 版本，Minimal安装模式是推荐的方式，为了确保部署的顺利进行，应尽可能保证系统的干净。
 
 请阅读 **[部署指南](./BreezeManual-CN.md)** 获得更详细的Breeze使用操作指引。
 

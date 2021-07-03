@@ -16,7 +16,7 @@
     shell: |
       sed -i "s/.*server:.*/    server: https:\/\/{{ kubernetes_endpoint }}/g" $HOME/.kube/config
       chown $(id -u):$(id -g) $HOME/.kube/config
-    run_once: ture
+    run_once: true
 
   - name: make elasticcloud dir
     file:
@@ -26,7 +26,7 @@
     with_items:
       - '{{ cpath }}'
       - '{{ path }}'
-    run_once: ture
+    run_once: true
 
   - name: copy elasticcloud images
     copy:
@@ -47,36 +47,31 @@
     run_once: true
 
   - name: load elasticcloud operator images
-    docker_image:
-      load_path: '{{ path }}/{{ item }}'
-      name: elasticcloud
-      timeout: 600
-    with_items:
-    - elastic-cloud-images.tar.bz2
+    shell: |
+      podman load -i {{ path }}/elastic-cloud-images.tar.bz2
+    async: 300
+    poll: 5
     run_once: true
 
-  - name: docker login
-    docker_login:
+  - name: podman login
+    containers.podman.podman_login:
       registry: '{{ registry_endpoint }}'
       username: '{{ registry_user }}'
       password: '{{ registry_password }}'
-      reauthorize: true
     run_once: true
 
   - name: tag images
-    docker_image:
-      name: '{{ item.repo }}/{{ item.name }}'
-      repository: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
-      tag: '{{ item.tag }}'
+    shell: |
+      podman tag {{ item.repo }}/{{ item.name }}:{{ item.tag }} {{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}:{{ item.tag }}
     with_items:
-    - { repo: 'docker.elastic.co/eck', name: 'eck-operator', tag: '{{ elastic_cloud_version }}' }
-    - { repo: 'docker.elastic.co/elasticsearch', name: 'elasticsearch', tag: '{{ elastic_stack_version }}' }
-    - { repo: 'docker.elastic.co/kibana', name: 'kibana', tag: '{{ elastic_stack_version }}' }
-    - { repo: 'fluent', name: 'fluentd-kubernetes-daemonset', tag: 'v1-debian-elasticsearch' }
+      - { repo: 'docker.elastic.co/eck', name: 'eck-operator', tag: '{{ elastic_cloud_version }}' }
+      - { repo: 'docker.elastic.co/elasticsearch', name: 'elasticsearch', tag: '{{ elastic_stack_version }}' }
+      - { repo: 'docker.elastic.co/kibana', name: 'kibana', tag: '{{ elastic_stack_version }}' }
+      - { repo: 'fluent', name: 'fluentd-kubernetes-daemonset', tag: 'v1-debian-elasticsearch' }
     run_once: true
 
   - name: push images
-    docker_image:
+    containers.podman.podman_image:
       name: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
       tag: '{{ item.tag }}'
       push: true
@@ -99,7 +94,7 @@
       - { src: 'template/kibana.yml.j2', dest: '{{ cpath }}/kibana.yml' }
       - { src: 'template/kibana-service.yml.j2', dest: '{{ cpath }}/kibana-service.yml' }
       - { src: 'template/fluentd.yml.j2', dest: '{{ cpath }}/fluentd.yml' }
-    run_once: ture
+    run_once: true
 
   - name: elasticcloud operator deploy
     shell: ./deploy.sh
@@ -113,10 +108,10 @@
       state: absent
     with_items:
       - '{{ ansible_env.HOME }}/.kube/config'
-    run_once: ture
+    run_once: true
 
   - name: remove original images tag
-    docker_image:
+    containers.podman.podman_image:
       state: absent
       name: '{{ item.repo }}/{{ item.name }}'
       tag: '{{ item.tag }}'
@@ -124,4 +119,4 @@
     - { repo: 'docker.elastic.co/eck', name: 'eck-operator', tag: '{{ elastic_cloud_version }}' }
     - { repo: 'docker.elastic.co/elasticsearch', name: 'elasticsearch', tag: '{{ elastic_stack_version }}' }
     - { repo: 'docker.elastic.co/kibana', name: 'kibana', tag: '{{ elastic_stack_version }}' }
-    run_once: ture
+    run_once: true
