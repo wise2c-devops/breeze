@@ -69,7 +69,7 @@
     - { repo: '{{ kubernetes_repo }}', name: 'kube-scheduler', tag: '{{ kubernetes_version }}' }
     - { repo: '{{ kubernetes_repo }}', name: 'kube-proxy', tag: '{{ kubernetes_version }}' }
     - { repo: '{{ kubernetes_repo }}', name: 'pause', tag: '{{ pause_version }}' }
-    - { repo: '{{ kubernetes_repo }}', name: 'coredns/coredns', tag: '{{ dns_version }}' }
+    - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
     - { repo: '{{ metrics_server_repo }}/metrics-server', name: 'metrics-server', tag: '{{ metrics_server_version }}' }
     - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
     - { repo: 'calico', name: 'cni', tag: '{{ calico_version }}' }
@@ -97,7 +97,7 @@
   - { name: 'kube-scheduler', tag: '{{ kubernetes_version }}' }
   - { name: 'kube-proxy', tag: '{{ kubernetes_version }}' }
   - { name: 'pause', tag: '{{ pause_version }}' }
-  - { name: 'coredns/coredns', tag: '{{ dns_version }}' }
+  - { name: 'coredns', tag: '{{ dns_version }}' }
   - { name: 'metrics-server', tag: '{{ metrics_server_version }}' }
   - { name: 'flannel', tag: '{{ flannel_version }}' }
   - { name: 'cni', tag: '{{ calico_version }}' }
@@ -124,7 +124,7 @@
   - { repo: '{{ kubernetes_repo }}', name: 'kube-scheduler', tag: '{{ kubernetes_version }}' }
   - { repo: '{{ kubernetes_repo }}', name: 'kube-proxy', tag: '{{ kubernetes_version }}' }
   - { repo: '{{ kubernetes_repo }}', name: 'pause', tag: '{{ pause_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'coredns/coredns', tag: '{{ dns_version }}' }
+  - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ metrics_server_repo }}/metrics-server', name: 'metrics-server', tag: '{{ metrics_server_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
   - { repo: 'calico', name: 'cni', tag: '{{ calico_version }}' }
