@@ -229,7 +229,7 @@
   - name: update pause image in crio.conf
     shell: |
       echo '[crio.image]' > /etc/crio/crio.conf
-      echo 'pause_image = "{{ harbor }}/library/pause:3.4.1"' >> /etc/crio/crio.conf
+      echo 'pause_image = "{{ harbor }}/library/pause:3.2"' >> /etc/crio/crio.conf
 
   - name: fix the metacopy bug for Ubuntu18 
     shell: |

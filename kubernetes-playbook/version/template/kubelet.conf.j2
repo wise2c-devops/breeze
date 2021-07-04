@@ -1,4 +1,4 @@
-KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.4.1 \
+KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.2 \
                    --container-runtime=remote \
                    --cgroup-driver=systemd \
                    --container-runtime-endpoint=unix:///var/run/crio/crio.sock \
