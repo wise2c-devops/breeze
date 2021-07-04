@@ -4,7 +4,7 @@ set -e
 
 path=`dirname $0`
 
-kubernetes_version=1.19.12
+kubernetes_version=1.19.11
 harbor_version=2.3.0
 docker_version=19.03.15
 crio_version=1.19.2
