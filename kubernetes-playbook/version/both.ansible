@@ -37,6 +37,17 @@
       shell: |
         yum clean all
       when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+
+    - name: install kubernetes-cni for Redhat/CentOS
+      yum:
+        disablerepo: '*'
+        enablerepo: wise2c-k8s
+        update_cache: true
+        state: present
+        name: '{{ item }}'
+      with_items:
+      - kubernetes-cni
+      when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
         
     - name: install kubernetes components for Redhat/CentOS
       yum:
@@ -46,7 +57,6 @@
         state: present
         name: '{{ item }}'
       with_items:
-      - kubernetes-cni
       - kubectl-{{ kubernetes_version[1:] }}
       - kubelet-{{ kubernetes_version[1:] }}
       - kubeadm-{{ kubernetes_version[1:] }}
