@@ -209,6 +209,11 @@
     - /etc/crio/crio.conf
     - /etc/containers/registries.conf
 
+  - name: fix the metacopy bug for Ubuntu18
+    shell: |
+      sed -i 's/,metacopy=on//g' /etc/containers/storage.conf
+    when: ansible_distribution =="Ubuntu" and ansible_distribution_major_version == "18"
+
   - name: init crio on Redhat/CentOS to create folder /etc/crio
     systemd:
       name: crio
@@ -230,11 +235,6 @@
     shell: |
       echo '[crio.image]' > /etc/crio/crio.conf
       echo 'pause_image = "{{ harbor }}/library/pause:3.2"' >> /etc/crio/crio.conf
-
-  - name: fix the metacopy bug for Ubuntu18 
-    shell: |
-      sed -i 's/,metacopy=on//g' /etc/containers/storage.conf
-    when: ansible_distribution =="Ubuntu" and ansible_distribution_major_version == "18"
 
   - name: distribute crio registry config
     template:
