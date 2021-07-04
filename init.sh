@@ -21,8 +21,8 @@ flannel_version=0.14.0
 calico_version=3.19.1
 helm_version=3.6.2
 istio_version=1.10.2
-contour_version=1.16.0
-contour_envoyproxy_version=1.18.3
+contour_version=1.14.1
+contour_envoyproxy_version=1.17.2
 elastic_cloud_version=1.6.0
 elastic_stack_version=7.13.2
 
