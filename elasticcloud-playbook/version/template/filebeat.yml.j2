@@ -4,7 +4,7 @@ metadata:
   name: quickstart
 spec:
   type: filebeat
-  version: 7.13.2
+  version: {{ elastic_stack_version }}
   elasticsearchRef:
     name: quickstart
   config:
@@ -19,6 +19,9 @@ spec:
         hostNetwork: true
         securityContext:
           runAsUser: 0
+        tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
         containers:
         - name: filebeat
           image: {{ registry_endpoint }}/{{ registry_project }}/filebeat:{{ elastic_stack_version }}
