@@ -11,5 +11,5 @@ COPY harbor-playbook /workspace/harbor-playbook
 COPY loadbalancer-playbook /workspace/loadbalancer-playbook
 COPY prometheus-playbook /workspace/prometheus-playbook
 COPY istio-playbook /workspace/istio-playbook
-COPY elasticcloud-playbook /workspace/elasticcloud-playbook
+#COPY elasticcloud-playbook /workspace/elasticcloud-playbook
 COPY components_order.conf /workspace
