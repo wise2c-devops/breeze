@@ -54,7 +54,12 @@ until [ `for istiocrds in $(kubectl get crds |grep 'istio.io\|certmanager.k8s.io
 
 echo 'Istio CRD is ready!'
 
-kubectl apply -f samples/addons/
+kubectl apply -f samples/addons/kiali.yaml
+kubectl apply -f samples/addons/prometheus.yaml
+kubectl apply -f samples/addons/grafana.yaml  
+kubectl apply -f samples/addons/jaeger.yaml  
+#kubectl apply -f samples/addons/prometheus_vm.yaml
+#kubectl apply -f samples/addons/prometheus_vm_tls.yaml
 
 set -e
 
