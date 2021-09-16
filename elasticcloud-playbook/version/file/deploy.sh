@@ -3,7 +3,8 @@ set -e
 cd /var/lib/wise2c/tmp/elasticcloud
 
 # Elastic Operator deploy
-kubectl create -f  ./eck.yml
+kubectl create -f  ./crds.yml
+kubectl create -f  ./operator.yml
 
 # Wait for CRDs to be ready.
 printf "Waiting for ElasticCloud Operator to register custom resource definitions..."
