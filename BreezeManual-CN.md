@@ -88,17 +88,17 @@ systemctl enable docker
 (4) 下载用于部署某个Kubernetes版本的docker-compose文件并使部署程序运行起来，例如：
 
 ```
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.20.10/docker-compose.yml -o docker-compose.yml
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.20.10/docker-compose-centos.yml -o docker-compose.yml
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.20.10/docker-compose-ubuntu.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.20.11/docker-compose.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.20.11/docker-compose-centos.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.20.11/docker-compose-ubuntu.yml -o docker-compose.yml
 ```
 
 国内用户可以使用阿里云镜像站点文件，部署所用的image将从阿里云拉取：
 
 ```
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.20.10/docker-compose-aliyun.yml -o docker-compose.yml
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.20.10/docker-compose-centos-aliyun.yml -o docker-compose.yml
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.20.10/docker-compose-ubuntu-aliyun.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.20.11/docker-compose-aliyun.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.20.11/docker-compose-centos-aliyun.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.20.11/docker-compose-ubuntu-aliyun.yml -o docker-compose.yml
 ```
 
 然后：
