@@ -14,7 +14,7 @@
     - containers-common
     - crio
     - podman
-    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky")
 
   - name: yum install docker
     yum:
@@ -26,7 +26,7 @@
     with_items:
     - docker-ce
     - docker-ce-cli
-    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky")
 
   - name: apt remove crio and podman
     apt:
