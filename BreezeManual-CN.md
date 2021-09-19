@@ -6,7 +6,7 @@
 
 RHEL/CentOS/OracleLinux: 7.4/7.5/7.6/7.7/7.8/7.9
 
-RHEL/CentOS/RockyLinux/AlmaLinux/OracleLinux/AnolisOS: 8.4+
+RHEL/CentOS/RockyLinux/AlmaLinux/OracleLinux/Anolis: 8.4+
 
 Ubuntu 18/20 LTS
 

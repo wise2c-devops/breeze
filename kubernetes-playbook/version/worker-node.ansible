@@ -30,7 +30,7 @@
   shell: ./prometheus-fix-worker-nodes.sh
   args:
     chdir: '/var/lib/wise2c/tmp/kubernetes/'
-  when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "AnolisOS")
+  when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
 
 - name: execute prometheus-fix-worker-nodes script for Ubuntu
   shell: ./prometheus-fix-worker-nodes-ubuntu.sh

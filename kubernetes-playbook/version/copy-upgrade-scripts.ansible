@@ -7,7 +7,7 @@
   - { src: 'template/upgrade/redhat-centos/upgrade_first_master_node.sh.j2', dest: '{{ path }}/upgrade_first_master_node.sh' }
   - { src: 'template/upgrade/redhat-centos/upgrade_other_master_nodes.sh.j2', dest: '{{ path }}/upgrade_other_master_nodes.sh' }
   - { src: 'template/upgrade/redhat-centos/upgrade_worker_nodes.sh.j2', dest: '{{ path }}/upgrade_worker_nodes.sh' }
-  when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS")  or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "AnolisOS")
+  when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS")  or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
 
 - name: copy upgrade scripts for Ubuntu
   template:

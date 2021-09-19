@@ -149,7 +149,7 @@
     name: '{{ item }}'
   with_items:
   - git
-  when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "AnolisOS")
+  when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
 
 - name: generate kubeadm config and other yaml files
   template:
@@ -500,7 +500,7 @@
   shell: ./prometheus-fix-master-nodes.sh
   args:
     chdir: '{{ path }}'
-  when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "AnolisOS")
+  when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
 
 - name: execute prometheus-fix-master-nodes script for Ubuntu
   shell: ./prometheus-fix-master-nodes-ubuntu.sh
