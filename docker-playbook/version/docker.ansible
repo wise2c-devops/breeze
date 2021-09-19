@@ -34,20 +34,20 @@
   - name: disabled selinux
     selinux:
       state: disabled
-    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS")
 
   - name: start firewalld
     systemd:
       name: firewalld
       enabled: true
       state: started
-    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS")
 
   - name: config firewalld
     shell: |
       firewall-cmd --set-default-zone=trusted
       firewall-cmd --complete-reload
-    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS")
 
   - name: distribute wise2c yum repo
     template:
@@ -55,7 +55,7 @@
       dest: '{{ item.dest }}'
     with_items:
     - { src: 'template/wise2c.repo.j2', dest: '/etc/yum.repos.d/wise2c.repo' }
-    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS")
 
   - name: distribute ipvs bootload file
     template:
@@ -67,7 +67,7 @@
   - name: clean yum cache
     shell: |
       yum clean all
-    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS")
 
   - name: yum install docker
     yum:
@@ -84,7 +84,7 @@
     - docker-compose
     - chrony
     - ipvsadm
-    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS")
 
   - name: apt install docker
     apt:
@@ -111,7 +111,7 @@
     - { src: 'template/chrony/redhat-centos/chrony-server.conf.j2', dest: '/etc/chrony.conf' }
     when:
     - inventory_hostname == ansible_play_batch[0]
-    - ansible_distribution =="RedHat" or ansible_distribution =="CentOS"
+    - ansible_distribution == "RedHat" or ansible_distribution == "CentOS"
 
   - name: distribute chrony server config for Ubuntu 16
     template:
@@ -141,7 +141,7 @@
     - { src: 'template/chrony/redhat-centos/chrony-client.conf.j2', dest: '/etc/chrony.conf' }
     when:
     - inventory_hostname != ansible_play_batch[0]
-    - ansible_distribution =="RedHat" or ansible_distribution =="CentOS"
+    - ansible_distribution == "RedHat" or ansible_distribution == "CentOS"
 
   - name: distribute chrony client config for Ubuntu 16
     template:
@@ -169,7 +169,7 @@
       daemon_reload: true
       enabled: yes
       state: restarted
-    when: ansible_distribution =="RedHat" or ansible_distribution =="CentOS"
+    when: ansible_distribution == "RedHat" or ansible_distribution == "CentOS"
 
   - name: start chrony for Ubuntu
     systemd:
@@ -189,7 +189,7 @@
     - /etc/sysconfig/docker-storage-setup
     - /etc/sysconfig/docker-network
     when:
-    - ansible_distribution =="RedHat" or ansible_distribution =="CentOS"
+    - ansible_distribution == "RedHat" or ansible_distribution == "CentOS"
 
   - name: init docker to create folder /etc/docker
     systemd:
