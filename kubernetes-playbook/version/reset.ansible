@@ -9,7 +9,7 @@
   - name: iptables reset
     shell: |
       firewall-cmd --complete-reload
-    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS") or (ansible_distribution =="Rocky")
 
   - name: ipvs reset
     shell: |
@@ -26,7 +26,7 @@
     - kubectl-{{ kubernetes_version[1:] }}
     - kubelet-{{ kubernetes_version[1:] }}
     - kubeadm-{{ kubernetes_version[1:] }}
-    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS") or (ansible_distribution =="Rocky")
 
   - name: remove kubernetes components for Ubuntu
     apt:
