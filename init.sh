@@ -4,10 +4,10 @@ set -e
 
 path=`dirname $0`
 
-kubernetes_version=1.21.3
-harbor_version=2.3.1
-docker_version=19.03.15
-crio_version=1.21.3
+kubernetes_version=1.22.2
+harbor_version=2.3.2
+docker_version=20.10.7
+crio_version=1.21.2
 haproxy_version=2.0.0
 keepalived_version=1.3.5
 loadbalancer_version=HAProxy-${haproxy_version}_Keepalived-${keepalived_version}
@@ -18,11 +18,11 @@ metrics_server_version=0.5.0
 dashboard_version=2.3.1
 metrics_scraper_version=1.0.6
 flannel_version=0.14.0
-calico_version=3.19.1
-helm_version=3.6.3
-istio_version=1.10.3
-contour_version=1.17.1
-contour_envoyproxy_version=1.18.3
+calico_version=3.20.0
+helm_version=3.7.0
+istio_version=1.11.2
+contour_version=1.18.1
+contour_envoyproxy_version=1.19.1
 elastic_cloud_version=1.6.0
 elastic_stack_version=7.13.4
 
