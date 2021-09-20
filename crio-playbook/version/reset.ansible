@@ -11,7 +11,7 @@
     with_items:
     - crio
     - podman
-    when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS")
 
   - name: remove crio for Ubuntu
     apt:

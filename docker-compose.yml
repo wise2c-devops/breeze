@@ -23,12 +23,12 @@ services:
     network_mode: "service:deploy"
   playbook:
     container_name: deploy-playbook
-    image: wise2c/playbook:v1.20.11
+    image: wise2c/playbook:v1.20.11.1
     volumes:
     - playbook:/workspace
   yum-repo:
     container_name: deploy-yumrepo
-    image: wise2c/yum-repo:v1.20.11
+    image: wise2c/yum-repo:v1.20.11.1
     ports:
     - 2009:2009 
     restart: always

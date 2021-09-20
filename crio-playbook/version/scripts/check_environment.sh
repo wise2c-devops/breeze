@@ -30,7 +30,7 @@ fi
 [ ${BREEZE_LSB_RELEASE} ]
 [ ${BREEZE_PYTHON_VERSION} ]
 
-if [[ "${BREEZE_LSB_ID}" != "RedHat" ]] && [[ "${BREEZE_LSB_ID}" != "CentOS" ]] && [[ "${BREEZE_LSB_ID}" != "Ubuntu" ]]; then
+if [[ "${BREEZE_LSB_ID}" != "RedHat" ]] && [[ "${BREEZE_LSB_ID}" != "CentOS" ]] && [[ "${BREEZE_LSB_ID}" != "OracleLinux" ]] && [[ "${BREEZE_LSB_ID}" != "Rocky" ]] && [[ "${BREEZE_LSB_ID}" != "AlmaLinux" ]] && [[ "${BREEZE_LSB_ID}" != "Anolis" ]] && [[ "${BREEZE_LSB_ID}" != "Ubuntu" ]]; then
   echo "please use RHEL or CentOS or Ubuntu"
   exit
 fi
