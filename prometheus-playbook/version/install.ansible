@@ -17,10 +17,10 @@
       src: '{{ item.src }}'
       dest: '{{ item.dest }}'
     with_items:
-    - { src: '../../etcd-playbook/{{ etcd_version }}/file/ca.pem', dest: '/etc/etcd/pki/' }
-    - { src: '../../etcd-playbook/{{ etcd_version }}/file/ca-key.pem', dest: '/etc/etcd/pki/' }
-    - { src: '../../etcd-playbook/{{ etcd_version }}/file/etcd.pem', dest: '/etc/etcd/pki/' }
-    - { src: '../../etcd-playbook/{{ etcd_version }}/file/etcd-key.pem', dest: '/etc/etcd/pki/' }
+    - { src: '../../etcd-playbook/ca.pem', dest: '/etc/etcd/pki/' }
+    - { src: '../../etcd-playbook/ca-key.pem', dest: '/etc/etcd/pki/' }
+    - { src: '../../etcd-playbook/etcd.pem', dest: '/etc/etcd/pki/' }
+    - { src: '../../etcd-playbook/etcd-key.pem', dest: '/etc/etcd/pki/' }
     run_once: true
 
   - name: setup kubectl certification
