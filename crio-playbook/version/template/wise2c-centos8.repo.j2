@@ -1,0 +1,13 @@
+[wise2c-k8s]
+name=wise2c-k8s
+baseurl=http://{{ wise2c_seed_host }}:2009/rpms/k8s/centos8
+enabled=1
+gpgcheck=0
+module_hotfixes=1
+
+[wise2c-crio]
+name=wise2c-crio
+baseurl=http://{{ wise2c_seed_host }}:2009/rpms/crio/centos8
+enabled=1
+gpgcheck=0
+module_hotfixes=1
