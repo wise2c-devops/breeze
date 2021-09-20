@@ -148,3 +148,7 @@ openssl x509 -noout -text -in /var/lib/kubelet/pki/kubelet-client-current.pem |g
 (2). 用户对现有的Breeze部署的K8s集群升级，新版本一定要选用2020年7月后的版本，否则kubeadm就把证书给换坏了，如果是手动升级，也千万要记得加参数kubeadm upgrade node --certificate-renewal=false
 
 14. 自2021年7月开始发布的Breeze版本，Ubuntu16不再被支持，请使用Ubuntu18/Ubuntu20。同时，从2021年7月开始的版本，Docker也被更换为CRI-O（Harbor角色机除外），敬请留意。
+
+15. 对于RHEL8系列，推荐使用RockyLinux8.4及以上版本，也可以使用AlmaLinux或OracleLinux的8.4及以上，但在准备基础最小环境的时候需要注意：
+
+    AlmaLinux 及 OracleLinux 需要执行 yum install --nobest python3-audit 命令；AlmaLinux还需执行命令 yum install tar
