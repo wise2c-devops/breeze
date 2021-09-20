@@ -132,10 +132,10 @@
       dest: '{{ item.dest }}'
       flat: true
     with_items:
-    - { src: '/etc/etcd/pki/ca.pem', dest: 'file/ca.pem' }
-    - { src: '/etc/etcd/pki/ca-key.pem', dest: 'file/ca-key.pem' }
-    - { src: '/etc/etcd/pki/etcd.pem', dest: 'file/etcd.pem' }
-    - { src: '/etc/etcd/pki/etcd-key.pem', dest: 'file/etcd-key.pem' }
+    - { src: '/etc/etcd/pki/ca.pem', dest: '../ca.pem' }
+    - { src: '/etc/etcd/pki/ca-key.pem', dest: '../ca-key.pem' }
+    - { src: '/etc/etcd/pki/etcd.pem', dest: '../etcd.pem' }
+    - { src: '/etc/etcd/pki/etcd-key.pem', dest: '../etcd-key.pem' }
     run_once: true
   
   - name: copy certificates
@@ -143,10 +143,10 @@
       src: '{{ item.src }}'
       dest: '{{ item.dest }}'
     with_items:
-    - { src: 'file/ca.pem', dest: '/etc/etcd/pki/ca.pem' }
-    - { src: 'file/ca-key.pem', dest: '/etc/etcd/pki/ca-key.pem' }
-    - { src: 'file/etcd.pem', dest: '/etc/etcd/pki/etcd.pem' }
-    - { src: 'file/etcd-key.pem', dest: '/etc/etcd/pki/etcd-key.pem' }
+    - { src: '../ca.pem', dest: '/etc/etcd/pki/ca.pem' }
+    - { src: '../ca-key.pem', dest: '/etc/etcd/pki/ca-key.pem' }
+    - { src: '../etcd.pem', dest: '/etc/etcd/pki/etcd.pem' }
+    - { src: '../etcd-key.pem', dest: '/etc/etcd/pki/etcd-key.pem' }
 
   - name: makdir etc database folder
     shell: |
