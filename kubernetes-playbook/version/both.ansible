@@ -8,19 +8,17 @@
     - '{{ path }}'
     - $HOME/.kube
 
-  - name: remove swapfile from /etc/fstab for CentOS
+  - name: remove swapfile from /etc/fstab for those OS which has the swap partition name as swap
     mount:
       name: swap
       fstype: swap
       state: absent
-    when: ansible_distribution =="CentOS"
 
-  - name: remove swapfile from /etc/fstab for RHEL/Ubuntu
+  - name: remove swapfile from /etc/fstab for those OS which has the swap partition name as none
     mount:
       name: none
       fstype: swap
       state: absent
-    when: (ansible_distribution =="RedHat") or (ansible_distribution =="Ubuntu")
 
   - name: disable swap
     script: scripts/disable-swap.sh
@@ -36,12 +34,12 @@
     - name: clean yum cache
       shell: |
         yum clean all
-      when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+      when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
 
     - name: install kubernetes-cni for Redhat/CentOS
       shell: |
         yum install --disablerepo=* --enablerepo=wise2c-k8s -y kubernetes-cni
-      when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+      when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
         
     - name: install kubernetes components for Redhat/CentOS
       yum:
@@ -54,7 +52,7 @@
       - kubectl-{{ kubernetes_version[1:] }}
       - kubelet-{{ kubernetes_version[1:] }}
       - kubeadm-{{ kubernetes_version[1:] }}
-      when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+      when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
 
     - name: install kubernetes components for Ubuntu
       apt:
@@ -90,7 +88,7 @@
         dest: '{{ item.dest }}'
       with_items:
       - { src: 'template/kubelet.conf.j2', dest: '/etc/sysconfig/kubelet' }
-      when: (ansible_distribution =="RedHat") or (ansible_distribution =="CentOS")
+      when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
 
     - name: distribute kubelet config for Ubuntu
       template:
