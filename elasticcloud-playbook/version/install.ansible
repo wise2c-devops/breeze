@@ -49,7 +49,7 @@
   - name: load elasticcloud operator images
     shell: |
       podman load -i {{ path }}/elastic-cloud-images.tar.bz2
-    async: 300
+    async: 600
     poll: 5
     run_once: true
 
