@@ -18,13 +18,13 @@ metrics_server_version=0.5.0
 dashboard_version=2.3.1
 metrics_scraper_version=1.0.6
 flannel_version=0.14.0
-calico_version=3.20.0
+calico_version=3.20.1
 helm_version=3.7.0
-istio_version=1.11.2
+istio_version=1.11.3
 contour_version=1.18.1
 contour_envoyproxy_version=1.19.1
-elastic_cloud_version=1.6.0
-elastic_stack_version=7.13.4
+elastic_cloud_version=1.8.0
+elastic_stack_version=7.15.0
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
 mv ${path}/harbor-playbook/version ${path}/harbor-playbook/v${harbor_version}
