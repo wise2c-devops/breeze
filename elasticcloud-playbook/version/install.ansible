@@ -68,7 +68,6 @@
       - { repo: 'docker.elastic.co/elasticsearch', name: 'elasticsearch', tag: '{{ elastic_stack_version }}' }
       - { repo: 'docker.elastic.co/kibana', name: 'kibana', tag: '{{ elastic_stack_version }}' }
       - { repo: 'docker.elastic.co/beats', name: 'filebeat', tag: '{{ elastic_stack_version }}' }
-      - { repo: 'fluent', name: 'fluentd-kubernetes-daemonset', tag: 'v1-debian-elasticsearch' }
     run_once: true
 
   - name: push images
@@ -82,7 +81,6 @@
     - { name: 'elasticsearch', tag: '{{ elastic_stack_version }}' }
     - { name: 'kibana', tag: '{{ elastic_stack_version }}' }
     - { name: 'filebeat', tag: '{{ elastic_stack_version }}' }
-    - { name: 'fluentd-kubernetes-daemonset', tag: 'v1-debian-elasticsearch' }
     run_once: true
 
   - name: copy elasticcloud yaml files
