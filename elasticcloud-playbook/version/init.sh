@@ -18,7 +18,7 @@ cat ${path}/template/eck.yml.j2 |grep 'image: "docker.elastic.co/eck/' |awk -F":
 echo "docker.elastic.co/elasticsearch/elasticsearch:${ElasticStackVersion}" >> images-list.txt
 echo "docker.elastic.co/kibana/kibana:${ElasticStackVersion}" >> images-list.txt
 echo "docker.elastic.co/beats/filebeat:${ElasticStackVersion}" >> images-list.txt
-echo "fluent/fluentd-kubernetes-daemonset:v1-debian-elasticsearch" >> images-list.txt
+#echo "fluent/fluentd-kubernetes-daemonset:v1-debian-elasticsearch" >> images-list.txt
 
 echo 'Images list for Elastic Cloud:'
 cat images-list.txt
