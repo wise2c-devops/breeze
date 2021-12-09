@@ -236,11 +236,11 @@
       state: restarted
     when: ansible_distribution == "Ubuntu"
 
-  # crio service uses k8s.gcr.io/pause:3.5 as default
+  # crio service uses k8s.gcr.io/pause:3.6 as default
   - name: update pause image in crio.conf
     shell: |
       echo '[crio.image]' > /etc/crio/crio.conf
-      echo 'pause_image = "{{ harbor }}/library/pause:3.5"' >> /etc/crio/crio.conf
+      echo 'pause_image = "{{ harbor }}/library/pause:3.6"' >> /etc/crio/crio.conf
 
   - name: distribute crio registry config
     template:
