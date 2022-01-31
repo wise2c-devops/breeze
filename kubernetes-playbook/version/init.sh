@@ -95,6 +95,9 @@ echo "metrics_server_version: ${metrics_server_version}" >> ${path}/yat/all.yml.
 curl -sS https://raw.githubusercontent.com/kubernetes/dashboard/${dashboard_version}/aio/deploy/recommended.yaml \
     | sed -e "s,kubernetesui,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kubernetes-dashboard.yml.j2
 
+crul -sS https://github.com/kubernetes-sigs/metrics-server/releases/download/v${metrics_server_version}/components.yaml \
+    | sed -e "s,k8s.gcr.io/metrics-server/,{{ registry_endpoint }}/{{ registry_project }}/,g" > ${path}/template/metrics-server-deployment.yaml
+
 echo "=== pulling kubernetes dashboard and metrics-server images ==="
 docker pull ${dashboard_repo}/dashboard:${dashboard_version}
 docker pull ${dashboard_repo}/metrics-scraper:${metrics_scraper_version}
@@ -115,7 +118,7 @@ bzip2 -z --best ${path}/file/metrics-server.tar
 echo "=== kubernetes dashboard and metrics-server images are saved successfully ==="
 
 contour_repo="projectcontour"
-contour_long_repo="docker.io/projectcontour"
+contour_long_repo="ghcr.io/projectcontour"
 contour_envoyproxy_repo="envoyproxy"
 contour_envoyproxy_long_repo="docker.io/envoyproxy"
 contour_demo_repo="gcr.io/kuar-demo"
@@ -131,8 +134,8 @@ echo "contour_version: ${contour_version}" >> ${path}/yat/all.yml.gotmpl
 echo "contour_envoyproxy_version: ${contour_envoyproxy_version}" >> ${path}/yat/all.yml.gotmpl
 
 curl -sS https://raw.githubusercontent.com/projectcontour/contour/${contour_version}/examples/render/contour.yaml \
-    | sed -e "s#image: docker.io/projectcontour/contour:latest#image: docker.io/projectcontour/contour:${contour_version}#g" > ${path}/template/contour.yml.j2
-sed -i "s,docker.io/projectcontour,{{ registry_endpoint }}/{{ registry_project }},g" ${path}/template/contour.yml.j2
+    | sed -e "s#image: ghcr.io/projectcontour/contour:latest#image: ghcr.io/projectcontour/contour:${contour_version}#g" > ${path}/template/contour.yml.j2
+sed -i "s,ghcr.io/projectcontour,{{ registry_endpoint }}/{{ registry_project }},g" ${path}/template/contour.yml.j2
 sed -i "s,docker.io/envoyproxy,{{ registry_endpoint }}/{{ registry_project }},g" ${path}/template/contour.yml.j2
 
 curl -sS https://projectcontour.io/examples/kuard.yaml \
