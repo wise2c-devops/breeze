@@ -88,6 +88,7 @@
     - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
     - { repo: '{{ metrics_server_repo }}/metrics-server', name: 'metrics-server', tag: '{{ metrics_server_version }}' }
     - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
+    - { repo: 'rancher', name: 'mirrored-flannelcni-flannel-cni-plugin', tag: 'v1.0.0' }
     - { repo: 'calico', name: 'cni', tag: '{{ calico_version }}' }
     - { repo: 'calico', name: 'kube-controllers', tag: '{{ calico_version }}' }
     - { repo: 'calico', name: 'node', tag: '{{ calico_version }}' }
@@ -116,6 +117,7 @@
   - { name: 'coredns', tag: '{{ dns_version }}' }
   - { name: 'metrics-server', tag: '{{ metrics_server_version }}' }
   - { name: 'flannel', tag: '{{ flannel_version }}' }
+  - { name: 'mirrored-flannelcni-flannel-cni-plugin', tag: 'v1.0.0' }
   - { name: 'cni', tag: '{{ calico_version }}' }
   - { name: 'kube-controllers', tag: '{{ calico_version }}' }
   - { name: 'node', tag: '{{ calico_version }}' }
@@ -143,6 +145,7 @@
   - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ metrics_server_repo }}/metrics-server', name: 'metrics-server', tag: '{{ metrics_server_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
+  - { repo: 'rancher', name: 'mirrored-flannelcni-flannel-cni-plugin', tag: 'v1.0.0' }
   - { repo: 'calico', name: 'cni', tag: '{{ calico_version }}' }
   - { repo: 'calico', name: 'kube-controllers', tag: '{{ calico_version }}' }
   - { repo: 'calico', name: 'node', tag: '{{ calico_version }}' }
