@@ -49,6 +49,8 @@ sed -i "s,rancher/,{{ registry_endpoint }}/{{ registry_project }}/,g" ${path}/te
 
 echo "=== pulling flannel image ==="
 docker pull ${flannel_repo}/flannel:${flannel_version}
+echo "Debug ==========================================================="
+cat ${path}/template/kube-flannel.yml.j2 |grep rancher |awk '{print $2}'
 docker pull $(cat ${path}/template/kube-flannel.yml.j2 |grep rancher |awk '{print $2}')
 echo "=== flannel image is pulled successfully ==="
 
