@@ -45,14 +45,8 @@ echo "flannel_version_short: ${flannel_version}" >> ${path}/yat/all.yml.gotmpl
 curl -sSL https://raw.githubusercontent.com/coreos/flannel/${flannel_version}/Documentation/kube-flannel.yml \
    | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
 
-sed -i "s,rancher/,{{ registry_endpoint }}/{{ registry_project }}/,g" ${path}/template/kube-flannel.yml.j2
-
 echo "=== pulling flannel image ==="
 docker pull ${flannel_repo}/flannel:${flannel_version}
-echo "Debug ==========================================================="
-ls -alh ${path}/template/kube-flannel.yml.j2
-cat ${path}/template/kube-flannel.yml.j2
-cat ${path}/template/kube-flannel.yml.j2 |grep rancher |awk '{print $2}'
 docker pull $(cat ${path}/template/kube-flannel.yml.j2 |grep rancher |awk '{print $2}')
 echo "=== flannel image is pulled successfully ==="
 
@@ -62,6 +56,8 @@ docker save ${flannel_repo}/flannel:${flannel_version} $(cat ${path}/template/ku
 rm ${path}/file/flannel.tar.bz2 -f
 bzip2 -z --best ${path}/file/flannel.tar
 echo "=== flannel image is saved successfully ==="
+
+sed -i "s,rancher/,{{ registry_endpoint }}/{{ registry_project }}/,g" ${path}/template/kube-flannel.yml.j2
 
 calico_version=v`cat ${path}/components-version.txt |grep "Calico" |awk '{print $3}'`
 echo "calico_version: ${calico_version}" >> ${path}/yat/all.yml.gotmpl
