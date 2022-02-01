@@ -101,6 +101,10 @@ curl -sS https://raw.githubusercontent.com/kubernetes/dashboard/${dashboard_vers
 curl -sSL https://github.com/kubernetes-sigs/metrics-server/releases/download/v${metrics_server_version}/components.yaml \
     | sed -e "s,k8s.gcr.io/metrics-server/,{{ registry_endpoint }}/{{ registry_project }}/,g" > ${path}/template/metrics-server-deployment.yaml.j2
 
+echo "Debug information ======================================= "
+cat ${path}/template/metrics-server-deployment.yaml.j2
+echo "Debug done =================================== "
+
 echo "=== pulling kubernetes dashboard and metrics-server images ==="
 docker pull ${dashboard_repo}/dashboard:${dashboard_version}
 docker pull ${dashboard_repo}/metrics-scraper:${metrics_scraper_version}
