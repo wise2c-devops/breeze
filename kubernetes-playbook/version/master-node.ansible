@@ -88,6 +88,7 @@
     - { repo: '{{ kubernetes_repo }}', name: 'coredns/coredns', tag: '{{ dns_version }}' }
     - { repo: '{{ metrics_server_repo }}/metrics-server', name: 'metrics-server', tag: '{{ metrics_server_version }}' }
     - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
+    - { repo: 'rancher', name: 'mirrored-flannelcni-flannel-cni-plugin', tag: 'v1.0.0' }
     - { repo: 'calico', name: 'cni', tag: '{{ calico_version }}' }
     - { repo: 'calico', name: 'kube-controllers', tag: '{{ calico_version }}' }
     - { repo: 'calico', name: 'node', tag: '{{ calico_version }}' }
@@ -124,6 +125,7 @@
   - { name: 'coredns/coredns', tag: '{{ dns_version }}' }
   - { name: 'metrics-server', tag: '{{ metrics_server_version }}' }
   - { name: 'flannel', tag: '{{ flannel_version }}' }
+  - { name: 'mirrored-flannelcni-flannel-cni-plugin', tag: 'v1.0.0' }
   - { name: 'cni', tag: '{{ calico_version }}' }
   - { name: 'kube-controllers', tag: '{{ calico_version }}' }
   - { name: 'node', tag: '{{ calico_version }}' }
@@ -152,6 +154,7 @@
   - { repo: '{{ kubernetes_repo }}', name: 'coredns/coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ metrics_server_repo }}/metrics-server', name: 'metrics-server', tag: '{{ metrics_server_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
+  - { repo: 'rancher', name: 'mirrored-flannelcni-flannel-cni-plugin', tag: 'v1.0.0' }
   - { repo: 'calico', name: 'cni', tag: '{{ calico_version }}' }
   - { repo: 'calico', name: 'kube-controllers', tag: '{{ calico_version }}' }
   - { repo: 'calico', name: 'node', tag: '{{ calico_version }}' }
@@ -396,9 +399,9 @@
     regexp: "image: docker.io/calico/"
     replace: "image: {{ registry_endpoint }}/{{ registry_project }}/"
   with_items:
-    - { filename: "{{ path }}/calico/k8s-manifests/calico.yaml" }
-    - { filename: "{{ path }}/calico/k8s-manifests/calico-typha.yaml" }
-    - { filename: "{{ path }}/calico/k8s-manifests/canal.yaml" }
+    - { filename: "{{ path }}/calico/manifests/calico.yaml" }
+    - { filename: "{{ path }}/calico/manifests/calico-typha.yaml" }
+    - { filename: "{{ path }}/calico/manifests/canal.yaml" }
   run_once: true
 
 - name: replace image repo in calicoctl yaml file
@@ -407,7 +410,7 @@
     regexp: "image: calico/"
     replace: "image: {{ registry_endpoint }}/{{ registry_project }}/"
   with_items:
-    - { filename: "{{ path }}/calico/k8s-manifests/calicoctl.yaml" }
+    - { filename: "{{ path }}/calico/manifests/calicoctl.yaml" }
   run_once: true
 
 - name: replace image repo in canal yaml files
@@ -416,7 +419,7 @@
     regexp: "image: quay.io/coreos/flannel:{{ flannel_version_short }}"
     replace: "image: {{ registry_endpoint }}/{{ registry_project }}/flannel:{{ flannel_version }}"
   with_items:
-    - { filename: "{{ path }}/calico/k8s-manifests/canal.yaml" }
+    - { filename: "{{ path }}/calico/manifests/canal.yaml" }
   run_once: true
 
 - name: replace pod cidr in calico yaml files
@@ -425,8 +428,8 @@
     regexp: "192.168.0.0/16"
     replace: "{{ pod_cidr }}"
   with_items:
-    - { filename: "{{ path }}/calico/k8s-manifests/calico.yaml" }
-    - { filename: "{{ path }}/calico/k8s-manifests/calico-typha.yaml" }
+    - { filename: "{{ path }}/calico/manifests/calico.yaml" }
+    - { filename: "{{ path }}/calico/manifests/calico-typha.yaml" }
   run_once: true
 
 - name: replace pod cidr 10.244.0.0/16 in canal yaml files
@@ -435,7 +438,7 @@
     regexp: "10.244.0.0/16"
     replace: "{{ pod_cidr }}"
   with_items:
-    - { filename: "{{ path }}/calico/k8s-manifests/canal.yaml" }
+    - { filename: "{{ path }}/calico/manifests/canal.yaml" }
   run_once: true
 
 - name: replace calico_mode in calico yaml files
@@ -444,8 +447,8 @@
     regexp: "value: \"Always\""
     replace: "value: \"Never\""
   with_items:
-    - { filename: "{{ path }}/calico/k8s-manifests/calico.yaml" }
-    - { filename: "{{ path }}/calico/k8s-manifests/calico-typha.yaml" }
+    - { filename: "{{ path }}/calico/manifests/calico.yaml" }
+    - { filename: "{{ path }}/calico/manifests/calico-typha.yaml" }
   when: calico_mode == 'BGP'
   run_once: true
 
@@ -455,8 +458,8 @@
     regexp: '- name: FELIX_HEALTHENABLED[\S\s]*?value: "true"'
     replace: '- name: FELIX_HEALTHENABLED\n              value: "true"\n            - name: IP_AUTODETECTION_METHOD\n              value: {{ calico_node_ip_detection_mode }}'
   with_items:
-  - { filename: '{{ path }}/calico/k8s-manifests/calico.yaml' }
-  - { filename: '{{ path }}/calico/k8s-manifests/calico-typha.yaml' }
+  - { filename: '{{ path }}/calico/manifests/calico.yaml' }
+  - { filename: '{{ path }}/calico/manifests/calico-typha.yaml' }
   run_once: true
 
 - name: replace pod cidr 10.244.0.0/16 in flannel yaml files
@@ -470,21 +473,21 @@
 
 - name: apply calico cni for cluster with more than 50 nodes
   shell: |
-    kubectl apply -f {{ path }}/calico/k8s-manifests/calico-typha.yaml
-    kubectl apply -f {{ path }}/calico/k8s-manifests/calicoctl.yaml
+    kubectl apply -f {{ path }}/calico/manifests/calico-typha.yaml
+    kubectl apply -f {{ path }}/calico/manifests/calicoctl.yaml
   run_once: true
   when: (cni == 'Calico') and (calico_nodes == 'More_than_50_nodes')
 
 - name: apply calico cni for cluster with 50 nodes or less
   shell: |
-    kubectl apply -f {{ path }}/calico/k8s-manifests/calico.yaml
-    kubectl apply -f {{ path }}/calico/k8s-manifests/calicoctl.yaml
+    kubectl apply -f {{ path }}/calico/manifests/calico.yaml
+    kubectl apply -f {{ path }}/calico/manifests/calicoctl.yaml
   run_once: true
   when: (cni == 'Calico') and (calico_nodes == '50_nodes_or_less')
 
 - name: apply canal cni
   shell: |
-    kubectl apply -f {{ path }}/calico/k8s-manifests/canal.yaml
+    kubectl apply -f {{ path }}/calico/manifests/canal.yaml
   run_once: true
   when: cni == 'Canal'
 
