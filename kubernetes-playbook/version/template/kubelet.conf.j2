@@ -2,7 +2,7 @@ KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ regist
                    --container-runtime=remote \
                    --cgroup-driver=systemd \
                    --container-runtime-endpoint=unix:///var/run/crio/crio.sock \
-                   --runtime-request-timeout=10m \
+                   --runtime-request-timeout=10m
                    --alsologtostderr=true \
                    --logtostderr=false \
                    --anonymous-auth=true \

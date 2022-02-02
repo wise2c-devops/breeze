@@ -42,19 +42,24 @@ sed -i "s,- image: \"quay.io/kiali/,- image: \"$MyImageRepositoryIP/$MyImageRepo
 sed -i "s,strategy: anonymous,strategy: token,g" samples/addons/kiali.yaml
 
 set +e
-# We need to verify that all 13 Istio CRDs were committed to the Kubernetes api-server
+# We need to verify that all 14 Istio CRDs were committed to the Kubernetes api-server
 printf "Waiting for Istio to commit custom resource definitions..."
 
-until [ `kubectl get crds |grep 'istio.io\|certmanager.k8s.io' |wc -l` -eq 13 ]; do printf "."; done
+until [ `kubectl get crds |grep 'istio.io\|certmanager.k8s.io' |wc -l` -eq 14 ]; do printf "."; done
 
 crdresult=""
-for ((i=1; i<=13; i++)); do crdresult=${crdresult}"True"; done
+for ((i=1; i<=14; i++)); do crdresult=${crdresult}"True"; done
 
 until [ `for istiocrds in $(kubectl get crds |grep 'istio.io\|certmanager.k8s.io' |awk '{print $1}'); do kubectl get crd ${istiocrds} -o jsonpath='{.status.conditions[1].status}'; done` = $crdresult ]; do sleep 1; printf "."; done
 
 echo 'Istio CRD is ready!'
 
-kubectl apply -f samples/addons/
+kubectl apply -f samples/addons/kiali.yaml
+kubectl apply -f samples/addons/prometheus.yaml
+kubectl apply -f samples/addons/grafana.yaml  
+kubectl apply -f samples/addons/jaeger.yaml  
+#kubectl apply -f samples/addons/prometheus_vm.yaml
+#kubectl apply -f samples/addons/prometheus_vm_tls.yaml
 
 set -e
 
