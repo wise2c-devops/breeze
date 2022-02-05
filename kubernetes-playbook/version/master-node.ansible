@@ -88,7 +88,7 @@
     - { repo: '{{ kubernetes_repo }}', name: 'coredns/coredns', tag: '{{ dns_version }}' }
     - { repo: '{{ metrics_server_repo }}/metrics-server', name: 'metrics-server', tag: '{{ metrics_server_version }}' }
     - { repo: '{{ flannel_repo }}', name: 'mirrored-flannelcni-flannel', tag: '{{ flannel_version }}' }
-    - { repo: 'rancher', name: 'mirrored-flannelcni-flannel-cni-plugin', tag: 'v1.0.1' }
+    - { repo: '{{ flannel_repo }}', name: 'mirrored-flannelcni-flannel-cni-plugin', tag: '{{ flannel_cni_plugin_version }}' }
     - { repo: 'calico', name: 'cni', tag: '{{ calico_version }}' }
     - { repo: 'calico', name: 'kube-controllers', tag: '{{ calico_version }}' }
     - { repo: 'calico', name: 'node', tag: '{{ calico_version }}' }
@@ -125,7 +125,7 @@
   - { name: 'coredns/coredns', tag: '{{ dns_version }}' }
   - { name: 'metrics-server', tag: '{{ metrics_server_version }}' }
   - { name: 'mirrored-flannelcni-flannel', tag: '{{ flannel_version }}' }
-  - { name: 'mirrored-flannelcni-flannel-cni-plugin', tag: 'v1.0.1' }
+  - { name: 'mirrored-flannelcni-flannel-cni-plugin', tag: '{{ flannel_cni_plugin_version }}' }
   - { name: 'cni', tag: '{{ calico_version }}' }
   - { name: 'kube-controllers', tag: '{{ calico_version }}' }
   - { name: 'node', tag: '{{ calico_version }}' }
@@ -154,7 +154,7 @@
   - { repo: '{{ kubernetes_repo }}', name: 'coredns/coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ metrics_server_repo }}/metrics-server', name: 'metrics-server', tag: '{{ metrics_server_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'mirrored-flannelcni-flannel', tag: '{{ flannel_version }}' }
-  - { repo: 'rancher', name: 'mirrored-flannelcni-flannel-cni-plugin', tag: 'v1.0.1' }
+  - { repo: '{{ flannel_reop }}', name: 'mirrored-flannelcni-flannel-cni-plugin', tag: '{{ flannel_cni_plugin_version }}' }
   - { repo: 'calico', name: 'cni', tag: '{{ calico_version }}' }
   - { repo: 'calico', name: 'kube-controllers', tag: '{{ calico_version }}' }
   - { repo: 'calico', name: 'node', tag: '{{ calico_version }}' }
@@ -416,8 +416,8 @@
 - name: replace image repo in canal yaml files
   replace:
     dest: "{{ item.filename }}"
-    regexp: "image: quay.io/coreos/flannel:{{ flannel_version_short }}"
-    replace: "image: {{ registry_endpoint }}/{{ registry_project }}/flannel:{{ flannel_version }}"
+    regexp: "image: quay.io/coreos/flannel:{{ flannel_version }}"
+    replace: "image: {{ registry_endpoint }}/{{ registry_project }}/mirrored-flannelcni-flannel:{{ flannel_version }}"
   with_items:
     - { filename: "{{ path }}/calico/manifests/canal.yaml" }
   run_once: true

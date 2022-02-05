@@ -18,6 +18,7 @@ metrics_server_version=0.6.0
 dashboard_version=2.4.0
 metrics_scraper_version=1.0.7
 flannel_version=0.16.3
+flannel_cni_plugin_version=1.0.1
 calico_version=3.21.4
 helm_version=3.8.0
 istio_version=1.12.2
@@ -54,6 +55,7 @@ echo "MetricsServer Version: ${metrics_server_version}" >> ${path}/components-ve
 echo "Dashboard Version: ${dashboard_version}" >> ${path}/components-version.txt
 echo "MetricsScraper Version: ${metrics_scraper_version}" >> ${path}/components-version.txt
 echo "Flannel Version: ${flannel_version}" >> ${path}/components-version.txt
+echo "flannel-cni-plugin Version: ${flannel_cni_plugin_version}" >> ${path}/components-version.txt
 echo "Calico Version: ${calico_version}" >> ${path}/components-version.txt
 echo "Helm Version: ${helm_version}" >> ${path}/components-version.txt
 echo "Istio Version: ${istio_version}" >> ${path}/components-version.txt
