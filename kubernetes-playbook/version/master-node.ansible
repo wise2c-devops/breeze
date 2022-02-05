@@ -154,7 +154,7 @@
   - { repo: '{{ kubernetes_repo }}', name: 'coredns/coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ metrics_server_repo }}/metrics-server', name: 'metrics-server', tag: '{{ metrics_server_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'mirrored-flannelcni-flannel', tag: '{{ flannel_version }}' }
-  - { repo: '{{ flannel_reop }}', name: 'mirrored-flannelcni-flannel-cni-plugin', tag: '{{ flannel_cni_plugin_version }}' }
+  - { repo: '{{ flannel_repo }}', name: 'mirrored-flannelcni-flannel-cni-plugin', tag: '{{ flannel_cni_plugin_version }}' }
   - { repo: 'calico', name: 'cni', tag: '{{ calico_version }}' }
   - { repo: 'calico', name: 'kube-controllers', tag: '{{ calico_version }}' }
   - { repo: 'calico', name: 'node', tag: '{{ calico_version }}' }
