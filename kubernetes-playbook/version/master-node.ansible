@@ -87,8 +87,8 @@
     - { repo: '{{ kubernetes_repo }}', name: 'pause', tag: '{{ pause_version }}' }
     - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
     - { repo: '{{ metrics_server_repo }}/metrics-server', name: 'metrics-server', tag: '{{ metrics_server_version }}' }
-    - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
-    - { repo: 'rancher', name: 'mirrored-flannelcni-flannel-cni-plugin', tag: 'v1.0.0' }
+    - { repo: '{{ flannel_repo }}', name: 'mirrored-flannelcni-flannel', tag: '{{ flannel_version }}' }
+    - { repo: '{{ flannel_repo }}', name: 'mirrored-flannelcni-flannel-cni-plugin', tag: '{{ flannel_cni_plugin_version }}' }
     - { repo: 'calico', name: 'cni', tag: '{{ calico_version }}' }
     - { repo: 'calico', name: 'kube-controllers', tag: '{{ calico_version }}' }
     - { repo: 'calico', name: 'node', tag: '{{ calico_version }}' }
@@ -100,6 +100,13 @@
     - { repo: '{{ contour_repo }}', name: 'contour', tag: '{{ contour_version }}' }
     - { repo: '{{ contour_envoyproxy_repo }}', name: 'envoy', tag: '{{ contour_envoyproxy_version }}' }
     - { repo: '{{ contour_demo_repo }}', name: 'kuard-amd64', tag: '1' }
+  run_once: true
+
+- name: tag coredns image
+  shell: |
+    podman tag {{ item.repo }}/{{ item.name }}:{{ item.tag }} {{ registry_endpoint }}/{{ registry_project }}/coredns:{{ item.tag }}
+  with_items:
+    - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
   run_once: true
 
 - name: push images
@@ -115,9 +122,10 @@
   - { name: 'kube-proxy', tag: '{{ kubernetes_version }}' }
   - { name: 'pause', tag: '{{ pause_version }}' }
   - { name: 'coredns', tag: '{{ dns_version }}' }
+  - { name: 'coredns', tag: '{{ dns_version }}' }
   - { name: 'metrics-server', tag: '{{ metrics_server_version }}' }
-  - { name: 'flannel', tag: '{{ flannel_version }}' }
-  - { name: 'mirrored-flannelcni-flannel-cni-plugin', tag: 'v1.0.0' }
+  - { name: 'mirrored-flannelcni-flannel', tag: '{{ flannel_version }}' }
+  - { name: 'mirrored-flannelcni-flannel-cni-plugin', tag: '{{ flannel_cni_plugin_version }}' }
   - { name: 'cni', tag: '{{ calico_version }}' }
   - { name: 'kube-controllers', tag: '{{ calico_version }}' }
   - { name: 'node', tag: '{{ calico_version }}' }
@@ -143,9 +151,10 @@
   - { repo: '{{ kubernetes_repo }}', name: 'kube-proxy', tag: '{{ kubernetes_version }}' }
   - { repo: '{{ kubernetes_repo }}', name: 'pause', tag: '{{ pause_version }}' }
   - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
+  - { repo: '{{ kubernetes_repo }}', name: 'coredns', tag: '{{ dns_version }}' }
   - { repo: '{{ metrics_server_repo }}/metrics-server', name: 'metrics-server', tag: '{{ metrics_server_version }}' }
-  - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
-  - { repo: 'rancher', name: 'mirrored-flannelcni-flannel-cni-plugin', tag: 'v1.0.0' }
+  - { repo: '{{ flannel_repo }}', name: 'mirrored-flannelcni-flannel', tag: '{{ flannel_version }}' }
+  - { repo: '{{ flannel_repo }}', name: 'mirrored-flannelcni-flannel-cni-plugin', tag: '{{ flannel_cni_plugin_version }}' }
   - { repo: 'calico', name: 'cni', tag: '{{ calico_version }}' }
   - { repo: 'calico', name: 'kube-controllers', tag: '{{ calico_version }}' }
   - { repo: 'calico', name: 'node', tag: '{{ calico_version }}' }
@@ -407,8 +416,8 @@
 - name: replace image repo in canal yaml files
   replace:
     dest: "{{ item.filename }}"
-    regexp: "image: quay.io/coreos/flannel:{{ flannel_version_short }}"
-    replace: "image: {{ registry_endpoint }}/{{ registry_project }}/flannel:{{ flannel_version }}"
+    regexp: "image: quay.io/coreos/flannel:{{ flannel_version }}"
+    replace: "image: {{ registry_endpoint }}/{{ registry_project }}/mirrored-flannelcni-flannel:{{ flannel_version }}"
   with_items:
     - { filename: "{{ path }}/calico/manifests/canal.yaml" }
   run_once: true
