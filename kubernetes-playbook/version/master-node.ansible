@@ -491,6 +491,15 @@
   run_once: true
   when: cni == 'Canal'
 
+- name: add kubelet-insecure-tls for metrics server
+  replace:
+    dest: "{{ item.filename }}"
+    regexp: "- --kubelet-use-node-status-port"
+    replace: "- --kubelet-use-node-status-port\n        - --kubelet-insecure-tls"
+  with_items:
+  - { filename: '{{ path }}/metrics-server/metrics-server-deployment.yaml' }
+  run_once: true
+
 - name: apply addons
   shell: |
     kubectl apply -f {{ path }}/kubernetes-dashboard.yml
