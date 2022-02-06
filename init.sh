@@ -11,13 +11,14 @@ crio_version=1.22.1
 haproxy_version=2.0.0
 keepalived_version=1.3.5
 loadbalancer_version=HAProxy-${haproxy_version}_Keepalived-${keepalived_version}
-prometheus_version=2.32.1
-prometheus_operator_version=0.53.0
-kube_prometheus_version=0.10.0
+prometheus_version=2.29.1
+prometheus_operator_version=0.49.0
+kube_prometheus_version=0.9.0
 metrics_server_version=0.6.0
 dashboard_version=2.4.0
 metrics_scraper_version=1.0.7
-flannel_version=0.15.1
+flannel_version=0.16.3
+flannel_cni_plugin_version=1.0.1
 calico_version=3.21.4
 helm_version=3.8.0
 istio_version=1.12.2
@@ -54,6 +55,7 @@ echo "MetricsServer Version: ${metrics_server_version}" >> ${path}/components-ve
 echo "Dashboard Version: ${dashboard_version}" >> ${path}/components-version.txt
 echo "MetricsScraper Version: ${metrics_scraper_version}" >> ${path}/components-version.txt
 echo "Flannel Version: ${flannel_version}" >> ${path}/components-version.txt
+echo "flannel-cni-plugin Version: ${flannel_cni_plugin_version}" >> ${path}/components-version.txt
 echo "Calico Version: ${calico_version}" >> ${path}/components-version.txt
 echo "Helm Version: ${helm_version}" >> ${path}/components-version.txt
 echo "Istio Version: ${istio_version}" >> ${path}/components-version.txt
