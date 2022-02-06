@@ -230,7 +230,7 @@
 
   - name: init crio on Ubuntu to create folder /etc/crio
     systemd:
-      name: cri-o
+      name: crio
       daemon_reload: true
       enabled: true
       state: restarted
@@ -268,7 +268,7 @@
 
   - name: reload & restart crio on Ubuntu
     systemd:
-      name: cri-o
+      name: crio
       daemon_reload: true
       enabled: true
       state: restarted
