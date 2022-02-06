@@ -35,7 +35,7 @@ sed -i "s/gcr.io\/google_containers/$MyImageRepositoryIP\/$MyImageRepositoryProj
 sed -i "s/jimmidyson\/configmap-reload/$MyImageRepositoryIP\/$MyImageRepositoryProject\/configmap-reload/g" $(grep -lr "jimmidyson/configmap-reload" ./ |grep .yaml)
 #sed -i "s/directxman12\/k8s-prometheus-adapter/$MyImageRepositoryIP\/$MyImageRepositoryProject\/k8s-prometheus-adapter/g" $(grep -lr "directxman12/k8s-prometheus-adapter" ./ |grep .yaml)
 sed -i "s/k8s.gcr.io\/kube-state-metrics/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "k8s.gcr.io" ./ |grep .yaml)
-sed -i "s/k8s.gcr.io\/prometheus-adapter/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "k8s.gcr.io/prometheus-adapter" ./ |grep .yaml)
+#sed -i "s/k8s.gcr.io\/prometheus-adapter/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "k8s.gcr.io/prometheus-adapter" ./ |grep .yaml)
 
 cd ..
 rm -f temp.txt
