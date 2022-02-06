@@ -151,4 +151,15 @@ openssl x509 -noout -text -in /var/lib/kubelet/pki/kubelet-client-current.pem |g
 
 15. 对于RHEL8系列，推荐使用RockyLinux8.4及以上版本，也可以使用AlmaLinux或OracleLinux的8.4及以上，但在准备基础最小环境的时候需要注意：
 
-    AlmaLinux 及 OracleLinux 需要执行 yum install --nobest python3-audit 命令；AlmaLinux还需执行命令 yum install tar
+    AlmaLinux 及 OracleLinux 需要执行 yum install policycoreutils-python-utils 命令；AlmaLinux还需执行命令 yum install tar
+
+16. Ubuntu 18/20版本报错
+
+    level=error msg="container_linux.go:380: starting container process caused: process_linux.go:545: container init caused: process_linux.go:508: setting cgroup config for procHooks process caused: open /sys/fs/cgroup/memory/kubepods.slice/kubepods-burstable.slice/kubepods-burstable-podff0010a1_3fc8_4205_827e_e4ca7c059c7b.slice/crio-67535536a9a1e05943af7fd255fc46ae44c485c59d33f8edf52d92fac94eaa7c.scope/memory.memsw.limit_in_bytes: no such file or directory"
+
+    https://github.com/cri-o/cri-o/issues/5527
+
+    https://github.com/cri-o/cri-o/pull/5539
+
+    解决方法：先降级到CRI-O v1.22.x
+
