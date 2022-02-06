@@ -23,12 +23,12 @@ services:
     network_mode: "service:deploy"
   playbook:
     container_name: deploy-playbook
-    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/playbook:v1.22.6
+    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/playbook:v1.22.4
     volumes:
     - playbook:/workspace
   apt-source:
     container_name: deploy-aptsource
-    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/apt-source:v1.22.6
+    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/apt-source:v1.22.4
     ports:
     - 2008:2008
     restart: always
