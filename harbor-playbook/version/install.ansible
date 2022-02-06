@@ -6,6 +6,10 @@
   tasks:
   - name: yum remove crio and podman
     yum:
+      disablerepo: '*'
+      enablerepo:
+      - wise2c-k8s
+      - wise2c-crio
       state: absent
       name: '{{ item }}'
     with_items:
