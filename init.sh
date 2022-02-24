@@ -7,25 +7,25 @@ path=`dirname $0`
 kubernetes_version=1.23.4
 harbor_version=2.4.1
 docker_version=20.10.7
-crio_version=1.23.0
+crio_version=1.23.1
 haproxy_version=2.0.0
 keepalived_version=1.3.5
 loadbalancer_version=HAProxy-${haproxy_version}_Keepalived-${keepalived_version}
 prometheus_version=2.29.1
 prometheus_operator_version=0.49.0
-kube_prometheus_version=0.9.0
-metrics_server_version=0.6.0
-dashboard_version=2.4.0
+kube_prometheus_version=0.10.0
+metrics_server_version=0.6.1
+dashboard_version=2.5.0
 metrics_scraper_version=1.0.7
 flannel_version=0.16.3
 flannel_cni_plugin_version=1.0.1
-calico_version=3.21.4
+calico_version=3.22.0
 helm_version=3.8.0
-istio_version=1.12.2
-contour_version=1.19.1
-contour_envoyproxy_version=1.19.1
-elastic_cloud_version=1.9.1
-elastic_stack_version=7.16.3
+istio_version=1.13.1
+contour_version=1.20.0
+contour_envoyproxy_version=1.21.0
+elastic_cloud_version=2.0.0
+elastic_stack_version=8.0.0
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
 mv ${path}/harbor-playbook/version ${path}/harbor-playbook/v${harbor_version}
