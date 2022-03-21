@@ -24,6 +24,7 @@
     yum:
       disablerepo: '*'
       enablerepo: wise2c-k8s
+      allowerasing: true
       update_cache: true
       state: present
       name: '{{ item }}'
