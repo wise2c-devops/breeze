@@ -4,8 +4,8 @@ set -e
 
 path=`dirname $0`
 
-kubernetes_version=1.21.11
-harbor_version=2.4.2
+kubernetes_version=1.21.12
+harbor_version=2.5.0
 docker_version=20.10.7
 crio_version=1.21.6
 haproxy_version=2.0.0
@@ -19,13 +19,13 @@ dashboard_version=2.4.0
 metrics_scraper_version=1.0.7
 flannel_version=0.17.0
 flannel_cni_plugin_version=1.0.1
-calico_version=3.22.1
-helm_version=3.8.1
-istio_version=1.13.2
+calico_version=3.22.2
+helm_version=3.8.2
+istio_version=1.13.3
 contour_version=1.20.1
 contour_envoyproxy_version=1.21.1
 elastic_cloud_version=2.1.0
-elastic_stack_version=8.1.0
+elastic_stack_version=8.1.3
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
 mv ${path}/harbor-playbook/version ${path}/harbor-playbook/v${harbor_version}
