@@ -123,7 +123,7 @@ bzip2 -z --best ${path}/file/metrics-server.tar
 
 echo "=== kubernetes dashboard and metrics-server images are saved successfully ==="
 
-contour_repo="projectcontour"
+contour_repo="ghcr.io/projectcontour"
 contour_long_repo="ghcr.io/projectcontour"
 contour_envoyproxy_repo="envoyproxy"
 contour_envoyproxy_long_repo="docker.io/envoyproxy"
