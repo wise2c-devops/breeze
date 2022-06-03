@@ -267,6 +267,16 @@ Kubernetes Dashboard的访问入口我们采用了NodePort:30300的方式暴露�
 kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
 ```
 
+如果K8s的版本是1.24.0及以上，则可以通过以下命令获取访问令牌：
+
+```
+kubectl create serviceaccount kube-dashboard-admin-sa -n kube-system
+
+kubectl create clusterrolebinding kube-dashboard-admin-sa --clusterrole=cluster-admin --serviceaccount=kube-system:kube-dashboard-admin-sa
+
+kubectl create token kube-dashboard-admin-sa -n kube-system --duration=87600h
+```
+
 将返回的token字串粘贴至登录窗口即可实现登录。
 
 ![Alt](./manual/KubernetesDashboard-001.png)
