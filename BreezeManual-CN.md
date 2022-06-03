@@ -267,7 +267,7 @@ Kubernetes Dashboard的访问入口我们采用了NodePort:30300的方式暴露�
 kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
 ```
 
-如果K8s的版本是1.24.0及以上，则可以通过以下命令获取访问令牌：
+如果K8s的版本是1.24.0及以上，则可以通过以下命令获取访问令牌，命令中87600h的意思是令牌有效期为10年，实际使用可缩短有效期：
 
 ```
 kubectl create serviceaccount kube-dashboard-admin-sa -n kube-system
