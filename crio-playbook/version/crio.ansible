@@ -103,7 +103,7 @@
   - name: yum install crio and podman
     yum:
       disablerepo: '*'
-      enablerepo: wise2c-crio
+      enablerepo: "wise2c-crio,wise2c-k8s"
       update_cache: true
       state: present
       name: '{{ item }}'
