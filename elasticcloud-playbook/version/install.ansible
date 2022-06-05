@@ -93,6 +93,7 @@
       src: '{{ item.src }}'
       dest: '{{ item.dest }}'
     with_items:
+      - { src: 'template/crds.yml.j2', dest: '{{ cpath }}/crds.yml' }
       - { src: 'template/eck.yml.j2', dest: '{{ cpath }}/eck.yml' }
       - { src: 'template/elasticsearch.yml.j2', dest: '{{ cpath }}/elasticsearch.yml' }
       - { src: 'template/elasticsearch-service.yml.j2', dest: '{{ cpath }}/elasticsearch-service.yml' }

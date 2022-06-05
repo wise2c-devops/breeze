@@ -11,7 +11,8 @@ echo "" >> ${path}/group_vars/elasticcloud.yml
 echo "elastic_cloud_version: ${ElasticCloudVersion}" >> ${path}/group_vars/elasticcloud.yml
 echo "elastic_stack_version: ${ElasticStackVersion}" >> ${path}/group_vars/elasticcloud.yml
 
-curl -L -o ${path}/template/eck.yml.j2 https://download.elastic.co/downloads/eck/${ElasticCloudVersion}/all-in-one.yaml
+curl -L -o ${path}/template/crds.yml.j2 https://download.elastic.co/downloads/eck/${ElasticCloudVersion}/crds.yaml
+curl -L -o ${path}/template/eck.yml.j2 https://download.elastic.co/downloads/eck/${ElasticCloudVersion}/operator.yaml
 
 cat ${path}/template/eck.yml.j2 |grep 'image: "docker.elastic.co/eck/' |awk -F":" '{print $2":"$3}' |awk -F'"' '{print $2}' > images-list.txt
 echo "docker.elastic.co/elasticsearch/elasticsearch:${ElasticStackVersion}" >> images-list.txt

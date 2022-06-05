@@ -3,6 +3,7 @@ set -e
 cd /var/lib/wise2c/tmp/elasticcloud
 
 # Elastic Operator deploy
+kubectl create -f  ./crds.yml
 kubectl create -f  ./eck.yml
 
 # Wait for CRDs to be ready.
