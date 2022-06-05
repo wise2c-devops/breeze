@@ -4,26 +4,27 @@ set -e
 
 path=`dirname $0`
 
-kubernetes_version=1.21.0
-harbor_version=2.2.1
-docker_version=19.03.15
+kubernetes_version=1.21.13
+harbor_version=2.5.0
+docker_version=20.10.16
 haproxy_version=2.0.0
 keepalived_version=1.3.5
 loadbalancer_version=HAProxy-${haproxy_version}_Keepalived-${keepalived_version}
-prometheus_version=2.22.1
-prometheus_operator_version=0.44.1
-kube_prometheus_version=0.7.0
-metrics_server_version=0.4.2
-dashboard_version=2.2.0
-metrics_scraper_version=1.0.6
-flannel_version=0.13.0
-calico_version=3.18.1
-helm_version=3.5.3
-istio_version=1.9.2
-contour_version=1.14.0
-contour_envoyproxy_version=1.17.1
-elastic_cloud_version=1.5.0
-elastic_stack_version=7.12.0
+prometheus_version=2.29.1
+prometheus_operator_version=0.49.0
+kube_prometheus_version=0.9.0
+metrics_server_version=0.6.1
+dashboard_version=2.4.0
+metrics_scraper_version=1.0.7
+flannel_version=0.18.0
+flannel_cni_plugin_version=1.1.0
+calico_version=3.23.1
+helm_version=3.9.0
+istio_version=1.13.4
+contour_version=1.21.0
+contour_envoyproxy_version=1.22.0
+elastic_cloud_version=2.2.0
+elastic_stack_version=8.2.2
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
 mv ${path}/harbor-playbook/version ${path}/harbor-playbook/v${harbor_version}
@@ -51,6 +52,7 @@ echo "MetricsServer Version: ${metrics_server_version}" >> ${path}/components-ve
 echo "Dashboard Version: ${dashboard_version}" >> ${path}/components-version.txt
 echo "MetricsScraper Version: ${metrics_scraper_version}" >> ${path}/components-version.txt
 echo "Flannel Version: ${flannel_version}" >> ${path}/components-version.txt
+echo "flannel-cni-plugin Version: ${flannel_cni_plugin_version}" >> ${path}/components-version.txt
 echo "Calico Version: ${calico_version}" >> ${path}/components-version.txt
 echo "Helm Version: ${helm_version}" >> ${path}/components-version.txt
 echo "Istio Version: ${istio_version}" >> ${path}/components-version.txt
