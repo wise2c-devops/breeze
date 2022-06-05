@@ -35,29 +35,32 @@ echo "kubernetes_version: ${kubernetes_version}" >> ${path}/yat/all.yml.gotmpl
 echo "dns_version: ${dns_version}" >> ${path}/yat/all.yml.gotmpl
 echo "pause_version: ${pause_version}" >> ${path}/yat/all.yml.gotmpl
 
-flannel_repo="quay.io/coreos"
+flannel_repo="rancher"
 flannel_version=v`cat ${path}/components-version.txt |grep "Flannel" |awk '{print $3}'`
+flannel_cni_plugin_version=v`cat ${path}/components-version.txt |grep "flannel-cni-plugin" |awk '{print $3}'`
 
 echo "flannel_repo: ${flannel_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "flannel_version: ${flannel_version}" >> ${path}/yat/all.yml.gotmpl
-echo "flannel_version_short: ${flannel_version}" >> ${path}/yat/all.yml.gotmpl
+echo "flannel_cni_plugin_version: ${flannel_cni_plugin_version}" >> ${path}/yat/all.yml.gotmpl
 
-curl -sSL https://raw.githubusercontent.com/coreos/flannel/${flannel_version}/Documentation/kube-flannel.yml \
-   | sed -e "s,quay.io/coreos,{{ registry_endpoint }}/{{ registry_project }},g" > ${path}/template/kube-flannel.yml.j2
+#curl -sSL https://raw.githubusercontent.com/coreos/flannel/${flannel_version}/Documentation/kube-flannel.yml \
+#   | sed -e "s,rancher/,{{ registry_endpoint }}/{{ registry_project }}/,g" > ${path}/template/kube-flannel.yml.j2
+
+curl -sSL https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml \
+   | sed -e "s,rancher/,{{ registry_endpoint }}/{{ registry_project }}/,g" > ${path}/template/kube-flannel.yml.j2
 
 echo "=== pulling flannel image ==="
-docker pull ${flannel_repo}/flannel:${flannel_version}
-docker pull $(cat ${path}/template/kube-flannel.yml.j2 |grep rancher |awk '{print $2}')
+docker pull ${flannel_repo}/mirrored-flannelcni-flannel:${flannel_version}
+docker pull ${flannel_repo}/mirrored-flannelcni-flannel-cni-plugin:${flannel_cni_plugin_version}
 echo "=== flannel image is pulled successfully ==="
 
 echo "=== saving flannel image ==="
-docker save ${flannel_repo}/flannel:${flannel_version} $(cat ${path}/template/kube-flannel.yml.j2 |grep rancher |awk '{print $2}') \
+docker save ${flannel_repo}/mirrored-flannelcni-flannel:${flannel_version} \
+            ${flannel_repo}/mirrored-flannelcni-flannel-cni-plugin:${flannel_cni_plugin_version} \
     > ${path}/file/flannel.tar
 rm ${path}/file/flannel.tar.bz2 -f
 bzip2 -z --best ${path}/file/flannel.tar
 echo "=== flannel image is saved successfully ==="
-
-sed -i "s,rancher/,{{ registry_endpoint }}/{{ registry_project }}/,g" ${path}/template/kube-flannel.yml.j2
 
 calico_version=v`cat ${path}/components-version.txt |grep "Calico" |awk '{print $3}'`
 echo "calico_version: ${calico_version}" >> ${path}/yat/all.yml.gotmpl
@@ -120,7 +123,7 @@ bzip2 -z --best ${path}/file/metrics-server.tar
 
 echo "=== kubernetes dashboard and metrics-server images are saved successfully ==="
 
-contour_repo="projectcontour"
+contour_repo="ghcr.io/projectcontour"
 contour_long_repo="ghcr.io/projectcontour"
 contour_envoyproxy_repo="envoyproxy"
 contour_envoyproxy_long_repo="docker.io/envoyproxy"
