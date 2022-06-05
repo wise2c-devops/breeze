@@ -47,10 +47,11 @@ curl -sSL https://raw.githubusercontent.com/coreos/flannel/${flannel_version}/Do
 
 echo "=== pulling flannel image ==="
 docker pull ${flannel_repo}/flannel:${flannel_version}
+docker pull $(cat ${path}/template/kube-flannel.yml.j2 |grep rancher |awk '{print $2}')
 echo "=== flannel image is pulled successfully ==="
 
 echo "=== saving flannel image ==="
-docker save ${flannel_repo}/flannel:${flannel_version} \
+docker save ${flannel_repo}/flannel:${flannel_version} $(cat ${path}/template/kube-flannel.yml.j2 |grep rancher |awk '{print $2}') \
     > ${path}/file/flannel.tar
 rm ${path}/file/flannel.tar.bz2 -f
 bzip2 -z --best ${path}/file/flannel.tar
