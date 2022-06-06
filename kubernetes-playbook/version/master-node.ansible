@@ -1,94 +1,6 @@
 - name: init setup on master nodes
   include_tasks: both.ansible
 
-- name: copy k8s images
-  copy:
-    src: '{{ item.src }}'
-    dest: '{{ item.dest }}'
-  with_items:
-  - { src: 'file/k8s.tar.bz2', dest: '{{ path }}' }
-  - { src: 'file/flannel.tar.bz2', dest: '{{ path }}' }
-  - { src: 'file/dashboard.tar.bz2', dest: '{{ path }}' }
-  - { src: 'file/metrics-scraper.tar.bz2', dest: '{{ path }}' }
-  - { src: 'file/metrics-server.tar.bz2', dest: '{{ path }}' }
-  - { src: 'file/contour.tar.bz2', dest: '{{ path }}' }
-  - { src: 'file/contour-envoyproxy.tar.bz2', dest: '{{ path }}' }
-  - { src: 'file/contour-demo.tar.bz2', dest: '{{ path }}' }
-  run_once: true
-
-- name: copy calico folder
-  copy:
-    src: '{{ item.src }}'
-    dest: '{{ item.dest }}'
-  with_items:
-  - { src: 'file/calico', dest: '{{ path }}/' }
-  run_once: true
-
-- name: copy metrics-server folder
-  copy:
-    src: '{{ item.src }}'
-    dest: '{{ item.dest }}'
-  with_items:
-  - { src: 'file/metrics-server', dest: '{{ path }}/' }
-
-- name: load k8s images
-  docker_image:
-    load_path: '{{ path }}/{{ item }}'
-    name: k8s
-    timeout: 600
-  with_items:
-  - k8s.tar.bz2
-  - flannel.tar.bz2
-  - dashboard.tar.bz2
-  - metrics-scraper.tar.bz2
-  - metrics-server.tar.bz2
-  - contour.tar.bz2
-  - contour-envoyproxy.tar.bz2
-  - contour-demo.tar.bz2
-  - calico/images/calico-cni.tar.bz2
-  - calico/images/calico-kube-controllers.tar.bz2
-  - calico/images/calico-node.tar.bz2
-  - calico/images/calico-typha.tar.bz2
-  - calico/images/calico-pod2daemon-flexvol.tar.bz2
-  - calico/images/calico-ctl.tar.bz2
-  run_once: true
-
-- name: docker login
-  docker_login:
-    registry: '{{ registry_endpoint }}'
-    username: '{{ registry_user }}'
-    password: '{{ registry_password }}'
-    reauthorize: true
-  run_once: true
-
-- name: tag images
-  docker_image:
-    name: '{{ item.repo }}/{{ item.name }}'
-    repository: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
-    tag: '{{ item.tag }}'
-  with_items:
-  - { repo: '{{ kubernetes_repo }}', name: 'kube-controller-manager', tag: '{{ kubernetes_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'kube-apiserver', tag: '{{ kubernetes_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'kube-scheduler', tag: '{{ kubernetes_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'kube-proxy', tag: '{{ kubernetes_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'pause', tag: '{{ pause_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'coredns/coredns', tag: '{{ dns_version }}' }
-  - { repo: '{{ metrics_server_repo }}/metrics-server', name: 'metrics-server', tag: '{{ metrics_server_version }}' }
-  - { repo: '{{ flannel_repo }}', name: 'mirrored-flannelcni-flannel', tag: '{{ flannel_version }}' }
-  - { repo: '{{ flannel_repo }}', name: 'mirrored-flannelcni-flannel-cni-plugin', tag: '{{ flannel_cni_plugin_version }}' }
-  - { repo: 'calico', name: 'cni', tag: '{{ calico_version }}' }
-  - { repo: 'calico', name: 'kube-controllers', tag: '{{ calico_version }}' }
-  - { repo: 'calico', name: 'node', tag: '{{ calico_version }}' }
-  - { repo: 'calico', name: 'typha', tag: '{{ calico_version }}' }
-  - { repo: 'calico', name: 'pod2daemon-flexvol', tag: '{{ calico_version }}' }
-  - { repo: 'calico', name: 'ctl', tag: '{{ calico_version }}' }
-  - { repo: '{{ dashboard_repo }}', name: 'dashboard', tag: '{{ dashboard_version }}' }
-  - { repo: '{{ dashboard_repo }}', name: 'metrics-scraper', tag: '{{ metrics_scraper_version }}' }
-  - { repo: '{{ contour_repo }}', name: 'contour', tag: '{{ contour_version }}' }
-  - { repo: '{{ contour_envoyproxy_repo }}', name: 'envoy', tag: '{{ contour_envoyproxy_version }}' }
-  - { repo: '{{ contour_demo_repo }}', name: 'kuard-amd64', tag: '1' }
-  run_once: true
-
 - name: push images
   docker_image:
     name: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
@@ -96,59 +8,13 @@
     push: true
     state: present
   with_items:
-  - { name: 'kube-controller-manager', tag: '{{ kubernetes_version }}' }
-  - { name: 'kube-apiserver', tag: '{{ kubernetes_version }}' }
-  - { name: 'kube-scheduler', tag: '{{ kubernetes_version }}' }
-  - { name: 'kube-proxy', tag: '{{ kubernetes_version }}' }
-  - { name: 'pause', tag: '{{ pause_version }}' }
-  - { name: 'coredns/coredns', tag: '{{ dns_version }}' }
-  - { name: 'metrics-server', tag: '{{ metrics_server_version }}' }
-  - { name: 'mirrored-flannelcni-flannel', tag: '{{ flannel_version }}' }
-  - { name: 'mirrored-flannelcni-flannel-cni-plugin', tag: '{{ flannel_cni_plugin_version }}' }
-  - { name: 'cni', tag: '{{ calico_version }}' }
-  - { name: 'kube-controllers', tag: '{{ calico_version }}' }
-  - { name: 'node', tag: '{{ calico_version }}' }
-  - { name: 'typha', tag: '{{ calico_version }}' }
-  - { name: 'pod2daemon-flexvol', tag: '{{ calico_version }}' }
-  - { name: 'ctl', tag: '{{ calico_version }}' }
-  - { name: 'dashboard', tag: '{{ dashboard_version }}' }
-  - { name: 'metrics-scraper', tag: '{{ metrics_scraper_version }}' }
-  - { name: 'contour', tag: '{{ contour_version }}' }
-  - { name: 'envoy', tag: '{{ contour_envoyproxy_version }}' }
-  - { name: 'kuard-amd64', tag: '1' }
+  - { name: 'coredns', tag: '{{ dns_version }}' }
   run_once: true
-
-- name: Remove k8s.gcr.io and original images tag
-  docker_image:
-    state: absent
-    name: '{{ item.repo }}/{{ item.name }}'
-    tag: '{{ item.tag }}'
-  with_items:
-  - { repo: '{{ kubernetes_repo }}', name: 'kube-controller-manager', tag: '{{ kubernetes_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'kube-apiserver', tag: '{{ kubernetes_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'kube-scheduler', tag: '{{ kubernetes_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'kube-proxy', tag: '{{ kubernetes_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'pause', tag: '{{ pause_version }}' }
-  - { repo: '{{ kubernetes_repo }}', name: 'coredns/coredns', tag: '{{ dns_version }}' }
-  - { repo: '{{ metrics_server_repo }}/metrics-server', name: 'metrics-server', tag: '{{ metrics_server_version }}' }
-  - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
-  - { repo: 'calico', name: 'cni', tag: '{{ calico_version }}' }
-  - { repo: 'calico', name: 'kube-controllers', tag: '{{ calico_version }}' }
-  - { repo: 'calico', name: 'node', tag: '{{ calico_version }}' }
-  - { repo: 'calico', name: 'typha', tag: '{{ calico_version }}' }
-  - { repo: 'calico', name: 'pod2daemon-flexvol', tag: '{{ calico_version }}' }
-  - { repo: 'calico', name: 'ctl', tag: '{{ calico_version }}' }
-  - { repo: '{{ dashboard_repo }}', name: 'dashboard', tag: '{{ dashboard_version }}' }
-  - { repo: '{{ dashboard_repo }}', name: 'metrics-scraper', tag: '{{ metrics_scraper_version }}' }
-  - { repo: '{{ contour_repo }}', name: 'contour', tag: '{{ contour_version }}' }
-  - { repo: '{{ contour_envoyproxy_repo }}', name: 'envoy', tag: '{{ contour_envoyproxy_version }}' }
-  - { repo: '{{ contour_demo_repo }}', name: 'kuard-amd64', tag: '1' }
-  run_once: ture
 
 - name: install git command for helm-push and perl library for ipcalc
   yum:
     disablerepo: '*'
-    enablerepo: wise2c
+    enablerepo: "wise2c-k8s,wise2c-crio"
     update_cache: true
     state: present
     name: '{{ item }}'
@@ -393,8 +259,8 @@
 - name: replace image repo in canal yaml files
   replace:
     dest: "{{ item.filename }}"
-    regexp: "image: quay.io/coreos/flannel:{{ flannel_version_short }}"
-    replace: "image: {{ registry_endpoint }}/{{ registry_project }}/flannel:{{ flannel_version }}"
+    regexp: "image: quay.io/coreos/flannel:{{ flannel_version }}"
+    replace: "image: {{ registry_endpoint }}/{{ registry_project }}/mirrored-flannelcni-flannel:{{ flannel_version }}"
   with_items:
     - { filename: "{{ path }}/calico/manifests/canal.yaml" }
   run_once: true
