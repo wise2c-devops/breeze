@@ -349,7 +349,7 @@
     kubectl apply -f {{ path }}/kubernetes-dashboard-svc.yml
     kubectl apply -f {{ path }}/contour.yml
     kubectl apply -f {{ path }}/contour-demo.yml
-    kubectl apply -f {{ path }}/metrics-server/
+    kubectl apply -f {{ path }}/metrics-server/metrics-server-deployment.yaml
   run_once: true
 
 - name: update kube-proxy HA setting
