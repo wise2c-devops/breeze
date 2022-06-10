@@ -4,6 +4,47 @@
   vars:
     path: /var/lib/wise2c/tmp/harbor
   tasks:
+  - name: yum install docker on Redhat/CentOS/Rocky/Alma/Oracle 8.x
+    yum:
+      disablerepo: '*'
+      enablerepo: wise2c-k8s
+      allowerasing: true
+      update_cache: true
+      state: present
+      name: '{{ item }}'
+    with_items:
+    - docker-ce
+    - docker-ce-cli
+    when: ((ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")) and (ansible_distribution_major_version == '8')
+
+  - name: yum install docker on Redhat/CentOS/Oracle 7.x
+    yum:
+      disablerepo: '*'
+      enablerepo: wise2c-k8s
+      update_cache: true
+      state: present
+      name: '{{ item }}'
+    with_items:
+    - docker-ce
+    - docker-ce-cli
+    when: ((ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")) and (ansible_distribution_major_version == '7')
+
+  - name: apt install docker
+    apt:
+      update_cache: true
+      state: present
+      name: '{{ item }}'
+    with_items:
+    - docker-ce
+    - docker-ce-cli
+    when: ansible_distribution =="Ubuntu"
+
+  - name: start docker
+    systemd:
+      name: docker
+      enabled: true
+      state: started
+
   - name: make harbor dir
     file:
       path: '{{ item }}'

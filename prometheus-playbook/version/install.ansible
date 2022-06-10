@@ -17,17 +17,17 @@
       src: '{{ item.src }}'
       dest: '{{ item.dest }}'
     with_items:
-    - { src: '../../etcd-playbook/{{ etcd_version }}/file/ca.pem', dest: '/etc/etcd/pki/' }
-    - { src: '../../etcd-playbook/{{ etcd_version }}/file/ca-key.pem', dest: '/etc/etcd/pki/' }
-    - { src: '../../etcd-playbook/{{ etcd_version }}/file/etcd.pem', dest: '/etc/etcd/pki/' }
-    - { src: '../../etcd-playbook/{{ etcd_version }}/file/etcd-key.pem', dest: '/etc/etcd/pki/' }
+    - { src: '../../etcd-playbook/ca.pem', dest: '/etc/etcd/pki/' }
+    - { src: '../../etcd-playbook/ca-key.pem', dest: '/etc/etcd/pki/' }
+    - { src: '../../etcd-playbook/etcd.pem', dest: '/etc/etcd/pki/' }
+    - { src: '../../etcd-playbook/etcd-key.pem', dest: '/etc/etcd/pki/' }
     run_once: true
 
   - name: setup kubectl certification
     shell: |
       sed -i "s/.*server:.*/    server: https:\/\/{{ kubernetes_endpoint }}/g" $HOME/.kube/config
       chown $(id -u):$(id -g) $HOME/.kube/config
-    run_once: ture
+    run_once: true
 
   - name: make prometheus dir
     file:
@@ -37,7 +37,7 @@
     with_items:
       - '{{ cpath }}'
       - '{{ path }}'
-    run_once: ture
+    run_once: true
 
   - name: copy prometheus operator tarball and images
     copy:
@@ -76,12 +76,10 @@
     run_once: true
 
   - name: load prometheus operator images
-    docker_image:
-      load_path: '{{ path }}/{{ item }}'
-      name: prometheus
-      timeout: 600
-    with_items:
-    - kube-prometheus-images-v{{ kube_prometheus_version }}.tar.bz2
+    shell: |
+      docker load -i {{ path }}/kube-prometheus-images-v{{ kube_prometheus_version }}.tar.bz2
+    async: 180
+    poll: 5
     run_once: true
 
   - name: docker login
@@ -89,7 +87,6 @@
       registry: '{{ registry_endpoint }}'
       username: '{{ registry_user }}'
       password: '{{ registry_password }}'
-      reauthorize: true
     run_once: true
 
   - name: set harbor address for deploy script
@@ -99,7 +96,7 @@
       replace: "{{ registry_endpoint }}"
     with_items:
       - "harbor-address.txt"
-    run_once: ture
+    run_once: true
 
   - name: set etcd address for deploy script
     replace:
@@ -108,7 +105,7 @@
       replace: "{{ etcd_endpoint }}"
     with_items:
       - "etcd-address.txt"
-    run_once: ture
+    run_once: true
     
   - name: set nodeport for prometheus alertmanager and grafana service
     template:
@@ -118,19 +115,19 @@
       - { src: 'template/prometheus-service.yaml.j2', dest: '{{ cpath }}/prometheus-service.yaml' }
       - { src: 'template/alertmanager-service.yaml.j2', dest: '{{ cpath }}/alertmanager-service.yaml' }
       - { src: 'template/grafana-service.yaml.j2', dest: '{{ cpath }}/grafana-service.yaml' }
-    run_once: ture
+    run_once: true
 
   - name: prometheus operator deploy
     shell: ./deploy.sh
     args:
       chdir: '{{ cpath }}/'
-    run_once: ture
+    run_once: true
 
   - name: prometheus add-on deploy
     shell: ./add-on.sh
     args:
       chdir: '{{ cpath }}/'
-    run_once: ture
+    run_once: true
 
   - name: remove kubectl cert
     file:
@@ -138,7 +135,7 @@
       state: absent
     with_items:
       - '{{ ansible_env.HOME }}/.kube/config'
-    run_once: ture
+    run_once: true
 
   - name: remove etcd cert
     file:
@@ -158,5 +155,5 @@
     shell: ./clean-images-tags.sh
     args:
       chdir: '{{ cpath }}/'
-    run_once: ture
+    run_once: true
     ignore_errors: true

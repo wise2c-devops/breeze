@@ -39,13 +39,13 @@
       - { src: 'file/keepalived.sh', dest: '{{ cpath }}' }
   
   - name: load lb image
-    docker_image:
-      load_path: '{{ path }}/{{ item }}'
-      name: lb
-      timeout: 600
+    shell: |
+      docker load -i '{{ path }}/{{ item }}'
     with_items:
       - haproxy-{{ haproxy_version }}.tar.bz2
       - keepalived-{{ keepalived_version }}.tar.bz2
+    async: 60
+    poll: 5
     run_once: true
 
   - name: docker login
@@ -53,14 +53,11 @@
       registry: '{{ registry_endpoint }}'
       username: '{{ registry_user }}'
       password: '{{ registry_password }}'
-      reauthorize: true
     run_once: true
 
   - name: tag images
-    docker_image:
-      name: '{{ item.repo }}/{{ item.name }}'
-      repository: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
-      tag: '{{ item.tag }}'
+    shell: |
+      docker tag {{ item.repo }}/{{ item.name }}:{{ item.tag }} {{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}:{{ item.tag }}
     with_items:
       - { repo: 'wise2c', name: 'k8s-haproxy', tag: '{{ haproxy_version }}' }
       - { repo: 'wise2c', name: 'k8s-keepalived', tag: '{{ keepalived_version }}' }
@@ -85,7 +82,7 @@
     with_items:
       - { repo: 'wise2c', name: 'k8s-haproxy', tag: '{{ haproxy_version }}' }
       - { repo: 'wise2c', name: 'k8s-keepalived', tag: '{{ keepalived_version }}' }
-    run_once: ture
+    run_once: true
 
   - name: get port
     set_fact:
@@ -99,7 +96,6 @@
   - name: run haproxy
     docker_container:
       name: haproxy
-      restart_policy: unless-stopped
       image: "{{ registry_endpoint }}/{{ registry_project }}/k8s-haproxy:{{ haproxy_version  }}"
       ports: '{{ ports | d([], true) | list }}'
       volumes:
@@ -109,8 +105,9 @@
     docker_container:
       name: keepalived
       network_mode: host
-      restart_policy: unless-stopped
-      capabilities: NET_ADMIN
+      capabilities:
+      - NET_ADMIN
+      - NET_RAW
       image: "{{ registry_endpoint }}/{{ registry_project }}/k8s-keepalived:{{ keepalived_version }}"
       entrypoint: /bin/bash
       command: /usr/bin/keepalived.sh

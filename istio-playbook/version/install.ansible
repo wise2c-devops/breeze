@@ -12,7 +12,7 @@
     with_items:
       - '{{ cpath }}'
       - '{{ path }}'
-    run_once: ture
+    run_once: true
 
   - name: copy istio tarball and images
     copy:
@@ -44,12 +44,10 @@
     run_once: true
 
   - name: load istio images
-    docker_image:
-      load_path: '{{ path }}/{{ item }}'
-      name: prometheus
-      timeout: 600
-    with_items:
-    - istio-images-{{ istio_version }}.tar.bz2
+    shell: |
+      docker load -i {{ path }}/istio-images-{{ istio_version }}.tar.bz2
+    async: 300
+    poll: 5
     run_once: true
 
   - name: docker login
@@ -57,7 +55,6 @@
       registry: '{{ registry_endpoint }}'
       username: '{{ registry_user }}'
       password: '{{ registry_password }}'
-      reauthorize: true
     run_once: true
 
   - name: set harbor address for deploy script
@@ -67,7 +64,7 @@
       replace: "{{ registry_endpoint }}"
     with_items:
       - "harbor-address.txt"
-    run_once: ture
+    run_once: true
 
   - name: set nodeport for kiali jaeger prometheus and grafana service
     template:
@@ -78,13 +75,13 @@
       - { src: 'template/jaeger-service.yaml.j2', dest: '{{ cpath }}/jaeger-service.yaml' }
       - { src: 'template/prometheus-service.yaml.j2', dest: '{{ cpath }}/prometheus-service.yaml' }
       - { src: 'template/grafana-service.yaml.j2', dest: '{{ cpath }}/grafana-service.yaml' }
-    run_once: ture
+    run_once: true
 
   - name: istio deploy
     shell: ./deploy.sh
     args:
       chdir: '{{ cpath }}/'
-    run_once: ture
+    run_once: true
 
   - name: copy clean-images-tags.sh
     copy:
@@ -99,4 +96,4 @@
     shell: ./clean-images-tags.sh
     args:
       chdir: '{{ cpath }}/'
-    run_once: ture
+    run_once: true

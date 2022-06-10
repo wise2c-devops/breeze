@@ -53,10 +53,10 @@
     run_once: true
 
   - name: load etcd image
-    docker_image:
-      load_path: '{{ path }}/etcd.tar.bz2'
-      name: etcd
-      timeout: 600
+    shell: |
+      docker load -i {{ path }}/etcd.tar.bz2
+    async: 60
+    poll: 5
     run_once: true
 
   - name: docker login
@@ -64,16 +64,11 @@
       registry: '{{ registry_endpoint }}'
       username: '{{ registry_user }}'
       password: '{{ registry_password }}'
-      reauthorize: true
     run_once: true
 
   - name: tag images
-    docker_image:
-      name: '{{ item.repo }}/{{ item.name }}'
-      repository: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
-      tag: '{{ item.tag }}'
-    with_items:
-      - { repo: 'k8s.gcr.io', name: 'etcd', tag: '{{ version }}' }
+    shell: |
+      docker tag k8s.gcr.io/etcd:{{ version }} {{ registry_endpoint }}/{{ registry_project }}/etcd:{{ version }}
     run_once: true
 
   - name: push images
@@ -93,7 +88,7 @@
       tag: '{{ item.tag }}'
     with_items:
       - { repo: 'k8s.gcr.io', name: 'etcd', tag: '{{ version }}' }
-    run_once: ture
+    run_once: true
 
   - name: make etcd cert dir
     file:
@@ -137,10 +132,10 @@
       dest: '{{ item.dest }}'
       flat: true
     with_items:
-    - { src: '/etc/etcd/pki/ca.pem', dest: 'file/ca.pem' }
-    - { src: '/etc/etcd/pki/ca-key.pem', dest: 'file/ca-key.pem' }
-    - { src: '/etc/etcd/pki/etcd.pem', dest: 'file/etcd.pem' }
-    - { src: '/etc/etcd/pki/etcd-key.pem', dest: 'file/etcd-key.pem' }
+    - { src: '/etc/etcd/pki/ca.pem', dest: '../ca.pem' }
+    - { src: '/etc/etcd/pki/ca-key.pem', dest: '../ca-key.pem' }
+    - { src: '/etc/etcd/pki/etcd.pem', dest: '../etcd.pem' }
+    - { src: '/etc/etcd/pki/etcd-key.pem', dest: '../etcd-key.pem' }
     run_once: true
   
   - name: copy certificates
@@ -148,16 +143,19 @@
       src: '{{ item.src }}'
       dest: '{{ item.dest }}'
     with_items:
-    - { src: 'file/ca.pem', dest: '/etc/etcd/pki/ca.pem' }
-    - { src: 'file/ca-key.pem', dest: '/etc/etcd/pki/ca-key.pem' }
-    - { src: 'file/etcd.pem', dest: '/etc/etcd/pki/etcd.pem' }
-    - { src: 'file/etcd-key.pem', dest: '/etc/etcd/pki/etcd-key.pem' }
+    - { src: '../ca.pem', dest: '/etc/etcd/pki/ca.pem' }
+    - { src: '../ca-key.pem', dest: '/etc/etcd/pki/ca-key.pem' }
+    - { src: '../etcd.pem', dest: '/etc/etcd/pki/etcd.pem' }
+    - { src: '../etcd-key.pem', dest: '/etc/etcd/pki/etcd-key.pem' }
+
+  - name: makdir etc database folder
+    shell: |
+      mkdir -p {{ etcd_data_path }}
 
   - name: run etcd
     docker_container:
       name: etcd
       network_mode: host
-      restart_policy: unless-stopped
       image: "{{ registry_endpoint }}/{{ registry_project }}/etcd:{{ version }}"
       command: '{{ command }}'
       volumes:

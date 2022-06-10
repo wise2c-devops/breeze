@@ -4,9 +4,11 @@
 
 适用操作系统：
 
-RHEL/CentOS: 7.4/7.5/7.6/7.7/7.8
+RHEL/CentOS: 7.4/7.5/7.6/7.7/7.8/7.9
 
-Ubuntu 16/18
+RHEL/CentOS/RockyLinux/AlmaLinux/OracleLinux: 8.4+
+
+Ubuntu 18/20 LTS
 
 **所有社区用户请注意：**	
 

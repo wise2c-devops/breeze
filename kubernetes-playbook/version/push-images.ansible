@@ -10,15 +10,15 @@
   run_once: true
 
 - name: load k8s images
-  docker_image:
-    load_path: '{{ path }}/{{ item }}'
-    name: k8s
-    timeout: 600
+  shell: |
+    docker load -i '{{ path }}/{{ item }}'
   with_items:
-  - k8s.tar.bz2
-  - flannel.tar.bz2
-  - dashboard.tar.bz2
-  - metrics-server.tar.bz2
+    - k8s.tar.bz2
+    - flannel.tar.bz2
+    - dashboard.tar.bz2
+    - metrics-server.tar.bz2
+  async: 600
+  poll: 5
   run_once: true
 
 - name: docker login
@@ -30,10 +30,8 @@
   run_once: true
 
 - name: tag images
-  docker_image:
-    name: '{{ item.repo }}/{{ item.name }}'
-    repository: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
-    tag: '{{ item.tag }}'
+  shell: |
+    docker tag {{ item.repo }}/{{ item.name }}:{{ item.tag }} {{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}:{{ item.tag }}
   with_items:
   - { repo: '{{ kubernetes_repo }}', name: 'kube-controller-manager', tag: '{{ kubernetes_version }}' }
   - { repo: '{{ kubernetes_repo }}', name: 'kube-apiserver', tag: '{{ kubernetes_version }}' }
@@ -79,4 +77,4 @@
   - { repo: '{{ metrics_server_repo }}/metrics-server', name: 'metrics-server', tag: '{{ metrics_server_version }}' }
   - { repo: '{{ flannel_repo }}', name: 'flannel', tag: '{{ flannel_version }}' }
   - { repo: '{{ dashboard_repo }}', name: 'dashboard', tag: '{{ dashboard_version }}' }
-  run_once: ture
+  run_once: true
