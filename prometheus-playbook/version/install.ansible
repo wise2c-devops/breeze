@@ -77,13 +77,13 @@
 
   - name: load prometheus operator images
     shell: |
-      podman load -i {{ path }}/kube-prometheus-images-v{{ kube_prometheus_version }}.tar.bz2
+      docker load -i {{ path }}/kube-prometheus-images-v{{ kube_prometheus_version }}.tar.bz2
     async: 180
     poll: 5
     run_once: true
 
-  - name: podman login
-    containers.podman.podman_login:
+  - name: docker login
+    docker_login:
       registry: '{{ registry_endpoint }}'
       username: '{{ registry_user }}'
       password: '{{ registry_password }}'

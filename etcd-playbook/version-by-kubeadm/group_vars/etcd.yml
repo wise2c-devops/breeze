@@ -1,14 +1,19 @@
 command:
 - etcd
-- --name={% for host in ansible_play_batch -%}{% if host == inventory_hostname -%}etcd{{ loop.index0 }}{% endif -%}{% endfor -%}
-- --data-dir=/var/lib/etcd
-- --advertise-client-urls=https://{{ inventory_hostname }}:2379
-- --listen-client-urls=https://{{ inventory_hostname }}:2379
-- --listen-peer-urls=https://{{ inventory_hostname }}:2380
-- --initial-cluster-token=etcd-cluster
-- --initial-advertise-peer-urls=https://{{ inventory_hostname }}:2380
-- --initial-cluster={% for host in play_hosts %}etcd{{ loop.index0 }}=https://{{ host }}:2380{% if not loop.last %},{% endif %}{% endfor %}
-- --initial-cluster-state=new
+- |
+  {% for host in ansible_play_batch -%}
+  {% if host == inventory_hostname -%}
+  --name etcd{{ loop.index0 }}
+  {% endif -%}
+  {% endfor -%}
+- --data-dir /var/lib/etcd
+- --advertise-client-urls https://{{ inventory_hostname }}:2379
+- --listen-client-urls https://{{ inventory_hostname }}:2379
+- --listen-peer-urls https://{{ inventory_hostname }}:2380
+- --initial-cluster-token etcd-cluster
+- --initial-advertise-peer-urls https://{{ inventory_hostname }}:2380
+- --initial-cluster {% for host in play_hosts %}etcd{{ loop.index0 }}=https://{{ host }}:2380{% if not loop.last %},{% endif %}{% endfor %}
+- --initial-cluster-state new
 - --client-cert-auth
 - --trusted-ca-file=/etcd-cert/ca.pem
 - --cert-file=/etcd-cert/etcd.pem

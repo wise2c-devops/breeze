@@ -22,7 +22,7 @@
 
   - name: stop etcd container
     shell: |
-      podman stop etcd
+      docker stop etcd
     when: (backup_etcd_folder == true)
 
   - name: backup etcd database folder
@@ -33,7 +33,7 @@
 
   - name: start etcd container
     shell: |
-      podman start etcd
+      docker start etcd
     when: (backup_etcd_folder == true)
 
   - name: make etcd dir
@@ -54,35 +54,31 @@
 
   - name: load etcd image
     shell: |
-      podman load -i {{ path }}/etcd.tar.bz2
+      docker load -i {{ path }}/etcd.tar.bz2
     async: 60
     poll: 5
     run_once: true
 
-  - name: podman login
-    containers.podman.podman_login:
+  - name: docker login
+    docker_login:
       registry: '{{ registry_endpoint }}'
       username: '{{ registry_user }}'
       password: '{{ registry_password }}'
     run_once: true
 
-  - name: tag images
-    shell: |
-      podman tag k8s.gcr.io/etcd:{{ version }} {{ registry_endpoint }}/{{ registry_project }}/etcd:{{ version }}
-    run_once: true
-
-  - name: push images
-    containers.podman.podman_image:
-      name: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
+  - name: Tag and push to Harbor
+    docker_image:
+      name: 'k8s.gcr.io/{{ item.name }}'
+      repository: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
       tag: '{{ item.tag }}'
-      push: true
-      state: present
+      push: yes
+      source: local
     with_items:
-      - { repo: 'k8s.gcr.io', name: 'etcd', tag: '{{ version }}' }
+      - { name: 'etcd', tag: '{{ version }}' }
     run_once: true
 
   - name: remove original images tag
-    containers.podman.podman_image:
+    docker_image:
       state: absent
       name: '{{ item.repo }}/{{ item.name }}'
       tag: '{{ item.tag }}'
@@ -153,7 +149,7 @@
       mkdir -p {{ etcd_data_path }}
 
   - name: run etcd
-    containers.podman.podman_container:
+    docker_container:
       name: etcd
       network_mode: host
       image: "{{ registry_endpoint }}/{{ registry_project }}/etcd:{{ version }}"
@@ -161,8 +157,3 @@
       volumes:
         - "{{ etcd_data_path }}:/var/lib/etcd"
         - "/etc/etcd/pki:/etcd-cert"
-
-  - name: add etcd systemd service
-    shell: |
-      podman generate systemd --new --name etcd > /etc/systemd/system/etcd.service
-      systemctl enable etcd

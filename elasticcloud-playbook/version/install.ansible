@@ -48,39 +48,30 @@
 
   - name: load elasticcloud operator images
     shell: |
-      podman load -i {{ path }}/elastic-cloud-images.tar.bz2
+      docker load -i {{ path }}/elastic-cloud-images.tar.bz2
     async: 600
     poll: 5
     run_once: true
 
-  - name: podman login
-    containers.podman.podman_login:
+  - name: docker login
+    docker_login:
       registry: '{{ registry_endpoint }}'
       username: '{{ registry_user }}'
       password: '{{ registry_password }}'
     run_once: true
 
-  - name: tag images
-    shell: |
-      podman tag {{ item.repo }}/{{ item.name }}:{{ item.tag }} {{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}:{{ item.tag }}
+  - name: Tag and push to Harbor
+    docker_image:
+      name: '{{ item.repo }}/{{ item.name }}'
+      repository: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
+      tag: '{{ item.tag }}'
+      push: yes
+      source: local
     with_items:
       - { repo: 'docker.elastic.co/eck', name: 'eck-operator', tag: '{{ elastic_cloud_version }}' }
       - { repo: 'docker.elastic.co/elasticsearch', name: 'elasticsearch', tag: '{{ elastic_stack_version }}' }
       - { repo: 'docker.elastic.co/kibana', name: 'kibana', tag: '{{ elastic_stack_version }}' }
       - { repo: 'docker.elastic.co/beats', name: 'filebeat', tag: '{{ elastic_stack_version }}' }
-    run_once: true
-
-  - name: push images
-    containers.podman.podman_image:
-      name: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
-      tag: '{{ item.tag }}'
-      push: true
-      state: present
-    with_items:
-    - { name: 'eck-operator', tag: '{{ elastic_cloud_version }}' }
-    - { name: 'elasticsearch', tag: '{{ elastic_stack_version }}' }
-    - { name: 'kibana', tag: '{{ elastic_stack_version }}' }
-    - { name: 'filebeat', tag: '{{ elastic_stack_version }}' }
     run_once: true
 
   - name: copy elasticcloud yaml files
@@ -113,7 +104,7 @@
     run_once: true
 
   - name: remove original images tag
-    containers.podman.podman_image:
+    docker_image:
       state: absent
       name: '{{ item.repo }}/{{ item.name }}'
       tag: '{{ item.tag }}'
