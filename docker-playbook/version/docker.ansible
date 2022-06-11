@@ -76,10 +76,10 @@
       yum clean all
     when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
 
-  - name: yum install tools
+  - name: yum install tools for CentOS7
     yum:
       disablerepo: '*'
-      enablerepo: wise2c-k8s
+      enablerepo: "wise2c-k8s,wise2c-crio"
       update_cache: true
       state: present
       name: '{{ item }}'
@@ -88,7 +88,28 @@
     - jq
     - chrony
     - ipvsadm
-    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
+    - docker-python
+    - python-chardet
+    - python-requests
+    when: ((ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")) and (ansible_distribution_major_version == "7")
+
+  - name: yum install tools for CentOS8
+    yum:
+      disablerepo: '*'
+      enablerepo: "wise2c-k8s,wise2c-crio"
+      update_cache: true
+      state: present
+      name: '{{ item }}'
+    with_items:
+    - rsync
+    - jq
+    - chrony
+    - ipvsadm
+    - python3-docker
+    - python3-chardet
+    - python3-requests
+    - audit-libs-python3
+    when: ((ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")) and (ansible_distribution_major_version == "8")
 
   - name: yum install docker
     yum:
