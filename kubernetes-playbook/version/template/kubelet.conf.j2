@@ -1,8 +1,8 @@
-KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.5 \
+KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.6 \
                    --kubelet-cgroups=/system.slice/kubelet.service \
                    --runtime-cgroups=/system.slice/docker.service
 
-#KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.5 \
+#KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.6 \
 #                   --feature-gates=LocalStorageCapacityIsolation=true \
 #                   --kubelet-cgroups=/system.slice/kubelet.service \
 #                   --runtime-cgroups=/system.slice/docker.service \
