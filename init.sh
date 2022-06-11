@@ -5,8 +5,8 @@ set -e
 path=`dirname $0`
 
 kubernetes_version=1.21.13
-harbor_version=2.5.0
-docker_version=20.10.7
+harbor_version=2.5.1
+docker_version=20.10.17
 haproxy_version=2.0.0
 keepalived_version=1.3.5
 loadbalancer_version=HAProxy-${haproxy_version}_Keepalived-${keepalived_version}
@@ -16,11 +16,11 @@ kube_prometheus_version=0.9.0
 metrics_server_version=0.6.1
 dashboard_version=2.4.0
 metrics_scraper_version=1.0.7
-flannel_version=0.18.0
+flannel_version=0.18.1
 flannel_cni_plugin_version=1.1.0
 calico_version=3.23.1
 helm_version=3.9.0
-istio_version=1.13.4
+istio_version=1.14.1
 contour_version=1.21.0
 contour_envoyproxy_version=1.22.0
 elastic_cloud_version=2.2.0
