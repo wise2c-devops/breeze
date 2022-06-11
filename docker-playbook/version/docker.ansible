@@ -101,7 +101,7 @@
     - docker-ce
     when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
 
-  - name: apt install docker and podman and other components
+  - name: apt install docker and other components
     apt:
       update_cache: true
       state: present
