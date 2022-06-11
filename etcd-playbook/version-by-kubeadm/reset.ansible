@@ -3,7 +3,7 @@
   user: root
   tasks:
   - name: stop & rm old etcd container
-    containers.podman.podman_container:
+    docker_container:
       name: etcd
       state: absent
 

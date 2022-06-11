@@ -15,13 +15,13 @@ cat images-list.txt |grep -v quay.io/ > images-list-crio.txt
 sed -i 's#docker.io/##g' images-list-crio.txt
 cat images-list.txt |grep "quay.io\/" > images-list-quay.txt
 
-for file in $(cat images-list-crio.txt); do podman tag localhost/$file $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
-for file in $(cat images-list-quay.txt); do podman tag $file $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
+for file in $(cat images-list-crio.txt); do docker tag $file $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
+for file in $(cat images-list-quay.txt); do docker tag $file $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
 
 echo 'Images taged.'
 
-for file in $(cat images-list-crio.txt); do podman push $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
-for file in $(cat images-list-quay.txt); do podman push $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
+for file in $(cat images-list-crio.txt); do docker push $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
+for file in $(cat images-list-quay.txt); do docker push $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
 
 echo 'Images pushed.'
 

@@ -1,7 +1,7 @@
 # Breeze
 - Deploy a Production Ready Kubernetes Cluster with graphical interface
 
-[![pipeline status](https://gitlab.com/alanpeng/breeze/badges/master/pipeline.svg)](https://gitlab.com/alanpeng/breeze/-/commits/v1.22)
+[![pipeline status](https://gitlab.com/alanpeng/breeze/badges/master/pipeline.svg)](https://gitlab.com/alanpeng/breeze/-/commits/v1.21)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/wise2c-devops/breeze/blob/master/LICENSE)
 
 [English](./README.md) | [中文](./README-CN.md)

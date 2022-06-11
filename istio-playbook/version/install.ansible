@@ -45,13 +45,13 @@
 
   - name: load istio images
     shell: |
-      podman load -i {{ path }}/istio-images-{{ istio_version }}.tar.bz2
+      docker load -i {{ path }}/istio-images-{{ istio_version }}.tar.bz2
     async: 300
     poll: 5
     run_once: true
 
-  - name: podman login
-    containers.podman.podman_login:
+  - name: docker login
+    docker_login:
       registry: '{{ registry_endpoint }}'
       username: '{{ registry_user }}'
       password: '{{ registry_password }}'

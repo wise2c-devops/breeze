@@ -49,7 +49,7 @@
 
 - name: load k8s images
   shell: |
-    podman load -i '{{ path }}/{{ item }}'
+    docker load -i '{{ path }}/{{ item }}'
   with_items:
     - k8s.tar.bz2
     - flannel.tar.bz2
@@ -69,8 +69,8 @@
   poll: 5
   run_once: true
 
-- name: podman login
-  containers.podman.podman_login:
+- name: docker login
+  docker_login:
     registry: '{{ registry_endpoint }}'
     username: '{{ registry_user }}'
     password: '{{ registry_password }}'
@@ -78,7 +78,7 @@
 
 - name: tag images
   shell: |
-    podman tag {{ item.repo }}/{{ item.name }}:{{ item.tag }} {{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}:{{ item.tag }}
+    docker tag {{ item.repo }}/{{ item.name }}:{{ item.tag }} {{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}:{{ item.tag }}
   with_items:
     - { repo: '{{ kubernetes_repo }}', name: 'kube-controller-manager', tag: '{{ kubernetes_version }}' }
     - { repo: '{{ kubernetes_repo }}', name: 'kube-apiserver', tag: '{{ kubernetes_version }}' }
@@ -104,13 +104,13 @@
 
 - name: tag coredns image
   shell: |
-    podman tag {{ item.repo }}/{{ item.name }}:{{ item.tag }} {{ registry_endpoint }}/{{ registry_project }}/coredns:{{ item.tag }}
+    docker tag {{ item.repo }}/{{ item.name }}:{{ item.tag }} {{ registry_endpoint }}/{{ registry_project }}/coredns:{{ item.tag }}
   with_items:
     - { repo: '{{ kubernetes_repo }}', name: 'coredns/coredns', tag: '{{ dns_version }}' }
   run_once: true
 
 - name: push images
-  containers.podman.podman_image:
+  docker_image:
     name: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
     tag: '{{ item.tag }}'
     push: true
@@ -140,7 +140,7 @@
   run_once: true
 
 - name: Remove k8s.gcr.io and original images tag
-  containers.podman.podman_image:
+  docker_image:
     state: absent
     name: '{{ item.repo }}/{{ item.name }}'
     tag: '{{ item.tag }}'
@@ -529,8 +529,8 @@
     sed -i "s#.*server:.*#    server: https://127.0.0.1:6443#g" /etc/kubernetes/scheduler.conf
     sed -i "s#.*server:.*#    server: https://127.0.0.1:6443#g" /etc/kubernetes/controller-manager.conf
     sed -i "s#.*server:.*#    server: https://127.0.0.1:6443#g" /root/.kube/config
-    podman rm -f $(podman ps -a |grep kube-controller-manager |awk '{print $1}')
-    podman rm -f $(podman ps -a |grep kube-scheduler |awk '{print $1}')
+    docker rm -f $(docker ps -a |grep kube-controller-manager |awk '{print $1}')
+    docker rm -f $(docker ps -a |grep kube-scheduler |awk '{print $1}')
     systemctl restart kubelet
 
 - name: execute prometheus-fix-master-nodes script for Redhat/CentOS
