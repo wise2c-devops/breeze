@@ -53,6 +53,7 @@
       registry: '{{ registry_endpoint }}'
       username: '{{ registry_user }}'
       password: '{{ registry_password }}'
+      reauthorize: true
     run_once: true
 
   - name: tag images
