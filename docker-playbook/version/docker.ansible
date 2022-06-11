@@ -90,7 +90,7 @@
     - ipvsadm
     when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
 
-  - name: yum install docker and docker-compose
+  - name: yum install docker
     yum:
       disablerepo: '*'
       enablerepo: "wise2c-crio,wise2c-k8s"
@@ -99,7 +99,6 @@
       name: '{{ item }}'
     with_items:
     - docker-ce
-    - docker-compose
     when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
 
   - name: apt install docker and podman and other components
