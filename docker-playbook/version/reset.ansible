@@ -5,12 +5,12 @@
   - name: remove docker for Redhat/CentOS
     yum:
       disablerepo: '*'
-      enablerepo: wise2c
+      enablerepo: "wise2c-k8s,wise2c-crio"
       state: absent
       name: '{{ item }}'
     with_items:
     - docker-ce
-    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS")
+    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
 
   - name: remove docker for Ubuntu
     apt:
@@ -19,4 +19,3 @@
     with_items:
     - docker-ce
     when: ansible_distribution =="Ubuntu"
-
