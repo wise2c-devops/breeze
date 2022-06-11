@@ -10,7 +10,6 @@
       name: '{{ item }}'
     with_items:
     - docker-ce
-    - docker-compose
     when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS")
 
   - name: remove docker for Ubuntu
@@ -19,6 +18,4 @@
       name: '{{ item }}'
     with_items:
     - docker-ce
-    - docker-compose
     when: ansible_distribution =="Ubuntu"
-
