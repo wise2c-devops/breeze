@@ -18,7 +18,7 @@ tar zxf kube-prometheus-v$KubePrometheusVersion-origin.tar.gz
 
 for file in $(grep -lr "quay.io/coreos" kube-prometheus-$KubePrometheusVersion/manifests/); do cat $file |grep "quay.io/coreos" ; done > image-lists-temp.txt
 for file in $(grep -lr "quay.io/brancz" kube-prometheus-$KubePrometheusVersion/manifests/); do cat $file |grep "quay.io/brancz" ; done >> image-lists-temp.txt
-for file in $(grep -lr "grafana/grafana" kube-prometheus-$KubePrometheusVersion/manifests/); do cat $file |grep "grafana/grafana:" ; done >> image-lists-temp.txt
+for file in $(grep -lr "grafana/grafana" kube-prometheus-$KubePrometheusVersion/manifests/); do cat $file |grep "grafana/grafana" |grep -v "runbook_url" ; done >> image-lists-temp.txt
 for file in $(grep -lr "quay.io/prometheus" kube-prometheus-$KubePrometheusVersion/manifests/); do cat $file |grep "quay.io/prometheus" ; done >> image-lists-temp.txt
 for file in $(grep -lr "gcr.io/" kube-prometheus-$KubePrometheusVersion/manifests/); do cat $file |grep "gcr.io/" ; done >> image-lists-temp.txt
 for file in $(grep -lr "jimmidyson/" kube-prometheus-$KubePrometheusVersion/manifests/); do cat $file |grep "jimmidyson/" ; done >> image-lists-temp.txt
