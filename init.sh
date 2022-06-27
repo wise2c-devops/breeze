@@ -5,7 +5,7 @@ set -e
 path=`dirname $0`
 
 kubernetes_version=1.22.11
-harbor_version=2.5.0
+harbor_version=2.5.1
 docker_version=20.10.7
 crio_version=1.22.5
 haproxy_version=2.0.0
@@ -21,7 +21,7 @@ flannel_version=0.18.0
 flannel_cni_plugin_version=1.1.0
 calico_version=3.23.2
 helm_version=3.9.0
-istio_version=1.13.4
+istio_version=1.14.1
 contour_version=1.21.1
 contour_envoyproxy_version=1.22.2
 elastic_cloud_version=2.2.0
