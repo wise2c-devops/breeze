@@ -47,7 +47,7 @@ echo "flannel_cni_plugin_version: ${flannel_cni_plugin_version}" >> ${path}/yat/
 #   | sed -e "s,rancher/,{{ registry_endpoint }}/{{ registry_project }}/,g" > ${path}/template/kube-flannel.yml.j2
 
 curl -sSL https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml \
-   | sed -e "s,rancher/,{{ registry_endpoint }}/{{ registry_project }}/,g" > ${path}/template/kube-flannel.yml.j2
+   | sed -e "s,docker.io/rancher/,{{ registry_endpoint }}/{{ registry_project }}/,g" > ${path}/template/kube-flannel.yml.j2
 
 echo "=== pulling flannel image ==="
 docker pull ${flannel_repo}/mirrored-flannelcni-flannel:${flannel_version}
