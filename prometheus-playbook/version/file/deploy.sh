@@ -53,7 +53,7 @@ kctl() {
     kubectl --namespace "$NAMESPACE" "$@"
 }
 
-kubectl apply -f manifests/setup
+kubectl apply --server-side -f manifests/setup
 
 # Wait for CRDs to be ready.
 printf "Waiting for Operator to register custom resource definitions..."
@@ -76,6 +76,8 @@ echo 'Phase1 done!'
 kubectl apply -f manifests/
 
 echo 'Phase2 done!'
+
+kubectl -n monitoring delete networkpolicies.networking.k8s.io --all
 
 kubectl apply -f /var/lib/wise2c/tmp/prometheus/prometheus-service.yaml
 kubectl apply -f /var/lib/wise2c/tmp/prometheus/alertmanager-service.yaml
