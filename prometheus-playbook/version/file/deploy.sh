@@ -53,7 +53,7 @@ kctl() {
     kubectl --namespace "$NAMESPACE" "$@"
 }
 
-kubectl apply -f manifests/setup
+kubectl apply ---server-side -f manifests/setup
 
 # Wait for CRDs to be ready.
 printf "Waiting for Operator to register custom resource definitions..."
@@ -73,7 +73,7 @@ until kctl get alertmanagers.monitoring.coreos.com > /dev/null 2>&1; do sleep 1;
 
 echo 'Phase1 done!'
 
-kubectl apply --server-side -f manifests/
+kubectl apply -f manifests/
 
 echo 'Phase2 done!'
 
