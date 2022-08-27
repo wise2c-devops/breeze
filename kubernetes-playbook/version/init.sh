@@ -47,7 +47,7 @@ echo "flannel_cni_plugin_version: ${flannel_cni_plugin_version}" >> ${path}/yat/
 #   | sed -e "s,rancher/,{{ registry_endpoint }}/{{ registry_project }}/,g" > ${path}/template/kube-flannel.yml.j2
 
 curl -sSL https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml \
-   | sed -e "s,rancher/,{{ registry_endpoint }}/{{ registry_project }}/,g" > ${path}/template/kube-flannel.yml.j2
+   | sed -e "s,docker.io/rancher/,{{ registry_endpoint }}/{{ registry_project }}/,g" > ${path}/template/kube-flannel.yml.j2
 
 echo "=== pulling flannel image ==="
 docker pull ${flannel_repo}/mirrored-flannelcni-flannel:${flannel_version}
@@ -123,7 +123,7 @@ bzip2 -z --best ${path}/file/metrics-server.tar
 
 echo "=== kubernetes dashboard and metrics-server images are saved successfully ==="
 
-contour_repo="projectcontour"
+contour_repo="ghcr.io/projectcontour"
 contour_long_repo="ghcr.io/projectcontour"
 contour_envoyproxy_repo="envoyproxy"
 contour_envoyproxy_long_repo="docker.io/envoyproxy"

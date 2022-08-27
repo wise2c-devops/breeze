@@ -30,7 +30,7 @@ sed -i "s/quay.io\/prometheus/$MyImageRepositoryIP\/$MyImageRepositoryProject/g"
 sed -i "s/quay.io\/brancz/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "image:" ./ |grep .yaml)
 sed -i "s#directxman12\/#$MyImageRepositoryIP\/$MyImageRepositoryProject\/#g" $(grep -lr "image:" ./ |grep .yaml)
 #sed -i "s/quay.io\/coreos/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "quay.io/coreos" ./ |grep .yaml)
-sed -i "s/grafana\/grafana/$MyImageRepositoryIP\/$MyImageRepositoryProject\/grafana/g" $(grep -lr "grafana/grafana" ./ |grep .yaml)
+sed -i "s/grafana\/grafana/$MyImageRepositoryIP\/$MyImageRepositoryProject\/grafana/g" $(grep -lr "grafana/grafana\:" ./ | grep .yaml)
 sed -i "s/gcr.io\/google_containers/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "gcr.io/google_containers" ./ |grep .yaml)
 sed -i "s/jimmidyson\/configmap-reload/$MyImageRepositoryIP\/$MyImageRepositoryProject\/configmap-reload/g" $(grep -lr "jimmidyson/configmap-reload" ./ |grep .yaml)
 #sed -i "s/directxman12\/k8s-prometheus-adapter/$MyImageRepositoryIP\/$MyImageRepositoryProject\/k8s-prometheus-adapter/g" $(grep -lr "directxman12/k8s-prometheus-adapter" ./ |grep .yaml)
@@ -53,7 +53,7 @@ kctl() {
     kubectl --namespace "$NAMESPACE" "$@"
 }
 
-kubectl apply -f manifests/setup
+kubectl apply --server-side -f manifests/setup
 
 # Wait for CRDs to be ready.
 printf "Waiting for Operator to register custom resource definitions..."
@@ -76,6 +76,8 @@ echo 'Phase1 done!'
 kubectl apply -f manifests/
 
 echo 'Phase2 done!'
+
+kubectl -n monitoring delete networkpolicies.networking.k8s.io --all
 
 kubectl apply -f /var/lib/wise2c/tmp/prometheus/prometheus-service.yaml
 kubectl apply -f /var/lib/wise2c/tmp/prometheus/alertmanager-service.yaml
