@@ -258,6 +258,11 @@
     - { src: 'template/registries.conf.https.j2', dest: '/etc/containers/registries.conf' }
     when: harbor_https
 
+  - name: remove crio configuration file 100-crio-bridge.conf
+    file:
+      path: /etc/cni/net.d/100-crio-bridge.conf
+      state: absent
+
   - name: reload & restart crio on Redhat/CentOS
     systemd:
       name: crio
