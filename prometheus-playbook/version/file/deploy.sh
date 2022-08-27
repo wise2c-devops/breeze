@@ -73,9 +73,11 @@ until kctl get alertmanagers.monitoring.coreos.com > /dev/null 2>&1; do sleep 1;
 
 echo 'Phase1 done!'
 
-kubectl apply -f manifests/
+kubectl apply --server-side -f manifests/
 
 echo 'Phase2 done!'
+
+kubectl -n monitoring delete networkpolicies.networking.k8s.io --all
 
 kubectl apply -f /var/lib/wise2c/tmp/prometheus/prometheus-service.yaml
 kubectl apply -f /var/lib/wise2c/tmp/prometheus/alertmanager-service.yaml
