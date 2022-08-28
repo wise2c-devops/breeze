@@ -53,7 +53,7 @@ kctl() {
     kubectl --namespace "$NAMESPACE" "$@"
 }
 
-kubectl apply ---server-side -f manifests/setup
+kubectl apply --server-side -f manifests/setup
 
 # Wait for CRDs to be ready.
 printf "Waiting for Operator to register custom resource definitions..."
