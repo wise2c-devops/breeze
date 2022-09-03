@@ -151,6 +151,7 @@
   - name: run etcd
     docker_container:
       name: etcd
+      restart_policy: always
       network_mode: host
       image: "{{ registry_endpoint }}/{{ registry_project }}/etcd:{{ version }}"
       command: '{{ command }}'
