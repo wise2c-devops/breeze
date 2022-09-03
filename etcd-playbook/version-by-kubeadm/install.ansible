@@ -152,6 +152,7 @@
     docker_container:
       name: etcd
       network_mode: host
+      restart_policy: always
       image: "{{ registry_endpoint }}/{{ registry_project }}/etcd:{{ version }}"
       command: '{{ command }}'
       volumes:

@@ -90,6 +90,7 @@
   - name: run haproxy
     docker_container:
       name: haproxy
+      restart_policy: always
       image: "{{ registry_endpoint }}/{{ registry_project }}/k8s-haproxy:{{ haproxy_version  }}"
       ports: '{{ ports | d([], true) | list }}'
       volumes:
@@ -98,6 +99,7 @@
   - name: run keepalived
     docker_container:
       name: keepalived
+      restart_policy: always
       network_mode: host
       capabilities:
       - NET_ADMIN
