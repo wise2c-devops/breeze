@@ -72,7 +72,6 @@ jobs:
             docker manifest annotate wise2c/playbook:$CIRCLE_BRANCH wise2c/playbook:aarch64-$CIRCLE_BRANCH --os linux --arch arm64
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker manifest push wise2c/playbook:$CIRCLE_BRANCH
-            docker run --rm --name=playbook wise2c/playbook:$CIRCLE_BRANCH kubeadm config images list
 
   build-tags-multi-arch:
     machine: true
@@ -85,7 +84,6 @@ jobs:
             docker manifest annotate wise2c/playbook:$CIRCLE_TAG wise2c/playbook:aarch64-$CIRCLE_TAG --os linux --arch arm64
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
             docker manifest push wise2c/playbook:$CIRCLE_TAG
-            docker run --rm --name=playbook wise2c/playbook:$CIRCLE_TAG kubeadm config images list
 
 workflows:
   version: 2
