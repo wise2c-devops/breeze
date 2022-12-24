@@ -2,7 +2,7 @@ version: '2'
 services:
   deploy:
     container_name: deploy-main
-    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/pagoda:v1.4.0
+    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/pagoda:v2.0.0
     restart: always
     entrypoint: sh
     command:
@@ -18,17 +18,17 @@ services:
     - playbook
   ui:
     container_name: deploy-ui
-    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/deploy-ui:v1.8.0
+    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/deploy-ui:v2.0.0
     restart: always
     network_mode: "service:deploy"
   playbook:
     container_name: deploy-playbook
-    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/playbook:v1.23.12-docker
+    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/playbook:v1.23.11-docker
     volumes:
     - playbook:/workspace
   apt-source:
     container_name: deploy-aptsource
-    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/apt-source:v1.23.12
+    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/apt-source:v1.23.11
     ports:
     - 2008:2008
     restart: always
