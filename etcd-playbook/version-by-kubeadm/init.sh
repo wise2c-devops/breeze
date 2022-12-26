@@ -4,7 +4,7 @@ set -e
 
 path=`dirname $0`
 
-image=k8s.gcr.io/etcd:${1}
+image=registry.k8s.io/etcd:${1}
 echo "" >> ${path}/group_vars/etcd.yml
 echo "version: ${1}" >> ${path}/group_vars/etcd.yml
 
