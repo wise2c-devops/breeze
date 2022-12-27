@@ -263,6 +263,9 @@
       path: /etc/cni/net.d/100-crio-bridge.conf
       state: absent
 
+  - name: fix cri-o bug
+    script: scripts/fix-crio-bug.sh
+
   - name: reload & restart crio on Redhat/CentOS
     systemd:
       name: crio
