@@ -236,11 +236,11 @@
       state: restarted
     when: ansible_distribution == "Ubuntu"
 
-  # crio service uses k8s.gcr.io/pause:3.8 as default
+  # crio service uses registry.k8s.io/pause:3.9 as default
   - name: update pause image in crio.conf
     shell: |
       echo '[crio.image]' > /etc/crio/crio.conf
-      echo 'pause_image = "{{ harbor }}/library/pause:3.8"' >> /etc/crio/crio.conf
+      echo 'pause_image = "{{ harbor }}/library/pause:3.9"' >> /etc/crio/crio.conf
 
   - name: distribute crio registry config
     template:
@@ -262,6 +262,9 @@
     file:
       path: /etc/cni/net.d/100-crio-bridge.conf
       state: absent
+
+  - name: fix cri-o bug
+    script: scripts/fix-crio-bug.sh
 
   - name: reload & restart crio on Redhat/CentOS
     systemd:

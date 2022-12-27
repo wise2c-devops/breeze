@@ -18,17 +18,17 @@ services:
     - playbook
   ui:
     container_name: deploy-ui
-    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/deploy-ui:v1.9.0
+    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/deploy-ui:v1.9.1
     restart: always
     network_mode: "service:deploy"
   playbook:
     container_name: deploy-playbook
-    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/playbook:v1.25.0
+    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/playbook:v1.26.0
     volumes:
     - playbook:/workspace
   apt-source:
     container_name: deploy-aptsource
-    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/apt-source:v1.25.0
+    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/apt-source:v1.26.0
     ports:
     - 2008:2008
     restart: always

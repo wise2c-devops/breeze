@@ -64,7 +64,7 @@ firewall-cmd --complete-reload
 （2）安装docker-compose命令
 
 ```
-curl -L https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+curl -L https://github.com/docker/compose/releases/download/1.25.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 ```
 
 或从镜像站点下载：
@@ -90,17 +90,17 @@ systemctl enable docker
 (4) 下载用于部署某个Kubernetes版本的docker-compose文件并使部署程序运行起来，例如：
 
 ```
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.25.0/docker-compose.yml -o docker-compose.yml
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.25.0/docker-compose-centos.yml -o docker-compose.yml
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.25.0/docker-compose-ubuntu.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.26.0/docker-compose.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.26.0/docker-compose-centos.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.26.0/docker-compose-ubuntu.yml -o docker-compose.yml
 ```
 
 国内用户可以使用阿里云镜像站点文件，部署所用的image将从阿里云拉取：
 
 ```
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.25.0/docker-compose-aliyun.yml -o docker-compose.yml
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.25.0/docker-compose-centos-aliyun.yml -o docker-compose.yml
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.25.0/docker-compose-ubuntu-aliyun.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.26.0/docker-compose-aliyun.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.26.0/docker-compose-centos-aliyun.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.26.0/docker-compose-ubuntu-aliyun.yml -o docker-compose.yml
 ```
 
 然后：
@@ -265,16 +265,6 @@ Kubernetes Dashboard的访问入口我们采用了NodePort:30300的方式暴露�
 
 ```
 kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
-```
-
-如果K8s的版本是1.24.0及以上，则可以通过以下命令获取访问令牌，命令中87600h的意思是令牌有效期为10年，实际使用可缩短有效期：
-
-```
-kubectl create serviceaccount kube-dashboard-admin-sa -n kube-system
-
-kubectl create clusterrolebinding kube-dashboard-admin-sa --clusterrole=cluster-admin --serviceaccount=kube-system:kube-dashboard-admin-sa
-
-kubectl create token kube-dashboard-admin-sa -n kube-system --duration=87600h
 ```
 
 将返回的token字串粘贴至登录窗口即可实现登录。
