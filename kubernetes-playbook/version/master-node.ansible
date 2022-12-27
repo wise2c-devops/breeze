@@ -139,7 +139,7 @@
   - { name: 'kuard-amd64', tag: '1' }
   run_once: true
 
-- name: Remove registry.k8s.io and original images tag
+- name: Remove k8s.gcr.io and original images tag
   containers.podman.podman_image:
     state: absent
     name: '{{ item.repo }}/{{ item.name }}'
