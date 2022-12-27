@@ -68,7 +68,7 @@
 
   - name: tag images
     shell: |
-      podman tag registry.k8s.io/etcd:{{ version }} {{ registry_endpoint }}/{{ registry_project }}/etcd:{{ version }}
+      podman tag k8s.gcr.io/etcd:{{ version }} {{ registry_endpoint }}/{{ registry_project }}/etcd:{{ version }}
     run_once: true
 
   - name: push images
@@ -78,7 +78,7 @@
       push: true
       state: present
     with_items:
-      - { repo: 'registry.k8s.io', name: 'etcd', tag: '{{ version }}' }
+      - { repo: 'k8s.gcr.io', name: 'etcd', tag: '{{ version }}' }
     run_once: true
 
   - name: remove original images tag
@@ -87,7 +87,7 @@
       name: '{{ item.repo }}/{{ item.name }}'
       tag: '{{ item.tag }}'
     with_items:
-      - { repo: 'registry.k8s.io', name: 'etcd', tag: '{{ version }}' }
+      - { repo: 'k8s.gcr.io', name: 'etcd', tag: '{{ version }}' }
     run_once: true
 
   - name: make etcd cert dir
