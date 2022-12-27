@@ -4,7 +4,7 @@ set -e
 
 path=`dirname $0`
 
-kubernetes_version=1.25.2
+kubernetes_version=1.25.1
 harbor_version=2.7.0
 docker_version=20.10.18
 crio_version=1.25.1
@@ -18,7 +18,7 @@ metrics_server_version=0.6.2
 dashboard_version=2.7.0
 metrics_scraper_version=1.0.8
 flannel_version=0.20.2
-flannel_cni_plugin_version=1.1.0
+flannel_cni_plugin_version=1.1.2
 calico_version=3.24.5
 helm_version=3.10.3
 istio_version=1.16.1
