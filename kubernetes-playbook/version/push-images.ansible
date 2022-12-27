@@ -62,7 +62,7 @@
   - { repo: '{{ dashboard_repo }}', name: 'dashboard', tag: '{{ dashboard_version }}' }
   run_once: true
 
-- name: Remove k8s.gcr.io images tag
+- name: Remove registry.k8s.io images tag
   containers.podman.podman_image:
     state: absent
     name: '{{ item.repo }}/{{ item.name }}'
