@@ -68,7 +68,7 @@
 
   - name: Tag and push to Harbor
     docker_image:
-      name: 'registry.k8s.io/{{ item.name }}'
+      name: 'k8s.gcr.io/{{ item.name }}'
       repository: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
       tag: '{{ item.tag }}'
       push: yes
@@ -83,7 +83,7 @@
       name: '{{ item.repo }}/{{ item.name }}'
       tag: '{{ item.tag }}'
     with_items:
-      - { repo: 'registry.k8s.io', name: 'etcd', tag: '{{ version }}' }
+      - { repo: 'k8s.gcr.io', name: 'etcd', tag: '{{ version }}' }
     run_once: true
 
   - name: make etcd cert dir
