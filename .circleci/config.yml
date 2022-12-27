@@ -6,6 +6,7 @@ jobs:
       - run:
           name: Build an amd64 container image
           command: |
+            cp loadbalancer-playbook/version/keepalived/Dockerfile.amd64 loadbalancer-playbook/version/keepalived/Dockerfile
             bash init.sh
             docker rmi -f $(docker images |awk '{print $1":"$2}' |grep -v REPOSITORY)
             docker system prune --all --force
@@ -21,6 +22,7 @@ jobs:
       - run:
           name: Build an amd64 container image
           command: |
+            cp loadbalancer-playbook/version/keepalived/Dockerfile.amd64 loadbalancer-playbook/version/keepalived/Dockerfile
             bash init.sh
             docker rmi -f $(docker images |awk '{print $1":"$2}' |grep -v REPOSITORY)
             docker system prune --all --force
@@ -37,6 +39,7 @@ jobs:
       - run:
           name: Build an aarch64 container image
           command: |
+            cp loadbalancer-playbook/version/keepalived/Dockerfile.aarch64 loadbalancer-playbook/version/keepalived/Dockerfile
             bash init.sh
             docker rmi -f $(docker images |awk '{print $1":"$2}' |grep -v REPOSITORY)
             docker system prune --all --force
@@ -53,6 +56,7 @@ jobs:
       - run:
           name: Build an aarch64 container image
           command: |
+            cp loadbalancer-playbook/version/keepalived/Dockerfile.aarch64 loadbalancer-playbook/version/keepalived/Dockerfile
             bash init.sh
             docker rmi -f $(docker images |awk '{print $1":"$2}' |grep -v REPOSITORY)
             docker system prune --all --force
