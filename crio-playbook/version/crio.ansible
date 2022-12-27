@@ -236,7 +236,7 @@
       state: restarted
     when: ansible_distribution == "Ubuntu"
 
-  # crio service uses k8s.gcr.io/pause:3.8 as default
+  # crio service uses registry.k8s.io/pause:3.8 as default
   - name: update pause image in crio.conf
     shell: |
       echo '[crio.image]' > /etc/crio/crio.conf
