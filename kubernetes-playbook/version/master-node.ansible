@@ -476,15 +476,6 @@
   - { filename: '{{ path }}/metrics-server/metrics-server-deployment.yaml' }
   run_once: true
 
-- name: add hostNetwork for metrics server to fix the compatible error for v1.26
-  replace:
-    dest: "{{ item.filename }}"
-    regexp: "dnsPolicy: ClusterFirst"
-    replace: "dnsPolicy: ClusterFirst\n      hostNetwork: true"
-  with_items:
-  - { filename: '{{ path }}/metrics-server/metrics-server-deployment.yaml' }
-  run_once: true
-
 - name: apply addons
   shell: |
     kubectl apply -f {{ path }}/kubernetes-dashboard.yml
