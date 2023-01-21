@@ -503,8 +503,8 @@
 - name: add hostNetwork for metrics server to fix the compatible error for v1.26
   replace:
     dest: "{{ item.filename }}"
-    regexp: "dnsPolicy: ClusterFirst"
-    replace: "dnsPolicy: ClusterFirst\n      hostNetwork: true"
+    regexp: "priorityClassName: system-cluster-critical"
+    replace: "priorityClassName: system-cluster-critical\n      hostNetwork: true"
   with_items:
   - { filename: '{{ path }}/metrics-server/metrics-server-deployment.yaml' }
   run_once: true
