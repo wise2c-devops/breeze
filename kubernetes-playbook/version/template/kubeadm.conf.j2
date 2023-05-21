@@ -48,7 +48,3 @@ networking:
 scheduler:
   extraArgs:
     feature-gates: LocalStorageCapacityIsolation=true
----
-kind: KubeletConfiguration
-apiVersion: kubelet.config.k8s.io/v1beta1
-cgroupDriver: systemd
