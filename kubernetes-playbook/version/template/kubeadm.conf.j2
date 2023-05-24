@@ -20,16 +20,12 @@ nodeRegistration:
 apiServer:
   certSANs:
   - {{ endpoint.split(':')[0] }}
-  extraArgs:
-    feature-gates: LocalStorageCapacityIsolation=true
   timeoutForControlPlane: 4m0s
 apiVersion: kubeadm.k8s.io/v1beta3
 certificatesDir: /etc/kubernetes/pki
 clusterName: kubernetes
 controlPlaneEndpoint: {{ endpoint }}
 controllerManager:
-  extraArgs:
-    feature-gates: LocalStorageCapacityIsolation=true
 dns: {}
 etcd:
   external:
@@ -47,10 +43,4 @@ networking:
   dnsDomain: cluster.local
   podSubnet: 10.244.0.0/16
   serviceSubnet: 10.96.0.0/12
-scheduler:
-  extraArgs:
-    feature-gates: LocalStorageCapacityIsolation=true
----
-kind: KubeletConfiguration
-apiVersion: kubelet.config.k8s.io/v1beta1
-cgroupDriver: systemd
+scheduler: {}

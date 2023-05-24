@@ -1,5 +1,4 @@
 KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.9 \
-                   --container-runtime=remote \
                    --cgroup-driver=systemd \
                    --container-runtime-endpoint=unix:///var/run/crio/crio.sock \
                    --runtime-request-timeout=10m
@@ -11,7 +10,6 @@ KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ regist
                    --log-dir=/var/log/pods
 
 #KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.9 \
-#                   --container-runtime=remote \
 #                   --cgroup-driver=systemd \
 #                   --container-runtime-endpoint=unix:///var/run/crio/crio.sock \
 #                   --runtime-request-timeout=10m \
