@@ -4,10 +4,10 @@ set -e
 
 path=`dirname $0`
 
-kubernetes_version=1.27.2
+kubernetes_version=1.27.3
 harbor_version=2.7.2
 docker_version=23.0.1
-crio_version=1.27.2
+crio_version=1.27.3
 haproxy_version=2.0.0
 keepalived_version=1.3.5
 loadbalancer_version=HAProxy-${haproxy_version}_Keepalived-${keepalived_version}
