@@ -14,18 +14,18 @@ loadbalancer_version=HAProxy-${haproxy_version}_Keepalived-${keepalived_version}
 prometheus_version=2.41.0
 prometheus_operator_version=0.62.0
 kube_prometheus_version=0.12.0
-metrics_server_version=0.6.3
+metrics_server_version=0.6.4
 dashboard_version=2.6.1
 metrics_scraper_version=1.0.8
-flannel_version=0.22.0
-flannel_cni_plugin_version=1.1.2
+flannel_version=0.22.1
+flannel_cni_plugin_version=1.2.0
 calico_version=3.26.1
-helm_version=3.12.1
-istio_version=1.18.0
-contour_version=1.25.0
-contour_envoyproxy_version=1.26.1
-elastic_cloud_version=2.8.0
-elastic_stack_version=8.8.1
+helm_version=3.12.2
+istio_version=1.18.2
+contour_version=1.25.2
+contour_envoyproxy_version=1.26.4
+elastic_cloud_version=2.9.0
+elastic_stack_version=8.9.0
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
 mv ${path}/harbor-playbook/version ${path}/harbor-playbook/v${harbor_version}
