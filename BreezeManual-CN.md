@@ -4,9 +4,7 @@
 
 适用操作系统：
 
-RHEL/CentOS: 7.4/7.5/7.6/7.7/7.8/7.9
-
-RHEL/CentOS/RockyLinux/AlmaLinux/OracleLinux: 8.4+
+RHEL/CentOS/RockyLinux/AlmaLinux/OracleLinux: 8.4+ / 9.x
 
 Ubuntu 18/20 LTS
 
