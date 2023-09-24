@@ -45,8 +45,8 @@ if version_gt 9.0 ${BREEZE_LSB_RELEASE} && [[ "${BREEZE_LSB_ID}" == "CentOS" ]];
   exit
 fi
 
-if version_gt 18 ${BREEZE_LSB_RELEASE} && [[ "${BREEZE_LSB_ID}" == "Ubuntu" ]]; then
-  echo "please use Ubuntu 18/20 for Breeze"
+if version_gt 20 ${BREEZE_LSB_RELEASE} && [[ "${BREEZE_LSB_ID}" == "Ubuntu" ]]; then
+  echo "please use Ubuntu 20/22 for Breeze"
   exit
 fi
 

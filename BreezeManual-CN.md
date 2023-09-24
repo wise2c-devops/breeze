@@ -6,7 +6,7 @@
 
 RHEL/CentOS/RockyLinux/AlmaLinux/OracleLinux: 8.4+ / 9.x
 
-Ubuntu 18/20 LTS
+Ubuntu 20/22 LTS
 
 **所有社区用户请注意：**	
 
