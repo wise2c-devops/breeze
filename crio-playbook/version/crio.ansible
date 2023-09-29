@@ -19,14 +19,14 @@
     - { src: 'template/wise2c.list-ubuntu22.j2', dest: '/etc/apt/sources.list.d/wise2c.list' }
     when: (ansible_distribution == "Ubuntu") and (ansible_distribution_major_version == "22")
 
-  - name: install python2 for Ubuntu
+  - name: install python for Ubuntu
     shell: |
       mv /etc/apt/sources.list /etc/apt/sources.list.bak
       curl -so /tmp/breeze.pub http://wise2c-seed:2008/debs/ubuntu22/breeze.pub
       apt-key add /tmp/breeze.pub
       rm -f /tmp/breeze.pub
       apt-get update && export DEBIAN_FRONTEND=noninteractive
-      apt-get install -y python python-apt python3-docker python-chardet python3-requests
+      apt-get install -y python3 python3-apt python3-docker python3-chardet python3-requests
     when:
     - ansible_distribution == "Ubuntu"
 
@@ -215,10 +215,10 @@
     - /etc/crio/crio.conf
     - /etc/containers/registries.conf
 
-  - name: fix the metacopy bug for Ubuntu22
-    shell: |
-      sed -i 's/,metacopy=on//g' /etc/containers/storage.conf
-    when: (ansible_distribution == "Ubuntu") and (ansible_distribution_major_version == "22")
+  #- name: fix the metacopy bug for Ubuntu22
+  #  shell: |
+  #    sed -i 's/,metacopy=on//g' /etc/containers/storage.conf
+  #  when: (ansible_distribution == "Ubuntu") and (ansible_distribution_major_version == "22")
 
   - name: init crio on Redhat/CentOS to create folder /etc/crio
     systemd:
@@ -263,8 +263,8 @@
       path: /etc/cni/net.d/100-crio-bridge.conf
       state: absent
 
-  - name: fix cri-o bug
-    script: scripts/fix-crio-bug.sh
+#  - name: fix cri-o bug
+#    script: scripts/fix-crio-bug.sh
 
   - name: reload & restart crio on Redhat/CentOS
     systemd:
