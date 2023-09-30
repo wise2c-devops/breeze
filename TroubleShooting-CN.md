@@ -151,6 +151,6 @@ openssl x509 -noout -text -in /var/lib/kubelet/pki/kubelet-client-current.pem |g
 
     自2023年9月30开始发布的Breeze版本，CentOS 7.x 和 Ubuntu 18不再被支持，请使用 RHEL/AlmaLinux/RockyLinux/OracleLinux 8.x / 9.x 以及 Ubuntu 20 / Ubuntu 22。
 
-15. 对于RHEL8系列，推荐使用RockyLinux8.4及以上版本，也可以使用AlmaLinux或OracleLinux的8.4及以上，但在准备基础最小环境的时候需要注意：
+15. 对于RHEL8/9系列，推荐使用RockyLinux 8.4及以上版本包括9.x，也可以使用AlmaLinux或OracleLinux的8.4及以上或9.x，但在准备基础最小环境的时候需要注意：
 
     最小化安装AlmaLinux、RockyLinux或OracleLinux后如果发现系统里没有tar命令，请加载光盘或在线安装tar软件包：yum install tar
