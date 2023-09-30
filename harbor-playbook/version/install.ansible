@@ -1,11 +1,99 @@
-#!/bin/bash
-sed -i '0,/https:/s//# https:/' harbor.yml
-sed -i 's,port: 443,# port: 443,g' harbor.yml
-sed -i 's,certificate:,# certificate:,g' harbor.yml
-sed -i 's,private_key:,# private_key:,g' harbor.yml
+- name: setup harbor
+  hosts: harbor
+  user: root
+  vars:
+    path: /var/lib/wise2c/tmp/harbor
+  tasks:
+  - name: yum remove crio and podman on Redhat/CentOS/Rocky/Alma/Oracle 8.x
+    yum:
+      disablerepo: '*'
+      enablerepo:
+      - wise2c-k8s
+      - wise2c-crio
+      state: absent
+      name: '{{ item }}'
+    with_items:
+    - containernetworking-plugins
+    - container-selinux
+    - containers-common
+    - crio
+    - podman
+    when: ((ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")) and (ansible_distribution_major_version == '8')
 
-#set +e
-#docker network create harbor_harbor
-#set -e
+  - name: yum install docker on Redhat/CentOS/Rocky/Alma/Oracle
+    yum:
+      disablerepo: '*'
+      enablerepo: wise2c-k8s
+      allowerasing: true
+      update_cache: true
+      state: present
+      name: '{{ item }}'
+    with_items:
+    - docker-ce
+    - docker-ce-cli
+    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
 
-./install.sh --with-chartmuseum
+#  - name: apt remove crio and podman
+#    apt:
+#      state: absent
+#      name: '{{ item }}'
+#    with_items:
+#    - containernetworking-plugins
+#    - container-selinux
+#    - containers-common
+#    - cri-o
+#    - podman
+#    when: ansible_distribution =="Ubuntu"
+
+  - name: apt install docker
+    apt:
+      update_cache: true
+      state: present
+      name: '{{ item }}'
+    with_items:
+    - docker-ce
+    - docker-ce-cli
+    when: ansible_distribution =="Ubuntu"
+
+  - name: start docker
+    systemd:
+      name: docker
+      enabled: true
+      state: started
+
+  - name: make harbor dir
+    file:
+      path: '{{ item }}'
+      state: directory
+      mode: 0755
+    with_items:
+    - '{{ cpath }}'
+    - '{{ path }}'
+
+  - name: unarchive harbor
+    unarchive:
+      src: file/harbor-offline-installer-{{ version }}.tgz
+      dest: '{{ cpath }}'
+
+  - name: generate harbor config
+    template:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+    with_items:
+    - { src: 'template/harbor.yml.j2', dest: '{{ cpath }}/harbor/harbor.yml' }
+
+  - name: copy harbor start and stop scripts
+    copy:
+      src: '{{ item.src }}'
+      dest: '{{ item.dest }}'
+      mode: 0755
+    with_items:
+    - { src: 'file/install-harbor.sh', dest: '{{ cpath }}/harbor/install-harbor.sh' }
+    - { src: 'file/start-harbor.sh', dest: '{{ cpath }}/harbor/start-harbor.sh' }
+    - { src: 'file/stop-harbor.sh', dest: '{{ cpath }}/harbor/stop-harbor.sh' }
+    - { src: 'file/docker-compose', dest: '/usr/bin/docker-compose' }
+
+  - name: launch harbor
+    shell: ./install-harbor.sh
+    args:
+      chdir: '{{ cpath }}/harbor'
