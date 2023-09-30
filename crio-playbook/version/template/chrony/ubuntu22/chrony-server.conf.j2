@@ -1,27 +1,3 @@
-# Use servers .
-server {{ ansible_play_batch[0] }} iburst
-
-# Record the rate at which the system clock gains/losses time.
-driftfile /var/lib/chrony/drift
-
-# Allow the system clock to be stepped in the first three updates
-# if its offset is larger than 1 second.
-makestep 1.0 3
-
-# Enable kernel synchronization of the real-time clock (RTC).
-rtcsync
-
-# Allow NTP client access from local network.
-allow 
-
-# Serve time even if not synchronized to a time source.
-local stratum 10
-
-# Specify directory for log files.
-logdir /var/log/chrony
-
-
-
 # Welcome to the chrony configuration file. See chrony.conf(5) for more
 # information about usuable directives.
 
@@ -42,10 +18,8 @@ logdir /var/log/chrony
 #pool 0.ubuntu.pool.ntp.org iburst maxsources 1
 #pool 1.ubuntu.pool.ntp.org iburst maxsources 1
 #pool 2.ubuntu.pool.ntp.org iburst maxsources 2
-pool {{ ansible_play_batch[0] }} iburst maxsources 1
 
-#the iburst option is used to speed up the initial synchronisation.
-#the maxsources refers the maximum number of NTP sources.
+server {{ ansible_play_batch[0] }} iburst
 
 # This directive specify the location of the file containing ID/key pairs for
 # NTP authentication.
@@ -65,9 +39,15 @@ logdir /var/log/chrony
 maxupdateskew 100.0
 
 # This directive enables kernel synchronisation (every 11 minutes) of the
-# real-time clock. Note that it can¡¯t be used along with the 'rtcfile' directive.
+# real-time clock. Note that it can’t be used along with the 'rtcfile' directive.
 rtcsync
 
 # Step the system clock instead of slewing it if the adjustment is larger than
 # one second, but only in the first three clock updates.
 makestep 1 3
+
+# Allow NTP client access from local network.
+allow 
+ 
+# Serve time even if not synchronized to a time source.
+local stratum 10
