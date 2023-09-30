@@ -34,7 +34,7 @@ cp bin/istioctl /usr/bin/
 
 istioctl install -y --set profile=demo --set hub=$MyImageRepositoryIP\/$MyImageRepositoryProject
 
-sed -i "s,image: \"grafana/,image: \"$MyImageRepositoryIP/$MyImageRepositoryProject/,g" samples/addons/grafana.yaml
+sed -i "s,image: \"docker.io/grafana/,image: \"$MyImageRepositoryIP/$MyImageRepositoryProject/,g" samples/addons/grafana.yaml
 sed -i "s,image: \"docker.io/jaegertracing/,image: \"$MyImageRepositoryIP/$MyImageRepositoryProject/,g" samples/addons/jaeger.yaml
 sed -i "s,image: \"prom/,image: \"$MyImageRepositoryIP/$MyImageRepositoryProject/,g" samples/addons/prometheus.yaml
 sed -i "s,image: \"jimmidyson/,image: \"$MyImageRepositoryIP/$MyImageRepositoryProject/,g" samples/addons/prometheus.yaml

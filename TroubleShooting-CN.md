@@ -149,6 +149,4 @@ openssl x509 -noout -text -in /var/lib/kubelet/pki/kubelet-client-current.pem |g
 
 14. 自2021年7月开始发布的Breeze版本，Ubuntu16不再被支持，请使用Ubuntu18/Ubuntu20。同时，从2021年7月开始的版本，Docker也被更换为CRI-O（Harbor角色机除外），敬请留意。
 
-15. 对于RHEL8系列，推荐使用RockyLinux8.4及以上版本，也可以使用AlmaLinux或OracleLinux的8.4及以上，但在准备基础最小环境的时候需要注意：
-
-    AlmaLinux 及 OracleLinux 需要执行 yum install policycoreutils-python-utils 命令；AlmaLinux还需执行命令 yum install tar
+    自2023年9月30开始发布的Breeze版本，CentOS 7.x 和 Ubuntu 18不再被支持，请使用 RHEL/AlmaLinux/RockyLinux/OracleLinux 8.x / 9.x 以及 Ubuntu 20 / Ubuntu 22。

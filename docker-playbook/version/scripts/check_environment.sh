@@ -35,18 +35,18 @@ if [[ "${BREEZE_LSB_ID}" != "RedHat" ]] && [[ "${BREEZE_LSB_ID}" != "CentOS" ]] 
   exit
 fi
 
-if version_gt 7.4 ${BREEZE_LSB_RELEASE} && [[ "${BREEZE_LSB_ID}" == "RedHat" ]]; then
-  echo "please use RHEL 7.x (x>3) for Breeze"
+if version_gt 8.4 ${BREEZE_LSB_RELEASE} && [[ "${BREEZE_LSB_ID}" == "RedHat" ]]; then
+  echo "please use RHEL 8.x (x>3) for Breeze"
   exit
 fi
 
-if version_gt 7.4 ${BREEZE_LSB_RELEASE} && [[ "${BREEZE_LSB_ID}" == "CentOS" ]]; then
-  echo "please use CentOS 7.x (x>3) for Breeze"
+if version_gt 8.4 ${BREEZE_LSB_RELEASE} && [[ "${BREEZE_LSB_ID}" == "CentOS" ]]; then
+  echo "please use CentOS 8.x (x>3) for Breeze"
   exit
 fi
 
-if version_gt 16 ${BREEZE_LSB_RELEASE} && [[ "${BREEZE_LSB_ID}" == "Ubuntu" ]]; then
-  echo "please use Ubuntu 16/18 for Breeze"
+if version_gt 20 ${BREEZE_LSB_RELEASE} && [[ "${BREEZE_LSB_ID}" == "Ubuntu" ]]; then
+  echo "please use Ubuntu 20/22 for Breeze"
   exit
 fi
 
