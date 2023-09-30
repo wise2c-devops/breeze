@@ -94,6 +94,7 @@
       state: present
       name: '{{ item }}'
     with_items:
+    - tar
     - rsync
     - jq
     - chrony
