@@ -8,4 +8,4 @@ sed -i 's,private_key:,# private_key:,g' harbor.yml
 #docker network create harbor_harbor
 #set -e
 
-./install.sh --with-chartmuseum
+./install.sh
