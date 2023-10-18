@@ -12,6 +12,7 @@ sed -i 's,private_key:,# private_key:,g' harbor.yml
 
 # How to add Harbor as Helm Charts repo?
 # helm repo add --username={{ registry_user }} --password={{ registry_password }} {{ registry_project }} http://{{ registry_endpoint }}/chartrepo/{{ registry_project }}
+# Starting from Harbor version 2.8, the helm repo add command is not supported. Each pull needs to specify the complete access path.
 
 # How to login Harbor Helm Charts repo?
 #helm registry login http://{{ registry_endpoint }} --insecure--username {{ registry_user }} --password {{ registry_password }}
