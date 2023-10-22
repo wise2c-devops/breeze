@@ -2,7 +2,7 @@ version: '2'
 services:
   deploy:
     container_name: deploy-main
-    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/pagoda:v1.3.0
+    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/pagoda:v1.3.1
     restart: always
     entrypoint: sh
     command:
