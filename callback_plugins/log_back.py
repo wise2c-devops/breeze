@@ -23,7 +23,7 @@ import os
 import time
 import json
 import http.client
-from collections import MutableMapping
+from _collections_abc import MutableMapping
 
 from ansible.module_utils._text import to_bytes
 from ansible.plugins.callback import CallbackBase
