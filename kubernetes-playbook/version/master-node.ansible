@@ -550,11 +550,11 @@
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
   with_items:
-  - { src: 'file/helm-linux-amd64.tar.gz', dest: '{{ path }}' }
+  - { src: 'file/helm-linux.tar.gz', dest: '{{ path }}' }
 
 - name: install helm binary
   shell: |
-    tar zxvf {{ path }}/helm-linux-amd64.tar.gz --strip-components=1 -C /tmp/
+    tar zxvf {{ path }}/helm-linux.tar.gz --strip-components=1 -C /tmp/
     mv /tmp/helm /usr/local/bin/helm
 
 #- name: upgrade helm repo
