@@ -1,0 +1,45 @@
+- name: init host
+  hosts: hosts
+  user: root
+  any_errors_fatal: true
+  vars:
+    path: /var/lib/wise2c/tmp/crio
+  tasks:
+  - name: check environment
+    script: scripts/check_environment.sh
+    register: check_env_output
+    environment:
+      BREEZE_LSB_ID: "{{ ansible_facts.distribution }}"
+      BREEZE_LSB_RELEASE: "{{ ansible_facts.distribution_version }}"
+      BREEZE_PYTHON_VERSION: "{{ ansible_facts.python_version }}" 
+
+  - name: exit
+    fail:
+      msg: "{{ check_env_output.stdout }}"
+    when: check_env_output.stdout != "true"
+      
+  - name: get seed ip
+    shell:
+      echo $SSH_CONNECTION | cut -d " " -f 1
+    register: ip
+
+  - name: add seed to /etc/hosts
+    blockinfile:
+      path: /etc/hosts
+      block: '{{ ip.stdout }} {{ wise2c_seed_host }}'
+      marker: '# {mark} WISE2C DEPLOY MANAGED BLOCK {{ wise2c_seed_host }}'
+
+  - name: add to /etc/hosts
+    blockinfile:
+      path: /etc/hosts
+      block: '{{ item.key }} {{ item.value.hostname }}'
+      marker: "# {mark} WISE2C DEPLOY MANAGED BLOCK {{ item.key }}"
+    with_dict: "{{ hostvars }}"
+
+  - name: check crio
+    script: scripts/check_crio.sh {{ harbor }}
+    register: check_output
+
+  - name: setup crio on all nodes
+    include_tasks: crio.ansible
+    when: check_output.stdout != 'true'

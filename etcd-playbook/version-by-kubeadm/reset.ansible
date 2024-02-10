@@ -6,7 +6,7 @@
     docker_container:
       name: etcd
       state: absent
-
+        
   - name: clean etcd directory
     file:
       path: '{{ item }}'

@@ -91,7 +91,7 @@
       path: '/etc/etcd/pki'
       state: directory
       mode: 0755
-  
+
   - name: unarchive cfssl tool
     unarchive:
       src: file/cfssl-tools.tar.gz
@@ -133,7 +133,7 @@
     - { src: '/etc/etcd/pki/etcd.pem', dest: '../etcd.pem' }
     - { src: '/etc/etcd/pki/etcd-key.pem', dest: '../etcd-key.pem' }
     run_once: true
-  
+
   - name: copy certificates
     copy:
       src: '{{ item.src }}'

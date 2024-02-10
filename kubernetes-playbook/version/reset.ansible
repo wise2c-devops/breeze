@@ -9,7 +9,6 @@
   - name: iptables reset
     shell: |
       firewall-cmd --complete-reload
-    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
 
   - name: ipvs reset
     shell: |
@@ -26,19 +25,7 @@
     - kubectl-{{ kubernetes_version[1:] }}
     - kubelet-{{ kubernetes_version[1:] }}
     - kubeadm-{{ kubernetes_version[1:] }}
-    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
 
-  - name: remove kubernetes components for Ubuntu
-    apt:
-      state: absent
-      name: '{{ item }}'
-    with_items:
-    - kubernetes-cni
-    - kubectl-{{ kubernetes_version[1:] }}
-    - kubelet-{{ kubernetes_version[1:] }}
-    - kubeadm-{{ kubernetes_version[1:] }}
-    when: ansible_distribution =="Ubuntu"
-    
   - name: clean flannel link
     shell: |
       ip link delete cni0

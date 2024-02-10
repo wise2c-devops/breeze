@@ -2,9 +2,9 @@
 set -e
 
 #It seems that there is a bug on Ubuntu host to load the images. If no wait, it will return an error message: "Error response from daemon: No such image"
-if [ ! -f /etc/redhat-release ]; then
-  sleep 60
-fi
+#if [ ! -f /etc/redhat-release ]; then
+#  sleep 60
+#fi
 
 MyImageRepositoryIP=`cat harbor-address.txt`
 MyImageRepositoryProject=library

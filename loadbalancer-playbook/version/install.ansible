@@ -37,7 +37,7 @@
       dest: '{{ item.dest }}'
     with_items:
       - { src: 'file/keepalived.sh', dest: '{{ cpath }}' }
-  
+
   - name: load lb image
     shell: |
       docker load -i '{{ path }}/{{ item }}'
@@ -78,6 +78,16 @@
       - { repo: 'wise2c', name: 'k8s-keepalived', tag: '{{ keepalived_version }}' }
     run_once: true
 
+  - name: remove original images tag
+    docker_image:
+      state: absent
+      name: '{{ item.repo }}/{{ item.name }}'
+      tag: '{{ item.tag }}'
+    with_items:
+      - { repo: 'wise2c', name: 'k8s-haproxy', tag: '{{ haproxy_version }}' }
+      - { repo: 'wise2c', name: 'k8s-keepalived', tag: '{{ keepalived_version }}' }
+    run_once: true
+
   - name: get port
     set_fact:
       ports: |
@@ -91,6 +101,7 @@
     docker_container:
       name: haproxy
       restart_policy: always
+      network_mode: host
       image: "{{ registry_endpoint }}/{{ registry_project }}/k8s-haproxy:{{ haproxy_version  }}"
       ports: '{{ ports | d([], true) | list }}'
       volumes:

@@ -9,9 +9,9 @@ version=`cat ${path}/components-version.txt |grep "Harbor" |awk '{print $3}'`
 echo "" >> ${path}/yat/harbor.yml.gotmpl
 echo "version: v${version}" >> ${path}/yat/harbor.yml.gotmpl
 
-curl -L https://github.com/docker/compose/releases/download/v2.6.1/docker-compose-$(uname -s)-$(uname -m) -o ${path}/file/docker-compose
+curl -L https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m) -o ${path}/file/docker-compose
 
-curl -L https://storage.googleapis.com/harbor-releases/release-${version%.*}.0/harbor-offline-installer-v${version}.tgz \
+curl -L https://github.com/wise2c-devops/build-harbor-aarch64/releases/download/v${version}/harbor-offline-installer-aarch64-v${version}.tgz \
     -o ${path}/file/harbor-offline-installer-v${version}.tgz
 
 curl -sSL https://raw.githubusercontent.com/vmware/harbor/v${version}/make/harbor.yml.tmpl \

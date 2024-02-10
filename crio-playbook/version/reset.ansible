@@ -1,0 +1,23 @@
+- name: clean crio
+  hosts: hosts
+  user: root
+  tasks:
+  - name: remove crio for Redhat/CentOS
+    yum:
+      disablerepo: '*'
+      enablerepo: wise2c-crio
+      state: absent
+      name: '{{ item }}'
+    with_items:
+    - crio
+    - podman
+    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS")
+
+  - name: remove crio for Ubuntu
+    apt:
+      state: absent
+      name: '{{ item }}'
+    with_items:
+    - cri-o
+    - podman
+    when: ansible_distribution =="Ubuntu"

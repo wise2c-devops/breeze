@@ -4,11 +4,7 @@
 
 适用操作系统：
 
-RHEL/CentOS: 7.4/7.5/7.6/7.7/7.8/7.9
-
-RHEL/CentOS/RockyLinux/AlmaLinux/OracleLinux: 8.4+
-
-Ubuntu 18/20 LTS
+麒麟V10 SP2
 
 **所有社区用户请注意：**	
 
@@ -64,13 +60,13 @@ firewall-cmd --complete-reload
 （2）安装docker-compose命令
 
 ```
-curl -L https://github.com/docker/compose/releases/download/v2.14.1/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+curl -L https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 ```
 
 或从镜像站点下载：
 
 ```
-curl -L http://mirror.azure.cn/docker-toolbox/linux/compose/v2.14.1/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+curl -L http://mirror.azure.cn/docker-toolbox/linux/compose/1.25.4/docker-compose-Linux-x86_64 -o /usr/local/bin/docker-compose
 ```
 
 然后设置权限：
@@ -90,17 +86,17 @@ systemctl enable docker
 (4) 下载用于部署某个Kubernetes版本的docker-compose文件并使部署程序运行起来，例如：
 
 ```
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.23.17-docker/docker-compose.yml -o docker-compose.yml
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.23.17-docker/docker-compose-centos.yml -o docker-compose.yml
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.23.17-docker/docker-compose-ubuntu.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.23.17/docker-compose.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.23.17/docker-compose-centos.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.23.17/docker-compose-ubuntu.yml -o docker-compose.yml
 ```
 
 国内用户可以使用阿里云镜像站点文件，部署所用的image将从阿里云拉取：
 
 ```
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.23.17-docker/docker-compose-aliyun.yml -o docker-compose.yml
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.23.17-docker/docker-compose-centos-aliyun.yml -o docker-compose.yml
-curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.23.17-docker/docker-compose-ubuntu-aliyun.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.23.17/docker-compose-aliyun.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.23.17/docker-compose-centos-aliyun.yml -o docker-compose.yml
+curl -L https://raw.githubusercontent.com/wise2c-devops/breeze/v1.23.17/docker-compose-ubuntu-aliyun.yml -o docker-compose.yml
 ```
 
 然后：
