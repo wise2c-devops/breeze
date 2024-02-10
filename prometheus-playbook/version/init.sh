@@ -46,6 +46,19 @@ cat images-list.txt
 for file in $(cat images-list.txt); do docker pull $file; done
 echo 'Images pulled.'
 
+# fix the cpu arch tag error of the google formal image:
+export CPUArch=$(uname -m | awk '{ if ($1 == "x86_64") print "amd64"; else if ($1 == "aarch64") print "arm64"; else print $1 }')
+if [ "$CPUArch" == "arm64" ]; then
+  docker rmi quay.io/coreos/kube-state-metrics:v1.9.7
+  docker pull k8s.gcr.io/kube-state-metrics/kube-state-metrics-arm64:v2.3.0
+  docker tag k8s.gcr.io/kube-state-metrics/kube-state-metrics-arm64:v2.3.0 quay.io/coreos/kube-state-metrics:v1.9.7
+  docker rmi k8s.gcr.io/kube-state-metrics/kube-state-metrics-arm64:v2.3.0
+  docker rmi quay.io/brancz/kube-rbac-proxy:v0.8.0
+  docker pull quay.io/brancz/kube-rbac-proxy:v0.12.0-arm64
+  docker tag quay.io/brancz/kube-rbac-proxy:v0.12.0-arm64 quay.io/brancz/kube-rbac-proxy:v0.8.0
+  docker rmi quay.io/brancz/kube-rbac-proxy:v0.12.0-arm64
+fi
+
 docker save $(cat images-list.txt) -o kube-prometheus-images-v$KubePrometheusVersion.tar
 echo 'Images saved.'
 bzip2 -z --best kube-prometheus-images-v$KubePrometheusVersion.tar

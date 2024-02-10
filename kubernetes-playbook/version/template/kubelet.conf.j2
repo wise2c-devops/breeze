@@ -1,27 +1,12 @@
 KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.2 \
-                   --container-runtime=remote \
-                   --cgroup-driver=systemd \
-                   --container-runtime-endpoint=unix:///var/run/crio/crio.sock \
-                   --runtime-request-timeout=10m \
-                   --alsologtostderr=true \
-                   --logtostderr=false \
-                   --anonymous-auth=true \
-                   --container-log-max-files=10 \
-                   --container-log-max-size=50Mi \
-                   --log-dir=/var/log/pods
+                   --kubelet-cgroups=/system.slice/kubelet.service \
+                   --runtime-cgroups=/system.slice/docker.service
 
 #KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.2 \
-#                   --container-runtime=remote \
-#                   --cgroup-driver=systemd \
-#                   --container-runtime-endpoint=unix:///var/run/crio/crio.sock \
-#                   --runtime-request-timeout=10m \
-#                   --alsologtostderr=true \
-#                   --logtostderr=false \
-#                   --anonymous-auth=true \
-#                   --container-log-max-files=10 \
-#                   --container-log-max-size=50Mi \
-#                   --log-dir=/var/log/pods
-#                   --kube-reserved=cpu=500m,memory=512Mi,ephemeral-storage=1Gi \
-#                   --system-reserved=cpu=1000m,memory=1024Mi,ephemeral-storage=1Gi \
-#                   --eviction-hard=memory.available<500Mi,nodefs.available<10%
+#                   --feature-gates=LocalStorageCapacityIsolation=true \
+#                   --kubelet-cgroups=/system.slice/kubelet.service \
+#                   --runtime-cgroups=/system.slice/docker.service \
+#                   --kube-reserved-cgroup=/kubepods.slice --kube-reserved=cpu=500m,memory=500Mi,ephemeral-storage=1Gi \
+#                   --system-reserved-cgroup=/system.slice --system-reserved=cpu=500m,memory=500Mi,ephemeral-storage=1Gi \
+#                   --eviction-hard=memory.available<500Mi,nodefs.available<10% \
 #                   --max-pods=200

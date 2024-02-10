@@ -5,8 +5,8 @@ set -e
 path=`dirname $0`
 
 kubernetes_version=1.19.16
-harbor_version=2.4.0
-docker_version=20.10.10
+harbor_version=2.10.0
+docker_version=24.0.6
 crio_version=1.19.2
 haproxy_version=2.0.0
 keepalived_version=1.3.5
@@ -14,13 +14,14 @@ loadbalancer_version=HAProxy-${haproxy_version}_Keepalived-${keepalived_version}
 prometheus_version=2.22.1
 prometheus_operator_version=0.44.1
 kube_prometheus_version=0.7.0
-metrics_server_version=0.5.1
+metrics_server_version=0.6.4
 dashboard_version=2.0.5
 metrics_scraper_version=1.0.6
-flannel_version=0.15.0
-calico_version=3.20.2
+flannel_version=0.22.3
+flannel_cni_plugin_version=1.2.0
+calico_version=3.22.5
 helm_version=3.7.1
-istio_version=1.11.4
+istio_version=1.15.7
 contour_version=1.18.2
 contour_envoyproxy_version=1.19.1
 elastic_cloud_version=1.6.0
@@ -35,7 +36,7 @@ mv ${path}/prometheus-playbook/version ${path}/prometheus-playbook/Kube-Promethe
 mv ${path}/istio-playbook/version ${path}/istio-playbook/v${istio_version}
 mv ${path}/elasticcloud-playbook/version ${path}/elasticcloud-playbook/v${elastic_cloud_version}
 
-docker run --rm --name=kubeadm-version wise2c/kubeadm-version:v${kubernetes_version} kubeadm config images list --kubernetes-version ${kubernetes_version} > ${path}/k8s-images-list.txt
+docker run --rm --name=kubeadm-version wise2c/kubeadm-version:v1.19-multi-arch kubeadm config images list --kubernetes-version ${kubernetes_version} > ${path}/k8s-images-list.txt
 
 etcd_version=`cat ${path}/k8s-images-list.txt |grep etcd |awk -F ':' '{print $2}'`
 mv etcd-playbook/version-by-kubeadm etcd-playbook/${etcd_version}
@@ -54,6 +55,7 @@ echo "MetricsServer Version: ${metrics_server_version}" >> ${path}/components-ve
 echo "Dashboard Version: ${dashboard_version}" >> ${path}/components-version.txt
 echo "MetricsScraper Version: ${metrics_scraper_version}" >> ${path}/components-version.txt
 echo "Flannel Version: ${flannel_version}" >> ${path}/components-version.txt
+echo "flannel-cni-plugin Version: ${flannel_cni_plugin_version}" >> ${path}/components-version.txt
 echo "Calico Version: ${calico_version}" >> ${path}/components-version.txt
 echo "Helm Version: ${helm_version}" >> ${path}/components-version.txt
 echo "Istio Version: ${istio_version}" >> ${path}/components-version.txt

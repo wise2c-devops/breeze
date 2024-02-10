@@ -36,11 +36,14 @@ rules:
 - apiGroups:
   - ""
   resources:
+  - nodes/metrics
+  verbs:
+  - get
+- apiGroups:
+  - ""
+  resources:
   - pods
   - nodes
-  - nodes/stats
-  - namespaces
-  - configmaps
   verbs:
   - get
   - list
@@ -130,7 +133,7 @@ spec:
       containers:
       - args:
         - --cert-dir=/tmp
-        - --secure-port=443
+        - --secure-port=4443
         - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
         - --kubelet-use-node-status-port
         - --metric-resolution=15s
@@ -146,7 +149,7 @@ spec:
           periodSeconds: 10
         name: metrics-server
         ports:
-        - containerPort: 443
+        - containerPort: 4443
           name: https
           protocol: TCP
         readinessProbe:
@@ -162,6 +165,7 @@ spec:
             cpu: 100m
             memory: 200Mi
         securityContext:
+          allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
           runAsNonRoot: true
           runAsUser: 1000
@@ -170,6 +174,7 @@ spec:
           name: tmp-dir
       nodeSelector:
         kubernetes.io/os: linux
+      hostNetwork: true
       priorityClassName: system-cluster-critical
       serviceAccountName: metrics-server
       volumes:
