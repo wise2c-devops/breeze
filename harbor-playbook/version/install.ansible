@@ -12,9 +12,8 @@
     - containernetworking-plugins
     - container-selinux
     - containers-common
-    - crio
+    - cri-o
     - podman
-    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
 
   - name: yum install docker
     yum:
@@ -26,29 +25,6 @@
     with_items:
     - docker-ce
     - docker-ce-cli
-    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
-
-  - name: apt remove crio and podman
-    apt:
-      state: absent
-      name: '{{ item }}'
-    with_items:
-    - containernetworking-plugins
-    - container-selinux
-    - containers-common
-    - cri-o
-    - podman
-    when: ansible_distribution =="Ubuntu"
-
-  - name: apt install docker
-    apt:
-      update_cache: true
-      state: present
-      name: '{{ item }}'
-    with_items:
-    - docker-ce
-    - docker-ce-cli
-    when: ansible_distribution =="Ubuntu"
 
   - name: start docker
     systemd:
