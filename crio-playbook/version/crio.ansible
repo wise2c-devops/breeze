@@ -3,58 +3,20 @@
       name: '{{ hostname }}'
     when: format_hostname
 
-  - name: distribute wise2c apt source for Ubuntu 20 hosts
-    template:
-      src: '{{ item.src }}'
-      dest: '{{ item.dest }}'
-    with_items:
-    - { src: 'template/wise2c.list-ubuntu20.j2', dest: '/etc/apt/sources.list.d/wise2c.list' }
-    when: (ansible_distribution == "Ubuntu") and (ansible_distribution_major_version == "20")
-
-  - name: distribute wise2c apt source for Ubuntu 22 hosts
-    template:
-      src: '{{ item.src }}'
-      dest: '{{ item.dest }}'
-    with_items:
-    - { src: 'template/wise2c.list-ubuntu22.j2', dest: '/etc/apt/sources.list.d/wise2c.list' }
-    when: (ansible_distribution == "Ubuntu") and (ansible_distribution_major_version == "22")
-
-  - name: install python for Ubuntu
-    shell: |
-      mv /etc/apt/sources.list /etc/apt/sources.list.bak
-      curl -so /tmp/breeze.pub http://wise2c-seed:2008/debs/ubuntu22/breeze.pub
-      apt-key add /tmp/breeze.pub
-      rm -f /tmp/breeze.pub
-      apt-get update && export DEBIAN_FRONTEND=noninteractive
-      apt-get install -y python3 python3-apt python3-docker python3-chardet python3-requests
-    when:
-    - ansible_distribution == "Ubuntu"
-
   - name: disabled selinux
     selinux:
       state: disabled
-    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
 
   - name: start firewalld
     systemd:
       name: firewalld
       enabled: true
       state: started
-    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
 
   - name: config firewalld
     shell: |
       firewall-cmd --set-default-zone=trusted
       firewall-cmd --complete-reload
-    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
-
-  - name: distribute wise2c yum repo for CentOS 9 hosts
-    template:
-      src: '{{ item.src }}'
-      dest: '{{ item.dest }}'
-    with_items:
-    - { src: 'template/wise2c-centos9.repo.j2', dest: '/etc/yum.repos.d/wise2c.repo' }
-    when: ((ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")) and (ansible_distribution_major_version == "9")
 
   - name: distribute wise2c yum repo for CentOS 8 hosts
     template:
@@ -62,7 +24,6 @@
       dest: '{{ item.dest }}'
     with_items:
     - { src: 'template/wise2c-centos8.repo.j2', dest: '/etc/yum.repos.d/wise2c.repo' }
-    when: ((ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")) and (ansible_distribution_major_version == "8")
 
   - name: distribute ipvs bootload file
     template:
@@ -84,7 +45,6 @@
   - name: clean yum cache
     shell: |
       yum clean all
-    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
 
   - name: yum install tools
     yum:
@@ -99,7 +59,6 @@
     - jq
     - chrony
     - ipvsadm
-    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
 
   - name: yum install crio and podman
     yum:
@@ -109,28 +68,8 @@
       state: present
       name: '{{ item }}'
     with_items:
-    - crio
-    - podman
-    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
-
-  - name: apt install crio and podman and other components
-    apt:
-      update_cache: true
-      state: present
-      name: '{{ item }}'
-    with_items:
-    - docker-compose
-    - chrony
-    - jq
-    - ipvsadm
-    - graphviz
-    - nfs-common
-    - gnupg
-    - ipset
     - cri-o
-    - cri-o-runc
     - podman
-    when: ansible_distribution =="Ubuntu"
 
   - name: distribute chrony server config for Redhat/CentOS
     template:
@@ -140,27 +79,6 @@
     - { src: 'template/chrony/redhat-centos/chrony-server.conf.j2', dest: '/etc/chrony.conf' }
     when:
     - inventory_hostname == ansible_play_batch[0]
-    - (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
-
-  - name: distribute chrony server config for Ubuntu 20
-    template:
-      src: '{{ item.src }}'
-      dest: '{{ item.dest }}'
-    with_items:
-    - { src: 'template/chrony/ubuntu20/chrony-server.conf.j2', dest: '/etc/chrony/chrony.conf' }
-    when: 
-    - inventory_hostname == ansible_play_batch[0]
-    - (ansible_distribution == "Ubuntu") and (ansible_distribution_major_version == "20")
-
-  - name: distribute chrony server config for Ubuntu 22
-    template:
-      src: '{{ item.src }}'
-      dest: '{{ item.dest }}'
-    with_items:
-    - { src: 'template/chrony/ubuntu22/chrony-server.conf.j2', dest: '/etc/chrony/chrony.conf' }
-    when:
-    - inventory_hostname == ansible_play_batch[0]
-    - (ansible_distribution == "Ubuntu") and (ansible_distribution_major_version == "22")
 
   - name: distribute chrony client config for Redhat/CentOS
     template:
@@ -170,27 +88,6 @@
     - { src: 'template/chrony/redhat-centos/chrony-client.conf.j2', dest: '/etc/chrony.conf' }
     when:
     - inventory_hostname != ansible_play_batch[0]
-    - (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
-
-  - name: distribute chrony client config for Ubuntu 20
-    template:
-      src: '{{ item.src }}'
-      dest: '{{ item.dest }}'
-    with_items:
-    - { src: 'template/chrony/ubuntu20/chrony-client.conf.j2', dest: '/etc/chrony/chrony.conf' }
-    when:
-    - inventory_hostname != ansible_play_batch[0]
-    - (ansible_distribution == "Ubuntu") and (ansible_distribution_major_version == "20")
-
-  - name: distribute chrony client config for Ubuntu 22
-    template:
-      src: '{{ item.src }}'
-      dest: '{{ item.dest }}'
-    with_items:
-    - { src: 'template/chrony/ubuntu22/chrony-client.conf.j2', dest: '/etc/chrony/chrony.conf' }
-    when:
-    - inventory_hostname != ansible_play_batch[0]
-    - (ansible_distribution == "Ubuntu") and (ansible_distribution_major_version == "22")
 
   - name: start chrony for Redhat/CentOS
     systemd:
@@ -198,15 +95,6 @@
       daemon_reload: true
       enabled: yes
       state: restarted
-    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
-
-  - name: start chrony for Ubuntu
-    systemd:
-      name: chrony
-      daemon_reload: true
-      enabled: yes
-      state: restarted
-    when: ansible_distribution == "Ubuntu"
 
   - name: clear crio and registry config files
     copy:
@@ -216,26 +104,12 @@
     - /etc/crio/crio.conf
     - /etc/containers/registries.conf
 
-  #- name: fix the metacopy bug for Ubuntu22
-  #  shell: |
-  #    sed -i 's/,metacopy=on//g' /etc/containers/storage.conf
-  #  when: (ansible_distribution == "Ubuntu") and (ansible_distribution_major_version == "22")
-
   - name: init crio on Redhat/CentOS to create folder /etc/crio
     systemd:
       name: crio
       daemon_reload: true
       enabled: true
       state: restarted
-    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
-
-  - name: init crio on Ubuntu to create folder /etc/crio
-    systemd:
-      name: crio
-      daemon_reload: true
-      enabled: true
-      state: restarted
-    when: ansible_distribution == "Ubuntu"
 
   # crio service uses registry.k8s.io/pause:3.9 as default
   - name: update pause image in crio.conf
@@ -269,19 +143,10 @@
 
   - name: reload & restart crio on Redhat/CentOS
     systemd:
-      name: crio
+      name: cri-o
       daemon_reload: true
       enabled: true
       state: restarted
-    when: (ansible_distribution == "RedHat") or (ansible_distribution == "CentOS") or (ansible_distribution == "Rocky") or (ansible_distribution == "AlmaLinux") or (ansible_distribution == "OracleLinux") or (ansible_distribution == "Anolis")
-
-  - name: reload & restart crio on Ubuntu
-    systemd:
-      name: crio
-      daemon_reload: true
-      enabled: true
-      state: restarted
-    when: ansible_distribution == "Ubuntu"
 
   - name: set sysctl
     sysctl:
@@ -293,7 +158,3 @@
     - net.ipv4.ip_forward
     - net.bridge.bridge-nf-call-iptables
     - net.bridge.bridge-nf-call-ip6tables
-
-  - name: Fix the warning message "No swap limit support" with docker on Ubuntu
-    script: scripts/fix-ubuntu-docker-warning.sh
-    when: ansible_distribution == "Ubuntu"
