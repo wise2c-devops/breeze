@@ -22,7 +22,7 @@
 
   - name: stop etcd container
     shell: |
-      docker stop etcd
+      podman stop etcd
     when: (backup_etcd_folder == true)
 
   - name: backup etcd database folder
@@ -33,7 +33,7 @@
 
   - name: start etcd container
     shell: |
-      docker start etcd
+      podman start etcd
     when: (backup_etcd_folder == true)
 
   - name: make etcd dir
@@ -54,31 +54,35 @@
 
   - name: load etcd image
     shell: |
-      docker load -i {{ path }}/etcd.tar.bz2
+      podman load -i {{ path }}/etcd.tar.bz2
     async: 60
     poll: 5
     run_once: true
 
-  - name: docker login
-    docker_login:
+  - name: podman login
+    containers.podman.podman_login:
       registry: '{{ registry_endpoint }}'
       username: '{{ registry_user }}'
       password: '{{ registry_password }}'
     run_once: true
 
-  - name: Tag and push to Harbor
-    docker_image:
-      name: 'registry.k8s.io/{{ item.name }}'
-      repository: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
+  - name: tag images
+    shell: |
+      podman tag registry.k8s.io/etcd:{{ version }} {{ registry_endpoint }}/{{ registry_project }}/etcd:{{ version }}
+    run_once: true
+
+  - name: push images
+    containers.podman.podman_image:
+      name: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
       tag: '{{ item.tag }}'
-      push: yes
-      source: local
+      push: true
+      state: present
     with_items:
-      - { name: 'etcd', tag: '{{ version }}' }
+      - { repo: 'registry.k8s.io', name: 'etcd', tag: '{{ version }}' }
     run_once: true
 
   - name: remove original images tag
-    docker_image:
+    containers.podman.podman_image:
       state: absent
       name: '{{ item.repo }}/{{ item.name }}'
       tag: '{{ item.tag }}'
@@ -91,7 +95,7 @@
       path: '/etc/etcd/pki'
       state: directory
       mode: 0755
-
+  
   - name: unarchive cfssl tool
     unarchive:
       src: file/cfssl-tools.tar.gz
@@ -133,7 +137,7 @@
     - { src: '/etc/etcd/pki/etcd.pem', dest: '../etcd.pem' }
     - { src: '/etc/etcd/pki/etcd-key.pem', dest: '../etcd-key.pem' }
     run_once: true
-
+  
   - name: copy certificates
     copy:
       src: '{{ item.src }}'
@@ -149,12 +153,16 @@
       mkdir -p {{ etcd_data_path }}
 
   - name: run etcd
-    docker_container:
+    containers.podman.podman_container:
       name: etcd
       network_mode: host
-      restart_policy: always
       image: "{{ registry_endpoint }}/{{ registry_project }}/etcd:{{ version }}"
       command: '{{ command }}'
       volumes:
         - "{{ etcd_data_path }}:/var/lib/etcd"
         - "/etc/etcd/pki:/etcd-cert"
+
+  - name: add etcd systemd service
+    shell: |
+      podman generate systemd --new --name etcd > /etc/systemd/system/etcd.service
+      systemctl enable etcd
