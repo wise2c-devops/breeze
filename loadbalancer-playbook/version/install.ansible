@@ -37,10 +37,10 @@
       dest: '{{ item.dest }}'
     with_items:
       - { src: 'file/keepalived.sh', dest: '{{ cpath }}' }
-
+  
   - name: load lb image
     shell: |
-      docker load -i '{{ path }}/{{ item }}'
+      podman load -i '{{ path }}/{{ item }}'
     with_items:
       - haproxy-{{ haproxy_version }}.tar.bz2
       - keepalived-{{ keepalived_version }}.tar.bz2
@@ -48,38 +48,34 @@
     poll: 5
     run_once: true
 
-  - name: docker login
-    docker_login:
+  - name: podman login
+    containers.podman.podman_login:
       registry: '{{ registry_endpoint }}'
       username: '{{ registry_user }}'
       password: '{{ registry_password }}'
-      reauthorize: true
     run_once: true
 
-  - name: Tag and push to Harbor
-    docker_image:
-      name: 'wise2c/{{ item.name }}'
-      repository: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
-      tag: '{{ item.tag }}'
-      push: yes
-      source: local
+  - name: tag images
+    shell: |
+      podman tag {{ item.repo }}/{{ item.name }}:{{ item.tag }} {{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}:{{ item.tag }}
     with_items:
-      - { name: 'k8s-haproxy', tag: '{{ haproxy_version }}' }
-      - { name: 'k8s-keepalived', tag: '{{ keepalived_version }}' }
+      - { repo: 'wise2c', name: 'k8s-haproxy', tag: '{{ haproxy_version }}' }
+      - { repo: 'wise2c', name: 'k8s-keepalived', tag: '{{ keepalived_version }}' }
     run_once: true
 
-  - name: remove original images tag
-    docker_image:
-      state: absent
-      name: '{{ item.repo }}/{{ item.name }}'
+  - name: push images
+    containers.podman.podman_image:
+      name: '{{ registry_endpoint }}/{{ registry_project }}/{{ item.name }}'
       tag: '{{ item.tag }}'
+      push: true
+      state: present
     with_items:
       - { repo: 'wise2c', name: 'k8s-haproxy', tag: '{{ haproxy_version }}' }
       - { repo: 'wise2c', name: 'k8s-keepalived', tag: '{{ keepalived_version }}' }
     run_once: true
 
   - name: remove original images tag
-    docker_image:
+    containers.podman.podman_image:
       state: absent
       name: '{{ item.repo }}/{{ item.name }}'
       tag: '{{ item.tag }}'
@@ -98,19 +94,16 @@
     run_once: true
 
   - name: run haproxy
-    docker_container:
+    containers.podman.podman_container:
       name: haproxy
-      restart_policy: always
-      network_mode: host
       image: "{{ registry_endpoint }}/{{ registry_project }}/k8s-haproxy:{{ haproxy_version  }}"
       ports: '{{ ports | d([], true) | list }}'
       volumes:
       - '{{ cpath }}/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro'
 
   - name: run keepalived
-    docker_container:
+    containers.podman.podman_container:
       name: keepalived
-      restart_policy: always
       network_mode: host
       capabilities:
       - NET_ADMIN
@@ -121,3 +114,10 @@
       volumes:
       - '{{ cpath }}/keepalive.cfg:/etc/keepalived/keepalived.conf'
       - '{{ cpath }}/keepalived.sh:/usr/bin/keepalived.sh'
+
+  - name: add haproxy and keepalived systemd service
+    shell: |
+      podman generate systemd --new --name haproxy > /etc/systemd/system/haproxy.service
+      podman generate systemd --new --name keepalived > /etc/systemd/system/keepalived.service
+      systemctl enable haproxy
+      systemctl enable keepalived

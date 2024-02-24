@@ -1,4 +1,4 @@
-apiVersion: kubeadm.k8s.io/v1beta2
+apiVersion: kubeadm.k8s.io/v1beta3
 bootstrapTokens:
 - groups:
   - system:bootstrappers:kubeadm:default-node-token
@@ -12,7 +12,7 @@ localAPIEndpoint:
   advertiseAddress: 127.0.0.1
   bindPort: 6443
 nodeRegistration:
-  criSocket: /var/run/dockershim.sock
+  criSocket: "unix:///var/run/crio/crio.sock"
   taints:
   - effect: NoSchedule
     key: node-role.kubernetes.io/master
@@ -20,18 +20,13 @@ nodeRegistration:
 apiServer:
   certSANs:
   - {{ endpoint.split(':')[0] }}
-  extraArgs:
-    feature-gates: LocalStorageCapacityIsolation=true
   timeoutForControlPlane: 4m0s
-apiVersion: kubeadm.k8s.io/v1beta2
+apiVersion: kubeadm.k8s.io/v1beta3
 certificatesDir: /etc/kubernetes/pki
 clusterName: kubernetes
 controlPlaneEndpoint: {{ endpoint }}
 controllerManager:
-  extraArgs:
-    feature-gates: LocalStorageCapacityIsolation=true
-dns:
-  type: CoreDNS
+dns: {}
 etcd:
   external:
     caFile: /etc/etcd/pki/ca.pem
@@ -48,6 +43,4 @@ networking:
   dnsDomain: cluster.local
   podSubnet: 10.244.0.0/16
   serviceSubnet: 10.96.0.0/12
-scheduler:
-  extraArgs:
-    feature-gates: LocalStorageCapacityIsolation=true
+scheduler: {}
