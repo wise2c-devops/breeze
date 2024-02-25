@@ -5,7 +5,7 @@
   - name: remove crio for Redhat/CentOS
     yum:
       disablerepo: '*'
-      enablerepo: wise2c-crio
+      enablerepo: "wise2c-crio"
       state: absent
       name: '{{ item }}'
     with_items:
