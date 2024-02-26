@@ -9,7 +9,7 @@ version=`cat ${path}/components-version.txt |grep "Harbor" |awk '{print $3}'`
 echo "" >> ${path}/yat/harbor.yml.gotmpl
 echo "version: v${version}" >> ${path}/yat/harbor.yml.gotmpl
 
-curl -L https://github.com/docker/compose/releases/download/2.24.6/docker-compose-$(uname -s)-$(uname -m) -o ${path}/file/docker-compose
+curl -L https://github.com/docker/compose/releases/download/2.24.6/docker-compose-$(uname -s | tr '[A-Z]' '[a-z]')-$(uname -m) -o ${path}/file/docker-compose
 
 export CPUArch=$(uname -m | awk '{ if ($1 == "x86_64") print "amd64"; else if ($1 == "aarch64") print "arm64"; else print $1 }')
 
