@@ -13,11 +13,11 @@ PrometheusOperatorVersion=`cat components-version.txt |grep "PrometheusOperator 
 NAMESPACE=monitoring
 
 ######### Push images #########
-for file in $(cat images-list.txt); do docker tag $file $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
+for file in $(cat images-list.txt); do podman tag $file $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
 
 echo 'Images taged.'
 
-for file in $(cat images-list.txt); do docker push $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
+for file in $(cat images-list.txt); do podman push $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
 
 echo 'Images pushed.'
 ######### Update deploy yaml files #########
