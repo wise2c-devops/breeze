@@ -12,10 +12,10 @@ IstioVersion=`cat components-version.txt |grep "Istio Version" |awk '{print $3}'
 
 ######### Push images #########
 cat images-list.txt |grep -v quay.io/ > images-list-crio.txt
-sed -i 's#podman.io/##g' images-list-crio.txt
+sed -i 's#docker.io/##g' images-list-crio.txt
 cat images-list.txt |grep "quay.io\/" > images-list-quay.txt
 
-for file in $(cat images-list-crio.txt); do podman tag $file $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
+for file in $(cat images-list-crio.txt); do podman tag localhost/$file $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
 for file in $(cat images-list-quay.txt); do podman tag $file $MyImageRepositoryIP/$MyImageRepositoryProject/${file##*/}; done
 
 echo 'Images taged.'
@@ -34,8 +34,8 @@ cp bin/istioctl /usr/bin/
 
 istioctl install -y --set profile=demo --set hub=$MyImageRepositoryIP\/$MyImageRepositoryProject
 
-sed -i "s,image: \"grafana/,image: \"$MyImageRepositoryIP/$MyImageRepositoryProject/,g" samples/addons/grafana.yaml
-sed -i "s,image: \"podman.io/jaegertracing/,image: \"$MyImageRepositoryIP/$MyImageRepositoryProject/,g" samples/addons/jaeger.yaml
+sed -i "s,image: \"docker.io/grafana/,image: \"$MyImageRepositoryIP/$MyImageRepositoryProject/,g" samples/addons/grafana.yaml
+sed -i "s,image: \"docker.io/jaegertracing/,image: \"$MyImageRepositoryIP/$MyImageRepositoryProject/,g" samples/addons/jaeger.yaml
 sed -i "s,image: \"prom/,image: \"$MyImageRepositoryIP/$MyImageRepositoryProject/,g" samples/addons/prometheus.yaml
 sed -i "s,image: \"jimmidyson/,image: \"$MyImageRepositoryIP/$MyImageRepositoryProject/,g" samples/addons/prometheus.yaml
 sed -i "s,- image: \"quay.io/kiali/,- image: \"$MyImageRepositoryIP/$MyImageRepositoryProject/,g" samples/addons/kiali.yaml
