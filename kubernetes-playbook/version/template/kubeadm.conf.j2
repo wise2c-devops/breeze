@@ -13,6 +13,8 @@ localAPIEndpoint:
   bindPort: 6443
 nodeRegistration:
   criSocket: "unix:///var/run/crio/crio.sock"
+  kubeletExtraArgs:
+    enforce-node-allocatable: ""
   taints:
   - effect: NoSchedule
     key: node-role.kubernetes.io/master
@@ -44,3 +46,9 @@ networking:
   podSubnet: 10.244.0.0/16
   serviceSubnet: 10.96.0.0/12
 scheduler: {}
+---
+kind: KubeletConfiguration
+apiVersion: kubelet.config.k8s.io/v1beta1
+enforceNodeAllocatable: []
+cgroupsPerQOS: false
+cgroupDriver: cgroupfs

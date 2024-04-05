@@ -1,22 +1,8 @@
   - name: set hostname
     hostname:
       name: '{{ hostname }}'
+      use: systemd
     when: format_hostname
-
-  - name: disabled selinux
-    selinux:
-      state: disabled
-
-  - name: start firewalld
-    systemd:
-      name: firewalld
-      enabled: true
-      state: started
-
-  - name: config firewalld
-    shell: |
-      firewall-cmd --set-default-zone=trusted
-      firewall-cmd --complete-reload
 
   - name: distribute wise2c yum repo for CentOS 8 hosts
     template:
@@ -55,10 +41,26 @@
       name: '{{ item }}'
     with_items:
     - tar
+    - libselinux-python3
     - rsync
     - jq
     - chrony
     - ipvsadm
+
+  - name: disabled selinux
+    selinux:
+      state: disabled
+
+  - name: start firewalld
+    systemd:
+      name: firewalld
+      enabled: true
+      state: started
+
+  - name: config firewalld
+    shell: |
+      firewall-cmd --set-default-zone=trusted
+      firewall-cmd --complete-reload
 
   - name: yum install crio and podman
     yum:
@@ -112,10 +114,14 @@
       state: restarted
 
   # crio service uses registry.k8s.io/pause:3.9 as default
+  # crio service uses cgroupfs for openEuler 22.03 LTS
+  # switch from cgroup v1 to cgroup v2
   - name: update pause image in crio.conf
     shell: |
       echo '[crio.image]' > /etc/crio/crio.conf
       echo 'pause_image = "{{ harbor }}/library/pause:3.9"' >> /etc/crio/crio.conf
+      echo 'cgroup_manager = "cgroupfs"' >> /etc/crio/crio.conf
+      grubby --update-kernel=ALL --args=systemd.unified_cgroup_hierarchy=1
 
   - name: distribute crio registry config
     template:
