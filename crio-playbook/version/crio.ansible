@@ -41,7 +41,6 @@
       name: '{{ item }}'
     with_items:
     - tar
-    - libselinux-python3
     - rsync
     - jq
     - chrony
