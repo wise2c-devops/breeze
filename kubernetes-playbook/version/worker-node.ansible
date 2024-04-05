@@ -9,12 +9,29 @@
   with_items:
   - { src: 'file/worker-join-command.sh', dest: '{{ path }}/worker-join-command.sh' }
 
+- name: copy kubeadm-join.conf
+  copy:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: 0644
+  with_items:
+  - { src: 'template/kubeadm-join.conf.j2', dest: '{{ path }}/kubeadm-join.conf' }
+
 - name: update worker-join-command.sh
   shell: |
     sed -i "s/127.0.0.1:6443/{{ endpoint }}/g" {{ path }}/worker-join-command.sh
 
+- name: update kubeadm-join.conf
+  shell: |
+    sed -i "s/wise2c-breeze-token/`cat /var/lib/wise2c/tmp/kubernetes/worker-join-command.sh | awk '{print $5}'`/g" {{ path }}/kubeadm-join.conf
+    sed -i "s/wise2c-breeze-discovery-token-ca-cert-hash/`cat /var/lib/wise2c/tmp/kubernetes/worker-join-command.sh | awk '{print $7}'`/g" {{ path }}/kubeadm-join.conf
+
+#- name: setup node
+#  shell: /var/lib/wise2c/tmp/kubernetes/worker-join-command.sh
+#  async: 600
+
 - name: setup node
-  shell: /var/lib/wise2c/tmp/kubernetes/worker-join-command.sh
+  shell: kubeadm join --config /var/lib/wise2c/tmp/kubernetes/kubeadm-join.conf
   async: 600
 
 - name: update kubelet.conf

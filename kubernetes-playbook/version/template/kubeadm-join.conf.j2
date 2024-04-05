@@ -1,0 +1,20 @@
+apiVersion: kubeadm.k8s.io/v1beta3
+caCertPath: /etc/kubernetes/pki/ca.crt
+discovery:
+  bootstrapToken:
+    apiServerEndpoint: {{ endpoint }}
+    token: wise2c-breeze-token
+    unsafeSkipCAVerification: true
+  timeout: 5m0s
+  discovery-token-ca-cert-hash: "wise2c-breeze-discovery-token-ca-cert-hash"
+kind: JoinConfiguration
+nodeRegistration:
+  criSocket: unix:///var/run/crio/crio.sock
+  kubeletExtraArgs:
+    enforce-node-allocatable: ""
+---
+kind: KubeletConfiguration
+apiVersion: kubelet.config.k8s.io/v1beta1
+enforceNodeAllocatable: []
+cgroupsPerQOS: false
+cgroupDriver: cgroupfs
