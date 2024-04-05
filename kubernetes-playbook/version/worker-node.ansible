@@ -10,10 +10,9 @@
   - { src: 'file/worker-join-command.sh', dest: '{{ path }}/worker-join-command.sh' }
 
 - name: copy kubeadm-join.conf
-  copy:
+  template:
     src: '{{ item.src }}'
     dest: '{{ item.dest }}'
-    mode: 0644
   with_items:
   - { src: 'template/kubeadm-join.conf.j2', dest: '{{ path }}/kubeadm-join.conf' }
 
