@@ -351,6 +351,7 @@
 - name: kubeadm init
   shell: |
     kubeadm init --config {{ path }}/kubeadm.conf
+  throttle: 1
 
 - name: copy kube-proxy-ds-patch.yaml
   copy:
