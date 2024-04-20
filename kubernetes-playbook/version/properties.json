@@ -50,7 +50,7 @@
         "label": "Kubernetes cni component (K8s容器CNI网络模型)",
         "description": "Flannel | Calico | Canal",
         "type": "enum",
-        "default": "Flannel",
+        "default": "Calico",
         "required": true,
         "options": [ "Flannel", "Calico", "Canal" ]
     },
