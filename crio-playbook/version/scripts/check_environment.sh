@@ -31,17 +31,17 @@ fi
 [ ${BREEZE_PYTHON_VERSION} ]
 
 if [[ "${BREEZE_LSB_ID}" != "RedHat" ]] && [[ "${BREEZE_LSB_ID}" != "CentOS" ]] && [[ "${BREEZE_LSB_ID}" != "OracleLinux" ]] && [[ "${BREEZE_LSB_ID}" != "Rocky" ]] && [[ "${BREEZE_LSB_ID}" != "AlmaLinux" ]] && [[ "${BREEZE_LSB_ID}" != "Anolis" ]] && [[ "${BREEZE_LSB_ID}" != "Ubuntu" ]]; then
-  echo "please use RHEL or CentOS or Ubuntu"
+  echo "please use RHEL/CentOS/AlmaLinux/RockyLinux/OracleLinux or Ubuntu"
   exit
 fi
 
-if version_gt 9.0 ${BREEZE_LSB_RELEASE} && [[ "${BREEZE_LSB_ID}" == "RedHat" ]]; then
-  echo "please use RHEL 9.x for Breeze"
+if version_gt 8.4 ${BREEZE_LSB_RELEASE} && [[ "${BREEZE_LSB_ID}" == "RedHat" ]]; then
+  echo "please use RHEL 8.x (x>3) for Breeze"
   exit
 fi
 
-if version_gt 9.0 ${BREEZE_LSB_RELEASE} && [[ "${BREEZE_LSB_ID}" == "CentOS" ]]; then
-  echo "please use CentOS 9.x for Breeze"
+if version_gt 8.4 ${BREEZE_LSB_RELEASE} && [[ "${BREEZE_LSB_ID}" == "CentOS" ]]; then
+  echo "please use CentOS 8.x (x>3) for Breeze"
   exit
 fi
 
