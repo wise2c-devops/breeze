@@ -4,28 +4,28 @@ set -e
 
 path=`dirname $0`
 
-kubernetes_version=1.28.2
-harbor_version=2.9.0
-docker_version=23.0.1
-crio_version=1.28.1
+kubernetes_version=1.28.9
+harbor_version=2.10.2
+docker_version=26.0.0
+crio_version=1.28.9
 haproxy_version=2.0.0
 keepalived_version=1.3.5
 loadbalancer_version=HAProxy-${haproxy_version}_Keepalived-${keepalived_version}
 prometheus_version=2.46.0
 prometheus_operator_version=0.67.1
 kube_prometheus_version=0.13.0
-metrics_server_version=0.6.4
+metrics_server_version=0.7.1
 dashboard_version=2.7.0
 metrics_scraper_version=1.0.8
-flannel_version=0.22.3
-flannel_cni_plugin_version=1.2.0
-calico_version=3.26.1
-helm_version=3.12.3
-istio_version=1.19.0
-contour_version=1.26.0
-contour_envoyproxy_version=1.27.0
-elastic_cloud_version=2.9.0
-elastic_stack_version=8.10.1
+flannel_version=0.25.1
+flannel_cni_plugin_version=1.4.0-flannel1
+calico_version=3.27.3
+helm_version=3.14.4
+istio_version=1.21.1
+contour_version=1.28.3
+contour_envoyproxy_version=1.29.3
+elastic_cloud_version=2.12.1
+elastic_stack_version=8.13.2
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
 mv ${path}/harbor-playbook/version ${path}/harbor-playbook/v${harbor_version}
