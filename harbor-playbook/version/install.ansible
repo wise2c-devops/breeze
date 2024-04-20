@@ -9,9 +9,6 @@
       state: absent
       name: '{{ item }}'
     with_items:
-    - containernetworking-plugins
-    - container-selinux
-    - containers-common
     - cri-o
     - podman
 
