@@ -8,6 +8,10 @@ RHEL/CentOS/RockyLinux/AlmaLinux/OracleLinux: 8.4+ / 9.x
 
 Ubuntu 20/22 LTS
 
+openEuler 22.03 LTS SP2/SP3
+
+KylinOS V10 SP2/SP3
+
 **所有社区用户请注意：**	
 
 凡是2020年以前发布的Breeze版本( https://github.com/wise2c-devops/breeze/releases )，由于kubeadm生成的kubeconfig文件（admin.conf, controller-manager.conf, kubelet.conf, scheduler.conf)内嵌了1年期的证书，请参考[常见排错说明](./TroubleShooting-CN.md)中的第13点来将内嵌证书替换为长期证书。
