@@ -9,22 +9,17 @@ version=`cat ${path}/components-version.txt |grep "Harbor" |awk '{print $3}'`
 echo "" >> ${path}/yat/harbor.yml.gotmpl
 echo "version: v${version}" >> ${path}/yat/harbor.yml.gotmpl
 
-curl -L https://github.com/docker/compose/releases/download/v2.21.0/docker-compose-$(uname -s)-$(uname -m) -o ${path}/file/docker-compose
+curl -L https://github.com/docker/compose/releases/download/v2.26.1/docker-compose-$(uname -s | tr '[A-Z]' '[a-z]')-$(uname -m) -o ${path}/file/docker-compose
 
-arch=$(uname -m)
-if [ "$arch" == "x86_64" ]; then
-  curl -L https://storage.googleapis.com/harbor-releases/release-${version%.*}.0/harbor-offline-installer-v${version}.tgz \
+export CPUArch=$(uname -m | awk '{ if ($1 == "x86_64") print "amd64"; else if ($1 == "aarch64") print "arm64"; else print $1 }')
+
+if [ $CPUArch == 'amd64' ]
+then
+   curl -L https://storage.googleapis.com/harbor-releases/release-${version%.*}.0/harbor-offline-installer-v${version}.tgz \
     -o ${path}/file/harbor-offline-installer-v${version}.tgz
-elif [ "$arch" == "aarch64" ]; then
-  echo 'Start to fetch harbor aarch64 packages ...'
-  docker pull alanpeng/harbor_images_aarch64:v2.7.2
-  TEMP_CONTAINER_ID=$(docker create alanpeng/harbor_images_aarch64:v2.7.2 /bin/true)
-  docker cp $TEMP_CONTAINER_ID:/harbor-offline-installer-aarch64.tgz ${path}/file/harbor-offline-installer-v${version}.tgz
-  docker rm $TEMP_CONTAINER_ID
-  echo 'Harbor aarch64 packages is downloaded.'
 else
-  echo "Unsupported architectures: $arch"
-  exit 1
+  curl -L https://github.com/wise2c-devops/build-harbor-aarch64/releases/download/v${version}/harbor-offline-installer-aarch64-v${version}.tgz \
+    -o ${path}/file/harbor-offline-installer-v${version}.tgz
 fi
 
 curl -sSL https://raw.githubusercontent.com/vmware/harbor/v${version}/make/harbor.yml.tmpl \

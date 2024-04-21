@@ -4,21 +4,12 @@ sed -i 's,port: 443,# port: 443,g' harbor.yml
 sed -i 's,certificate:,# certificate:,g' harbor.yml
 sed -i 's,private_key:,# private_key:,g' harbor.yml
 
-#set +e
-#docker network create harbor_harbor
-#set -e
-
 ./install.sh
 
-# How to add Harbor as Helm Charts repo?
-# helm repo add --username={{ registry_user }} --password={{ registry_password }} {{ registry_project }} http://{{ registry_endpoint }}/chartrepo/{{ registry_project }}
-# Starting from Harbor version 2.8, the helm repo add command is not supported. Each pull needs to specify the complete access path.
+#fix the bug for ARM64 packages
+export CPUArch=$(uname -m | awk '{ if ($1 == "x86_64") print "amd64"; else if ($1 == "aarch64") print "arm64"; else print $1 }')
 
-# How to login Harbor Helm Charts repo?
-#helm registry login http://{{ registry_endpoint }} --insecure--username {{ registry_user }} --password {{ registry_password }}
-
-# How to push charts package to Harbor?
-#helm push --insecure-skip-tls-verify hello-0.1.0.tgz oci://{{ registry_endpoint }}/library
-
-# How to pull charts package from Harbor?
-#helm pull --insecure-skip-tls-verify oci://{{ registry_endpoint }}/library/hello
+if [ $CPUArch == 'arm64' ]
+then
+  chmod -R 777 /data/redis
+fi
