@@ -55,7 +55,7 @@
   - name: load etcd image
     shell: |
       podman load -i {{ path }}/etcd.tar.bz2
-    async: 60
+    async: 120
     poll: 5
     run_once: true
 
