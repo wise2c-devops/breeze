@@ -23,12 +23,12 @@ services:
     network_mode: "service:deploy"
   playbook:
     container_name: deploy-playbook
-    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/playbook:v1.30.0-china-os
+    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/playbook:v1.30.1-china-os
     volumes:
     - playbook:/workspace
   yum-repo:
     container_name: deploy-yumrepo
-    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/yum-repo:v1.30.0-kylin-v10sp3
+    image: registry.cn-shenzhen.aliyuncs.com/breeze-project/yum-repo:v1.30.1-kylin-v10sp3
     ports:
     - 2009:2009 
     restart: always
