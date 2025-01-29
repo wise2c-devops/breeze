@@ -1,4 +1,4 @@
-FROM almalinux:9
+FROM almalinux:8
 RUN yum install -y keepalived procps-ng util-linux nc
 COPY keepalived.sh /usr/bin/keepalived.sh
 COPY keepalived.conf /etc/keepalived/keepalived.conf
