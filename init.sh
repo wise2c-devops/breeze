@@ -23,7 +23,7 @@ calico_version=3.29.1
 helm_version=3.17.0
 istio_version=1.23.4
 contour_version=1.30.2
-contour_envoyproxy_version=1.32.1
+contour_envoyproxy_version=1.31.5
 elastic_cloud_version=2.16.1
 elastic_stack_version=8.17.1
 
