@@ -43,11 +43,11 @@ echo "flannel_repo: ${flannel_repo}" >> ${path}/yat/all.yml.gotmpl
 echo "flannel_version: ${flannel_version}" >> ${path}/yat/all.yml.gotmpl
 echo "flannel_cni_plugin_version: ${flannel_cni_plugin_version}" >> ${path}/yat/all.yml.gotmpl
 
-curl -sSL https://raw.githubusercontent.com/coreos/flannel/${flannel_version}/Documentation/kube-flannel.yml \
-   | sed -e "s,docker.io/flannel/,{{ registry_endpoint }}/{{ registry_project }}/,g" > ${path}/template/kube-flannel.yml.j2
-
-#curl -sSL https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml \
+#curl -sSL https://raw.githubusercontent.com/coreos/flannel/${flannel_version}/Documentation/kube-flannel.yml \
 #   | sed -e "s,docker.io/flannel/,{{ registry_endpoint }}/{{ registry_project }}/,g" > ${path}/template/kube-flannel.yml.j2
+
+curl -sSL https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml \
+   | sed -e "s,docker.io/flannel/,{{ registry_endpoint }}/{{ registry_project }}/,g" > ${path}/template/kube-flannel.yml.j2
 
 echo "=== pulling flannel image ==="
 docker pull ${flannel_repo}/flannel:${flannel_version}

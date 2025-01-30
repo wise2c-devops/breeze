@@ -10,7 +10,8 @@ echo "keepalived_version: ${keepalived_version}" >> ${path}/inherent.yaml
 
 echo "build wise2c/k8s-keepalived:${keepalived_version} image"
 cd ${path}/keepalived
-docker build -t wise2c/k8s-keepalived:${keepalived_version} .
+#docker build -t wise2c/k8s-keepalived:${keepalived_version} .
+docker pull wise2c/k8s-keepalived:${keepalived_version}
 docker save wise2c/k8s-keepalived:${keepalived_version} -o ../file/keepalived-${keepalived_version}.tar
 bzip2 -z --best ../file/keepalived-${keepalived_version}.tar
 
