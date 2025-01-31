@@ -1,4 +1,4 @@
-KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.9 \
+KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.10 \
                    --cgroup-driver=cgroupfs \
                    --container-runtime-endpoint=unix:///var/run/crio/crio.sock
 #                   --runtime-request-timeout=10m
@@ -9,7 +9,7 @@ KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ regist
 #                   --container-log-max-size=50Mi \
 #                   --log-dir=/var/log/pods
 
-#KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.9 \
+#KUBELET_EXTRA_ARGS=--pod-infra-container-image={{ registry_endpoint }}/{{ registry_project }}/pause:3.10 \
 #                   --cgroup-driver=systemd \
 #                   --container-runtime-endpoint=unix:///var/run/crio/crio.sock \
 #                   --runtime-request-timeout=10m \
