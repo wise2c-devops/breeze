@@ -25,7 +25,7 @@ istio_version=1.23.4
 contour_version=1.30.2
 contour_envoyproxy_version=1.31.5
 elastic_cloud_version=2.16.1
-elastic_stack_version=8.171
+elastic_stack_version=8.17.1
 
 mv ${path}/kubernetes-playbook/version ${path}/kubernetes-playbook/v${kubernetes_version}
 mv ${path}/harbor-playbook/version ${path}/harbor-playbook/v${harbor_version}
