@@ -2,9 +2,9 @@
 set -e
 
 #If seems that there is a bug on Ubuntu host to load the images. If no wait, it will return an error message: "Error response from daemon: No such image"
-#if [ ! -f /etc/redhat-release ]; then
-#  sleep 60
-#fi
+if [ ! -f /etc/redhat-release ]; then
+  sleep 60
+fi
 
 MyImageRepositoryIP=`cat harbor-address.txt`
 MyImageRepositoryProject=library
@@ -38,7 +38,7 @@ sed -i "s/quay.io\/brancz/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(g
 sed -i "s#directxman12\/#$MyImageRepositoryIP\/$MyImageRepositoryProject\/#g" $(grep -lr "image:" ./ |grep .yaml)
 sed -i "s/grafana\/grafana/$MyImageRepositoryIP\/$MyImageRepositoryProject\/grafana/g" $(grep -lr "grafana/grafana\:" ./ |grep .yaml)
 sed -i "s/gcr.io\/google_containers/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "gcr.io/google_containers" ./ |grep .yaml)
-sed -i "s/jimmidyson\/configmap-reload/$MyImageRepositoryIP\/$MyImageRepositoryProject\/configmap-reload/g" $(grep -lr "jimmidyson/configmap-reload" ./ |grep .yaml)
+sed -i "s/ghcr.io\/jimmidyson\/configmap-reload/$MyImageRepositoryIP\/$MyImageRepositoryProject\/configmap-reload/g" $(grep -lr "ghcr.io/jimmidyson/configmap-reload" ./ |grep .yaml)
 sed -i "s/registry.k8s.io\/kube-state-metrics/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "registry.k8s.io" ./ |grep .yaml)
 sed -i "s/registry.k8s.io\/prometheus-adapter/$MyImageRepositoryIP\/$MyImageRepositoryProject/g" $(grep -lr "registry.k8s.io/prometheus-adapter" ./ |grep .yaml)
 cd ..
