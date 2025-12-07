@@ -99,7 +99,7 @@
     - { repo: '{{ dashboard_repo }}', name: 'metrics-scraper', tag: '{{ metrics_scraper_version }}' }
     - { repo: '{{ contour_repo }}', name: 'contour', tag: '{{ contour_version }}' }
     - { repo: '{{ contour_envoyproxy_repo }}', name: 'envoy', tag: '{{ contour_envoyproxy_version }}' }
-    - { repo: '{{ contour_demo_repo }}', name: 'kuard-amd64', tag: '1' }
+    - { repo: '{{ contour_demo_repo }}', name: 'kuard', tag: '0.2.0' }
   run_once: true
 
 - name: tag coredns image
@@ -136,7 +136,7 @@
   - { name: 'metrics-scraper', tag: '{{ metrics_scraper_version }}' }
   - { name: 'contour', tag: '{{ contour_version }}' }
   - { name: 'envoy', tag: '{{ contour_envoyproxy_version }}' }
-  - { name: 'kuard-amd64', tag: '1' }
+  - { name: 'kuard', tag: '0.2.0' }
   run_once: true
 
 - name: Remove registry.k8s.io and original images tag
@@ -165,7 +165,7 @@
   - { repo: '{{ dashboard_repo }}', name: 'metrics-scraper', tag: '{{ metrics_scraper_version }}' }
   - { repo: '{{ contour_repo }}', name: 'contour', tag: '{{ contour_version }}' }
   - { repo: '{{ contour_envoyproxy_repo }}', name: 'envoy', tag: '{{ contour_envoyproxy_version }}' }
-  - { repo: '{{ contour_demo_repo }}', name: 'kuard-amd64', tag: '1' }
+  - { repo: '{{ contour_demo_repo }}', name: 'kuard', tag: '0.2.0' }
   run_once: true
 
 - name: install git command for helm-push and perl library for ipcalc

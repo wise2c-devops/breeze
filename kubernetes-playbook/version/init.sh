@@ -127,7 +127,7 @@ contour_repo="ghcr.io/projectcontour"
 contour_long_repo="ghcr.io/projectcontour"
 contour_envoyproxy_repo="envoyproxy"
 contour_envoyproxy_long_repo="docker.io/envoyproxy"
-contour_demo_repo="docker.io/gcrcontainer"
+contour_demo_repo="dlneintr"
 contour_version=v`cat ${path}/components-version.txt |grep "Contour Version" |awk '{print $3}'`
 contour_envoyproxy_version=v`cat ${path}/components-version.txt |grep "ContourEnvoyProxy Version" |awk '{print $3}'`
 
@@ -150,13 +150,13 @@ curl -sS https://projectcontour.io/examples/kuard.yaml \
 echo "=== pulling contour and envoyproxy images ==="
 docker pull ${contour_repo}/contour:${contour_version}
 docker pull ${contour_envoyproxy_repo}/envoy:${contour_envoyproxy_version}
-docker pull ${contour_demo_repo}/kuard-amd64:1
+docker pull ${contour_demo_repo}/kuard:0.2.0
 echo "=== contour and envoyproxy images are pulled successfully ==="
 
 echo "=== saving contour and envoyproxy images ==="
 docker save ${contour_repo}/contour:${contour_version} -o ${path}/file/contour.tar
 docker save ${contour_envoyproxy_repo}/envoy:${contour_envoyproxy_version} -o ${path}/file/contour-envoyproxy.tar
-docker save ${contour_demo_repo}/kuard-amd64:1 -o ${path}/file/contour-demo.tar
+docker save ${contour_demo_repo}/kuard:0.2.0 -o ${path}/file/contour-demo.tar
 rm -f ${path}/file/contour.tar.bz2
 rm -f ${path}/file/contour-envoyproxy.tar.bz2
 rm -f ${path}/file/contour-demo.tar.bz2
