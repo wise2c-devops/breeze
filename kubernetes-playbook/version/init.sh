@@ -127,7 +127,7 @@ contour_repo="ghcr.io/projectcontour"
 contour_long_repo="ghcr.io/projectcontour"
 contour_envoyproxy_repo="envoyproxy"
 contour_envoyproxy_long_repo="docker.io/envoyproxy"
-contour_demo_repo="gcr.io/kuar-demo"
+contour_demo_repo="docker.io/gcrcontainer"
 contour_version=v`cat ${path}/components-version.txt |grep "Contour Version" |awk '{print $3}'`
 contour_envoyproxy_version=v`cat ${path}/components-version.txt |grep "ContourEnvoyProxy Version" |awk '{print $3}'`
 
